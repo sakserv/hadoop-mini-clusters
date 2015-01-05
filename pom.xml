@@ -2,14 +2,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.skumpf</groupId>
+    <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters</artifactId>
     <version>0.0.1</version>
     <packaging>jar</packaging>
 
     <name>Hadoop Mini Clusters</name>
     <description>Hadoop Mini Clusters for local and unit testing.</description>
-    <url>https://github.com/skumpf/hadoop-mini-clusters</url>
+    <url>https://github.com/sakserv/hadoop-mini-clusters</url>
 
     <licenses>
         <license>
@@ -20,7 +20,9 @@
     </licenses>
 
     <scm>
-        <url>https://github.com/skumpf/hadoop-mini-clusters</url>
+        <connection>scm:git:git://github.com/sakserv/hadoop-mini-clusters.git</connection>
+        <developerConnection>scm:git:git@github.com:sakserv/hadoop-mini-clusters.git</developerConnection>
+        <url>http://github.com/sakserv/hadoop-mini-clusters</url>
     </scm>
 
     <properties>
@@ -382,6 +384,20 @@
                     <source>1.6</source>
                     <target>1.6</target>
                 </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>

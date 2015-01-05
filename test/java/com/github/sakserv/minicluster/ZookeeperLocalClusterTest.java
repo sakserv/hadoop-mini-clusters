@@ -1,6 +1,6 @@
-package com.github.skumpf.minicluster;
+package com.github.sakserv.minicluster;
 
-import com.github.skumpf.minicluster.impl.ZookeeperLocalCluster;
+import com.github.sakserv.minicluster.impl.ZookeeperLocalCluster;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

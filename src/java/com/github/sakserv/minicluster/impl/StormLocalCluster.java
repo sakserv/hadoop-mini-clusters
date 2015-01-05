@@ -1,9 +1,9 @@
-package com.github.skumpf.minicluster.impl;
+package com.github.sakserv.minicluster.impl;
 
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
 import backtype.storm.generated.StormTopology;
-import com.github.skumpf.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.MiniCluster;
 
 /**
  * Created by skumpf on 12/30/14.

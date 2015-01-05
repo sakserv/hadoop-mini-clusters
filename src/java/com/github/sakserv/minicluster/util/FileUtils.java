@@ -1,4 +1,4 @@
-package com.github.skumpf.util;
+package com.github.sakserv.minicluster.util;
 
 import java.io.File;
 

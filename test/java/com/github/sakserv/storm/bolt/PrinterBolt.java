@@ -1,4 +1,4 @@
-package com.github.skumpf.storm.bolt;
+package com.github.sakserv.storm.bolt;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one

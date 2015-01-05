@@ -1,6 +1,6 @@
-package com.github.skumpf.minicluster;
+package com.github.sakserv.minicluster;
 
-import com.github.skumpf.minicluster.impl.MongodbLocalServer;
+import com.github.sakserv.minicluster.impl.MongodbLocalServer;
 import com.mongodb.*;
 import org.junit.After;
 import org.junit.Before;

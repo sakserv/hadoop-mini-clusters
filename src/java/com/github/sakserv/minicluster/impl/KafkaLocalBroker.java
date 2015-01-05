@@ -1,7 +1,7 @@
-package com.github.skumpf.minicluster.impl;
+package com.github.sakserv.minicluster.impl;
 
-import com.github.skumpf.minicluster.MiniCluster;
-import com.github.skumpf.util.FileUtils;
+import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.util.FileUtils;
 import kafka.server.KafkaConfig;
 import kafka.server.KafkaServer;
 import kafka.utils.Time;

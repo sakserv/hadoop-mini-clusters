@@ -1,11 +1,11 @@
-package com.github.skumpf.minicluster;
+package com.github.sakserv.minicluster;
 
 import backtype.storm.Config;
 import backtype.storm.topology.TopologyBuilder;
-import com.github.skumpf.minicluster.impl.StormLocalCluster;
-import com.github.skumpf.minicluster.impl.ZookeeperLocalCluster;
-import com.github.skumpf.storm.bolt.PrinterBolt;
-import com.github.skumpf.storm.spout.RandomSentenceSpout;
+import com.github.sakserv.minicluster.impl.StormLocalCluster;
+import com.github.sakserv.minicluster.impl.ZookeeperLocalCluster;
+import com.github.sakserv.storm.bolt.PrinterBolt;
+import com.github.sakserv.storm.spout.RandomSentenceSpout;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package com.github.skumpf.minicluster;
+package com.github.sakserv.minicluster;
 
 /**
  * Created by skumpf on 12/30/14.

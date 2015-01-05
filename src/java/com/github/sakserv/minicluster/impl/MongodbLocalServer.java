@@ -1,6 +1,6 @@
-package com.github.skumpf.minicluster.impl;
+package com.github.sakserv.minicluster.impl;
 
-import com.github.skumpf.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.MiniCluster;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;

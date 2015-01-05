@@ -1,6 +1,6 @@
-package com.github.skumpf.minicluster;
+package com.github.sakserv.minicluster;
 
-import com.github.skumpf.minicluster.impl.HdfsLocalCluster;
+import com.github.sakserv.minicluster.impl.HdfsLocalCluster;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;

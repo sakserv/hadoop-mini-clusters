@@ -1,9 +1,9 @@
-package com.github.skumpf.minicluster;
+package com.github.sakserv.minicluster;
 
 
-import com.github.skumpf.datetime.GenerateRandomDay;
-import com.github.skumpf.minicluster.impl.KafkaLocalBroker;
-import com.github.skumpf.minicluster.impl.ZookeeperLocalCluster;
+import com.github.sakserv.datetime.GenerateRandomDay;
+import com.github.sakserv.minicluster.impl.KafkaLocalBroker;
+import com.github.sakserv.minicluster.impl.ZookeeperLocalCluster;
 import kafka.api.FetchRequest;
 import kafka.api.FetchRequestBuilder;
 import kafka.common.ErrorMapping;

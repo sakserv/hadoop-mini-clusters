@@ -1,7 +1,7 @@
-package com.github.skumpf.minicluster;
+package com.github.sakserv.minicluster;
 
-import com.github.skumpf.minicluster.impl.HiveLocalMetaStore;
-import com.github.skumpf.util.FileUtils;
+import com.github.sakserv.minicluster.impl.HiveLocalMetaStore;
+import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 import org.apache.hadoop.hive.metastore.TableType;
 import org.apache.hadoop.hive.metastore.api.*;

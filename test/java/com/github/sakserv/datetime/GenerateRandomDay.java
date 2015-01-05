@@ -1,4 +1,4 @@
-package com.github.skumpf.datetime;
+package com.github.sakserv.datetime;
 
 import java.util.GregorianCalendar;
 

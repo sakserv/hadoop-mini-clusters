@@ -1,4 +1,4 @@
-package com.github.skumpf.storm.spout;
+package com.github.sakserv.storm.spout;
 
 import backtype.storm.spout.SpoutOutputCollector;
 import backtype.storm.task.TopologyContext;
