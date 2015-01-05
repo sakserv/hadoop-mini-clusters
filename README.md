@@ -10,7 +10,8 @@ Includes:
 *   HiveMetaStore - Derby backed HiveMetaStore
 *   Storm - Storm LocalCluster
 *   Kafka - Local Kafka Broker
+*   MongoDB - I know... not Hadoop
 
 Tests:
 ------
-Tests are included to show how to use and configure each of the mini clusters.
+Tests are included to show how to configure and use each of the mini clusters.
