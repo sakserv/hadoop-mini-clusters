@@ -3,7 +3,7 @@
 
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.4-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Hadoop Mini Clusters</name>
@@ -314,8 +314,8 @@
     </dependencies>
 
     <build>
-        <sourceDirectory>../hadoop-mini-clusters/src/java</sourceDirectory>
-        <testSourceDirectory>test/java</testSourceDirectory>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <testSourceDirectory>test/main/java</testSourceDirectory>
 
         <plugins>
             <plugin>
