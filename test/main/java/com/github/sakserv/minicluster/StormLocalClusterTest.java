@@ -43,7 +43,7 @@ public class StormLocalClusterTest {
     @After
     public void tearDown() {
         stormCluster.stop(STORM_TEST_TOPOLOGY);
-        zkCluster.stop();
+        zkCluster.stop(true);
     }
 
     @Test

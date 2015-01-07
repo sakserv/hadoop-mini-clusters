@@ -37,13 +37,11 @@ public class HdfsLocalClusterTest {
 
     @After
     public void tearDown(){
-        dfsCluster.stop();
+        dfsCluster.stop(true);
     }
 
     @Test
     public void testDfsClusterStart() {
-        System.out.println("HDFS: Cluster URI: " + dfsCluster.getHdfsUriString());
-
         FileSystem hdfsFsHandle = dfsCluster.getHdfsFileSystemHandle();
         try {
             FSDataOutputStream writer = hdfsFsHandle.create(new Path("/tmp/testing"));

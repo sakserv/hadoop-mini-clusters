@@ -15,11 +15,13 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.hdfs.MiniDFSCluster;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 
 public class HdfsLocalCluster implements MiniCluster {
@@ -36,6 +38,7 @@ public class HdfsLocalCluster implements MiniCluster {
 
     public void configure() {
         conf.setBoolean("dfs.permissions", false);
+        System.setProperty("test.build.data", DEFAULT_LOG_DIR);
     }
 
     public Configuration getConf() {
@@ -43,7 +46,11 @@ public class HdfsLocalCluster implements MiniCluster {
     }
 
     public void dumpConfig() {
-        System.out.println("HDFS CONF: " + String.valueOf(conf.toString()));
+        System.out.println("HDFS CONF:");
+        Iterator it = conf.iterator();
+        while(it.hasNext()) {
+            System.out.println(it.next());
+        }
     }
 
     public void start() {
@@ -58,8 +65,8 @@ public class HdfsLocalCluster implements MiniCluster {
             .format(true)
             .racks(null)
             .build();
-
-            System.out.println("HDFS: MiniDfsCluster started at " + cluster.getFileSystem().getCanonicalServiceName());
+            cluster.waitClusterUp();
+            
         } catch(IOException e) {
             System.out.println("ERROR: Failed to start MiniDfsCluster");
             e.printStackTrace();
@@ -69,8 +76,18 @@ public class HdfsLocalCluster implements MiniCluster {
     public void stop() {
         System.out.println("HDFS: Stopping MiniDfsCluster");
         cluster.shutdown();
-        System.out.println("HDFS: MiniDfsCluster Stopped");
-
+    }
+    
+    public void stop(boolean cleanUp) {
+        stop();
+        if(cleanUp) {
+            cleanUp();
+        }
+        
+    }
+    
+    public void cleanUp() {
+        FileUtils.deleteFolder(DEFAULT_LOG_DIR);
     }
 
     public String getHdfsUriString() {

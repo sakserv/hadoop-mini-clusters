@@ -51,7 +51,7 @@ public class HiveLocalServer2Test {
     @After
     public void tearDown() {
         hiveServer.stop(true);
-        zkCluster.stop();
+        zkCluster.stop(true);
     }
 
     @Test
