@@ -27,13 +27,14 @@ public class MongodbLocalServerTest {
     
     private static final String DEFAULT_DATABASE_NAME = "test_database";
     private static final String DEFAULT_COLLECTION_NAME = "test_collection";
+    private static final String DEFAULT_IP = "127.0.0.1";
     private static final int DEFAULT_MONGOD_PORT = 12345;
     
     private MongodbLocalServer mongodbServer;
 
     @Before
     public void setUp() throws Exception {
-        mongodbServer = new MongodbLocalServer(DEFAULT_DATABASE_NAME, DEFAULT_COLLECTION_NAME, DEFAULT_MONGOD_PORT);
+        mongodbServer = new MongodbLocalServer(DEFAULT_IP, DEFAULT_MONGOD_PORT);
         mongodbServer.start();
     }
 
@@ -44,8 +45,10 @@ public class MongodbLocalServerTest {
 
     @Test
     public void testMongodbLocalServer() throws UnknownHostException {
+        
+        mongodbServer.dumpConfig();
 
-        MongoClient mongo = new MongoClient("localhost", DEFAULT_MONGOD_PORT);
+        MongoClient mongo = new MongoClient(DEFAULT_IP, DEFAULT_MONGOD_PORT);
 
         DB db = mongo.getDB(DEFAULT_DATABASE_NAME);
         DBCollection col = db.createCollection(DEFAULT_COLLECTION_NAME, new BasicDBObject());

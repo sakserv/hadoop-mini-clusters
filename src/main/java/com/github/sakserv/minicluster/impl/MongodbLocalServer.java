@@ -25,15 +25,14 @@ import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 
 public class MongodbLocalServer implements MiniCluster {
-
-    private static final String DEFAULT_DATABASE_NAME = "test_database";
-    private static final String DEFAULT_COLLECTION_NAME = "test_collection";
+    
+    private static final String DEFAULT_IP = "127.0.0.1";
     private static final int DEFAULT_PORT = 12345;
 
-    private String dbName;
-    private String collName;
+    private String ipaddr;
     private int port;
     
     private MongodStarter starter;
@@ -42,15 +41,19 @@ public class MongodbLocalServer implements MiniCluster {
     private IMongodConfig conf;
     
     public MongodbLocalServer() {
-        dbName = DEFAULT_DATABASE_NAME;
-        collName = DEFAULT_COLLECTION_NAME;
+        ipaddr = DEFAULT_IP;
         port = DEFAULT_PORT;
         configure();
     }
-    
-    public MongodbLocalServer(String dbName, String collName, int port) {
-        this.dbName = dbName;
-        this.collName = collName;
+
+    public MongodbLocalServer(int port) {
+        this.ipaddr = DEFAULT_IP;
+        this.port = port;
+        configure();
+    }
+
+    public MongodbLocalServer(String ipaddr, int port) {
+        this.ipaddr = ipaddr;
         this.port = port;
         configure();
     }
@@ -74,7 +77,7 @@ public class MongodbLocalServer implements MiniCluster {
         try {
             conf = new MongodConfigBuilder()
                     .version(Version.Main.PRODUCTION)
-                    .net(new Net(port, Network.localhostIsIPv6()))
+                    .net(new Net(ipaddr, port, false))
                     .build();
         } catch(IOException e) {
             e.printStackTrace();
@@ -83,7 +86,16 @@ public class MongodbLocalServer implements MiniCluster {
     }
     
     public void dumpConfig() {
-        System.out.println("MONGODB: CONFIG: " + conf.toString());
+        System.out.println("MONGODB: CONFIG: " + getBindIp() + ":" + getBindPort());
+    }
+    
+    public String getBindIp() {
+        return conf.net().getBindIp();
+    }
+    
+    public int getBindPort() {
+        return conf.net().getPort();
         
     }
+
 }
