@@ -15,3 +15,16 @@ Includes:
 Tests:
 ------
 Tests are included to show how to configure and use each of the mini clusters.
+
+Using:
+------
+**IMPORTANT NOTE: APIs are still stabilizing, expect changes
+
+*  Maven Central - latest release
+
+
+	<dependency>
+		<groupId>com.github.sakserv</groupId>
+		<artifactId>hadoop-mini-clusters</artifactId>
+		<version>0.0.8</version>
+	</dependency>
