@@ -19,12 +19,16 @@ import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.hdfs.MiniDFSCluster;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Iterator;
 
 
 public class HdfsLocalCluster implements MiniCluster {
+
+    // Logger
+    private static final Logger LOG = Logger.getLogger(HdfsLocalCluster.class);
 
     private static MiniDFSCluster.Builder clusterBuilder;
     private static MiniDFSCluster cluster;
@@ -46,10 +50,10 @@ public class HdfsLocalCluster implements MiniCluster {
     }
 
     public void dumpConfig() {
-        System.out.println("HDFS CONF:");
+        LOG.info("HDFS CONF:");
         Iterator it = conf.iterator();
         while(it.hasNext()) {
-            System.out.println(it.next());
+            LOG.info(it.next());
         }
     }
 
@@ -58,7 +62,7 @@ public class HdfsLocalCluster implements MiniCluster {
     }
 
     public void start(int numOfDataNodes) {
-        System.out.println("HDFS: Starting MiniDfsCluster");
+        LOG.info("HDFS: Starting MiniDfsCluster");
         try {
 
             cluster = clusterBuilder.numDataNodes(numOfDataNodes)
@@ -68,13 +72,13 @@ public class HdfsLocalCluster implements MiniCluster {
             cluster.waitClusterUp();
             
         } catch(IOException e) {
-            System.out.println("ERROR: Failed to start MiniDfsCluster");
+            LOG.error("ERROR: Failed to start MiniDfsCluster");
             e.printStackTrace();
         }
     }
 
     public void stop() {
-        System.out.println("HDFS: Stopping MiniDfsCluster");
+        LOG.info("HDFS: Stopping MiniDfsCluster");
         cluster.shutdown();
     }
     
@@ -95,7 +99,7 @@ public class HdfsLocalCluster implements MiniCluster {
         try {
             hdfsUriString = "hdfs://" + cluster.getFileSystem().getCanonicalServiceName();
         } catch(IOException e) {
-            System.out.println("ERROR: Failed to return MiniDFsCluster URI");
+            LOG.error("ERROR: Failed to return MiniDFsCluster URI");
             e.printStackTrace();
         }
         return hdfsUriString;
@@ -106,7 +110,7 @@ public class HdfsLocalCluster implements MiniCluster {
         try {
             hdfsFileSystemHandle = cluster.getFileSystem();
         } catch(IOException e) {
-            System.out.println("ERROR: Failed to return MiniDFsCluster URI");
+            LOG.error("ERROR: Failed to return MiniDFsCluster URI");
             e.printStackTrace();
         }
         return hdfsFileSystemHandle;

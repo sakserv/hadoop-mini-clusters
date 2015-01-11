@@ -19,6 +19,7 @@ import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +27,9 @@ import org.junit.Test;
 import java.io.IOException;
 
 public class HdfsLocalClusterTest {
+
+    // Logger
+    private static final Logger LOG = Logger.getLogger(HdfsLocalCluster.class);
 
     private HdfsLocalCluster dfsCluster;
 
@@ -49,12 +53,12 @@ public class HdfsLocalClusterTest {
             writer.close();
 
             FSDataInputStream reader = hdfsFsHandle.open(new Path("/tmp/testing"));
-            System.out.println("HDFS READ: Output from test file: " + reader.readUTF());
+            LOG.info("HDFS READ: Output from test file: " + reader.readUTF());
             reader.close();
 
             hdfsFsHandle.close();
         } catch(IOException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
 
     }

@@ -26,6 +26,7 @@ import kafka.javaapi.producer.Producer;
 import kafka.message.MessageAndOffset;
 import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerConfig;
+import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.junit.After;
@@ -40,6 +41,9 @@ import java.util.Properties;
 
 public class KafkaLocalBrokerTest {
 
+    // Logger
+    private static final Logger LOG = Logger.getLogger(KafkaLocalBrokerTest.class);
+
     private static final String TEST_TOPIC = "test_topic";
 
     ZookeeperLocalCluster zkCluster;
@@ -52,11 +56,11 @@ public class KafkaLocalBrokerTest {
         //
         PartitionMetadata metadata = findLeader(a_seedBrokers, a_port, a_topic, a_partition);
         if (metadata == null) {
-            System.out.println("Can't find metadata for Topic and Partition. Exiting");
+            LOG.info("Can't find metadata for Topic and Partition. Exiting");
             return;
         }
         if (metadata.leader() == null) {
-            System.out.println("Can't find Leader for Topic and Partition. Exiting");
+            LOG.info("Can't find Leader for Topic and Partition. Exiting");
             return;
         }
         String leadBroker = metadata.leader().host();
@@ -80,7 +84,7 @@ public class KafkaLocalBrokerTest {
                 numErrors++;
                 // Something went wrong!
                 short code = fetchResponse.errorCode(a_topic, a_partition);
-                System.out.println("Error fetching data from the Broker:" + leadBroker + " Reason: " + code);
+                LOG.info("Error fetching data from the Broker:" + leadBroker + " Reason: " + code);
                 if (numErrors > 5) break;
                 if (code == ErrorMapping.OffsetOutOfRangeCode())  {
                     // We asked for an invalid offset. For simple case ask for the last element to reset
@@ -98,7 +102,7 @@ public class KafkaLocalBrokerTest {
             for (MessageAndOffset messageAndOffset : fetchResponse.messageSet(a_topic, a_partition)) {
                 long currentOffset = messageAndOffset.offset();
                 if (currentOffset < readOffset) {
-                    System.out.println("Found an old offset: " + currentOffset + " Expecting: " + readOffset);
+                    LOG.info("Found an old offset: " + currentOffset + " Expecting: " + readOffset);
                     continue;
                 }
                 readOffset = messageAndOffset.nextOffset();
@@ -106,7 +110,7 @@ public class KafkaLocalBrokerTest {
 
                 byte[] bytes = new byte[payload.limit()];
                 payload.get(bytes);
-                System.out.println("Consumed: " + String.valueOf(messageAndOffset.offset()) + ": " + new String(bytes, "UTF-8"));
+                LOG.info("Consumed: " + String.valueOf(messageAndOffset.offset()) + ": " + new String(bytes, "UTF-8"));
                 numRead++;
                 a_maxReads--;
             }
@@ -144,7 +148,7 @@ public class KafkaLocalBrokerTest {
                 }
             }
         }
-        System.out.println("Unable to find new leader after Broker failure. Exiting");
+        LOG.info("Unable to find new leader after Broker failure. Exiting");
         throw new Exception("Unable to find new leader after Broker failure. Exiting");
     }
 
@@ -169,7 +173,7 @@ public class KafkaLocalBrokerTest {
                     }
                 }
             } catch (Exception e) {
-                System.out.println("Error communicating with Broker [" + seed + "] to find Leader for [" + a_topic
+                LOG.info("Error communicating with Broker [" + seed + "] to find Leader for [" + a_topic
                         + ", " + a_partition + "] Reason: " + e);
             } finally {
                 if (consumer != null) consumer.close();
@@ -214,7 +218,7 @@ public class KafkaLocalBrokerTest {
         Producer<String, String> producer = new Producer<String, String>(config);
 
         // Send 10 messages to the local kafka server:
-        System.out.println("KAFKA: Preparing To Send 10 Initial Messages");
+        LOG.info("KAFKA: Preparing To Send 10 Initial Messages");
         for (int i=0; i<10; i++){
 
             // Create the JSON object
@@ -231,9 +235,9 @@ public class KafkaLocalBrokerTest {
 
             KeyedMessage<String, String> data = new KeyedMessage<String, String>(TEST_TOPIC, null, payload);
             producer.send(data);
-            System.out.println("Sent message: " + data.toString());
+            LOG.info("Sent message: " + data.toString());
         }
-        System.out.println("KAFKA: Initial Messages Sent");
+        LOG.info("KAFKA: Initial Messages Sent");
 
         // Stop the producer
         producer.close();

@@ -16,6 +16,7 @@ package com.github.sakserv.minicluster;
 
 import com.github.sakserv.minicluster.impl.HiveLocalServer2;
 import com.github.sakserv.minicluster.impl.ZookeeperLocalCluster;
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +24,9 @@ import org.junit.Test;
 import java.sql.*;
 
 public class HiveLocalServer2Test {
+
+    // Logger
+    private static final Logger LOG = Logger.getLogger(HiveLocalServer2Test.class);
 
     private static final int ZOOKEEPER_PORT = 2181;
 
@@ -58,7 +62,7 @@ public class HiveLocalServer2Test {
     public void testHiveLocalServer2() throws ClassNotFoundException, SQLException {
 
         // Load the Hive JDBC driver
-        System.out.println("HIVE: Loading the Hive JDBC Driver");
+        LOG.info("HIVE: Loading the Hive JDBC Driver");
         Class.forName("org.apache.hive.jdbc.HiveDriver");
 
         //
@@ -70,13 +74,13 @@ public class HiveLocalServer2Test {
         // Create the DB
         String createDbDdl = "CREATE DATABASE IF NOT EXISTS " + HIVE_DB_NAME;
         Statement stmt = con.createStatement();
-        System.out.println("HIVE: Running Create Database Statement: " + createDbDdl);
+        LOG.info("HIVE: Running Create Database Statement: " + createDbDdl);
         stmt.execute(createDbDdl);
 
         // Drop the table incase it still exists
         String dropDdl = "DROP TABLE " + HIVE_DB_NAME + "." + HIVE_TABLE_NAME;
         stmt = con.createStatement();
-        System.out.println("HIVE: Running Drop Table Statement: " + dropDdl);
+        LOG.info("HIVE: Running Drop Table Statement: " + dropDdl);
         stmt.execute(dropDdl);
 
         // Create the ORC table
@@ -85,11 +89,11 @@ public class HiveLocalServer2Test {
             "CLUSTERED BY (id) INTO 16 BUCKETS " +
             "STORED AS ORC tblproperties(\"orc.compress\"=\"NONE\")";
         stmt = con.createStatement();
-        System.out.println("HIVE: Running Create Table Statement: " + createDdl);
+        LOG.info("HIVE: Running Create Table Statement: " + createDdl);
         stmt.execute(createDdl);
 
         // Issue a describe on the new table and display the output
-        System.out.println("HIVE: Validating Table was Created: ");
+        LOG.info("HIVE: Validating Table was Created: ");
         ResultSet resultSet = stmt.executeQuery("DESCRIBE FORMATTED " + HIVE_TABLE_NAME);
         while (resultSet.next()) {
             ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
@@ -102,7 +106,7 @@ public class HiveLocalServer2Test {
         // Drop the table
         dropDdl = "DROP TABLE " + HIVE_DB_NAME + "." + HIVE_TABLE_NAME;
         stmt = con.createStatement();
-        System.out.println("HIVE: Running Drop Table Statement: " + dropDdl);
+        LOG.info("HIVE: Running Drop Table Statement: " + dropDdl);
         stmt.execute(dropDdl);
     }
 

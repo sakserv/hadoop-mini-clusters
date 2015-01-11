@@ -16,6 +16,7 @@ package com.github.sakserv.minicluster;
 
 import com.github.sakserv.minicluster.impl.MongodbLocalServer;
 import com.mongodb.*;
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +25,9 @@ import java.net.UnknownHostException;
 import java.util.Date;
 
 public class MongodbLocalServerTest {
+
+    // Logger
+    private static final Logger LOG = Logger.getLogger(MongodbLocalServerTest.class);
     
     private static final String DEFAULT_DATABASE_NAME = "test_database";
     private static final String DEFAULT_COLLECTION_NAME = "test_collection";
@@ -54,11 +58,11 @@ public class MongodbLocalServerTest {
         DBCollection col = db.createCollection(DEFAULT_COLLECTION_NAME, new BasicDBObject());
         
         col.save(new BasicDBObject("testDoc", new Date()));
-        System.out.println("MONGODB: Number of items in collection: " + col.count());
+        LOG.info("MONGODB: Number of items in collection: " + col.count());
         
         DBCursor cursor = col.find();
         while(cursor.hasNext()) {
-            System.out.println("MONGODB: Document output: " + cursor.next());
+            LOG.info("MONGODB: Document output: " + cursor.next());
         }
         cursor.close();
     }

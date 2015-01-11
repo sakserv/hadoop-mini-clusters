@@ -19,10 +19,14 @@ import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hive.service.Service;
 import org.apache.hive.service.server.HiveServer2;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 
 public class HiveLocalServer2 implements MiniCluster {
+
+    // Logger
+    private static final Logger LOG = Logger.getLogger(HiveLocalServer2.class);
 
     private static final String DEFAULT_METASTORE_URI = "";
     private static final String DEFAULT_DERBY_DB_PATH = "metastore_db";
@@ -81,13 +85,13 @@ public class HiveLocalServer2 implements MiniCluster {
 
     public void start() {
         server = new HiveServer2();
-        System.out.println("HIVESERVER2: Starting HiveServer2 on port: " + hiveServer2Port);
+        LOG.info("HIVESERVER2: Starting HiveServer2 on port: " + hiveServer2Port);
         server.init(hiveConf);
         server.start();
     }
 
     public void stop() {
-        System.out.println("HIVESERVER2: Stopping HiveServer2 on port: " + hiveServer2Port);
+        LOG.info("HIVESERVER2: Stopping HiveServer2 on port: " + hiveServer2Port);
         server.stop();
     }
 
@@ -110,7 +114,7 @@ public class HiveLocalServer2 implements MiniCluster {
 
     public void dumpConfig() {
         for(Service service: server.getServices()) {
-            System.out.println("HIVE: HiveServer2 Services Name:" + service.getName() +
+            LOG.info("HIVE: HiveServer2 Services Name:" + service.getName() +
                     " CONF: " + String.valueOf(service.getHiveConf().getAllProperties()));
         }
     }

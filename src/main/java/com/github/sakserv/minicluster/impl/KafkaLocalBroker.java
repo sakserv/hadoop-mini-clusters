@@ -19,6 +19,7 @@ import com.github.sakserv.minicluster.util.FileUtils;
 import kafka.server.KafkaConfig;
 import kafka.server.KafkaServer;
 import kafka.utils.Time;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.util.Properties;
@@ -28,6 +29,9 @@ import java.util.Properties;
  */
 
 public class KafkaLocalBroker implements MiniCluster {
+
+    // Logger
+    private static final Logger LOG = Logger.getLogger(KafkaLocalBroker.class);
 
     //location of kafka logging file:
     public static final String DEFAULT_TEST_TOPIC = "test-topic";
@@ -82,7 +86,7 @@ public class KafkaLocalBroker implements MiniCluster {
 
     public void start() {
         server = new KafkaServer(conf, new LocalSystemTime());
-        System.out.println("KAFKA: Starting Kafka on port: " + port);
+        LOG.info("KAFKA: Starting Kafka on port: " + port);
         server.startup();
     }
 
@@ -91,17 +95,17 @@ public class KafkaLocalBroker implements MiniCluster {
     }
 
     public void stop(boolean cleanUp){
-        System.out.println("KAFKA: Stopping Kafka on port: " + port);
+        LOG.info("KAFKA: Stopping Kafka on port: " + port);
         server.shutdown();
 
         if (cleanUp) {
-            System.out.println("KAFKA: Deleting Old Topics");
+            LOG.info("KAFKA: Deleting Old Topics");
             deleteOldTopics(logDir);
         }
     }
 
     public void dumpConfig() {
-        System.out.println("KAFKA CONFIG: " + conf.props().toString());
+        LOG.info("KAFKA CONFIG: " + conf.props().toString());
     }
 
     public int getPort() {

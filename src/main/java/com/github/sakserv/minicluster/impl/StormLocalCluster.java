@@ -18,8 +18,12 @@ import backtype.storm.Config;
 import backtype.storm.LocalCluster;
 import backtype.storm.generated.StormTopology;
 import com.github.sakserv.minicluster.MiniCluster;
+import org.apache.log4j.Logger;
 
 public class StormLocalCluster implements MiniCluster {
+
+    // Logger
+    private static final Logger LOG = Logger.getLogger(StormLocalCluster.class);
 
     LocalCluster cluster;
     private String zkHost;
@@ -38,7 +42,7 @@ public class StormLocalCluster implements MiniCluster {
     }
 
     public void start() {
-        System.out.println("STORM: Instantiating LocalCluster");
+        LOG.info("STORM: Instantiating LocalCluster");
         cluster = new LocalCluster(zkHost, zkPort);
     }
 
@@ -52,7 +56,7 @@ public class StormLocalCluster implements MiniCluster {
     }
 
     public void dumpConfig() {
-        System.out.println("STORM CONFIG: " + conf.toString());
+        LOG.info("STORM CONFIG: " + conf.toString());
     }
 
     public Config getConf() {

@@ -1,5 +1,7 @@
 package com.github.sakserv.minicluster.util;
 
+import org.apache.log4j.Logger;
+
 import java.io.File;
 
 /**
@@ -7,11 +9,13 @@ import java.io.File;
  */
 public class FileUtils {
 
+    private static final Logger LOG = Logger.getLogger(FileUtils.class);
+
     public static void deleteFolder(String directory) {
         File directoryToClean = new File(directory);
         String directoryAbsPath = directoryToClean.getAbsolutePath();
 
-        System.out.println("FILEUTILS: Deleting contents of directory: " + directoryAbsPath);
+        LOG.info("FILEUTILS: Deleting contents of directory: " + directoryAbsPath);
 
         File[] files = directoryToClean.listFiles();
         if(files!=null) { //some JVMs return null for empty dirs
@@ -19,7 +23,7 @@ public class FileUtils {
                 if(f.isDirectory()) {
                     deleteFolder(f.getAbsolutePath());
                 } else {
-                    System.out.println("FILEUTILS: Deleting file: " + f.getAbsolutePath());
+                    LOG.info("FILEUTILS: Deleting file: " + f.getAbsolutePath());
                     f.delete();
                 }
             }

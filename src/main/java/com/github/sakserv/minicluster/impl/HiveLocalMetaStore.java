@@ -20,11 +20,15 @@ import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.metastore.HiveMetaStore;
 import org.apache.hadoop.hive.metastore.txn.TxnDbUtil;
 import org.apache.hadoop.hive.thrift.HadoopThriftAuthBridge;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.security.Permission;
 
 public class HiveLocalMetaStore implements MiniCluster {
+
+    // Logger
+    private static final Logger LOG = Logger.getLogger(HiveLocalMetaStore.class);
 
     private static final int DEFAULT_METASTORE_PORT = 20102;
     private static final String DEFAULT_DERBY_DB_PATH = "metastore_db";
@@ -136,7 +140,7 @@ public class HiveLocalMetaStore implements MiniCluster {
 
     public void prepDb() {
         try {
-            System.out.println("HIVE METASTORE: Prepping the database");
+            LOG.info("HIVE METASTORE: Prepping the database");
             TxnDbUtil.setConfValues(getConf());
             TxnDbUtil.prepDb();
         } catch(Exception e) {
@@ -146,7 +150,7 @@ public class HiveLocalMetaStore implements MiniCluster {
 
     public void cleanDb() {
         try {
-            System.out.println("HIVE METASTORE: Cleaning up the database");
+            LOG.info("HIVE METASTORE: Cleaning up the database");
             TxnDbUtil.setConfValues(getConf());
             TxnDbUtil.cleanDb();
         } catch(Exception e) {
@@ -163,7 +167,7 @@ public class HiveLocalMetaStore implements MiniCluster {
     }
 
     public void dumpConfig() {
-        System.out.println("HIVE METASTORE CONFIG: " + String.valueOf(hiveConf.getAllProperties()));
+        LOG.info("HIVE METASTORE CONFIG: " + String.valueOf(hiveConf.getAllProperties()));
     }
 
 }

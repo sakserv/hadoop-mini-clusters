@@ -17,6 +17,7 @@ package com.github.sakserv.minicluster.impl;
 import com.github.sakserv.minicluster.MiniCluster;
 import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.curator.test.TestingServer;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +26,9 @@ import java.io.IOException;
  * In memory ZK cluster using Curator
  */
 public class ZookeeperLocalCluster implements MiniCluster {
+
+    // Logger
+    private static final Logger LOG = Logger.getLogger(ZookeeperLocalCluster.class);
 
     private static final String DEFAULT_ZK_TEMP_DIR = "embedded_zk";
     private static final int DEFAULT_ZK_PORT = 2181;
@@ -55,17 +59,17 @@ public class ZookeeperLocalCluster implements MiniCluster {
     public void configure() {}
 
     public void start() {
-        System.out.println("ZOOKEEPER: Starting Zookeeper on port: " + zkPort);
+        LOG.info("ZOOKEEPER: Starting Zookeeper on port: " + zkPort);
         try {
             zkTestServer = new TestingServer(zkPort, new File(zkTempDir));
         } catch(Exception e) {
-            System.out.println("ERROR: Failed to start Zookeeper");
+            LOG.info("ERROR: Failed to start Zookeeper");
             e.getStackTrace();
         }
     }
 
     public void stop()  {
-        System.out.println("ZOOKEEPER: Stopping Zookeeper on port: " + zkPort);
+        LOG.info("ZOOKEEPER: Stopping Zookeeper on port: " + zkPort);
         try {
             zkTestServer.stop();
         } catch(IOException e) {
@@ -97,7 +101,7 @@ public class ZookeeperLocalCluster implements MiniCluster {
     }
 
     public void dumpConfig() {
-        System.out.println("ZOOKEEPER CONFIG: " + zkTestServer.getTempDirectory());
+        LOG.info("ZOOKEEPER CONFIG: " + zkTestServer.getTempDirectory());
     }
 
 }

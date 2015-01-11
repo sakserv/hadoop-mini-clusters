@@ -20,11 +20,15 @@ import com.github.sakserv.minicluster.impl.StormLocalCluster;
 import com.github.sakserv.minicluster.impl.ZookeeperLocalCluster;
 import com.github.sakserv.storm.bolt.PrinterBolt;
 import com.github.sakserv.storm.spout.RandomSentenceSpout;
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 public class StormLocalClusterTest {
+
+    // Logger
+    private static final Logger LOG = Logger.getLogger(StormLocalClusterTest.class);
 
     ZookeeperLocalCluster zkCluster;
     StormLocalCluster stormCluster;
@@ -56,7 +60,7 @@ public class StormLocalClusterTest {
         try {
             Thread.sleep(10000L);
         } catch (InterruptedException e) {
-            System.out.println("SUCCESSFULLY COMPLETED");
+            LOG.info("SUCCESSFULLY COMPLETED");
         }
     }
 

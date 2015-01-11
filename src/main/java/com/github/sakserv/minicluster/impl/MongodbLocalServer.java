@@ -23,11 +23,15 @@ import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
 
 public class MongodbLocalServer implements MiniCluster {
+
+    // Logger
+    private static final Logger LOG = Logger.getLogger(MongodbLocalServer.class);
     
     private static final String DEFAULT_IP = "127.0.0.1";
     private static final int DEFAULT_PORT = 12345;
@@ -86,7 +90,7 @@ public class MongodbLocalServer implements MiniCluster {
     }
     
     public void dumpConfig() {
-        System.out.println("MONGODB: CONFIG: " + getBindIp() + ":" + getBindPort());
+        LOG.info("MONGODB: CONFIG: " + getBindIp() + ":" + getBindPort());
     }
     
     public String getBindIp() {
