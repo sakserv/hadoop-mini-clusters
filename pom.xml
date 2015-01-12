@@ -82,6 +82,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-all</artifactId>
+            <version>5.10.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.storm</groupId>
             <artifactId>storm-core</artifactId>
             <version>0.9.3.2.2.0.0-2041</version>

@@ -29,7 +29,7 @@ import java.io.IOException;
 public class HdfsLocalClusterTest {
 
     // Logger
-    private static final Logger LOG = Logger.getLogger(HdfsLocalCluster.class);
+    private static final Logger LOG = Logger.getLogger(HdfsLocalClusterTest.class);
 
     private HdfsLocalCluster dfsCluster;
 

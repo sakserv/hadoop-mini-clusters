@@ -11,6 +11,7 @@ Includes:
 *   Storm - Storm LocalCluster
 *   Kafka - Local Kafka Broker
 *   MongoDB - I know... not Hadoop
+*   ActiveMQ - Thanks Vladimir Zlatkin!
 
 Tests:
 ------

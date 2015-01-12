@@ -20,6 +20,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.easytesting:fest-util:1.2.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jmock:jmock:2.6.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-library:1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.activemq:activemq-all:5.10.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.storm:storm-core:0.9.3.2.2.0.0-2041" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.clojure:clojure:1.5.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: clj-time:clj-time:0.4.1" level="project" />
