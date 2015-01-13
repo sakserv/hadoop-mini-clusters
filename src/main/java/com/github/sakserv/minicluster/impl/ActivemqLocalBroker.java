@@ -1,10 +1,12 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerService;
 
 import javax.jms.*;
+import java.util.Properties;
 
 /**
  * Created by Vlad on 1/10/2015.
@@ -12,11 +14,13 @@ import javax.jms.*;
 public class ActivemqLocalBroker implements MiniCluster {
     private final int port = 61616;
     private String queueName;
-    private BrokerService broker = new BrokerService();
+    private BrokerService broker;
     private Destination dest;
     private Session session;
     private MessageConsumer consumer;
     private MessageProducer producer;
+    
+    private String DEFAULT_STORAGE_PATH = "activemq-data";
 
     public ActivemqLocalBroker() {
         this("defaultQueue");
@@ -31,6 +35,10 @@ public class ActivemqLocalBroker implements MiniCluster {
     public void start() {
         String uri = "vm://localhost:" + port;
         try {
+            Properties props = System.getProperties();
+            props.setProperty("activemq.store.dir", DEFAULT_STORAGE_PATH);
+            
+            broker = new BrokerService();
             broker.addConnector(uri);
             broker.start();
 
@@ -66,6 +74,16 @@ public class ActivemqLocalBroker implements MiniCluster {
         }
     }
 
+    public void stop(boolean cleanUp) {
+        stop();
+        if(cleanUp) {
+            cleanUp();
+        }
+    }
+    public void cleanUp() {
+        FileUtils.deleteFolder(DEFAULT_STORAGE_PATH);
+    }
+    
     @Override
     public void configure() {
     }

@@ -53,7 +53,7 @@ public class ActivemqLocalBrokerTest {
 
     @After
     public void tearDown() {
-        amq.stop();
+        amq.stop(true );
     }
 
 }
