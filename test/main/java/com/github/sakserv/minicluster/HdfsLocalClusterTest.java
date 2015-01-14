@@ -24,12 +24,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 
 public class HdfsLocalClusterTest {
 
     // Logger
     private static final Logger LOG = Logger.getLogger(HdfsLocalClusterTest.class);
+
+    private static final String TEST_STRING = "TESTING";
 
     private HdfsLocalCluster dfsCluster;
 
@@ -45,21 +49,19 @@ public class HdfsLocalClusterTest {
     }
 
     @Test
-    public void testDfsClusterStart() {
+    public void testDfsClusterStart() throws IOException {
+        
+        // Write a file to HDFS containing the test string
         FileSystem hdfsFsHandle = dfsCluster.getHdfsFileSystemHandle();
-        try {
-            FSDataOutputStream writer = hdfsFsHandle.create(new Path("/tmp/testing"));
-            writer.writeUTF("This is a test");
-            writer.close();
+        FSDataOutputStream writer = hdfsFsHandle.create(new Path("/tmp/testing"));
+        writer.writeUTF(TEST_STRING);
+        writer.close();
 
-            FSDataInputStream reader = hdfsFsHandle.open(new Path("/tmp/testing"));
-            LOG.info("HDFS READ: Output from test file: " + reader.readUTF());
-            reader.close();
-
-            hdfsFsHandle.close();
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+        // Read the file and compare to test string
+        FSDataInputStream reader = hdfsFsHandle.open(new Path("/tmp/testing"));
+        assertEquals(reader.readUTF(), TEST_STRING);
+        reader.close();
+        hdfsFsHandle.close();
 
     }
 }
