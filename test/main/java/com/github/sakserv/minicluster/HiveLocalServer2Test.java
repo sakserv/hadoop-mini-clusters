@@ -23,6 +23,8 @@ import org.junit.Test;
 
 import java.sql.*;
 
+import static org.junit.Assert.assertEquals;
+
 public class HiveLocalServer2Test {
 
     // Logger
@@ -95,13 +97,16 @@ public class HiveLocalServer2Test {
         // Issue a describe on the new table and display the output
         LOG.info("HIVE: Validating Table was Created: ");
         ResultSet resultSet = stmt.executeQuery("DESCRIBE FORMATTED " + HIVE_TABLE_NAME);
+        int count = 0;
         while (resultSet.next()) {
             ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
             for (int i = 1; i <= resultSetMetaData.getColumnCount(); i++) {
                 System.out.print(resultSet.getString(i));
             }
             System.out.println();
+            count++;
         }
+        assertEquals(33, count);
 
         // Drop the table
         dropDdl = "DROP TABLE " + HIVE_DB_NAME + "." + HIVE_TABLE_NAME;

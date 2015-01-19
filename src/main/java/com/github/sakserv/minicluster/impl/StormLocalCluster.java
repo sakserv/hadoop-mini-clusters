@@ -16,6 +16,7 @@ package com.github.sakserv.minicluster.impl;
 
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
+import backtype.storm.generated.KillOptions;
 import backtype.storm.generated.StormTopology;
 import com.github.sakserv.minicluster.MiniCluster;
 import org.apache.log4j.Logger;
@@ -52,6 +53,13 @@ public class StormLocalCluster implements MiniCluster {
 
     public void stop(String topologyName) {
         cluster.killTopology(topologyName);
+        stop();
+    }
+    
+    public void stop(String topologyName, int waitSecs) {
+        KillOptions killOptions = new KillOptions();
+        killOptions.set_wait_secs(waitSecs);
+        cluster.killTopologyWithOpts(topologyName, killOptions);
         stop();
     }
 

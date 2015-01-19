@@ -39,12 +39,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
+import static org.junit.Assert.assertEquals;
+
 public class KafkaLocalBrokerTest {
 
     // Logger
     private static final Logger LOG = Logger.getLogger(KafkaLocalBrokerTest.class);
 
     private static final String TEST_TOPIC = "test_topic";
+    
+    long numRead = 0;
 
     ZookeeperLocalCluster zkCluster;
     KafkaLocalBroker kafkaLocalBroker;
@@ -97,8 +101,7 @@ public class KafkaLocalBrokerTest {
                 continue;
             }
             numErrors = 0;
-
-            long numRead = 0;
+            
             for (MessageAndOffset messageAndOffset : fetchResponse.messageSet(a_topic, a_partition)) {
                 long currentOffset = messageAndOffset.offset();
                 if (currentOffset < readOffset) {
@@ -252,6 +255,7 @@ public class KafkaLocalBrokerTest {
         List<String> seeds = new ArrayList<String>();
         seeds.add("localhost");
         consumeMessages(10, TEST_TOPIC, 0, seeds, kafkaLocalBroker.getPort());
+        assertEquals(10, numRead);
 
         try {
             Thread.sleep(5000);

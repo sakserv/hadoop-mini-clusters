@@ -24,6 +24,8 @@ import org.junit.Test;
 import java.net.UnknownHostException;
 import java.util.Date;
 
+import static org.junit.Assert.assertEquals;
+
 public class MongodbLocalServerTest {
 
     // Logger
@@ -59,6 +61,7 @@ public class MongodbLocalServerTest {
         
         col.save(new BasicDBObject("testDoc", new Date()));
         LOG.info("MONGODB: Number of items in collection: " + col.count());
+        assertEquals(1, col.count());
         
         DBCursor cursor = col.find();
         while(cursor.hasNext()) {

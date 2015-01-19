@@ -33,6 +33,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.containsString;
+
 public class HiveLocalMetaStoreTest {
 
     // Logger
@@ -112,6 +115,7 @@ public class HiveLocalMetaStoreTest {
             // Describe the table
             Table createdTable = hiveClient.getTable(HIVE_DB_NAME, HIVE_TABLE_NAME);
             LOG.info("HIVE: Created Table: " + createdTable.toString());
+            assertThat(createdTable.toString(), containsString(HIVE_TABLE_NAME));
 
         } catch(MetaException e) {
             e.printStackTrace();
