@@ -16,10 +16,11 @@ package com.github.sakserv.minicluster;
 
 import com.github.sakserv.minicluster.impl.HiveLocalServer2;
 import com.github.sakserv.minicluster.impl.ZookeeperLocalCluster;
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 
@@ -28,7 +29,7 @@ import static org.junit.Assert.assertEquals;
 public class HiveLocalServer2Test {
 
     // Logger
-    private static final Logger LOG = Logger.getLogger(HiveLocalServer2Test.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HiveLocalServer2Test.class);
 
     private static final int ZOOKEEPER_PORT = 2181;
 

@@ -19,7 +19,8 @@ import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.hdfs.MiniDFSCluster;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -28,7 +29,7 @@ import java.util.Iterator;
 public class HdfsLocalCluster implements MiniCluster {
 
     // Logger
-    private static final Logger LOG = Logger.getLogger(HdfsLocalCluster.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HdfsLocalCluster.class);
 
     private static MiniDFSCluster.Builder clusterBuilder;
     private static MiniDFSCluster cluster;
@@ -53,7 +54,7 @@ public class HdfsLocalCluster implements MiniCluster {
         LOG.info("HDFS CONF:");
         Iterator it = conf.iterator();
         while(it.hasNext()) {
-            LOG.info(it.next());
+            LOG.info(it.next().toString());
         }
     }
 

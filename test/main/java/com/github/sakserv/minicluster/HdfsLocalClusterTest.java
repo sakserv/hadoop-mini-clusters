@@ -19,10 +19,11 @@ import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.Assert.*;
 
@@ -31,7 +32,7 @@ import java.io.IOException;
 public class HdfsLocalClusterTest {
 
     // Logger
-    private static final Logger LOG = Logger.getLogger(HdfsLocalClusterTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HdfsLocalClusterTest.class);
 
     private static final String TEST_STRING = "TESTING";
 

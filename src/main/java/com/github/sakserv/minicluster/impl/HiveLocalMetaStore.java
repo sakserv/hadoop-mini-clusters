@@ -20,7 +20,8 @@ import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.metastore.HiveMetaStore;
 import org.apache.hadoop.hive.metastore.txn.TxnDbUtil;
 import org.apache.hadoop.hive.thrift.HadoopThriftAuthBridge;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.security.Permission;
@@ -28,7 +29,7 @@ import java.security.Permission;
 public class HiveLocalMetaStore implements MiniCluster {
 
     // Logger
-    private static final Logger LOG = Logger.getLogger(HiveLocalMetaStore.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HiveLocalMetaStore.class);
 
     private static final int DEFAULT_METASTORE_PORT = 20102;
     private static final String DEFAULT_DERBY_DB_PATH = "metastore_db";

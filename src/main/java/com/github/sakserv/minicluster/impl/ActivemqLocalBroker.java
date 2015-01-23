@@ -18,11 +18,17 @@ import com.github.sakserv.minicluster.MiniCluster;
 import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jms.*;
 import java.util.Properties;
 
 public class ActivemqLocalBroker implements MiniCluster {
+
+    // Logger
+    private static final Logger LOG = LoggerFactory.getLogger(ActivemqLocalBroker.class);
+    
     private final int port = 61616;
     private String queueName;
     private BrokerService broker;

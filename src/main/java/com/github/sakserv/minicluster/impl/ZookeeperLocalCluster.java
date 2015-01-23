@@ -17,7 +17,8 @@ package com.github.sakserv.minicluster.impl;
 import com.github.sakserv.minicluster.MiniCluster;
 import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.curator.test.TestingServer;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +29,7 @@ import java.io.IOException;
 public class ZookeeperLocalCluster implements MiniCluster {
 
     // Logger
-    private static final Logger LOG = Logger.getLogger(ZookeeperLocalCluster.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ZookeeperLocalCluster.class);
 
     private static final String DEFAULT_ZK_TEMP_DIR = "embedded_zk";
     private static final int DEFAULT_ZK_PORT = 2181;

@@ -19,7 +19,8 @@ import com.github.sakserv.minicluster.util.FileUtils;
 import kafka.server.KafkaConfig;
 import kafka.server.KafkaServer;
 import kafka.utils.Time;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Properties;
@@ -31,7 +32,7 @@ import java.util.Properties;
 public class KafkaLocalBroker implements MiniCluster {
 
     // Logger
-    private static final Logger LOG = Logger.getLogger(KafkaLocalBroker.class);
+    private static final Logger LOG = LoggerFactory.getLogger(KafkaLocalBroker.class);
 
     //location of kafka logging file:
     public static final String DEFAULT_TEST_TOPIC = "test-topic";

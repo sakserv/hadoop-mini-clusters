@@ -26,12 +26,13 @@ import kafka.javaapi.producer.Producer;
 import kafka.message.MessageAndOffset;
 import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerConfig;
-import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ import static org.junit.Assert.assertEquals;
 public class KafkaLocalBrokerTest {
 
     // Logger
-    private static final Logger LOG = Logger.getLogger(KafkaLocalBrokerTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(KafkaLocalBrokerTest.class);
 
     private static final String TEST_TOPIC = "test_topic";
     

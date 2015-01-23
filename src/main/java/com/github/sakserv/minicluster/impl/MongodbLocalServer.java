@@ -23,7 +23,8 @@ import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -31,7 +32,7 @@ import java.net.UnknownHostException;
 public class MongodbLocalServer implements MiniCluster {
 
     // Logger
-    private static final Logger LOG = Logger.getLogger(MongodbLocalServer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MongodbLocalServer.class);
     
     private static final String DEFAULT_IP = "127.0.0.1";
     private static final int DEFAULT_PORT = 12345;

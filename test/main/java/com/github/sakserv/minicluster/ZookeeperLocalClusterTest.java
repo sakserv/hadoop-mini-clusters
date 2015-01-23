@@ -15,15 +15,16 @@
 package com.github.sakserv.minicluster;
 
 import com.github.sakserv.minicluster.impl.ZookeeperLocalCluster;
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ZookeeperLocalClusterTest {
 
     // Logger
-    private static final Logger LOG = Logger.getLogger(ZookeeperLocalClusterTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ZookeeperLocalClusterTest.class);
 
     ZookeeperLocalCluster zkCluster;
 

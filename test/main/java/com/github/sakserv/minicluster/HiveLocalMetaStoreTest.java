@@ -21,11 +21,12 @@ import org.apache.hadoop.hive.metastore.TableType;
 import org.apache.hadoop.hive.metastore.api.*;
 import org.apache.hadoop.hive.ql.io.orc.OrcSerde;
 import org.apache.hadoop.hive.serde.Constants;
-import org.apache.log4j.Logger;
 import org.apache.thrift.TException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 public class HiveLocalMetaStoreTest {
 
     // Logger
-    private static final Logger LOG = Logger.getLogger(HiveLocalMetaStoreTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HiveLocalMetaStoreTest.class);
 
     private static final String HIVE_DB_NAME = "default";
     private static final String HIVE_TABLE_NAME = "test_table";

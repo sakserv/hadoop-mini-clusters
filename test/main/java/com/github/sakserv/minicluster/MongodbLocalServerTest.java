@@ -16,10 +16,11 @@ package com.github.sakserv.minicluster;
 
 import com.github.sakserv.minicluster.impl.MongodbLocalServer;
 import com.mongodb.*;
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.UnknownHostException;
 import java.util.Date;
@@ -29,7 +30,7 @@ import static org.junit.Assert.assertEquals;
 public class MongodbLocalServerTest {
 
     // Logger
-    private static final Logger LOG = Logger.getLogger(MongodbLocalServerTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MongodbLocalServerTest.class);
     
     private static final String DEFAULT_DATABASE_NAME = "test_database";
     private static final String DEFAULT_COLLECTION_NAME = "test_collection";

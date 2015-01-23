@@ -1,6 +1,7 @@
 package com.github.sakserv.minicluster.util;
 
 import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
@@ -9,7 +10,8 @@ import java.io.File;
  */
 public class FileUtils {
 
-    private static final Logger LOG = Logger.getLogger(FileUtils.class);
+    // Logger
+    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(FileUtils.class);
 
     public static void deleteFolder(String directory) {
         File directoryToClean = new File(directory);

@@ -19,12 +19,13 @@ import backtype.storm.LocalCluster;
 import backtype.storm.generated.KillOptions;
 import backtype.storm.generated.StormTopology;
 import com.github.sakserv.minicluster.MiniCluster;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class StormLocalCluster implements MiniCluster {
 
     // Logger
-    private static final Logger LOG = Logger.getLogger(StormLocalCluster.class);
+    private static final Logger LOG = LoggerFactory.getLogger(StormLocalCluster.class);
 
     LocalCluster cluster;
     private String zkHost;

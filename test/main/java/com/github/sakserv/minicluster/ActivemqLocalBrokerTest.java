@@ -2,10 +2,11 @@ package com.github.sakserv.minicluster;
 
 import com.github.sakserv.minicluster.impl.ActivemqLocalBroker;
 import com.github.sakserv.minicluster.impl.HdfsLocalCluster;
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jms.JMSException;
 
@@ -13,7 +14,8 @@ import static org.junit.Assert.assertEquals;
 
 public class ActivemqLocalBrokerTest {
 
-    private static final Logger LOG = Logger.getLogger(ActivemqLocalBrokerTest.class);
+    // Logger
+    private static final Logger LOG = LoggerFactory.getLogger(ActivemqLocalBrokerTest.class);
     
     private ActivemqLocalBroker amq;
 

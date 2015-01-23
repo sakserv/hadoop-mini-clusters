@@ -20,15 +20,16 @@ import com.github.sakserv.minicluster.impl.StormLocalCluster;
 import com.github.sakserv.minicluster.impl.ZookeeperLocalCluster;
 import com.github.sakserv.storm.bolt.PrinterBolt;
 import com.github.sakserv.storm.spout.RandomSentenceSpout;
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class StormLocalClusterTest {
 
     // Logger
-    private static final Logger LOG = Logger.getLogger(StormLocalClusterTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(StormLocalClusterTest.class);
 
     ZookeeperLocalCluster zkCluster;
     StormLocalCluster stormCluster;
