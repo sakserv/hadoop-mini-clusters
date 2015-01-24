@@ -19,6 +19,10 @@ import java.util.Properties;
 public class PropertyParser {
 
     private Properties props = new Properties();
+    
+    public PropertyParser(String propFileName) throws IOException {
+        parsePropsFile(propFileName);
+    }
 
     public String getProperty(String key) {
         return props.get(key).toString();

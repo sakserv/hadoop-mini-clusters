@@ -15,6 +15,8 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerService;
@@ -22,14 +24,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jms.*;
+import java.io.IOException;
 import java.util.Properties;
 
 public class ActivemqLocalBroker implements MiniCluster {
-
+    
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(ActivemqLocalBroker.class);
-    
-    private final int port = 61616;
+
+    // Property file setup
+    private static PropertyParser propertyParser;
+    static {
+        try {
+            propertyParser = new PropertyParser(ConfigVars.DEFAULT_PROPS_FILE);
+        } catch(IOException e) {
+            LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
+        }
+    }
+
     private String queueName;
     private BrokerService broker;
     private Destination dest;
@@ -37,7 +49,8 @@ public class ActivemqLocalBroker implements MiniCluster {
     private MessageConsumer consumer;
     private MessageProducer producer;
     
-    private String DEFAULT_STORAGE_PATH = "activemq-data";
+    private String DEFAULT_ACTIVEMQ_STORAGE_PATH = "activemq-data";
+    private String DEFAULT_ACTIVEMQ_QUEUE = "defaultQueue";
 
     public ActivemqLocalBroker() {
         this("defaultQueue");
@@ -50,10 +63,12 @@ public class ActivemqLocalBroker implements MiniCluster {
 
     @Override
     public void start() {
-        String uri = "vm://localhost:" + port;
+        String uri = propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_PREFIX) +
+                propertyParser.getProperty(ConfigVars.ACTIVEMQ_HOSTNAME_VAR) + ":" +
+                propertyParser.getProperty(ConfigVars.ACTIVEMQ_PORT_VAR);
         try {
             Properties props = System.getProperties();
-            props.setProperty("activemq.store.dir", DEFAULT_STORAGE_PATH);
+            props.setProperty("activemq.store.dir", DEFAULT_ACTIVEMQ_STORAGE_PATH);
             
             broker = new BrokerService();
             broker.addConnector(uri);
@@ -98,7 +113,7 @@ public class ActivemqLocalBroker implements MiniCluster {
         }
     }
     public void cleanUp() {
-        FileUtils.deleteFolder(DEFAULT_STORAGE_PATH);
+        FileUtils.deleteFolder(DEFAULT_ACTIVEMQ_STORAGE_PATH);
     }
     
     @Override
