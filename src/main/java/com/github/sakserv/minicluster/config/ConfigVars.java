@@ -24,4 +24,5 @@ public class ConfigVars {
     public static final String ACTIVEMQ_QUEUE_VAR = "activemq.queue";
     public static final String ACTIVEMQ_STORE_DIR = "activemq.store.dir";
     public static final String ACTIVEMQ_URI_PREFIX = "activemq.uri.prefix";
+    public static final String ACTIVEMQ_URI_POSTFIX = "activemq.uri.postfix";
 }

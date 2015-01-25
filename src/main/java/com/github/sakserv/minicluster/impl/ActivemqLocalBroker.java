@@ -49,16 +49,13 @@ public class ActivemqLocalBroker implements MiniCluster {
     private MessageConsumer consumer;
     private MessageProducer producer;
     
-    private String DEFAULT_ACTIVEMQ_STORAGE_PATH = "activemq-data";
-    private String DEFAULT_ACTIVEMQ_QUEUE = "defaultQueue";
 
     public ActivemqLocalBroker() {
-        this("defaultQueue");
+        this(propertyParser.getProperty(ConfigVars.ACTIVEMQ_QUEUE_VAR));
     }
 
     public ActivemqLocalBroker(String queueName) {
         this.queueName = queueName;
-
     }
 
     @Override
@@ -68,13 +65,15 @@ public class ActivemqLocalBroker implements MiniCluster {
                 propertyParser.getProperty(ConfigVars.ACTIVEMQ_PORT_VAR);
         try {
             Properties props = System.getProperties();
-            props.setProperty("activemq.store.dir", DEFAULT_ACTIVEMQ_STORAGE_PATH);
+            props.setProperty(ConfigVars.ACTIVEMQ_STORE_DIR, 
+                    propertyParser.getProperty(ConfigVars.ACTIVEMQ_STORE_DIR));
             
             broker = new BrokerService();
             broker.addConnector(uri);
             broker.start();
 
-            ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(uri + "?create=false");
+            ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(uri + 
+            propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_POSTFIX));
             Connection conn = factory.createConnection();
             conn.start();
 
@@ -113,7 +112,7 @@ public class ActivemqLocalBroker implements MiniCluster {
         }
     }
     public void cleanUp() {
-        FileUtils.deleteFolder(DEFAULT_ACTIVEMQ_STORAGE_PATH);
+        FileUtils.deleteFolder(propertyParser.getProperty(ConfigVars.ACTIVEMQ_STORE_DIR));
     }
     
     @Override
