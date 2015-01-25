@@ -3,15 +3,13 @@ package com.github.sakserv.minicluster;
 import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.impl.ActivemqLocalBroker;
-import com.github.sakserv.minicluster.impl.HdfsLocalCluster;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jms.JMSException;
-
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
@@ -30,10 +28,10 @@ public class ActivemqLocalBrokerTest {
         }
     }
     
-    private ActivemqLocalBroker amq;
+    private static ActivemqLocalBroker amq;
 
-    @Before
-    public void setUp() throws IOException {
+    @BeforeClass
+    public static void setUp() throws IOException {
         amq = new ActivemqLocalBroker.ActivemqLocalBrokerBuilder()
                 .setHostName(propertyParser.getProperty(ConfigVars.ACTIVEMQ_HOSTNAME_VAR))
                 .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ACTIVEMQ_PORT_VAR)))
@@ -44,6 +42,12 @@ public class ActivemqLocalBrokerTest {
                 .build();
         
         amq.start();
+    }
+
+
+    @AfterClass
+    public static void tearDown() {
+        amq.stop(true );
     }
 
     @Test
@@ -73,10 +77,34 @@ public class ActivemqLocalBrokerTest {
         assertEquals(msg,amq.getTextMessage());
 
     }
-
-    @After
-    public void tearDown() {
-        amq.stop(true );
+    
+    @Test
+    public void testHostname() {
+        assertEquals(propertyParser.getProperty(ConfigVars.ACTIVEMQ_HOSTNAME_VAR), amq.getHostName());
     }
 
+    @Test
+    public void testPort() {
+        assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.ACTIVEMQ_PORT_VAR)), amq.getPort());
+    }
+
+    @Test
+    public void testQueueName() {
+        assertEquals(propertyParser.getProperty(ConfigVars.ACTIVEMQ_QUEUE_NAME_VAR), amq.getQueueName());
+    }
+    
+    @Test
+    public void testStoreDir() {
+        assertEquals(propertyParser.getProperty(ConfigVars.ACTIVEMQ_STORE_DIR_VAR), amq.getStoreDir());
+    }
+
+    @Test
+    public void testUriPrefix() {
+        assertEquals(propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_PREFIX_VAR), amq.getUriPrefix());
+    }
+
+    @Test
+    public void testUriPostfix() {
+        assertEquals(propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_POSTFIX_VAR), amq.getUriPostfix());
+    }
 }
