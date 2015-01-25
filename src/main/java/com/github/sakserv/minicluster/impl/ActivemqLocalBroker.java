@@ -28,52 +28,144 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class ActivemqLocalBroker implements MiniCluster {
-    
+
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(ActivemqLocalBroker.class);
 
-    // Property file setup
-    private static PropertyParser propertyParser;
-    static {
-        try {
-            propertyParser = new PropertyParser(ConfigVars.DEFAULT_PROPS_FILE);
-        } catch(IOException e) {
-            LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
-        }
-    }
-
-    private String queueName;
+    private final String hostName;
+    private final Integer port;
+    private final String queueName;
+    private final String storeDir;
+    private final String uriPrefix;
+    private final String uriPostfix;
+    
     private BrokerService broker;
     private Destination dest;
     private Session session;
     private MessageConsumer consumer;
     private MessageProducer producer;
     
-
-    public ActivemqLocalBroker() {
-        this(propertyParser.getProperty(ConfigVars.ACTIVEMQ_QUEUE_VAR));
+    private ActivemqLocalBroker(ActivemqLocalBrokerBuilder builder) {
+        this.hostName = builder.hostName;
+        this.port = builder.port;
+        this.queueName = builder.queueName;
+        this.storeDir = builder.storeDir;
+        this.uriPrefix = builder.uriPrefix;
+        this.uriPostfix = builder.uriPostfix;
+    }
+    
+    public String getHostName() {
+        return hostName;
     }
 
-    public ActivemqLocalBroker(String queueName) {
-        this.queueName = queueName;
+    public int getPort() {
+        return port;
+    }
+    
+    public String getQueueName() {
+        return queueName;
+    }
+    
+    public String getStoreDir() {
+        return storeDir;
+    }
+    
+    public String getUriPrefix() {
+        return uriPrefix;
+    }
+    
+    public String getUriPostfix() {
+        return uriPostfix;
+    }
+
+    
+    public static class ActivemqLocalBrokerBuilder
+    {
+        private String hostName;
+        private Integer port;
+        private String queueName;
+        private String storeDir;
+        private String uriPrefix;
+        private String uriPostfix;
+
+        public ActivemqLocalBrokerBuilder setHostName(String hostName) {
+            this.hostName = hostName;
+            return this;
+        }
+
+        public ActivemqLocalBrokerBuilder setPort(int port) {
+            this.port = port;
+            return this;
+        }
+        
+        public ActivemqLocalBrokerBuilder setQueueName(String queueName) {
+            this.queueName = queueName;
+            return this;
+        }
+
+        public ActivemqLocalBrokerBuilder setStoreDir(String storeDir) {
+            this.storeDir = storeDir;
+            return this;
+        }
+
+        public ActivemqLocalBrokerBuilder setUriPrefix(String uriPrefix) {
+            this.uriPrefix = uriPrefix;
+            return this;
+        }
+
+        public ActivemqLocalBrokerBuilder setUriPostfix(String uriPostfix) {
+            this.uriPostfix = uriPostfix;
+            return this;
+        }
+        
+        public ActivemqLocalBroker build() throws IOException {
+            ActivemqLocalBroker activemqLocalBroker = new ActivemqLocalBroker(this);
+            validateObject(activemqLocalBroker);
+            return activemqLocalBroker;
+        }
+        
+        private void validateObject(ActivemqLocalBroker activemqLocalBroker) throws IOException {
+            PropertyParser propertyParser = new PropertyParser(ConfigVars.DEFAULT_PROPS_FILE);
+            
+            if(activemqLocalBroker.hostName == null) {
+                this.hostName = propertyParser.getProperty(ConfigVars.ACTIVEMQ_HOSTNAME_VAR);
+            }
+
+            if(activemqLocalBroker.port == null) {
+                this.port = Integer.parseInt(propertyParser.getProperty(ConfigVars.ACTIVEMQ_PORT_VAR));
+            }
+
+            if(activemqLocalBroker.queueName == null) {
+                this.queueName = propertyParser.getProperty(ConfigVars.ACTIVEMQ_QUEUE_NAME_VAR);
+            }
+
+            if(activemqLocalBroker.storeDir == null) {
+                this.storeDir = propertyParser.getProperty(ConfigVars.ACTIVEMQ_STORE_DIR_VAR);
+            }
+
+            if(activemqLocalBroker.uriPrefix == null) {
+                this.uriPrefix = propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_PREFIX_VAR);
+            }
+
+            if(activemqLocalBroker.uriPostfix == null) {
+                this.uriPostfix = propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_POSTFIX_VAR);
+            }
+        }
+        
     }
 
     @Override
     public void start() {
-        String uri = propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_PREFIX) +
-                propertyParser.getProperty(ConfigVars.ACTIVEMQ_HOSTNAME_VAR) + ":" +
-                propertyParser.getProperty(ConfigVars.ACTIVEMQ_PORT_VAR);
+        String uri = uriPrefix + hostName + ":" + port;
         try {
             Properties props = System.getProperties();
-            props.setProperty(ConfigVars.ACTIVEMQ_STORE_DIR, 
-                    propertyParser.getProperty(ConfigVars.ACTIVEMQ_STORE_DIR));
+            props.setProperty(ConfigVars.ACTIVEMQ_STORE_DIR_VAR, storeDir);
             
             broker = new BrokerService();
             broker.addConnector(uri);
             broker.start();
 
-            ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(uri + 
-            propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_POSTFIX));
+            ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(uri + uriPostfix);
             Connection conn = factory.createConnection();
             conn.start();
 
@@ -112,7 +204,7 @@ public class ActivemqLocalBroker implements MiniCluster {
         }
     }
     public void cleanUp() {
-        FileUtils.deleteFolder(propertyParser.getProperty(ConfigVars.ACTIVEMQ_STORE_DIR));
+        FileUtils.deleteFolder(storeDir);
     }
     
     @Override

@@ -21,8 +21,8 @@ public class ConfigVars {
     // ActiveMQ
     public static final String ACTIVEMQ_HOSTNAME_VAR = "activemq.hostname";
     public static final String ACTIVEMQ_PORT_VAR = "activemq.port";
-    public static final String ACTIVEMQ_QUEUE_VAR = "activemq.queue";
-    public static final String ACTIVEMQ_STORE_DIR = "activemq.store.dir";
-    public static final String ACTIVEMQ_URI_PREFIX = "activemq.uri.prefix";
-    public static final String ACTIVEMQ_URI_POSTFIX = "activemq.uri.postfix";
+    public static final String ACTIVEMQ_QUEUE_NAME_VAR = "activemq.queue";
+    public static final String ACTIVEMQ_STORE_DIR_VAR = "activemq.store.dir";
+    public static final String ACTIVEMQ_URI_PREFIX_VAR = "activemq.uri.prefix";
+    public static final String ACTIVEMQ_URI_POSTFIX_VAR = "activemq.uri.postfix";
 }
