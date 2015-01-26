@@ -45,7 +45,7 @@ public class ActivemqLocalBroker implements MiniCluster {
     private MessageConsumer consumer;
     private MessageProducer producer;
     
-    private ActivemqLocalBroker(ActivemqLocalBrokerBuilder builder) {
+    private ActivemqLocalBroker(Builder builder) {
         this.hostName = builder.hostName;
         this.port = builder.port;
         this.queueName = builder.queueName;
@@ -79,7 +79,7 @@ public class ActivemqLocalBroker implements MiniCluster {
     }
 
     
-    public static class ActivemqLocalBrokerBuilder
+    public static class Builder
     {
         private String hostName;
         private Integer port;
@@ -88,32 +88,32 @@ public class ActivemqLocalBroker implements MiniCluster {
         private String uriPrefix;
         private String uriPostfix;
 
-        public ActivemqLocalBrokerBuilder setHostName(String hostName) {
+        public Builder setHostName(String hostName) {
             this.hostName = hostName;
             return this;
         }
 
-        public ActivemqLocalBrokerBuilder setPort(int port) {
+        public Builder setPort(int port) {
             this.port = port;
             return this;
         }
         
-        public ActivemqLocalBrokerBuilder setQueueName(String queueName) {
+        public Builder setQueueName(String queueName) {
             this.queueName = queueName;
             return this;
         }
 
-        public ActivemqLocalBrokerBuilder setStoreDir(String storeDir) {
+        public Builder setStoreDir(String storeDir) {
             this.storeDir = storeDir;
             return this;
         }
 
-        public ActivemqLocalBrokerBuilder setUriPrefix(String uriPrefix) {
+        public Builder setUriPrefix(String uriPrefix) {
             this.uriPrefix = uriPrefix;
             return this;
         }
 
-        public ActivemqLocalBrokerBuilder setUriPostfix(String uriPostfix) {
+        public Builder setUriPostfix(String uriPostfix) {
             this.uriPostfix = uriPostfix;
             return this;
         }
@@ -182,6 +182,10 @@ public class ActivemqLocalBroker implements MiniCluster {
 
     @Override
     public void stop() {
+        stop(true);
+    }
+
+    public void stop(boolean cleanUp) {
         try {
             if (consumer != null ) {
                 consumer.close();
@@ -195,10 +199,6 @@ public class ActivemqLocalBroker implements MiniCluster {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public void stop(boolean cleanUp) {
-        stop();
         if(cleanUp) {
             cleanUp();
         }
@@ -209,11 +209,6 @@ public class ActivemqLocalBroker implements MiniCluster {
     
     @Override
     public void configure() {
-    }
-
-    @Override
-    public void dumpConfig() {
-        System.out.println(broker.getVmConnectorURI());
     }
 
     public void sendTextMessage(String text) throws JMSException {

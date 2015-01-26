@@ -22,6 +22,4 @@ public interface MiniCluster {
 
     public void configure();
 
-    public void dumpConfig();
-
 }

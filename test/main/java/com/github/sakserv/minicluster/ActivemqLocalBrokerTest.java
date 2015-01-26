@@ -32,7 +32,7 @@ public class ActivemqLocalBrokerTest {
 
     @BeforeClass
     public static void setUp() throws IOException {
-        amq = new ActivemqLocalBroker.ActivemqLocalBrokerBuilder()
+        amq = new ActivemqLocalBroker.Builder()
                 .setHostName(propertyParser.getProperty(ConfigVars.ACTIVEMQ_HOSTNAME_VAR))
                 .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ACTIVEMQ_PORT_VAR)))
                 .setQueueName(propertyParser.getProperty(ConfigVars.ACTIVEMQ_QUEUE_NAME_VAR))
@@ -47,7 +47,7 @@ public class ActivemqLocalBrokerTest {
 
     @AfterClass
     public static void tearDown() {
-        amq.stop(true );
+        amq.stop();
     }
 
     @Test
