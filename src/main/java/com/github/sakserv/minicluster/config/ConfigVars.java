@@ -18,11 +18,16 @@ public class ConfigVars {
     // Props file
     public static final String DEFAULT_PROPS_FILE = "default.properties";
     
+    // Zookeeper
+    public static final String ZOOKEEPER_PORT_KEY = "zookeeper.port";
+    public static final String ZOOKEEPER_TEMP_DIR_KEY = "zookeeper.temp.dir";
+    public static final String ZOOKEEPER_CONNECTION_STRING_KEY = "zookeeper.connection.string";
+    
     // ActiveMQ
-    public static final String ACTIVEMQ_HOSTNAME_VAR = "activemq.hostname";
-    public static final String ACTIVEMQ_PORT_VAR = "activemq.port";
-    public static final String ACTIVEMQ_QUEUE_NAME_VAR = "activemq.queue";
-    public static final String ACTIVEMQ_STORE_DIR_VAR = "activemq.store.dir";
-    public static final String ACTIVEMQ_URI_PREFIX_VAR = "activemq.uri.prefix";
-    public static final String ACTIVEMQ_URI_POSTFIX_VAR = "activemq.uri.postfix";
+    public static final String ACTIVEMQ_HOSTNAME_KEY = "activemq.hostname";
+    public static final String ACTIVEMQ_PORT_KEY = "activemq.port";
+    public static final String ACTIVEMQ_QUEUE_NAME_KEY = "activemq.queue";
+    public static final String ACTIVEMQ_STORE_DIR_KEY = "activemq.store.dir";
+    public static final String ACTIVEMQ_URI_PREFIX_KEY = "activemq.uri.prefix";
+    public static final String ACTIVEMQ_URI_POSTFIX_KEY = "activemq.uri.postfix";
 }

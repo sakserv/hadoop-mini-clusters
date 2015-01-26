@@ -14,6 +14,8 @@
 
 package com.github.sakserv.minicluster;
 
+import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.impl.HiveLocalServer2;
 import com.github.sakserv.minicluster.impl.ZookeeperLocalCluster;
 import org.junit.After;
@@ -22,6 +24,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.sql.*;
 
 import static org.junit.Assert.assertEquals;
@@ -30,6 +33,16 @@ public class HiveLocalServer2Test {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(HiveLocalServer2Test.class);
+
+    // Setup the property parser
+    private static PropertyParser propertyParser;
+    static {
+        try {
+            propertyParser = new PropertyParser(ConfigVars.DEFAULT_PROPS_FILE);
+        } catch(IOException e) {
+            LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
+        }
+    }
 
     private static final int ZOOKEEPER_PORT = 2181;
 
@@ -41,24 +54,27 @@ public class HiveLocalServer2Test {
     private static final String HIVE_DB_NAME = "testdb";
     private static final String HIVE_TABLE_NAME = "testtable";
 
-    ZookeeperLocalCluster zkCluster;
+    ZookeeperLocalCluster zookeeperLocalCluster;
     HiveLocalServer2 hiveServer;
 
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
 
-        zkCluster = new ZookeeperLocalCluster(ZOOKEEPER_PORT);
-        zkCluster.start();
+        zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
+                .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
+                .setTempDir(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY))
+                .build();
+        zookeeperLocalCluster.start();
 
         hiveServer = new HiveLocalServer2(METASTORE_URI, DERBY_DB_PATH, HIVE_SCRATCH_DIR,
-                HIVESERVER2_PORT, zkCluster.getZkConnectionString());
+                HIVESERVER2_PORT, zookeeperLocalCluster.getZkConnectionString());
         hiveServer.start();
     }
 
     @After
     public void tearDown() {
         hiveServer.stop(true);
-        zkCluster.stop(true);
+        zookeeperLocalCluster.stop();
     }
 
     @Test

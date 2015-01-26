@@ -14,34 +14,65 @@
 
 package com.github.sakserv.minicluster;
 
+import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.impl.ZookeeperLocalCluster;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import scala.Int;
+
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
 
 public class ZookeeperLocalClusterTest {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(ZookeeperLocalClusterTest.class);
 
-    ZookeeperLocalCluster zkCluster;
+    // Setup the property parser
+    private static PropertyParser propertyParser;
+    static {
+        try {
+            propertyParser = new PropertyParser(ConfigVars.DEFAULT_PROPS_FILE);
+        } catch(IOException e) {
+            LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
+        }
+    }
 
+    ZookeeperLocalCluster zookeeperLocalCluster;
     @Before
-    public void setUp() {
-        zkCluster = new ZookeeperLocalCluster();
-        zkCluster.start();
+    public void setUp() throws IOException {
+        zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
+                .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
+                .setTempDir(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY))
+                .build();
+        zookeeperLocalCluster.start();
     }
 
     @After
     public void tearDown() {
-        zkCluster.stop(true);
+        zookeeperLocalCluster.stop();
     }
 
     @Test
     public void testZookeeperCluster() {
-        zkCluster.dumpConfig();
+        assertEquals(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY), 
+                zookeeperLocalCluster.getZkConnectionString());
+    }
+    
+    @Test
+    public void testPort() {
+        assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)),
+                zookeeperLocalCluster.getPort());
+    }
+
+    @Test
+    public void testTempDir() {
+        assertEquals(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY), zookeeperLocalCluster.getTempDir());
     }
 
 }

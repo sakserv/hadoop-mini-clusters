@@ -16,6 +16,8 @@ package com.github.sakserv.minicluster;
 
 import backtype.storm.Config;
 import backtype.storm.topology.TopologyBuilder;
+import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.impl.StormLocalCluster;
 import com.github.sakserv.minicluster.impl.ZookeeperLocalCluster;
 import com.github.sakserv.storm.bolt.PrinterBolt;
@@ -26,29 +28,45 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+
 public class StormLocalClusterTest {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(StormLocalClusterTest.class);
 
-    ZookeeperLocalCluster zkCluster;
+    // Setup the property parser
+    private static PropertyParser propertyParser;
+    static {
+        try {
+            propertyParser = new PropertyParser(ConfigVars.DEFAULT_PROPS_FILE);
+        } catch(IOException e) {
+            LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
+        }
+    }
+
+    ZookeeperLocalCluster zookeeperLocalCluster;
     StormLocalCluster stormCluster;
 
     static final String STORM_TEST_TOPOLOGY = "test";
 
     @Before
-    public void setUp() {
-        zkCluster = new ZookeeperLocalCluster();
-        zkCluster.start();
+    public void setUp() throws IOException {
+        zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
+                .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
+                .setTempDir(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY))
+                .build();
+        zookeeperLocalCluster.start();
 
-        stormCluster = new StormLocalCluster(zkCluster.getZkHostName(), Long.parseLong(zkCluster.getZkPort()));
+        stormCluster = new StormLocalCluster(zookeeperLocalCluster.getZkHostName(), 
+                Long.parseLong(zookeeperLocalCluster.getZkPort()));
         stormCluster.start();
     }
 
     @After
     public void tearDown() {
         stormCluster.stop(STORM_TEST_TOPOLOGY);
-        zkCluster.stop(true);
+        zookeeperLocalCluster.stop();
     }
 
     @Test

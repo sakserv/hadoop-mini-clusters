@@ -128,27 +128,27 @@ public class ActivemqLocalBroker implements MiniCluster {
             PropertyParser propertyParser = new PropertyParser(ConfigVars.DEFAULT_PROPS_FILE);
             
             if(activemqLocalBroker.hostName == null) {
-                this.hostName = propertyParser.getProperty(ConfigVars.ACTIVEMQ_HOSTNAME_VAR);
+                this.hostName = propertyParser.getProperty(ConfigVars.ACTIVEMQ_HOSTNAME_KEY);
             }
 
             if(activemqLocalBroker.port == null) {
-                this.port = Integer.parseInt(propertyParser.getProperty(ConfigVars.ACTIVEMQ_PORT_VAR));
+                this.port = Integer.parseInt(propertyParser.getProperty(ConfigVars.ACTIVEMQ_PORT_KEY));
             }
 
             if(activemqLocalBroker.queueName == null) {
-                this.queueName = propertyParser.getProperty(ConfigVars.ACTIVEMQ_QUEUE_NAME_VAR);
+                this.queueName = propertyParser.getProperty(ConfigVars.ACTIVEMQ_QUEUE_NAME_KEY);
             }
 
             if(activemqLocalBroker.storeDir == null) {
-                this.storeDir = propertyParser.getProperty(ConfigVars.ACTIVEMQ_STORE_DIR_VAR);
+                this.storeDir = propertyParser.getProperty(ConfigVars.ACTIVEMQ_STORE_DIR_KEY);
             }
 
             if(activemqLocalBroker.uriPrefix == null) {
-                this.uriPrefix = propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_PREFIX_VAR);
+                this.uriPrefix = propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_PREFIX_KEY);
             }
 
             if(activemqLocalBroker.uriPostfix == null) {
-                this.uriPostfix = propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_POSTFIX_VAR);
+                this.uriPostfix = propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_POSTFIX_KEY);
             }
         }
         
@@ -158,8 +158,7 @@ public class ActivemqLocalBroker implements MiniCluster {
     public void start() {
         String uri = uriPrefix + hostName + ":" + port;
         try {
-            Properties props = System.getProperties();
-            props.setProperty(ConfigVars.ACTIVEMQ_STORE_DIR_VAR, storeDir);
+            configure();
             
             broker = new BrokerService();
             broker.addConnector(uri);
@@ -209,6 +208,8 @@ public class ActivemqLocalBroker implements MiniCluster {
     
     @Override
     public void configure() {
+        Properties props = System.getProperties();
+        props.setProperty(ConfigVars.ACTIVEMQ_STORE_DIR_KEY, storeDir);
     }
 
     public void sendTextMessage(String text) throws JMSException {

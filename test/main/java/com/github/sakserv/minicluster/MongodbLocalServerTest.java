@@ -14,6 +14,8 @@
 
 package com.github.sakserv.minicluster;
 
+import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.impl.MongodbLocalServer;
 import com.mongodb.*;
 import org.junit.After;
@@ -22,6 +24,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Date;
 
@@ -31,6 +34,16 @@ public class MongodbLocalServerTest {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(MongodbLocalServerTest.class);
+
+    // Setup the property parser
+    private static PropertyParser propertyParser;
+    static {
+        try {
+            propertyParser = new PropertyParser(ConfigVars.DEFAULT_PROPS_FILE);
+        } catch(IOException e) {
+            LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
+        }
+    }
     
     private static final String DEFAULT_DATABASE_NAME = "test_database";
     private static final String DEFAULT_COLLECTION_NAME = "test_collection";

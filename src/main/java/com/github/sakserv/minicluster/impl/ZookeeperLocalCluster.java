@@ -15,6 +15,8 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.curator.test.TestingServer;
 import org.slf4j.Logger;
@@ -30,67 +32,99 @@ public class ZookeeperLocalCluster implements MiniCluster {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(ZookeeperLocalCluster.class);
+    
+    private final Integer port;
+    private final String tempDir;
 
-    private static final String DEFAULT_ZK_TEMP_DIR = "embedded_zk";
-    private static final int DEFAULT_ZK_PORT = 2181;
+    private TestingServer testingServer;
 
-    private String zkTempDir;
-    private TestingServer zkTestServer;
-    private int zkPort;
-
-    public ZookeeperLocalCluster() {
-        zkPort = DEFAULT_ZK_PORT;
-        zkTempDir = DEFAULT_ZK_TEMP_DIR;
-        configure();
+    private ZookeeperLocalCluster(Builder builder) {
+        this.port = builder.port;
+        this.tempDir = builder.tempDir;
     }
 
-    public ZookeeperLocalCluster(int zkPort) {
-        this.zkPort = zkPort;
-        zkTempDir = DEFAULT_ZK_TEMP_DIR;
-        configure();
+    public int getPort() {
+        return port;
+    }
+    
+    public String getTempDir() { return tempDir; }
+
+    public static class Builder
+    {
+        private Integer port;
+        private String tempDir;
+
+        public Builder setPort(int port) {
+            this.port = port;
+            return this;
+        }
+
+        public Builder setTempDir(String tempDir) {
+            this.tempDir = tempDir;
+            return this;
+        }
+
+        public ZookeeperLocalCluster build() throws IOException {
+            ZookeeperLocalCluster zookeeperLocalCluster = new ZookeeperLocalCluster(this);
+            validateObject(zookeeperLocalCluster);
+            return zookeeperLocalCluster;
+        }
+
+        private void validateObject(ZookeeperLocalCluster zookeeperLocalCluster) throws IOException {
+            PropertyParser propertyParser = new PropertyParser(ConfigVars.DEFAULT_PROPS_FILE);
+
+            if(zookeeperLocalCluster.port == null) {
+                this.port = Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY));
+            }
+
+            if(zookeeperLocalCluster.tempDir == null) {
+                this.tempDir = propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY);
+            }
+        }
+
     }
 
-    public ZookeeperLocalCluster(int zkPort, String zkTempDir) {
-        this.zkPort = zkPort;
-        this.zkTempDir = zkTempDir;
-        configure();
-    }
+
 
     // Curator does not leverage a configuration object
+    @Override
     public void configure() {}
 
+    @Override
     public void start() {
-        LOG.info("ZOOKEEPER: Starting Zookeeper on port: " + zkPort);
+        LOG.info("ZOOKEEPER: Starting Zookeeper on port: " + port);
         try {
-            zkTestServer = new TestingServer(zkPort, new File(zkTempDir));
+            testingServer = new TestingServer(port, new File(tempDir));
         } catch(Exception e) {
             LOG.info("ERROR: Failed to start Zookeeper");
             e.getStackTrace();
         }
     }
 
+    @Override
     public void stop()  {
-        LOG.info("ZOOKEEPER: Stopping Zookeeper on port: " + zkPort);
-        try {
-            zkTestServer.stop();
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+        stop(true);
     }
 
     public void stop(boolean cleanUp) {
-        stop();
+        LOG.info("ZOOKEEPER: Stopping Zookeeper on port: " + port);
+        try {
+            testingServer.stop();
+        } catch(IOException e) {
+            LOG.info("ERROR: Failed to stop Zookeeper");
+            e.printStackTrace();
+        }
         if (cleanUp) {
             cleanUp();
         }
     }
 
     private void cleanUp() {
-        FileUtils.deleteFolder(zkTempDir);
+        FileUtils.deleteFolder(tempDir);
     }
 
     public String getZkConnectionString() {
-        return zkTestServer.getConnectString();
+        return testingServer.getConnectString();
     }
 
     public String getZkHostName() {
@@ -99,10 +133,6 @@ public class ZookeeperLocalCluster implements MiniCluster {
 
     public String getZkPort() {
         return getZkConnectionString().split(":")[1];
-    }
-
-    public void dumpConfig() {
-        LOG.info("ZOOKEEPER CONFIG: " + zkTestServer.getTempDirectory());
     }
 
 }

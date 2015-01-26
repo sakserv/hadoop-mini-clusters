@@ -19,6 +19,7 @@ public class ActivemqLocalBrokerTest {
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(ActivemqLocalBrokerTest.class);
 
+    // Setup the property parser
     private static PropertyParser propertyParser;
     static {
         try {
@@ -28,23 +29,24 @@ public class ActivemqLocalBrokerTest {
         }
     }
     
+    // Setup the activemq broker before running tests
     private static ActivemqLocalBroker amq;
-
     @BeforeClass
     public static void setUp() throws IOException {
         amq = new ActivemqLocalBroker.Builder()
-                .setHostName(propertyParser.getProperty(ConfigVars.ACTIVEMQ_HOSTNAME_VAR))
-                .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ACTIVEMQ_PORT_VAR)))
-                .setQueueName(propertyParser.getProperty(ConfigVars.ACTIVEMQ_QUEUE_NAME_VAR))
-                .setStoreDir(propertyParser.getProperty(ConfigVars.ACTIVEMQ_STORE_DIR_VAR))
-                .setUriPrefix(propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_PREFIX_VAR))
-                .setUriPostfix(propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_POSTFIX_VAR))
+                .setHostName(propertyParser.getProperty(ConfigVars.ACTIVEMQ_HOSTNAME_KEY))
+                .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ACTIVEMQ_PORT_KEY)))
+                .setQueueName(propertyParser.getProperty(ConfigVars.ACTIVEMQ_QUEUE_NAME_KEY))
+                .setStoreDir(propertyParser.getProperty(ConfigVars.ACTIVEMQ_STORE_DIR_KEY))
+                .setUriPrefix(propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_PREFIX_KEY))
+                .setUriPostfix(propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_POSTFIX_KEY))
                 .build();
         
         amq.start();
     }
 
 
+    // Stop and cleanup when tests are finished
     @AfterClass
     public static void tearDown() {
         amq.stop();
@@ -80,31 +82,31 @@ public class ActivemqLocalBrokerTest {
     
     @Test
     public void testHostname() {
-        assertEquals(propertyParser.getProperty(ConfigVars.ACTIVEMQ_HOSTNAME_VAR), amq.getHostName());
+        assertEquals(propertyParser.getProperty(ConfigVars.ACTIVEMQ_HOSTNAME_KEY), amq.getHostName());
     }
 
     @Test
     public void testPort() {
-        assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.ACTIVEMQ_PORT_VAR)), amq.getPort());
+        assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.ACTIVEMQ_PORT_KEY)), amq.getPort());
     }
 
     @Test
     public void testQueueName() {
-        assertEquals(propertyParser.getProperty(ConfigVars.ACTIVEMQ_QUEUE_NAME_VAR), amq.getQueueName());
+        assertEquals(propertyParser.getProperty(ConfigVars.ACTIVEMQ_QUEUE_NAME_KEY), amq.getQueueName());
     }
     
     @Test
     public void testStoreDir() {
-        assertEquals(propertyParser.getProperty(ConfigVars.ACTIVEMQ_STORE_DIR_VAR), amq.getStoreDir());
+        assertEquals(propertyParser.getProperty(ConfigVars.ACTIVEMQ_STORE_DIR_KEY), amq.getStoreDir());
     }
 
     @Test
     public void testUriPrefix() {
-        assertEquals(propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_PREFIX_VAR), amq.getUriPrefix());
+        assertEquals(propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_PREFIX_KEY), amq.getUriPrefix());
     }
 
     @Test
     public void testUriPostfix() {
-        assertEquals(propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_POSTFIX_VAR), amq.getUriPostfix());
+        assertEquals(propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_POSTFIX_KEY), amq.getUriPostfix());
     }
 }

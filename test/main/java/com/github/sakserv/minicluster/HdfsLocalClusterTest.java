@@ -14,6 +14,8 @@
 
 package com.github.sakserv.minicluster;
 
+import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.impl.HdfsLocalCluster;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FSDataOutputStream;
@@ -33,6 +35,16 @@ public class HdfsLocalClusterTest {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(HdfsLocalClusterTest.class);
+
+    // Setup the property parser
+    private static PropertyParser propertyParser;
+    static {
+        try {
+            propertyParser = new PropertyParser(ConfigVars.DEFAULT_PROPS_FILE);
+        } catch(IOException e) {
+            LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
+        }
+    }
 
     private static final String TEST_STRING = "TESTING";
 

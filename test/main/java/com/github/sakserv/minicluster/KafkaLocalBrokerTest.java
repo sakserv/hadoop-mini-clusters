@@ -15,6 +15,8 @@
 package com.github.sakserv.minicluster;
 
 import com.github.sakserv.datetime.GenerateRandomDay;
+import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.impl.KafkaLocalBroker;
 import com.github.sakserv.minicluster.impl.ZookeeperLocalCluster;
 import kafka.api.FetchRequest;
@@ -34,6 +36,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,11 +50,22 @@ public class KafkaLocalBrokerTest {
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(KafkaLocalBrokerTest.class);
 
+    // Setup the property parser
+    private static PropertyParser propertyParser;
+    static {
+        try {
+            propertyParser = new PropertyParser(ConfigVars.DEFAULT_PROPS_FILE);
+        } catch(IOException e) {
+            LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
+        }
+    }
+
     private static final String TEST_TOPIC = "test_topic";
+    
     
     long numRead = 0;
 
-    ZookeeperLocalCluster zkCluster;
+    ZookeeperLocalCluster zookeeperLocalCluster;
     KafkaLocalBroker kafkaLocalBroker;
 
     private List<String> m_replicaBrokers = new ArrayList<String>();
@@ -193,9 +207,12 @@ public class KafkaLocalBrokerTest {
     }
 
     @Before
-    public void setUp() {
-        zkCluster = new ZookeeperLocalCluster();
-        zkCluster.start();
+    public void setUp() throws IOException {
+        zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
+                .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
+                .setTempDir(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY))
+                .build();
+        zookeeperLocalCluster.start();
 
         kafkaLocalBroker = new KafkaLocalBroker(TEST_TOPIC);
         kafkaLocalBroker.start();
@@ -206,7 +223,7 @@ public class KafkaLocalBrokerTest {
     public void tearDown() {
 
         kafkaLocalBroker.stop(true);
-        zkCluster.stop(true);
+        zookeeperLocalCluster.stop(true);
     }
 
     @Test
