@@ -22,6 +22,12 @@ public class ConfigVars {
     public static final String ZOOKEEPER_PORT_KEY = "zookeeper.port";
     public static final String ZOOKEEPER_TEMP_DIR_KEY = "zookeeper.temp.dir";
     public static final String ZOOKEEPER_CONNECTION_STRING_KEY = "zookeeper.connection.string";
+
+    // MongoDB
+    public static final String MONGO_IP_KEY = "mongo.ip";
+    public static final String MONGO_PORT_KEY = "mongo.port";
+    public static final String MONGO_DATABASE_NAME_KEY = "mongo.database.name";
+    public static final String MONGO_COLLECTION_NAME_KEY = "mongo.collection.name";
     
     // ActiveMQ
     public static final String ACTIVEMQ_HOSTNAME_KEY = "activemq.hostname";
