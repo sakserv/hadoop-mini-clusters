@@ -14,10 +14,10 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
-public class ActivemqLocalBrokerTest {
+public class ActivemqLocalBrokerIntegrationTest {
 
     // Logger
-    private static final Logger LOG = LoggerFactory.getLogger(ActivemqLocalBrokerTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ActivemqLocalBrokerIntegrationTest.class);
 
     // Setup the property parser
     private static PropertyParser propertyParser;
@@ -41,35 +41,43 @@ public class ActivemqLocalBrokerTest {
                 .setUriPrefix(propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_PREFIX_KEY))
                 .setUriPostfix(propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_POSTFIX_KEY))
                 .build();
+        
+        amq.start();
     }
-    
-    @Test
-    public void testHostname() {
-        assertEquals(propertyParser.getProperty(ConfigVars.ACTIVEMQ_HOSTNAME_KEY), amq.getHostName());
+
+
+    // Stop and cleanup when tests are finished
+    @AfterClass
+    public static void tearDown() {
+        amq.stop();
     }
 
     @Test
-    public void testPort() {
-        assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.ACTIVEMQ_PORT_KEY)), amq.getPort());
+    /*
+    sends lots of short messages and one long one
+     */
+    public void testMessageProcessing() throws JMSException {
+        int n = 10000;
+        String msg;
+        
+        LOG.info("ACTIVEMQ: Sending " + n + " messages");
+
+        //send a lot of messages
+        for (int i = 0; i < n; i++) {
+            msg = "hello from active mq. " + n;
+            amq.sendTextMessage(msg);
+            assertEquals(msg,amq.getTextMessage());
+        }
+
+        //send a really long message
+        StringBuilder sb = new StringBuilder(n);
+        for (int i = 0; i < n; i++) {
+            sb.append(n).append(" ");
+        }
+        msg = sb.toString();
+        amq.sendTextMessage(msg);
+        assertEquals(msg,amq.getTextMessage());
+
     }
 
-    @Test
-    public void testQueueName() {
-        assertEquals(propertyParser.getProperty(ConfigVars.ACTIVEMQ_QUEUE_NAME_KEY), amq.getQueueName());
-    }
-    
-    @Test
-    public void testStoreDir() {
-        assertEquals(propertyParser.getProperty(ConfigVars.ACTIVEMQ_STORE_DIR_KEY), amq.getStoreDir());
-    }
-
-    @Test
-    public void testUriPrefix() {
-        assertEquals(propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_PREFIX_KEY), amq.getUriPrefix());
-    }
-
-    @Test
-    public void testUriPostfix() {
-        assertEquals(propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_POSTFIX_KEY), amq.getUriPostfix());
-    }
 }
