@@ -18,20 +18,19 @@ import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.impl.ZookeeperLocalCluster;
 import org.junit.After;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import scala.Int;
 
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
-public class ZookeeperLocalClusterTest {
+public class ZookeeperLocalClusterIntegrationTest {
 
     // Logger
-    private static final Logger LOG = LoggerFactory.getLogger(ZookeeperLocalClusterTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ZookeeperLocalClusterIntegrationTest.class);
 
     // Setup the property parser
     private static PropertyParser propertyParser;
@@ -43,24 +42,24 @@ public class ZookeeperLocalClusterTest {
         }
     }
 
-    private static ZookeeperLocalCluster zookeeperLocalCluster;
-    @BeforeClass
-    public static void setUp() throws IOException {
+    ZookeeperLocalCluster zookeeperLocalCluster;
+    @Before
+    public void setUp() throws IOException {
         zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
                 .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
                 .setTempDir(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY))
                 .build();
+        zookeeperLocalCluster.start();
     }
-    
-    @Test
-    public void testPort() {
-        assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)),
-                zookeeperLocalCluster.getPort());
+
+    @After
+    public void tearDown() {
+        zookeeperLocalCluster.stop();
     }
 
     @Test
-    public void testTempDir() {
-        assertEquals(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY), zookeeperLocalCluster.getTempDir());
+    public void testZookeeperCluster() {
+        assertEquals(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY), 
+                zookeeperLocalCluster.getZkConnectionString());
     }
-
 }
