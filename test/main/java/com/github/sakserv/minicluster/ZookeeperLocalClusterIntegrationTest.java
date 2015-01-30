@@ -17,8 +17,8 @@ package com.github.sakserv.minicluster;
 import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.impl.ZookeeperLocalCluster;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,9 +42,9 @@ public class ZookeeperLocalClusterIntegrationTest {
         }
     }
 
-    ZookeeperLocalCluster zookeeperLocalCluster;
-    @Before
-    public void setUp() throws IOException {
+    private static ZookeeperLocalCluster zookeeperLocalCluster;
+    @BeforeClass
+    public static void setUp() throws IOException {
         zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
                 .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
                 .setTempDir(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY))
@@ -52,8 +52,8 @@ public class ZookeeperLocalClusterIntegrationTest {
         zookeeperLocalCluster.start();
     }
 
-    @After
-    public void tearDown() {
+    @AfterClass
+    public static void tearDown() {
         zookeeperLocalCluster.stop();
     }
 

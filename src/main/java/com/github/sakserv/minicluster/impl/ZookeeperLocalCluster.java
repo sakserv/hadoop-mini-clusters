@@ -84,8 +84,6 @@ public class ZookeeperLocalCluster implements MiniCluster {
 
     }
 
-
-
     // Curator does not leverage a configuration object
     @Override
     public void configure() {}

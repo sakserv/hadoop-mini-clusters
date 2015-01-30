@@ -17,19 +17,23 @@ package com.github.sakserv.minicluster;
 import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.impl.MongodbLocalServer;
+import com.mongodb.*;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
+import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 
-public class MongodbLocalServerTest {
+public class MongodbLocalServerIntegrationTest {
 
     // Logger
-    private static final Logger LOG = LoggerFactory.getLogger(MongodbLocalServerTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MongodbLocalServerIntegrationTest.class);
 
     // Setup the property parser
     private static PropertyParser propertyParser;
@@ -40,7 +44,7 @@ public class MongodbLocalServerTest {
             LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
         }
     }
-
+    
     private static MongodbLocalServer mongodbLocalServer;
 
     @BeforeClass
@@ -49,16 +53,30 @@ public class MongodbLocalServerTest {
                 .setIp(propertyParser.getProperty(ConfigVars.MONGO_IP_KEY))
                 .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.MONGO_PORT_KEY)))
                 .build();
+        mongodbLocalServer.start();
     }
-    
-    @Test
-    public void testIp() {
-        assertEquals(propertyParser.getProperty(ConfigVars.MONGO_IP_KEY), mongodbLocalServer.getIp());
+
+    @AfterClass
+    public static void tearDown() throws Exception {
+        mongodbLocalServer.stop();
     }
-    
+
     @Test
-    public void testPort() {
-        assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.MONGO_PORT_KEY)),
-                (int) mongodbLocalServer.getPort());
+    public void testMongodbLocalServer() throws UnknownHostException {
+        MongoClient mongo = new MongoClient(mongodbLocalServer.getIp(), mongodbLocalServer.getPort());
+
+        DB db = mongo.getDB(propertyParser.getProperty(ConfigVars.MONGO_DATABASE_NAME_KEY));
+        DBCollection col = db.createCollection(propertyParser.getProperty(ConfigVars.MONGO_COLLECTION_NAME_KEY),
+                new BasicDBObject());
+        
+        col.save(new BasicDBObject("testDoc", new Date()));
+        LOG.info("MONGODB: Number of items in collection: " + col.count());
+        assertEquals(1, col.count());
+        
+        DBCursor cursor = col.find();
+        while(cursor.hasNext()) {
+            LOG.info("MONGODB: Document output: " + cursor.next());
+        }
+        cursor.close();
     }
 }

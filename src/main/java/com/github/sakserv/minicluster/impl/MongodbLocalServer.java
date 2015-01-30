@@ -15,6 +15,8 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.minicluster.config.PropertyParser;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
@@ -33,39 +35,66 @@ public class MongodbLocalServer implements MiniCluster {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(MongodbLocalServer.class);
-    
-    private static final String DEFAULT_IP = "127.0.0.1";
-    private static final int DEFAULT_PORT = 12345;
 
-    private String ipaddr;
-    private int port;
+    private String ip;
+    private Integer port;
     
     private MongodStarter starter;
     private MongodExecutable mongodExe;
     private MongodProcess mongod;
     private IMongodConfig conf;
     
-    public MongodbLocalServer() {
-        ipaddr = DEFAULT_IP;
-        port = DEFAULT_PORT;
-        configure();
+    private MongodbLocalServer(Builder builder) {
+        this.ip = builder.ip;
+        this.port = builder.port;
     }
-
-    public MongodbLocalServer(int port) {
-        this.ipaddr = DEFAULT_IP;
-        this.port = port;
-        configure();
+    
+    public String getIp() {
+        return ip;
     }
+    
+    public Integer getPort() {
+        return port;
+    }
+    
+    public static class Builder {
+        private String ip;
+        private Integer port;
+        
+        public Builder setIp(String ip) {
+            this.ip = ip;
+            return this;
+        }
+        
+        public Builder setPort(int port){
+            this.port = port;
+            return this;
+        }
+        
+        public MongodbLocalServer build() throws IOException {
+            MongodbLocalServer mongodbLocalServer = new MongodbLocalServer(this);
+            validateObject(mongodbLocalServer);
+            return  mongodbLocalServer;
+        }
 
-    public MongodbLocalServer(String ipaddr, int port) {
-        this.ipaddr = ipaddr;
-        this.port = port;
-        configure();
+        private void validateObject(MongodbLocalServer mongodbLocalServer) throws IOException {
+            PropertyParser propertyParser = new PropertyParser(ConfigVars.DEFAULT_PROPS_FILE);
+
+            if(mongodbLocalServer.ip == null) {
+                this.ip = propertyParser.getProperty(ConfigVars.MONGO_IP_KEY);
+            }
+            
+            if(mongodbLocalServer.port == null) {
+                this.port = Integer.parseInt(propertyParser.getProperty(ConfigVars.MONGO_PORT_KEY));
+            }
+        }
+        
     }
     
     public void start() {
         try {
             starter = MongodStarter.getDefaultInstance();
+            configure();
             mongodExe = starter.prepare(conf);
             mongod = mongodExe.start();
         } catch(IOException e) {
@@ -82,24 +111,11 @@ public class MongodbLocalServer implements MiniCluster {
         try {
             conf = new MongodConfigBuilder()
                     .version(Version.Main.PRODUCTION)
-                    .net(new Net(ipaddr, port, false))
+                    .net(new Net(ip, port, false))
                     .build();
         } catch(IOException e) {
             e.printStackTrace();
         }
-        
-    }
-    
-    public void dumpConfig() {
-        LOG.info("MONGODB: CONFIG: " + getBindIp() + ":" + getBindPort());
-    }
-    
-    public String getBindIp() {
-        return conf.net().getBindIp();
-    }
-    
-    public int getBindPort() {
-        return conf.net().getPort();
         
     }
 

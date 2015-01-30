@@ -77,7 +77,7 @@ public class StormLocalClusterTest {
         stormCluster.submitTopology(STORM_TEST_TOPOLOGY, new Config(), builder.createTopology());
 
         try {
-            Thread.sleep(10000L);
+            Thread.sleep(5000L);
         } catch (InterruptedException e) {
             LOG.info("SUCCESSFULLY COMPLETED");
         }

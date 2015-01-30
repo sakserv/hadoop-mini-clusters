@@ -39,7 +39,7 @@ public class KafkaLocalBroker implements MiniCluster {
     public static final String DEFAULT_LOG_DIR = "embedded_kafka";
     public static final int DEFAULT_PORT = 9092;
     public static final int DEFAULT_BROKER_ID = 1;
-    public static final String DEFAULT_ZK_CONNECTION_STRING = "localhost:2181";
+    public static final String DEFAULT_ZK_CONNECTION_STRING = "localhost:22010";
 
     public KafkaConfig conf;
     public KafkaServer server;
