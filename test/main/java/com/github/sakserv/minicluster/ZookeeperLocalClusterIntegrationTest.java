@@ -48,6 +48,7 @@ public class ZookeeperLocalClusterIntegrationTest {
         zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
                 .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
                 .setTempDir(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY))
+                .setZookeeperConnectionString(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY))
                 .build();
         zookeeperLocalCluster.start();
     }
@@ -60,6 +61,6 @@ public class ZookeeperLocalClusterIntegrationTest {
     @Test
     public void testZookeeperCluster() {
         assertEquals(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY), 
-                zookeeperLocalCluster.getZkConnectionString());
+                zookeeperLocalCluster.getZookeeperConnectionString());
     }
 }

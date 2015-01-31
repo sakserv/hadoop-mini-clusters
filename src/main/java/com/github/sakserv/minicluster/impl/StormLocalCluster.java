@@ -26,54 +26,123 @@ public class StormLocalCluster implements MiniCluster {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(StormLocalCluster.class);
+    
+    private String zookeeperHost;
+    private Long zookeeperPort;
+    private Boolean enableDebug;
+    private Integer numWorkers;
+    private Config conf = new Config();
+    private LocalCluster localCluster;
+    
+    private StormLocalCluster(Builder builder) {
+        this.zookeeperHost = builder.zookeeperHost;
+        this.zookeeperPort = builder.zookeeperPort;
+        this.enableDebug = builder.enableDebug;
+        this.numWorkers = builder.numWorkers;
+    }
+    
+    public String getZookeeperHost() {
+        return zookeeperHost;
+    }
+    
+    public Long getZookeeperPort() {
+        return zookeeperPort;
+    }
+    
+    public Boolean getEnableDebug() {
+        return enableDebug;
+    }
+    
+    public Integer getNumWorkers() {
+        return numWorkers;
+        
+    }
+    
+    public Config getConf() {
+        return conf;
+        
+    }
+    
+    public static class Builder {
+        private String zookeeperHost;
+        private Long zookeeperPort;
+        private Boolean enableDebug;
+        private Integer numWorkers;
+        
+        public Builder setZookeeperHost(String zookeeperHost) {
+            this.zookeeperHost = zookeeperHost;
+            return this;
+        }
+        
+        public Builder setZookeeperPort(Long zookeeperPort) {
+            this.zookeeperPort = zookeeperPort;
+            return this;
+        }
+        
+        public Builder setEnableDebug(Boolean enableDebug) {
+            this.enableDebug = enableDebug;
+            return this;
+        }
+        
+        public Builder setNumWorkers(Integer numWorkers) {
+            this.numWorkers = numWorkers;
+            return this;
+        }
+        
+        public StormLocalCluster build() {
+            StormLocalCluster stormLocalCluster = new StormLocalCluster(this);
+            validateObject(stormLocalCluster);
+            return stormLocalCluster;
+        }
+        
+        public void validateObject(StormLocalCluster stormLocalCluster) {
+            if (stormLocalCluster.getZookeeperHost() == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Zookeeper Host");
+            }
 
-    LocalCluster cluster;
-    private String zkHost;
-    private Long zkPort;
-    Config conf = new Config();
+            if (stormLocalCluster.getZookeeperPort() == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Zookeeper Port");
+            }
 
-    public StormLocalCluster(String zkHost, Long zkPort) {
-        configure();
-        this.zkHost = zkHost;
-        this.zkPort = zkPort;
+            if (stormLocalCluster.getEnableDebug() == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Enable Debug");
+            }
+            
+            if (stormLocalCluster.getNumWorkers() == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Num Workers");
+            }
+        }
     }
 
     public void configure() {
-        conf.setDebug(false);
-        conf.setNumWorkers(3);
+        conf.setDebug(enableDebug);
+        conf.setNumWorkers(numWorkers);
     }
 
     public void start() {
         LOG.info("STORM: Instantiating LocalCluster");
-        cluster = new LocalCluster(zkHost, zkPort);
+        configure();
+        localCluster = new LocalCluster(zookeeperHost, zookeeperPort);
     }
 
     public void stop() {
-        cluster.shutdown();
+        localCluster.shutdown();
     }
 
     public void stop(String topologyName) {
-        cluster.killTopology(topologyName);
+        localCluster.killTopology(topologyName);
         stop();
     }
     
     public void stop(String topologyName, int waitSecs) {
         KillOptions killOptions = new KillOptions();
         killOptions.set_wait_secs(waitSecs);
-        cluster.killTopologyWithOpts(topologyName, killOptions);
+        localCluster.killTopologyWithOpts(topologyName, killOptions);
         stop();
     }
 
-    public void dumpConfig() {
-        LOG.info("STORM CONFIG: " + conf.toString());
-    }
-
-    public Config getConf() {
-        return conf;
-    }
-
     public void submitTopology(String topologyName, Config conf, StormTopology topology) {
-        cluster.submitTopology(topologyName, conf, topology);
+        localCluster.submitTopology(topologyName, conf, topology);
     }
 
 }

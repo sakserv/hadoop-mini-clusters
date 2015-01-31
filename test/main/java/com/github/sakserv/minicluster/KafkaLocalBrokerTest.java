@@ -211,6 +211,7 @@ public class KafkaLocalBrokerTest {
         zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
                 .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
                 .setTempDir(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY))
+                .setZookeeperConnectionString(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY))
                 .build();
         zookeeperLocalCluster.start();
 
@@ -223,7 +224,7 @@ public class KafkaLocalBrokerTest {
     public void tearDown() {
 
         kafkaLocalBroker.stop(true);
-        zookeeperLocalCluster.stop(true);
+        zookeeperLocalCluster.stop();
     }
 
     @Test

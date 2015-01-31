@@ -20,6 +20,7 @@ public class ConfigVars {
     
     // Zookeeper
     public static final String ZOOKEEPER_PORT_KEY = "zookeeper.port";
+    public static final String ZOOKEEPER_HOST_KEY = "zookeeper.host";
     public static final String ZOOKEEPER_TEMP_DIR_KEY = "zookeeper.temp.dir";
     public static final String ZOOKEEPER_CONNECTION_STRING_KEY = "zookeeper.connection.string";
 
@@ -36,4 +37,9 @@ public class ConfigVars {
     public static final String ACTIVEMQ_STORE_DIR_KEY = "activemq.store.dir";
     public static final String ACTIVEMQ_URI_PREFIX_KEY = "activemq.uri.prefix";
     public static final String ACTIVEMQ_URI_POSTFIX_KEY = "activemq.uri.postfix";
+    
+    // Storm
+    public static final String STORM_ENABLE_DEBUG_KEY = "storm.enable.debug";
+    public static final String STORM_NUM_WORKERS_KEY = "storm.num.workers";
+    public static final String STORM_TOPOLOGY_NAME_KEY = "storm.topology.name";
 }

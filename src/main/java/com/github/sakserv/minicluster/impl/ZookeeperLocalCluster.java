@@ -35,12 +35,14 @@ public class ZookeeperLocalCluster implements MiniCluster {
     
     private final Integer port;
     private final String tempDir;
+    private final String zookeeperConnectionString;
 
     private TestingServer testingServer;
 
     private ZookeeperLocalCluster(Builder builder) {
         this.port = builder.port;
         this.tempDir = builder.tempDir;
+        this.zookeeperConnectionString = builder.zookeeperConnectionString;
     }
 
     public int getPort() {
@@ -48,11 +50,17 @@ public class ZookeeperLocalCluster implements MiniCluster {
     }
     
     public String getTempDir() { return tempDir; }
+    
+    public String getZookeeperConnectionString() {
+        return zookeeperConnectionString;
+        
+    }
 
     public static class Builder
     {
         private Integer port;
         private String tempDir;
+        private String zookeeperConnectionString;
 
         public Builder setPort(int port) {
             this.port = port;
@@ -63,22 +71,30 @@ public class ZookeeperLocalCluster implements MiniCluster {
             this.tempDir = tempDir;
             return this;
         }
+        
+        public Builder setZookeeperConnectionString(String zookeeperConnectionString){
+            this.zookeeperConnectionString = zookeeperConnectionString;
+            return this;
+            
+        }
 
-        public ZookeeperLocalCluster build() throws IOException {
+        public ZookeeperLocalCluster build() {
             ZookeeperLocalCluster zookeeperLocalCluster = new ZookeeperLocalCluster(this);
             validateObject(zookeeperLocalCluster);
             return zookeeperLocalCluster;
         }
 
-        private void validateObject(ZookeeperLocalCluster zookeeperLocalCluster) throws IOException {
-            PropertyParser propertyParser = new PropertyParser(ConfigVars.DEFAULT_PROPS_FILE);
-
+        private void validateObject(ZookeeperLocalCluster zookeeperLocalCluster) {
             if(zookeeperLocalCluster.port == null) {
-                this.port = Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY));
+                throw new IllegalArgumentException("ERROR: Missing required config: Zookeeper Port");
             }
 
             if(zookeeperLocalCluster.tempDir == null) {
-                this.tempDir = propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY);
+                throw new IllegalArgumentException("ERROR: Missing required config: Zookeeper Temp Dir");
+            }
+
+            if(zookeeperLocalCluster.zookeeperConnectionString == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Zookeeper Connection String");
             }
         }
 
@@ -119,18 +135,6 @@ public class ZookeeperLocalCluster implements MiniCluster {
 
     private void cleanUp() {
         FileUtils.deleteFolder(tempDir);
-    }
-
-    public String getZkConnectionString() {
-        return testingServer.getConnectString();
-    }
-
-    public String getZkHostName() {
-        return getZkConnectionString().split(":")[0];
-    }
-
-    public String getZkPort() {
-        return getZkConnectionString().split(":")[1];
     }
 
 }

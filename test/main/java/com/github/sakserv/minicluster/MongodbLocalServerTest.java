@@ -44,7 +44,7 @@ public class MongodbLocalServerTest {
     private static MongodbLocalServer mongodbLocalServer;
 
     @BeforeClass
-    public static void setUp() throws Exception {
+    public static void setUp() {
         mongodbLocalServer = new MongodbLocalServer.Builder()
                 .setIp(propertyParser.getProperty(ConfigVars.MONGO_IP_KEY))
                 .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.MONGO_PORT_KEY)))

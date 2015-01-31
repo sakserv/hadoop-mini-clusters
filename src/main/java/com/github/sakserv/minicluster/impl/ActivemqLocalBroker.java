@@ -118,37 +118,35 @@ public class ActivemqLocalBroker implements MiniCluster {
             return this;
         }
         
-        public ActivemqLocalBroker build() throws IOException {
+        public ActivemqLocalBroker build() {
             ActivemqLocalBroker activemqLocalBroker = new ActivemqLocalBroker(this);
             validateObject(activemqLocalBroker);
             return activemqLocalBroker;
         }
         
-        private void validateObject(ActivemqLocalBroker activemqLocalBroker) throws IOException {
-            PropertyParser propertyParser = new PropertyParser(ConfigVars.DEFAULT_PROPS_FILE);
-            
+        private void validateObject(ActivemqLocalBroker activemqLocalBroker) {
             if(activemqLocalBroker.hostName == null) {
-                this.hostName = propertyParser.getProperty(ConfigVars.ACTIVEMQ_HOSTNAME_KEY);
+                throw new IllegalArgumentException("ERROR: Missing required config: ActiveMQ HostName");
             }
 
             if(activemqLocalBroker.port == null) {
-                this.port = Integer.parseInt(propertyParser.getProperty(ConfigVars.ACTIVEMQ_PORT_KEY));
+                throw new IllegalArgumentException("ERROR: Missing required config: ActiveMQ Port");
             }
 
             if(activemqLocalBroker.queueName == null) {
-                this.queueName = propertyParser.getProperty(ConfigVars.ACTIVEMQ_QUEUE_NAME_KEY);
+                throw new IllegalArgumentException("ERROR: Missing required config: ActiveMQ Queue Name");
             }
 
             if(activemqLocalBroker.storeDir == null) {
-                this.storeDir = propertyParser.getProperty(ConfigVars.ACTIVEMQ_STORE_DIR_KEY);
+                throw new IllegalArgumentException("ERROR: Missing required config: ActiveMQ Store Dir");
             }
 
             if(activemqLocalBroker.uriPrefix == null) {
-                this.uriPrefix = propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_PREFIX_KEY);
+                throw new IllegalArgumentException("ERROR: Missing required config: ActiveMQ Uri Prefix");
             }
 
             if(activemqLocalBroker.uriPostfix == null) {
-                this.uriPostfix = propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_POSTFIX_KEY);
+                throw new IllegalArgumentException("ERROR: Missing required config: ActiveMQ Uri Postfix");
             }
         }
         

@@ -44,12 +44,10 @@ public class HiveLocalServer2Test {
         }
     }
 
-    private static final int ZOOKEEPER_PORT = 2181;
-
     private static final String METASTORE_URI = "";
     private static final String DERBY_DB_PATH = "metastore_db";
     private static final String HIVE_SCRATCH_DIR = "hive_scratch_dir";
-    private static final int HIVESERVER2_PORT = 10000;
+    private static final int HIVESERVER2_PORT = 12345;
 
     private static final String HIVE_DB_NAME = "testdb";
     private static final String HIVE_TABLE_NAME = "testtable";
@@ -63,11 +61,12 @@ public class HiveLocalServer2Test {
         zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
                 .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
                 .setTempDir(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY))
+                .setZookeeperConnectionString(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY))
                 .build();
         zookeeperLocalCluster.start();
 
         hiveServer = new HiveLocalServer2(METASTORE_URI, DERBY_DB_PATH, HIVE_SCRATCH_DIR,
-                HIVESERVER2_PORT, zookeeperLocalCluster.getZkConnectionString());
+                HIVESERVER2_PORT, propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY));
         hiveServer.start();
     }
 

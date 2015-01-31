@@ -71,21 +71,19 @@ public class MongodbLocalServer implements MiniCluster {
             return this;
         }
         
-        public MongodbLocalServer build() throws IOException {
+        public MongodbLocalServer build() {
             MongodbLocalServer mongodbLocalServer = new MongodbLocalServer(this);
             validateObject(mongodbLocalServer);
             return  mongodbLocalServer;
         }
 
-        private void validateObject(MongodbLocalServer mongodbLocalServer) throws IOException {
-            PropertyParser propertyParser = new PropertyParser(ConfigVars.DEFAULT_PROPS_FILE);
-
+        private void validateObject(MongodbLocalServer mongodbLocalServer) {
             if(mongodbLocalServer.ip == null) {
-                this.ip = propertyParser.getProperty(ConfigVars.MONGO_IP_KEY);
+                throw new IllegalArgumentException("ERROR: Missing required config: MongoDB IP");
             }
             
             if(mongodbLocalServer.port == null) {
-                this.port = Integer.parseInt(propertyParser.getProperty(ConfigVars.MONGO_PORT_KEY));
+                throw new IllegalArgumentException("ERROR: Missing required config: MongoDB Port");
             }
         }
         

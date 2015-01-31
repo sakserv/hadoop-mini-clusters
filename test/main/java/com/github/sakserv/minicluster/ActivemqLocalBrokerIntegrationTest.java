@@ -32,7 +32,7 @@ public class ActivemqLocalBrokerIntegrationTest {
     // Setup the activemq broker before running tests
     private static ActivemqLocalBroker amq;
     @BeforeClass
-    public static void setUp() throws IOException {
+    public static void setUp() {
         amq = new ActivemqLocalBroker.Builder()
                 .setHostName(propertyParser.getProperty(ConfigVars.ACTIVEMQ_HOSTNAME_KEY))
                 .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ACTIVEMQ_PORT_KEY)))
