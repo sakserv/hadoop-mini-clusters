@@ -31,15 +31,122 @@ public class HiveLocalMetaStore implements MiniCluster {
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(HiveLocalMetaStore.class);
 
-    private static final int DEFAULT_METASTORE_PORT = 20102;
-    private static final String DEFAULT_DERBY_DB_PATH = "metastore_db";
-    private static final String DEFAULT_HIVE_SCRATCH_DIR = "hive_scratch_dir";
-
-    private static int msPort;
-    private static String derbyDbPath;
-    private static HiveConf hiveConf;
+    private String hiveMetastoreHostname;
+    private Integer hiveMetastorePort;
+    private String hiveMetastoreDerbyDbDir;
+    private String hiveScratchDir;
+    private String hiveWarehouseDir;
+    private HiveConf hiveConf;
+    
     private static SecurityManager securityManager;
     private Thread t;
+    
+    private HiveLocalMetaStore(Builder builder) {
+        this.hiveMetastoreHostname = builder.hiveMetastoreHostname;
+        this.hiveMetastorePort = builder.hiveMetastorePort;
+        this.hiveMetastoreDerbyDbDir = builder.hiveMetastoreDerbyDbDir;
+        this.hiveScratchDir = builder.hiveScratchDir;
+        this.hiveWarehouseDir = builder.hiveWarehouseDir;
+        this.hiveConf = builder.hiveConf;
+    }
+
+    public String getHiveMetastoreHostname() {
+        return hiveMetastoreHostname;
+    }
+    
+    public Integer getHiveMetaStorePort() {
+        return hiveMetastorePort;
+    }
+
+    public String getHiveMetastoreDerbyDbDir() {
+        return hiveMetastoreDerbyDbDir;
+    }
+
+    public String getHiveScratchDir() {
+        return hiveScratchDir;
+    }
+
+    public HiveConf getHiveConf() {
+        return hiveConf;
+    }
+    
+    public String getHiveWarehouseDir() {
+        return hiveWarehouseDir;
+    }
+    
+    public static class Builder {
+        private String hiveMetastoreHostname;
+        private Integer hiveMetastorePort;
+        private String hiveMetastoreDerbyDbDir;
+        private String hiveScratchDir;
+        private String hiveWarehouseDir;
+        private HiveConf hiveConf;
+        
+        public Builder setHiveMetastoreHostname(String hiveMetastoreHostname) {
+            this.hiveMetastoreHostname = hiveMetastoreHostname;
+            return this;
+        }
+        
+        public Builder setHiveMetastorePort(int hiveMetaStorePort) {
+            this.hiveMetastorePort = hiveMetaStorePort;
+            return this;
+            
+        }
+        
+        public Builder setHiveMetastoreDerbyDbDir(String hiveDerbyDbDir) {
+            this.hiveMetastoreDerbyDbDir = hiveDerbyDbDir;
+            return this;
+        }
+        
+        public Builder setHiveScratchDir(String hiveScratchDir) {
+            this.hiveScratchDir = hiveScratchDir;
+            return this;
+        }
+
+        public Builder setHiveConf(HiveConf hiveConf) {
+            this.hiveConf = hiveConf;
+            return this;
+        }
+        
+        public Builder setHiveWarehouseDir(String hiveWarehouseDir) {
+            this.hiveWarehouseDir = hiveWarehouseDir;
+            return this;
+        }
+        
+        public HiveLocalMetaStore build() {
+            HiveLocalMetaStore hiveLocalMetaStore = new HiveLocalMetaStore(this);
+            validateObject(hiveLocalMetaStore);
+            return hiveLocalMetaStore;
+        }
+        
+        public void validateObject(HiveLocalMetaStore hiveLocalMetaStore) {
+            if(hiveLocalMetaStore.hiveMetastoreHostname == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Hive Meta Store Hostname");
+            }
+            
+            if(hiveLocalMetaStore.hiveMetastorePort == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Hive Meta Store Port");
+            }
+
+            if(hiveLocalMetaStore.hiveMetastoreDerbyDbDir == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Hive Derby Db Path");
+            }
+
+            if(hiveLocalMetaStore.hiveScratchDir == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Hive Scratch Dir");
+            }
+
+            if(hiveLocalMetaStore.hiveWarehouseDir == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Hive Warehouse Dir");
+            }
+            
+            if(hiveLocalMetaStore.hiveConf == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Hive Conf");
+            }
+            
+        }
+        
+    }
 
     public class NoExitSecurityManager extends SecurityManager {
 
@@ -61,59 +168,48 @@ public class HiveLocalMetaStore implements MiniCluster {
     }
 
     private static class StartHiveLocalMetaStore implements Runnable {
+        
+        private Integer hiveMetastorePort;
+        private HiveConf hiveConf;
+        
+        public void setHiveMetastorePort(Integer hiveMetastorePort) {
+            this.hiveMetastorePort = hiveMetastorePort;
+        }
+        
+        public void setHiveConf(HiveConf hiveConf) {
+            this.hiveConf = hiveConf;
+        }
 
         @Override
         public void run() {
             try {
-                HiveMetaStore.startMetaStore(msPort, new HadoopThriftAuthBridge(), HiveLocalMetaStore.getConf());
+                HiveMetaStore.startMetaStore(hiveMetastorePort, 
+                        new HadoopThriftAuthBridge(), 
+                        hiveConf);
             } catch (Throwable t) {
                 t.printStackTrace();
             }
         }
     }
-
-    public HiveLocalMetaStore() {
-        this(DEFAULT_METASTORE_PORT, DEFAULT_DERBY_DB_PATH);
-    }
-
-    public HiveLocalMetaStore(int msPort, String derbyDbPath) {
-        this.msPort = msPort;
-        this.derbyDbPath = derbyDbPath;
-        configure(msPort, derbyDbPath);
-    }
-
+    
+    
+    
     public void configure() {
-        hiveConf = new HiveConf();
         securityManager = System.getSecurityManager();
         System.setSecurityManager(new NoExitSecurityManager());
-        hiveConf.set("hive.root.logger", "DEBUG,console");
-        hiveConf.set(HiveConf.ConfVars.SCRATCHDIR.varname, DEFAULT_HIVE_SCRATCH_DIR);
-        hiveConf.set(HiveConf.ConfVars.HIVE_TXN_MANAGER.varname, "org.apache.hadoop.hive.ql.lockmgr.DbTxnManager");
-        hiveConf.set(HiveConf.ConfVars.HIVE_COMPACTOR_INITIATOR_ON.varname, "true");
-        hiveConf.set(HiveConf.ConfVars.HIVE_COMPACTOR_WORKER_THREADS.varname, "5");
-        hiveConf.set(HiveConf.ConfVars.METASTORECONNECTURLKEY.varname, "jdbc:derby:;databaseName=" + DEFAULT_DERBY_DB_PATH + ";create=true");
-        hiveConf.set(HiveConf.ConfVars.METASTOREWAREHOUSE.varname, new File("warehouse_dir").getAbsolutePath());
-        hiveConf.set(HiveConf.ConfVars.HIVE_SUPPORT_CONCURRENCY.varname, "false");
-        hiveConf.setIntVar(HiveConf.ConfVars.METASTORETHRIFTCONNECTIONRETRIES, 3);
-        hiveConf.set(HiveConf.ConfVars.PREEXECHOOKS.varname, "");
-        hiveConf.set(HiveConf.ConfVars.POSTEXECHOOKS.varname, "");
-        hiveConf.set(HiveConf.ConfVars.HIVE_SUPPORT_CONCURRENCY.varname,
-                "false");
+        hiveConf.setVar(HiveConf.ConfVars.METASTOREURIS, 
+                "thrift://" + hiveMetastoreHostname + ":" + hiveMetastorePort);
+        hiveConf.set(HiveConf.ConfVars.SCRATCHDIR.varname, hiveScratchDir);
+        hiveConf.set(HiveConf.ConfVars.METASTORECONNECTURLKEY.varname, 
+                "jdbc:derby:;databaseName=" + hiveMetastoreDerbyDbDir + ";create=true");
+        hiveConf.set(HiveConf.ConfVars.METASTOREWAREHOUSE.varname, new File(hiveWarehouseDir).getAbsolutePath());
         hiveConf.setBoolVar(HiveConf.ConfVars.HIVE_IN_TEST, true);
-        System.setProperty(HiveConf.ConfVars.PREEXECHOOKS.varname, " ");
-        System.setProperty(HiveConf.ConfVars.POSTEXECHOOKS.varname, " ");
-    }
-
-    public void configure(int msPort, String derbyDbPath) {
-        configure();
-        hiveConf.setVar(HiveConf.ConfVars.METASTOREURIS, "thrift://localhost:"
-                + msPort);
-        hiveConf.set(HiveConf.ConfVars.METASTORECONNECTURLKEY.varname, "jdbc:derby:;databaseName=" + derbyDbPath + ";create=true");
     }
 
     public void stop() {
         cleanDb();
         t.interrupt();
+        cleanUp();
     }
 
     public void stop(boolean cleanUp) {
@@ -124,12 +220,15 @@ public class HiveLocalMetaStore implements MiniCluster {
     }
 
     private void cleanUp() {
-        FileUtils.deleteFolder(derbyDbPath);
+        FileUtils.deleteFolder(hiveMetastoreDerbyDbDir);
         FileUtils.deleteFolder(new File("derby.log").getAbsolutePath());
     }
 
     public void start() {
-        t = new Thread(new StartHiveLocalMetaStore());
+        StartHiveLocalMetaStore startHiveLocalMetaStore = new StartHiveLocalMetaStore();
+        startHiveLocalMetaStore.setHiveMetastorePort(hiveMetastorePort);
+        startHiveLocalMetaStore.setHiveConf(hiveConf);
+        t = new Thread(startHiveLocalMetaStore);
         t.start();
         try {
             Thread.sleep(5000);
@@ -142,7 +241,7 @@ public class HiveLocalMetaStore implements MiniCluster {
     public void prepDb() {
         try {
             LOG.info("HIVE METASTORE: Prepping the database");
-            TxnDbUtil.setConfValues(getConf());
+            TxnDbUtil.setConfValues(hiveConf);
             TxnDbUtil.prepDb();
         } catch(Exception e) {
             e.printStackTrace();
@@ -152,23 +251,11 @@ public class HiveLocalMetaStore implements MiniCluster {
     public void cleanDb() {
         try {
             LOG.info("HIVE METASTORE: Cleaning up the database");
-            TxnDbUtil.setConfValues(getConf());
+            TxnDbUtil.setConfValues(hiveConf);
             TxnDbUtil.cleanDb();
         } catch(Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public String getMetaStoreUri() {
-        return hiveConf.get("hive.metastore.uris");
-    }
-
-    public static HiveConf getConf() {
-        return hiveConf;
-    }
-
-    public void dumpConfig() {
-        LOG.info("HIVE METASTORE CONFIG: " + String.valueOf(hiveConf.getAllProperties()));
     }
 
 }

@@ -18,14 +18,15 @@ import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.impl.HiveLocalMetaStore;
 import com.github.sakserv.minicluster.util.FileUtils;
+import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 import org.apache.hadoop.hive.metastore.TableType;
 import org.apache.hadoop.hive.metastore.api.*;
 import org.apache.hadoop.hive.ql.io.orc.OrcSerde;
 import org.apache.hadoop.hive.serde.Constants;
 import org.apache.thrift.TException;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,8 +38,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class HiveLocalMetaStoreTest {
 
@@ -54,88 +57,71 @@ public class HiveLocalMetaStoreTest {
             LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
         }
     }
+    
+    private static HiveLocalMetaStore hiveLocalMetaStore;
 
-    private static final String HIVE_DB_NAME = "default";
-    private static final String HIVE_TABLE_NAME = "test_table";
-    private static final String HIVE_TABLE_PATH = new File(HIVE_TABLE_NAME).getAbsolutePath();
-    HiveLocalMetaStore hiveServer;
-
-    @Before
-    public void setUp() {
-        hiveServer = new HiveLocalMetaStore();
-        hiveServer.start();
+    @BeforeClass
+    public static void setUp() {
+        hiveLocalMetaStore = new HiveLocalMetaStore.Builder()
+                .setHiveMetastoreHostname(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_HOSTNAME_KEY))
+                .setHiveMetastorePort(Integer.parseInt(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_PORT_KEY)))
+                .setHiveMetastoreDerbyDbDir(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_DERBY_DB_DIR_KEY))
+                .setHiveScratchDir(propertyParser.getProperty(ConfigVars.HIVE_SCRATCH_DIR_KEY))
+                .setHiveWarehouseDir(propertyParser.getProperty(ConfigVars.HIVE_WAREHOUSE_DIR_KEY))
+                .setHiveConf(buildHiveConf())
+                .build();
     }
-
-    @After
-    public void tearDown() {
-        hiveServer.stop(true);
-        FileUtils.deleteFolder(HIVE_TABLE_PATH);
+    
+    
+    public static HiveConf buildHiveConf() {
+        HiveConf hiveConf = new HiveConf();
+        hiveConf.set(HiveConf.ConfVars.HIVE_TXN_MANAGER.varname, "org.apache.hadoop.hive.ql.lockmgr.DbTxnManager");
+        hiveConf.set(HiveConf.ConfVars.HIVE_COMPACTOR_INITIATOR_ON.varname, "true");
+        hiveConf.set(HiveConf.ConfVars.HIVE_COMPACTOR_WORKER_THREADS.varname, "5");
+        hiveConf.set("hive.root.logger", "DEBUG,console");
+        hiveConf.set(HiveConf.ConfVars.HIVE_SUPPORT_CONCURRENCY.varname, "false");
+        hiveConf.setIntVar(HiveConf.ConfVars.METASTORETHRIFTCONNECTIONRETRIES, 3);
+        hiveConf.set(HiveConf.ConfVars.HIVE_SUPPORT_CONCURRENCY.varname, "false");
+        hiveConf.set(HiveConf.ConfVars.PREEXECHOOKS.varname, "");
+        hiveConf.set(HiveConf.ConfVars.POSTEXECHOOKS.varname, "");
+        System.setProperty(HiveConf.ConfVars.PREEXECHOOKS.varname, " ");
+        System.setProperty(HiveConf.ConfVars.POSTEXECHOOKS.varname, " ");
+        return hiveConf;
     }
 
     @Test
-    public void testHiveLocalMetaStore() {
+    public void testHiveMetastoreHostname() {
+        assertEquals(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_HOSTNAME_KEY), 
+                hiveLocalMetaStore.getHiveMetastoreHostname());
+    }
 
-        // Create a table and display it back
-        try {
-            HiveMetaStoreClient hiveClient = new HiveMetaStoreClient(hiveServer.getConf());
+    @Test
+    public void testHiveMetastorePort() {
+        assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_PORT_KEY)),
+                (int) hiveLocalMetaStore.getHiveMetaStorePort());
+    }
 
-            hiveClient.dropTable(HIVE_DB_NAME, HIVE_TABLE_NAME, true, true);
+    @Test
+    public void testHiveMetastoreDerbyDbDir() {
+        assertEquals(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_DERBY_DB_DIR_KEY),
+                hiveLocalMetaStore.getHiveMetastoreDerbyDbDir());
+    }
 
-            // Define the cols
-            List<FieldSchema> cols = new ArrayList<FieldSchema>();
-            cols.add(new FieldSchema("id", Constants.INT_TYPE_NAME, ""));
-            cols.add(new FieldSchema("msg", Constants.STRING_TYPE_NAME, ""));
+    @Test
+    public void testHiveScratchDir() {
+        assertEquals(propertyParser.getProperty(ConfigVars.HIVE_SCRATCH_DIR_KEY),
+                hiveLocalMetaStore.getHiveScratchDir());
+    }
 
-            // Values for the StorageDescriptor
-            String location = HIVE_TABLE_PATH;
-            String inputFormat = "org.apache.hadoop.hive.ql.io.orc.OrcInputFormat";
-            String outputFormat = "org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat";
-            int numBuckets = 16;
-            Map<String,String> orcProps = new HashMap<String, String>();
-            orcProps.put("orc.compress", "NONE");
-            SerDeInfo serDeInfo = new SerDeInfo(OrcSerde.class.getSimpleName(), OrcSerde.class.getName(), orcProps);
-            List<String> bucketCols = new ArrayList<String>();
-            bucketCols.add("id");
-
-            // Build the StorageDescriptor
-            StorageDescriptor sd = new StorageDescriptor();
-            sd.setCols(cols);
-            sd.setLocation(location);
-            sd.setInputFormat(inputFormat);
-            sd.setOutputFormat(outputFormat);
-            sd.setNumBuckets(numBuckets);
-            sd.setSerdeInfo(serDeInfo);
-            sd.setBucketCols(bucketCols);
-            sd.setSortCols(new ArrayList<Order>());
-            sd.setParameters(new HashMap<String, String>());
-
-            // Define the table
-            Table tbl = new Table();
-            tbl.setDbName(HIVE_DB_NAME);
-            tbl.setTableName(HIVE_TABLE_NAME);
-            tbl.setSd(sd);
-            tbl.setOwner(System.getProperty("user.name"));
-            tbl.setParameters(new HashMap<String, String>());
-            tbl.setViewOriginalText("");
-            tbl.setViewExpandedText("");
-            tbl.setTableType(TableType.EXTERNAL_TABLE.name());
-            List<FieldSchema> partitions = new ArrayList<FieldSchema>();
-            partitions.add(new FieldSchema("dt", Constants.STRING_TYPE_NAME, ""));
-            tbl.setPartitionKeys(partitions);
-
-            // Create the table
-            hiveClient.createTable(tbl);
-
-            // Describe the table
-            Table createdTable = hiveClient.getTable(HIVE_DB_NAME, HIVE_TABLE_NAME);
-            LOG.info("HIVE: Created Table: " + createdTable.toString());
-            assertThat(createdTable.toString(), containsString(HIVE_TABLE_NAME));
-
-        } catch(MetaException e) {
-            e.printStackTrace();
-        } catch(TException e) {
-            e.printStackTrace();
-        }
+    @Test
+    public void testHiveWarehouseDir() {
+        assertEquals(propertyParser.getProperty(ConfigVars.HIVE_WAREHOUSE_DIR_KEY),
+                hiveLocalMetaStore.getHiveWarehouseDir());
+    }
+    
+    @Test
+    public void testHiveConf() {
+        assertTrue(hiveLocalMetaStore.getHiveConf() instanceof org.apache.hadoop.hive.conf.HiveConf);
 
     }
 

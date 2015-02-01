@@ -42,4 +42,17 @@ public class ConfigVars {
     public static final String STORM_ENABLE_DEBUG_KEY = "storm.enable.debug";
     public static final String STORM_NUM_WORKERS_KEY = "storm.num.workers";
     public static final String STORM_TOPOLOGY_NAME_KEY = "storm.topology.name";
+    
+    // Hive
+    public static final String HIVE_SCRATCH_DIR_KEY = "hive.scratch.dir";
+    public static final String HIVE_WAREHOUSE_DIR_KEY = "hive.warehouse.dir";
+    
+    // Hive Metastore
+    public static final String HIVE_METASTORE_HOSTNAME_KEY = "hive.metastore.hostname";
+    public static final String HIVE_METASTORE_PORT_KEY = "hive.metastore.port";
+    public static final String HIVE_METASTORE_DERBY_DB_DIR_KEY = "hive.metastore.derby.db.dir";
+    
+    // Hive Test
+    public static final String HIVE_TEST_DATABASE_NAME_KEY = "hive.test.database.name";
+    public static final String HIVE_TEST_TABLE_NAME_KEY = "hive.test.table.name";
 }

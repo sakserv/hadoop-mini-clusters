@@ -33,9 +33,9 @@ public class ZookeeperLocalCluster implements MiniCluster {
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(ZookeeperLocalCluster.class);
     
-    private final Integer port;
-    private final String tempDir;
-    private final String zookeeperConnectionString;
+    private Integer port;
+    private String tempDir;
+    private String zookeeperConnectionString;
 
     private TestingServer testingServer;
 
@@ -51,10 +51,7 @@ public class ZookeeperLocalCluster implements MiniCluster {
     
     public String getTempDir() { return tempDir; }
     
-    public String getZookeeperConnectionString() {
-        return zookeeperConnectionString;
-        
-    }
+    public String getZookeeperConnectionString() { return zookeeperConnectionString; }
 
     public static class Builder
     {
