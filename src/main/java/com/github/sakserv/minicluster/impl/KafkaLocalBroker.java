@@ -33,94 +33,160 @@ public class KafkaLocalBroker implements MiniCluster {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(KafkaLocalBroker.class);
+    
+    private KafkaServer kafkaServer;
+    private KafkaConfig kafkaConfig;
+    
+    private String kafkaHostname;
+    private Integer kafkaPort;
+    private Integer kafkaBrokerId;
+    private Properties kafkaProperties;
+    private String kafkaTempDir;
+    private String zookeeperConnectionString;
 
-    //location of kafka logging file:
-    public static final String DEFAULT_TEST_TOPIC = "test-topic";
-    public static final String DEFAULT_LOG_DIR = "embedded_kafka";
-    public static final int DEFAULT_PORT = 9092;
-    public static final int DEFAULT_BROKER_ID = 1;
-    public static final String DEFAULT_ZK_CONNECTION_STRING = "localhost:22010";
+    public String getKafkaHostname() {
+        return kafkaHostname;
+    }
 
-    public KafkaConfig conf;
-    public KafkaServer server;
+    public Integer getKafkaPort() {
+        return kafkaPort;
+    }
 
-    private String topic;
-    private String logDir;
-    private int port;
-    private int brokerId;
-    private String zkConnString;
+    public Integer getKafkaBrokerId() {
+        return kafkaBrokerId;
+    }
 
+    public Properties getKafkaProperties() {
+        return kafkaProperties;
+    }
+
+    public String getKafkaTempDir() {
+        return kafkaTempDir;
+    }
+
+    public String getZookeeperConnectionString() {
+        return zookeeperConnectionString;
+    }
+    
+    private KafkaLocalBroker(Builder builder) {
+        this.kafkaHostname = builder.kafkaHostname;
+        this.kafkaPort = builder.kafkaPort;
+        this.kafkaBrokerId = builder.kafkaBrokerId;
+        this.kafkaProperties = builder.kafkaProperties;
+        this.kafkaTempDir = builder.kafkaTempDir;
+        this.zookeeperConnectionString = builder.zookeeperConnectionString;
+        
+    }
+
+    
+    public static class Builder {
+        private String kafkaHostname;
+        private Integer kafkaPort;
+        private Integer kafkaBrokerId;
+        private Properties kafkaProperties;
+        private String kafkaTempDir;
+        private String zookeeperConnectionString;
+        
+        public Builder setKafkaHostname(String kafkaHostname) {
+            this.kafkaHostname = kafkaHostname;
+            return this;
+        }
+        
+        public Builder setKafkaPort(Integer kafkaPort) {
+            this.kafkaPort = kafkaPort;
+            return this;
+        }
+        
+        public Builder setKafkaBrokerId(Integer kafkaBrokerId){
+            this.kafkaBrokerId = kafkaBrokerId;
+            return this;
+        }
+        
+        public Builder setKafkaProperties(Properties kafkaProperties) {
+            this.kafkaProperties = kafkaProperties;
+            return this;
+        }
+        
+        public Builder setKafkaTempDir(String kafkaTempDir) {
+            this.kafkaTempDir = kafkaTempDir;
+            return this;
+        }
+        
+        public Builder setZookeeperConnectionString(String zookeeperConnectionString) {
+            this.zookeeperConnectionString = zookeeperConnectionString;
+            return this;
+        }
+        
+        public KafkaLocalBroker build() {
+            KafkaLocalBroker kafkaLocalBroker = new KafkaLocalBroker(this);
+            validateObject(kafkaLocalBroker);
+            return kafkaLocalBroker;
+        }
+        
+        public void validateObject(KafkaLocalBroker kafkaLocalBroker) {
+            if(kafkaLocalBroker.kafkaHostname == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Kafka Hostname");
+            }
+
+            if(kafkaLocalBroker.kafkaPort == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Kafka Port");
+            }
+
+            if(kafkaLocalBroker.kafkaBrokerId == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Kafka Broker Id");
+            }
+
+            if(kafkaLocalBroker.kafkaProperties == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Kafka Properties");
+            }
+
+            if(kafkaLocalBroker.kafkaTempDir == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Kafka Temp Dir");
+            }
+
+            if(kafkaLocalBroker.zookeeperConnectionString == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Zookeeper Connection String");
+            }
+        }
+    }
     /**
      * default constructor
      */
-    public KafkaLocalBroker(){
-        this(DEFAULT_TEST_TOPIC, DEFAULT_LOG_DIR, DEFAULT_PORT, DEFAULT_BROKER_ID, DEFAULT_ZK_CONNECTION_STRING);
-    }
-
-    public KafkaLocalBroker(String topic) {
-        this(topic, DEFAULT_LOG_DIR, DEFAULT_PORT, DEFAULT_BROKER_ID, DEFAULT_ZK_CONNECTION_STRING);
-    }
-
-    public KafkaLocalBroker(String topic, String logDir, int port, int brokerId, String zkConnString){
-        this.topic = topic;
-        this.logDir = logDir;
-        this.port = port;
-        this.brokerId = brokerId;
-        this.zkConnString = zkConnString;
-        configure();
-    }
-
+    
     public void configure() {
-        configure(logDir, port, brokerId, zkConnString);
-    }
-
-    public void configure(String logDir, int port, int brokerId, String zkConnString) {
-        Properties properties = new Properties();
-        properties.put("port", port+"");
-        properties.put("broker.id", brokerId+"");
-        properties.put("log.dir", logDir);
-        properties.put("enable.zookeeper", "true");
-        properties.put("zookeeper.connect", zkConnString);
-        properties.put("advertised.host.name", "localhost");
-        conf = new KafkaConfig(properties);
+        kafkaProperties.put("advertised.host.name", kafkaHostname);
+        kafkaProperties.put("port", kafkaPort+"");
+        kafkaProperties.put("broker.id", kafkaBrokerId+"");
+        kafkaProperties.put("log.dir", kafkaTempDir);
+        kafkaProperties.put("enable.zookeeper", "true");
+        kafkaProperties.put("zookeeper.connect", zookeeperConnectionString);
+        kafkaConfig = new KafkaConfig(kafkaProperties);
     }
 
     public void start() {
-        server = new KafkaServer(conf, new LocalSystemTime());
-        LOG.info("KAFKA: Starting Kafka on port: " + port);
-        server.startup();
+        configure();
+        kafkaServer = new KafkaServer(kafkaConfig, new LocalSystemTime());
+        LOG.info("KAFKA: Starting Kafka on port: " + kafkaPort);
+        kafkaServer.startup();
     }
 
     public void stop() {
-        stop(false);
+        stop(true);
     }
 
     public void stop(boolean cleanUp){
-        LOG.info("KAFKA: Stopping Kafka on port: " + port);
-        server.shutdown();
+        LOG.info("KAFKA: Stopping Kafka on port: " + kafkaPort);
+        kafkaServer.shutdown();
 
         if (cleanUp) {
-            LOG.info("KAFKA: Deleting Old Topics");
-            deleteOldTopics(logDir);
+            cleanUp();
         }
     }
 
-    public void dumpConfig() {
-        LOG.info("KAFKA CONFIG: " + conf.props().toString());
+    private void cleanUp() {
+        FileUtils.deleteFolder(kafkaTempDir);
     }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void deleteOldTopics(String dir) {
-        //delete old Kafka topic files
-        File delLogDir = new File(dir);
-        if (delLogDir.exists()){
-            FileUtils.deleteFolder(delLogDir.getAbsolutePath());
-        }
-    }
-
+    
     public class LocalSystemTime implements Time {
 
         @Override

@@ -59,4 +59,14 @@ public class ConfigVars {
     // Hive Test
     public static final String HIVE_TEST_DATABASE_NAME_KEY = "hive.test.database.name";
     public static final String HIVE_TEST_TABLE_NAME_KEY = "hive.test.table.name";
+    
+    // Kafka
+    public static final String KAFKA_HOSTNAME_KEY = "kafka.hostname";
+    public static final String KAFKA_PORT_KEY = "kafka.port";
+    
+    // Kafka Test
+    public static final String KAFKA_TEST_TOPIC_KEY = "kafka.test.topic";
+    public static final String KAFKA_TEST_MESSAGE_COUNT_KEY = "kafka.test.message.count";
+    public static final String KAFKA_TEST_BROKER_ID_KEY = "kafka.test.broker.id";
+    public static final String KAFKA_TEST_TEMP_DIR_KEY = "kafka.test.temp.dir";
 }

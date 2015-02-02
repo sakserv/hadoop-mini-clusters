@@ -14,43 +14,29 @@
 
 package com.github.sakserv.minicluster;
 
-import com.github.sakserv.datetime.GenerateRandomDay;
 import com.github.sakserv.kafka.KafkaTestConsumer;
 import com.github.sakserv.kafka.KafkaTestProducer;
 import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.impl.KafkaLocalBroker;
 import com.github.sakserv.minicluster.impl.ZookeeperLocalCluster;
-import kafka.api.FetchRequest;
-import kafka.api.FetchRequestBuilder;
-import kafka.common.ErrorMapping;
-import kafka.javaapi.*;
-import kafka.javaapi.consumer.SimpleConsumer;
-import kafka.javaapi.producer.Producer;
-import kafka.message.MessageAndOffset;
-import kafka.producer.KeyedMessage;
-import kafka.producer.ProducerConfig;
-import org.apache.hadoop.hdfs.DFSClient;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
-public class KafkaLocalBrokerTest {
+public class KafkaLocalBrokerIntegrationTest {
 
     // Logger
-    private static final Logger LOG = LoggerFactory.getLogger(KafkaLocalBrokerTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(KafkaLocalBrokerIntegrationTest.class);
 
     // Setup the property parser
     private static PropertyParser propertyParser;
@@ -67,6 +53,13 @@ public class KafkaLocalBrokerTest {
     
     @BeforeClass
     public static void setUp() {
+        zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
+                .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
+                .setTempDir(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY))
+                .setZookeeperConnectionString(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY))
+                .build();
+        zookeeperLocalCluster.start();
+
         kafkaLocalBroker = new KafkaLocalBroker.Builder()
                 .setKafkaHostname(propertyParser.getProperty(ConfigVars.KAFKA_HOSTNAME_KEY))
                 .setKafkaPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.KAFKA_PORT_KEY)))
@@ -75,40 +68,45 @@ public class KafkaLocalBrokerTest {
                 .setKafkaTempDir(propertyParser.getProperty(ConfigVars.KAFKA_TEST_TEMP_DIR_KEY))
                 .setZookeeperConnectionString(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY))
                 .build();
+        kafkaLocalBroker.start();
+
+    }
+
+    @AfterClass
+    public static void tearDown() {
+
+        kafkaLocalBroker.stop();
+        zookeeperLocalCluster.stop();
     }
 
     @Test
-    public void testKafkaHostname() {
-        assertEquals(propertyParser.getProperty(ConfigVars.KAFKA_HOSTNAME_KEY), kafkaLocalBroker.getKafkaHostname());
-    }
+    public void testKafkaLocalBroker() throws Exception {
 
-    @Test
-    public void testKafkaPort() {
-        assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.KAFKA_PORT_KEY)), 
-                (int) kafkaLocalBroker.getKafkaPort());
-    }
+        // Producer 
+        KafkaTestProducer kafkaTestProducer = new KafkaTestProducer.Builder()
+                .setKafkaHostname(propertyParser.getProperty(ConfigVars.KAFKA_HOSTNAME_KEY))
+                .setKafkaPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.KAFKA_PORT_KEY)))
+                .setTopic(propertyParser.getProperty(ConfigVars.KAFKA_TEST_TOPIC_KEY))
+                .setMessageCount(Integer.parseInt(propertyParser.getProperty(ConfigVars.KAFKA_TEST_MESSAGE_COUNT_KEY)))
+                .build();
+        kafkaTestProducer.produceMessages();
+        
 
-    @Test
-    public void testKafkaBrokerId() {
-        assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.KAFKA_TEST_BROKER_ID_KEY)),
-                (int) kafkaLocalBroker.getKafkaBrokerId());
-    }
+        // Consumer
+        List<String> seeds = new ArrayList<String>();
+        seeds.add(kafkaLocalBroker.getKafkaHostname());
+        KafkaTestConsumer kafkaTestConsumer = new KafkaTestConsumer();
+        kafkaTestConsumer.consumeMessages(
+                Integer.parseInt(propertyParser.getProperty(ConfigVars.KAFKA_TEST_MESSAGE_COUNT_KEY)),
+                propertyParser.getProperty(ConfigVars.KAFKA_TEST_TOPIC_KEY),
+                0,
+                seeds,
+                kafkaLocalBroker.getKafkaPort());
+        
+        // Assert num of messages produced = num of message consumed
+        assertEquals(Long.parseLong(propertyParser.getProperty(ConfigVars.KAFKA_TEST_MESSAGE_COUNT_KEY)),
+                kafkaTestConsumer.getNumRead());
 
-    @Test
-    public void testKafkaProperties() {
-        assertTrue(kafkaLocalBroker.getKafkaProperties() instanceof java.util.Properties);
-    }
-
-    @Test
-    public void testKafkaTempDir() {
-        assertEquals(propertyParser.getProperty(ConfigVars.KAFKA_TEST_TEMP_DIR_KEY), 
-                kafkaLocalBroker.getKafkaTempDir());
-    }
-
-    @Test
-    public void testZookeeperConnectionString() {
-        assertEquals(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY),
-                kafkaLocalBroker.getZookeeperConnectionString());
     }
 
 }
