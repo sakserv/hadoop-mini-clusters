@@ -145,7 +145,7 @@ public class HdfsLocalCluster implements MiniCluster {
     }
     
     public void configure() {
-        hdfsConfig.setBoolean("dfs.permissions", false);
+        hdfsConfig.setBoolean("dfs.permissions", hdfsEnablePermissions);
         System.setProperty("test.build.data", hdfsTempDir);
     }
     
