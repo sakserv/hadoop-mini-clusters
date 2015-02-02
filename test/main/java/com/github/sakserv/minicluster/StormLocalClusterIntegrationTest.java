@@ -14,7 +14,6 @@
 
 package com.github.sakserv.minicluster;
 
-import backtype.storm.Config;
 import backtype.storm.topology.TopologyBuilder;
 import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
@@ -22,7 +21,9 @@ import com.github.sakserv.minicluster.impl.StormLocalCluster;
 import com.github.sakserv.minicluster.impl.ZookeeperLocalCluster;
 import com.github.sakserv.storm.bolt.PrinterBolt;
 import com.github.sakserv.storm.spout.RandomSentenceSpout;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

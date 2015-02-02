@@ -17,7 +17,6 @@ package com.github.sakserv.minicluster.impl;
 import com.github.sakserv.minicluster.MiniCluster;
 import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.hadoop.hive.conf.HiveConf;
-import org.apache.hive.service.Service;
 import org.apache.hive.service.server.HiveServer2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -15,8 +15,6 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.curator.test.TestingServer;
 import org.slf4j.Logger;

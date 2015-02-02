@@ -23,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 
 public class HdfsLocalCluster implements MiniCluster {
@@ -31,47 +30,135 @@ public class HdfsLocalCluster implements MiniCluster {
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(HdfsLocalCluster.class);
 
-    private static MiniDFSCluster.Builder clusterBuilder;
-    private static MiniDFSCluster cluster;
-    private static Configuration conf = new Configuration();
-    private static final String DEFAULT_LOG_DIR = "embedded_hdfs";
+    MiniDFSCluster miniDFSCluster;
+    
+    private Integer hdfsNamenodePort;
+    private String hdfsTempDir;
+    private Integer hdfsNumDatanodes;
+    private Boolean hdfsEnablePermissions;
+    private Boolean hdfsFormat;
+    private Configuration hdfsConfig;
 
-    public HdfsLocalCluster() {
-        configure();
-        clusterBuilder = new MiniDFSCluster.Builder(getConf());
+    public Integer getHdfsNamenodePort() {
+        return hdfsNamenodePort;
     }
 
-    public void configure() {
-        conf.setBoolean("dfs.permissions", false);
-        System.setProperty("test.build.data", DEFAULT_LOG_DIR);
+    public String getHdfsTempDir() {
+        return hdfsTempDir;
     }
 
-    public Configuration getConf() {
-        return conf;
+    public Integer getHdfsNumDatanodes() {
+        return hdfsNumDatanodes;
     }
 
-    public void dumpConfig() {
-        LOG.info("HDFS CONF:");
-        Iterator it = conf.iterator();
-        while(it.hasNext()) {
-            LOG.info(it.next().toString());
+    public Boolean getHdfsEnablePermissions() {
+        return hdfsEnablePermissions;
+    }
+
+    public Boolean getHdfsFormat() {
+        return hdfsFormat;
+    }
+
+    public Configuration getHdfsConfig() {
+        return hdfsConfig;
+    }
+
+    private HdfsLocalCluster(Builder builder) {
+        this.hdfsNamenodePort = builder.hdfsNamenodePort;
+        this.hdfsTempDir = builder.hdfsTempDir;
+        this.hdfsNumDatanodes = builder.hdfsNumDatanodes;
+        this.hdfsEnablePermissions = builder.hdfsEnablePermissions;
+        this.hdfsFormat = builder.hdfsFormat;
+        this.hdfsConfig = builder.hdfsConfig;
+    }
+    
+    public static class Builder {
+        private Integer hdfsNamenodePort;
+        private String hdfsTempDir;
+        private Integer hdfsNumDatanodes;
+        private Boolean hdfsEnablePermissions;
+        private Boolean hdfsFormat;
+        private Configuration hdfsConfig;
+        
+        public Builder setHdfsNamenodePort(Integer hdfsNameNodePort) {
+            this.hdfsNamenodePort = hdfsNameNodePort;
+            return this;
+        }
+        
+        public Builder setHdfsTempDir(String hdfsTempDir) {
+            this.hdfsTempDir = hdfsTempDir;
+            return this;
+        }
+        
+        public Builder setHdfsNumDatanodes(Integer hdfsNumDatanodes) {
+            this.hdfsNumDatanodes = hdfsNumDatanodes;
+            return this;
+        }
+        
+        public Builder setHdfsEnablePermissions(Boolean hdfsEnablePermissions) {
+            this.hdfsEnablePermissions = hdfsEnablePermissions;
+            return this;
+        }
+        
+        public Builder setHdfsFormat(Boolean hdfsFormat) {
+            this.hdfsFormat = hdfsFormat;
+            return this;
+        }
+        
+        public Builder setHdfsConfig(Configuration hdfsConfig) {
+            this.hdfsConfig = hdfsConfig;
+            return this;
+        }
+        
+        public HdfsLocalCluster build() {
+            HdfsLocalCluster hdfsLocalCluster = new HdfsLocalCluster(this);
+            validateObject(hdfsLocalCluster);
+            return hdfsLocalCluster;
+        }
+        
+        public void validateObject(HdfsLocalCluster hdfsLocalCluster) {
+            if(hdfsLocalCluster.hdfsNamenodePort == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: HDFS Namenode Port");
+            }
+            
+            if(hdfsLocalCluster.hdfsTempDir == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: HDFS Temp Dir");
+            }
+
+            if(hdfsLocalCluster.hdfsNumDatanodes == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: HDFS Num Datanodes");
+            }
+
+            if(hdfsLocalCluster.hdfsEnablePermissions == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: HDFS Enable Permissions");
+            }
+
+            if(hdfsLocalCluster.hdfsFormat == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: HDFS Format");
+            }
+
+            if(hdfsLocalCluster.hdfsConfig == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: HDFS Config");
+            }
+            
         }
     }
-
-    public void start() {
-        start(1);
+    
+    public void configure() {
+        hdfsConfig.setBoolean("dfs.permissions", false);
+        System.setProperty("test.build.data", hdfsTempDir);
     }
-
-    public void start(int numOfDataNodes) {
-        LOG.info("HDFS: Starting MiniDfsCluster");
+    
+    public void start() {
         try {
-
-            cluster = clusterBuilder.numDataNodes(numOfDataNodes)
-            .format(true)
-            .racks(null)
-            .build();
-            cluster.waitClusterUp();
-            
+            LOG.info("HDFS: Starting MiniDfsCluster");
+            configure();
+            miniDFSCluster = new MiniDFSCluster.Builder(hdfsConfig)
+                    .nameNodePort(hdfsNamenodePort)
+                    .numDataNodes(hdfsNumDatanodes)
+                    .format(hdfsFormat)
+                    .racks(null)
+                    .build();
         } catch(IOException e) {
             LOG.error("ERROR: Failed to start MiniDfsCluster");
             e.printStackTrace();
@@ -79,12 +166,12 @@ public class HdfsLocalCluster implements MiniCluster {
     }
 
     public void stop() {
-        LOG.info("HDFS: Stopping MiniDfsCluster");
-        cluster.shutdown();
+        stop(true);
     }
     
     public void stop(boolean cleanUp) {
-        stop();
+        LOG.info("HDFS: Stopping MiniDfsCluster");
+        miniDFSCluster.shutdown();
         if(cleanUp) {
             cleanUp();
         }
@@ -92,24 +179,13 @@ public class HdfsLocalCluster implements MiniCluster {
     }
     
     public void cleanUp() {
-        FileUtils.deleteFolder(DEFAULT_LOG_DIR);
-    }
-
-    public String getHdfsUriString() {
-        String hdfsUriString = "";
-        try {
-            hdfsUriString = "hdfs://" + cluster.getFileSystem().getCanonicalServiceName();
-        } catch(IOException e) {
-            LOG.error("ERROR: Failed to return MiniDFsCluster URI");
-            e.printStackTrace();
-        }
-        return hdfsUriString;
+        FileUtils.deleteFolder(hdfsTempDir);
     }
 
     public FileSystem getHdfsFileSystemHandle() {
         FileSystem hdfsFileSystemHandle = null;
         try {
-            hdfsFileSystemHandle = cluster.getFileSystem();
+            hdfsFileSystemHandle = miniDFSCluster.getFileSystem();
         } catch(IOException e) {
             LOG.error("ERROR: Failed to return MiniDFsCluster URI");
             e.printStackTrace();

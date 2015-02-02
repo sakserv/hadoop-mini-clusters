@@ -22,7 +22,6 @@ import backtype.storm.topology.BasicOutputCollector;
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseBasicBolt;
 import backtype.storm.tuple.Tuple;
-import org.apache.log4j.Logger;
 
 public class PrinterBolt extends BaseBasicBolt {
 

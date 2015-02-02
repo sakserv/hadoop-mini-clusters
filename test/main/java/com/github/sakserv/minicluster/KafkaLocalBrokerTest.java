@@ -14,34 +14,16 @@
 
 package com.github.sakserv.minicluster;
 
-import com.github.sakserv.datetime.GenerateRandomDay;
-import com.github.sakserv.kafka.KafkaTestConsumer;
-import com.github.sakserv.kafka.KafkaTestProducer;
 import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.impl.KafkaLocalBroker;
 import com.github.sakserv.minicluster.impl.ZookeeperLocalCluster;
-import kafka.api.FetchRequest;
-import kafka.api.FetchRequestBuilder;
-import kafka.common.ErrorMapping;
-import kafka.javaapi.*;
-import kafka.javaapi.consumer.SimpleConsumer;
-import kafka.javaapi.producer.Producer;
-import kafka.message.MessageAndOffset;
-import kafka.producer.KeyedMessage;
-import kafka.producer.ProducerConfig;
-import org.apache.hadoop.hdfs.DFSClient;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
-import org.junit.*;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;

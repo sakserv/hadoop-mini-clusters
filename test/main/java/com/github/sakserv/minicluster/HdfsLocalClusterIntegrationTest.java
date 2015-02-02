@@ -18,6 +18,11 @@ import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.impl.HdfsLocalCluster;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FSDataInputStream;
+import org.apache.hadoop.fs.FSDataOutputStream;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -26,12 +31,11 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
-public class HdfsLocalClusterTest {
+public class HdfsLocalClusterIntegrationTest {
 
     // Logger
-    private static final Logger LOG = LoggerFactory.getLogger(HdfsLocalClusterTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HdfsLocalClusterIntegrationTest.class);
 
     // Setup the property parser
     private static PropertyParser propertyParser;
@@ -43,11 +47,11 @@ public class HdfsLocalClusterTest {
         }
     }
     
-    private static HdfsLocalCluster hdfsLocalCluster;
+    private static HdfsLocalCluster dfsCluster;
 
     @BeforeClass
     public static void setUp(){
-        hdfsLocalCluster = new HdfsLocalCluster.Builder()
+        dfsCluster = new HdfsLocalCluster.Builder()
                 .setHdfsNamenodePort(Integer.parseInt(propertyParser.getProperty(ConfigVars.HDFS_NAMENODE_PORT_KEY)))
                 .setHdfsTempDir(propertyParser.getProperty(ConfigVars.HDFS_TEMP_DIR_KEY))
                 .setHdfsNumDatanodes(Integer.parseInt(propertyParser.getProperty(ConfigVars.HDFS_NUM_DATANODES_KEY)))
@@ -56,41 +60,30 @@ public class HdfsLocalClusterTest {
                 .setHdfsFormat(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HDFS_FORMAT_KEY)))
                 .setHdfsConfig(new Configuration())
                 .build();
+        dfsCluster.start();
+    }
+
+    @AfterClass
+    public static void tearDown(){
+        dfsCluster.stop();
     }
 
     @Test
-    public void testHdfsNamenodePort() {
-        assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.HDFS_NAMENODE_PORT_KEY)),
-                (int) hdfsLocalCluster.getHdfsNamenodePort());
-    }
+    public void testDfsClusterStart() throws IOException {
+        
+        // Write a file to HDFS containing the test string
+        FileSystem hdfsFsHandle = dfsCluster.getHdfsFileSystemHandle();
+        FSDataOutputStream writer = hdfsFsHandle.create(
+                new Path(propertyParser.getProperty(ConfigVars.HDFS_TEST_FILE_KEY)));
+        writer.writeUTF(propertyParser.getProperty(ConfigVars.HDFS_TEST_STRING_KEY));
+        writer.close();
 
-    @Test
-    public void testHdfsTempDir() {
-        assertEquals(propertyParser.getProperty(ConfigVars.HDFS_TEMP_DIR_KEY),
-                hdfsLocalCluster.getHdfsTempDir());
-    }
-
-    @Test
-    public void testHdfsNumDatanodes() {
-        assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.HDFS_NUM_DATANODES_KEY)),
-                (int) hdfsLocalCluster.getHdfsNumDatanodes());
-    }
-
-    @Test
-    public void testHdfsEnablePermissions() {
-        assertEquals(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HDFS_ENABLE_PERMISSIONS_KEY)),
-                (boolean) hdfsLocalCluster.getHdfsEnablePermissions());
-    }
-
-    @Test
-    public void testHdfsFormat() {
-        assertEquals(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HDFS_FORMAT_KEY)),
-                (boolean) hdfsLocalCluster.getHdfsFormat());
-    }
-
-    @Test
-    public void testHdfsConf() {
-        assertTrue(hdfsLocalCluster.getHdfsConfig() instanceof org.apache.hadoop.conf.Configuration);
+        // Read the file and compare to test string
+        FSDataInputStream reader = hdfsFsHandle.open(
+                new Path(propertyParser.getProperty(ConfigVars.HDFS_TEST_FILE_KEY)));
+        assertEquals(reader.readUTF(), propertyParser.getProperty(ConfigVars.HDFS_TEST_STRING_KEY));
+        reader.close();
+        hdfsFsHandle.close();
 
     }
 }

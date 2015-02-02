@@ -69,4 +69,16 @@ public class ConfigVars {
     public static final String KAFKA_TEST_MESSAGE_COUNT_KEY = "kafka.test.message.count";
     public static final String KAFKA_TEST_BROKER_ID_KEY = "kafka.test.broker.id";
     public static final String KAFKA_TEST_TEMP_DIR_KEY = "kafka.test.temp.dir";
+    
+    //HDFS
+    public static final String HDFS_NAMENODE_PORT_KEY = "hdfs.namenode.port";
+    public static final String HDFS_TEMP_DIR_KEY = "hdfs.temp.dir";
+    public static final String HDFS_NUM_DATANODES_KEY = "hdfs.num.datanodes";
+    public static final String HDFS_ENABLE_PERMISSIONS_KEY = "hdfs.enable.permissions";
+    public static final String HDFS_FORMAT_KEY = "hdfs.format";
+    
+    // HDFS Test
+    public static final String HDFS_TEST_FILE_KEY = "hdfs.test.file";
+    public static final String HDFS_TEST_STRING_KEY = "hdfs.test.string";
+    
 }
