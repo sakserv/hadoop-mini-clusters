@@ -36,8 +36,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <hadoop-mini-clusters.version>0.0.9</hadoop-mini-clusters.version>
-        <regex-tester.version>0.1</regex-tester.version>
         <slf4j.version>1.7.10</slf4j.version>
         <junit.version>4.11</junit.version>
         <storm.version>0.9.3.2.2.0.0-2041</storm.version>
@@ -322,6 +320,7 @@
                 <version>1.4</version>
                 <configuration>
                     <createDependencyReducedPom>true</createDependencyReducedPom>
+                    <minimizeJar>true</minimizeJar>
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
@@ -329,6 +328,8 @@
                                 <exclude>META-INF/*.SF</exclude>
                                 <exclude>META-INF/*.DSA</exclude>
                                 <exclude>META-INF/*.RSA</exclude>
+                                <exclude>META-INF/LICENSE*</exclude>
+                                <exclude>LICENSE</exclude>
                             </excludes>
                         </filter>
                     </filters>
@@ -340,15 +341,10 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass />
-                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer" />
                             </transformers>
-
-
                         </configuration>
                     </execution>
                 </executions>

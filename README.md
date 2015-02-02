@@ -25,13 +25,13 @@ Using:
 	<dependency>
 		<groupId>com.github.sakserv</groupId>
 		<artifactId>hadoop-mini-clusters</artifactId>
-		<version>0.0.10</version>
+		<version>0.0.11</version>
 	</dependency>
 ```
 
 Examples:
 ---------
-**Starting with 0.0.10, all mini clusters have moved to the builder pattern**
+**Starting with 0.0.11, all mini clusters have moved to the builder pattern**
 
 **Some mini clusters depend on others (i.e. KafkaLocalBroker depends on ZookeeperLocalCluster), see tests for examples**
 
