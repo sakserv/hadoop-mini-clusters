@@ -3,6 +3,7 @@ Change Log
 
 ### 0.0.11 - 02/02/2015
 * Fixed shade plugin to resolve corrupt jar issues
+* Added usage examples to README
 
 ### 0.0.10 - 02/02/2015 - DO NOT USE
 * RELEASE NUKED DUE TO SHADE PLUGIN PRODUCING A BAD JAR
