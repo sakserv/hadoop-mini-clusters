@@ -52,6 +52,10 @@ public class ConfigVars {
     public static final String HIVE_METASTORE_PORT_KEY = "hive.metastore.port";
     public static final String HIVE_METASTORE_DERBY_DB_DIR_KEY = "hive.metastore.derby.db.dir";
     
+    // Hive Server2
+    public static final String HIVE_SERVER2_HOSTNAME_KEY = "hive.server2.hostname";
+    public static final String HIVE_SERVER2_PORT_KEY = "hive.server2.port";
+    
     // Hive Test
     public static final String HIVE_TEST_DATABASE_NAME_KEY = "hive.test.database.name";
     public static final String HIVE_TEST_TABLE_NAME_KEY = "hive.test.table.name";

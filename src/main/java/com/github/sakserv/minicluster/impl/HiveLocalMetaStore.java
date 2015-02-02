@@ -54,7 +54,7 @@ public class HiveLocalMetaStore implements MiniCluster {
         return hiveMetastoreHostname;
     }
     
-    public Integer getHiveMetaStorePort() {
+    public Integer getHiveMetastorePort() {
         return hiveMetastorePort;
     }
 
@@ -207,13 +207,17 @@ public class HiveLocalMetaStore implements MiniCluster {
     }
 
     public void stop() {
-        cleanDb();
-        t.interrupt();
-        cleanUp();
+        LOG.info("HIVESERVER2: Stopping Hive Metastore on port: " + hiveMetastorePort);
+        stop(true);
     }
 
     public void stop(boolean cleanUp) {
-        stop();
+        if(cleanUp) {
+            cleanDb();
+        }
+        
+        t.interrupt();
+        
         if (cleanUp) {
             cleanUp();
         }
@@ -225,6 +229,7 @@ public class HiveLocalMetaStore implements MiniCluster {
     }
 
     public void start() {
+        LOG.info("HIVESERVER2: Starting Hive Metastore on port: " + hiveMetastorePort);
         StartHiveLocalMetaStore startHiveLocalMetaStore = new StartHiveLocalMetaStore();
         startHiveLocalMetaStore.setHiveMetastorePort(hiveMetastorePort);
         startHiveLocalMetaStore.setHiveConf(hiveConf);

@@ -28,96 +28,207 @@ public class HiveLocalServer2 implements MiniCluster {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(HiveLocalServer2.class);
-
-    private static final String DEFAULT_METASTORE_URI = "";
-    private static final String DEFAULT_DERBY_DB_PATH = "metastore_db";
-    private static final String DEFAULT_HIVE_SCRATCH_DIR = "hive_scratch_dir";
-    private static final int DEFAULT_HIVESERVER2_PORT = 10000;
-
-    private HiveConf hiveConf = new HiveConf();
-    private HiveServer2 server;
-
-    private String metaStoreUri;
-    private String derbyDbPath;
+    
+    private HiveServer2 hiveServer2;
+    
+    private String hiveServer2Hostname;
+    private Integer hiveServer2Port;
+    private String hiveMetastoreHostname;
+    private Integer hiveMetastorePort;
+    private String hiveMetastoreDerbyDbDir;
     private String hiveScratchDir;
-    private int hiveServer2Port;
+    private String hiveWarehouseDir;
+    private HiveConf hiveConf;
+    private String zookeeperConnectionString;
 
-    private String zookeeperQuorum;
-
-    public HiveLocalServer2() {
-        metaStoreUri = DEFAULT_METASTORE_URI;
-        derbyDbPath = DEFAULT_DERBY_DB_PATH;
-        hiveScratchDir = DEFAULT_HIVE_SCRATCH_DIR;
-        hiveServer2Port = DEFAULT_HIVESERVER2_PORT;
-        configure();
+    public String getHiveServer2Hostname() {
+        return hiveServer2Hostname;
     }
 
-    public HiveLocalServer2(String metaStoreUri, String derbyDbPath, String hiveScratchDir, int hiveServer2Port) {
-        this.metaStoreUri = metaStoreUri;
-        this.derbyDbPath = derbyDbPath;
-        this.hiveScratchDir = hiveScratchDir;
-        this.hiveServer2Port = hiveServer2Port;
-        configure();
+    public Integer getHiveServer2Port() {
+        return hiveServer2Port;
     }
 
-    public HiveLocalServer2(String metaStoreUri, String derbyDbPath, String hiveScratchDir,
-                            int hiveServer2Port, String zookeeperQuorum) {
-        this.metaStoreUri = metaStoreUri;
-        this.derbyDbPath = derbyDbPath;
-        this.hiveScratchDir = hiveScratchDir;
-        this.hiveServer2Port = hiveServer2Port;
-        this.zookeeperQuorum = zookeeperQuorum;
-        configure();
-        configureWithZookeeper();
+    public String getHiveMetastoreHostname() {
+        return hiveMetastoreHostname;
     }
 
+    public Integer getHiveMetastorePort() {
+        return hiveMetastorePort;
+    }
+    
+    public String getHiveMetastoreDerbyDbDir() {
+        return hiveMetastoreDerbyDbDir;
+    }
+
+    public String getHiveScratchDir() {
+        return hiveScratchDir;
+    }
+
+    public String getHiveWarehouseDir() {
+        return hiveWarehouseDir;
+    }
+
+    public HiveConf getHiveConf() {
+        return hiveConf;
+    }
+
+    public String getZookeeperConnectionString() {
+        return zookeeperConnectionString;
+    }
+    
+    private HiveLocalServer2(Builder builder) {
+        this.hiveServer2Hostname = builder.hiveServer2Hostname;
+        this.hiveServer2Port = builder.hiveServer2Port;
+        this.hiveMetastoreHostname = builder.hiveMetastoreHostname;
+        this.hiveMetastorePort = builder.hiveMetastorePort;
+        this.hiveMetastoreDerbyDbDir = builder.hiveMetastoreDerbyDbDir;
+        this.hiveScratchDir = builder.hiveScratchDir;
+        this.hiveWarehouseDir = builder.hiveWarehouseDir;
+        this.hiveConf = builder.hiveConf;
+        this.zookeeperConnectionString = builder.zookeeperConnectionString;
+    }
+    
+    public static class Builder {
+        
+        private String hiveServer2Hostname;
+        private Integer hiveServer2Port;
+        private String hiveMetastoreHostname;
+        private Integer hiveMetastorePort;
+        private String hiveMetastoreDerbyDbDir;
+        private String hiveScratchDir;
+        private String hiveWarehouseDir;
+        private HiveConf hiveConf;
+        private String zookeeperConnectionString;
+        
+        public Builder setHiveServer2Hostname(String hiveServer2Hostname) {
+            this.hiveServer2Hostname = hiveServer2Hostname;
+            return this;
+        }
+
+        public Builder setHiveServer2Port(Integer hiveServer2Port) {
+            this.hiveServer2Port = hiveServer2Port;
+            return this;
+        }
+
+        public Builder setHiveMetastoreHostname(String hiveMetastoreHostname) {
+            this.hiveMetastoreHostname = hiveMetastoreHostname;
+            return this;
+        }
+
+        public Builder setHiveMetastorePort(Integer hiveMetastorePort) {
+            this.hiveMetastorePort = hiveMetastorePort;
+            return this;
+        }
+
+        public Builder setHiveMetastoreDerbyDbDir(String hiveMetastoreDerbyDbDir) {
+            this.hiveMetastoreDerbyDbDir = hiveMetastoreDerbyDbDir;
+            return this;
+        }
+
+        public Builder setHiveScratchDir(String hiveScratchDir) {
+            this.hiveScratchDir = hiveScratchDir;
+            return this;
+        }
+
+        public Builder setHiveWarehouseDir(String hiveWarehouseDir) {
+            this.hiveWarehouseDir = hiveWarehouseDir;
+            return this;
+        }
+
+        public Builder setHiveConf(HiveConf hiveConf) {
+            this.hiveConf = hiveConf;
+            return this;
+        }
+
+        public Builder setZookeeperConnectionString(String zookeeperConnectionString) {
+            this.zookeeperConnectionString = zookeeperConnectionString;
+            return this;
+        }
+        
+        public HiveLocalServer2 build() {
+            HiveLocalServer2 hiveLocalServer2 = new HiveLocalServer2(this);
+            validateObject(hiveLocalServer2);
+            return hiveLocalServer2;
+        }
+        
+        public void validateObject(HiveLocalServer2 hiveLocalServer2) {
+            if(hiveLocalServer2.hiveServer2Hostname == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Hive Server2 Hostname");
+            }
+
+            if(hiveLocalServer2.hiveServer2Port == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Hive Server2 Port");
+            }
+
+            if(hiveLocalServer2.hiveMetastoreHostname == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Hive Meta Store Hostname");
+            }
+
+            if(hiveLocalServer2.hiveMetastorePort == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Hive Meta Store Port");
+            }
+
+            if(hiveLocalServer2.hiveMetastoreDerbyDbDir == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Hive Meta Store Derby Db Dir");
+            }
+
+            if(hiveLocalServer2.hiveScratchDir == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Hive Scratch Dir");
+            }
+
+            if(hiveLocalServer2.hiveWarehouseDir == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Hive Warehouse Dir");
+            }
+
+            if(hiveLocalServer2.hiveConf == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Hive Conf");
+            }
+
+            if(hiveLocalServer2.zookeeperConnectionString == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Zookeeper Quorum");
+            }
+        }
+        
+    }
+    
     public void configure() {
-        hiveConf.set("hive.root.logger", "DEBUG,console");
-        hiveConf.setVar(HiveConf.ConfVars.METASTOREURIS, metaStoreUri);
-        hiveConf.set(HiveConf.ConfVars.METASTORECONNECTURLKEY.varname, "jdbc:derby:;databaseName=" +
-                derbyDbPath + ";create=true");
+        hiveConf.setVar(HiveConf.ConfVars.METASTOREURIS,
+                "thrift://" + hiveMetastoreHostname + ":" + hiveMetastorePort);
         hiveConf.set(HiveConf.ConfVars.SCRATCHDIR.varname, hiveScratchDir);
+        hiveConf.set(HiveConf.ConfVars.METASTORECONNECTURLKEY.varname,
+                "jdbc:derby:;databaseName=" + hiveMetastoreDerbyDbDir + ";create=true");
+        hiveConf.set(HiveConf.ConfVars.METASTOREWAREHOUSE.varname, new File(hiveWarehouseDir).getAbsolutePath());
+        hiveConf.setBoolVar(HiveConf.ConfVars.HIVE_IN_TEST, true);
+        hiveConf.set(HiveConf.ConfVars.HIVE_SERVER2_THRIFT_BIND_HOST.varname, String.valueOf(hiveServer2Hostname));
         hiveConf.set(HiveConf.ConfVars.HIVE_SERVER2_THRIFT_PORT.varname, String.valueOf(hiveServer2Port));
+        hiveConf.set(HiveConf.ConfVars.HIVE_ZOOKEEPER_QUORUM.varname, zookeeperConnectionString);
     }
-
-    public void configureWithZookeeper() {
-        hiveConf.set(HiveConf.ConfVars.HIVE_ZOOKEEPER_QUORUM.varname, zookeeperQuorum);
-    }
-
+    
     public void start() {
-        server = new HiveServer2();
+        hiveServer2 = new HiveServer2();
         LOG.info("HIVESERVER2: Starting HiveServer2 on port: " + hiveServer2Port);
-        server.init(hiveConf);
-        server.start();
+        configure();
+        hiveServer2.init(hiveConf);
+        hiveServer2.start();
     }
 
     public void stop() {
         LOG.info("HIVESERVER2: Stopping HiveServer2 on port: " + hiveServer2Port);
-        server.stop();
+        stop(true);
     }
 
     public void stop(boolean cleanUp) {
-        stop();
+        hiveServer2.stop();
         if (cleanUp) {
             cleanUp();
         }
     }
 
     private void cleanUp() {
-        FileUtils.deleteFolder(derbyDbPath);
+        FileUtils.deleteFolder(hiveMetastoreDerbyDbDir);
         FileUtils.deleteFolder(hiveScratchDir);
         FileUtils.deleteFolder(new File("derby.log").getAbsolutePath());
-    }
-
-    public String getHiveServerThriftPort() {
-        return server.getHiveConf().get(HiveConf.ConfVars.HIVE_SERVER2_THRIFT_PORT.varname);
-    }
-
-    public void dumpConfig() {
-        for(Service service: server.getServices()) {
-            LOG.info("HIVE: HiveServer2 Services Name:" + service.getName() +
-                    " CONF: " + String.valueOf(service.getHiveConf().getAllProperties()));
-        }
     }
 
 }
