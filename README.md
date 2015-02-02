@@ -32,6 +32,7 @@ Using:
 Examples:
 ---------
 **Starting with 0.0.10, all mini clusters have moved to the builder pattern**
+
 **Some mini clusters depend on others (i.e. KafkaLocalBroker depends on ZookeeperLocalCluster), see tests for examples**
 
 *  HDFS Example
