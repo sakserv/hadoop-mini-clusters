@@ -171,6 +171,7 @@ public class HsqldbLocalServer implements MiniCluster {
     
     public void stop() {
         server.stop();
+        cleanUp();
     }
     
     public void configure() {
@@ -202,7 +203,11 @@ public class HsqldbLocalServer implements MiniCluster {
     }
 
     private void cleanUp() {
-        FileUtils.deleteFolder(getHsqldbTempDir() + "*");
+        
+        FileUtils.deleteFolder(getHsqldbTempDir() + ".tmp");
+        FileUtils.deleteFolder(getHsqldbTempDir() + ".log");
+        FileUtils.deleteFolder(getHsqldbTempDir() + ".properties");
+        FileUtils.deleteFolder(getHsqldbTempDir() + ".script");
     }
     
 }
