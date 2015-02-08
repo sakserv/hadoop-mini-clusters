@@ -12,6 +12,7 @@ Includes:
 *   Kafka - Local Kafka Broker
 *   MongoDB - I know... not Hadoop
 *   ActiveMQ - Thanks Vladimir Zlatkin!
+*   HyperSQL DB - For testing various databases
 
 Tests:
 ------
@@ -131,6 +132,20 @@ Examples:
                 .setUriPostfix("?create=false")
                 .build();
         amq.start();
+```
+
+*  HyperSQL DB
+```Java
+        hsqldbLocalServer = new HsqldbLocalServer.Builder()
+            .setHsqldbHostName("127.0.0.1")
+            .setHsqldbPort("44111")
+            .setHsqldbTempDir("embedded_hsqldb")
+            .setHsqldbDatabaseName("testdb")
+            .setHsqldbCompatibilityMode("mysql")
+            .setHsqldbJdbcDriver("org.hsqldb.jdbc.JDBCDriver")
+            .setHsqldbJdbcConnectionStringPrefix("jdbc:hsqldb:hsql://")
+            .build();
+        hsqldbLocalServer.start();
 ```
 
 Modifying Properties

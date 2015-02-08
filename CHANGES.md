@@ -1,6 +1,9 @@
 Change Log
 ==========
 
+### 0.0.12 - 02/08/2015
+* Added HyperSQL support
+
 ### 0.0.11 - 02/02/2015
 * Fixed shade plugin to resolve corrupt jar issues
 * Added usage examples to README

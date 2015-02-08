@@ -81,4 +81,13 @@ public class ConfigVars {
     public static final String HDFS_TEST_FILE_KEY = "hdfs.test.file";
     public static final String HDFS_TEST_STRING_KEY = "hdfs.test.string";
     
+    // HSQLDB
+    public static final String HSQLDB_HOSTNAME_KEY = "hsqldb.hostname";
+    public static final String HSQLDB_PORT_KEY = "hsqldb.port";
+    public static final String HSQLDB_DATABASE_NAME_KEY = "hsqldb.database.name";
+    public static final String HSQLDB_TEMP_DIR_KEY = "hsqldb.temp.dir";
+    public static final String HSQLDB_COMPATIBILITY_MODE_KEY = "hsqldb.compatibility.mode";
+    public static final String HSQLDB_JDBC_DRIVER_KEY = "hsqldb.jdbc.driver";
+    public static final String HSQLDB_JDBC_CONNECTION_STRING_PREFIX_KEY = "hsqldb.jdbc.connection.string.prefix";
+    
 }
