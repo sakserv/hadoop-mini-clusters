@@ -67,7 +67,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.jgrapht:jgrapht-core:0.9.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: ch.qos.logback:logback-classic:1.0.6" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: ch.qos.logback:logback-core:1.0.6" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.hadoop:hadoop-auth:2.4.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: info.ganglia.gmetric4j:gmetric4j:1.0.7" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.acplt:oncrpc:1.0.7" level="project" />
     <orderEntry type="library" name="Maven: org.apache.hive:hive-service:0.14.0.2.2.0.0-2041" level="project" />
@@ -167,6 +166,11 @@
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-xc:1.9.13" level="project" />
     <orderEntry type="library" name="Maven: org.apache.hadoop:hadoop-mapreduce-client-jobclient:2.6.0.2.2.0.0-2041" level="project" />
     <orderEntry type="library" name="Maven: org.apache.hadoop:hadoop-annotations:2.6.0.2.2.0.0-2041" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.hadoop:hadoop-auth:2.6.0.2.2.0.0-2041" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.directory.server:apacheds-kerberos-codec:2.0.0-M15" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.directory.server:apacheds-i18n:2.0.0-M15" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.directory.api:api-asn1-api:1.0.0-M20" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.directory.api:api-util:1.0.0-M20" level="project" />
     <orderEntry type="library" name="Maven: org.apache.hadoop:hadoop-hdfs:2.6.0.2.2.0.0-2041" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:11.0.2" level="project" />
     <orderEntry type="library" name="Maven: com.sun.jersey:jersey-core:1.9" level="project" />

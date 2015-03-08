@@ -90,4 +90,11 @@ public class ConfigVars {
     public static final String HSQLDB_JDBC_DRIVER_KEY = "hsqldb.jdbc.driver";
     public static final String HSQLDB_JDBC_CONNECTION_STRING_PREFIX_KEY = "hsqldb.jdbc.connection.string.prefix";
     
+    // YARN
+    public static final String YARN_NUM_RESOURCE_MANAGERS_KEY = "yarn.num.resource.managers";
+    public static final String YARN_NUM_NODE_MANAGERS_KEY = "yarn.num.node.managers";
+    public static final String YARN_NUM_LOCAL_DIRS_KEY = "yarn.num.local.dirs";
+    public static final String YARN_NUM_LOG_DIRS_KEY = "yarn.num.log.dirs";
+    public static final String YARN_ENABLE_HA = "yarn.enable.ha";
+    
 }

@@ -38,11 +38,21 @@ public class YarnLocalClusterIntegrationTest {
             LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
         }
     }
-
+    
     private static YarnLocalCluster yarnLocalCluster;
+    
     @BeforeClass
     public static void setUp() throws IOException {
-        yarnLocalCluster = new YarnLocalCluster();
+        yarnLocalCluster = new YarnLocalCluster.Builder()
+            .setNumResourceManagers(Integer.parseInt(
+                    propertyParser.getProperty(ConfigVars.YARN_NUM_RESOURCE_MANAGERS_KEY)))
+            .setNumNodeManagers(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_NODE_MANAGERS_KEY)))
+            .setNumLocalDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOCAL_DIRS_KEY)))
+            .setNumLogDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOG_DIRS_KEY)))
+            .setEnableHa(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.YARN_ENABLE_HA)))
+            .build();
+                    
+            ;
         yarnLocalCluster.start();
     }
 

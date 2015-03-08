@@ -53,15 +53,9 @@ public class StormLocalCluster implements MiniCluster {
         return enableDebug;
     }
     
-    public Integer getNumWorkers() {
-        return numWorkers;
-        
-    }
+    public Integer getNumWorkers() { return numWorkers;  }
     
-    public Config getConf() {
-        return conf;
-        
-    }
+    public Config getConf() { return conf; }
     
     public static class Builder {
         private String zookeeperHost;
