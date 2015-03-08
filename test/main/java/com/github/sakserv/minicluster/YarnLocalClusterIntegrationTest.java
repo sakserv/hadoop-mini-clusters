@@ -16,6 +16,7 @@ package com.github.sakserv.minicluster;
 import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.impl.YarnLocalCluster;
+import org.apache.hadoop.conf.Configuration;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -50,9 +51,9 @@ public class YarnLocalClusterIntegrationTest {
             .setNumLocalDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOCAL_DIRS_KEY)))
             .setNumLogDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOG_DIRS_KEY)))
             .setEnableHa(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.YARN_ENABLE_HA)))
+            .setYarnConfig(new Configuration())
             .build();
-                    
-            ;
+
         yarnLocalCluster.start();
     }
 

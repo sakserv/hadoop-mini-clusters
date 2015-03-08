@@ -14,6 +14,7 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.yarn.server.MiniYARNCluster;
 import org.slf4j.Logger;
@@ -30,7 +31,7 @@ public class YarnLocalCluster implements MiniCluster {
     private Integer numLocalDirs;
     private Integer numLogDirs;
     private Boolean enableHa;
-    private Configuration conf;
+    private Configuration yarnConfig;
     
     private MiniYARNCluster miniYARNCluster;
     
@@ -59,8 +60,8 @@ public class YarnLocalCluster implements MiniCluster {
         return enableHa;
     }
 
-    public Configuration getConf() {
-        return conf;
+    public Configuration getYarnConfig() {
+        return yarnConfig;
     }
 
     private YarnLocalCluster(Builder builder) {
@@ -69,6 +70,7 @@ public class YarnLocalCluster implements MiniCluster {
         this.numLocalDirs = builder.numLocalDirs;
         this.numLogDirs = builder.numLogDirs;
         this.enableHa = builder.enableHa;
+        this.yarnConfig = builder.yarnConfig;
     }
     
     public static class Builder {
@@ -77,6 +79,7 @@ public class YarnLocalCluster implements MiniCluster {
         private Integer numLocalDirs;
         private Integer numLogDirs;
         private Boolean enableHa;
+        private Configuration yarnConfig;
         
         public Builder setNumResourceManagers(Integer numResourceManagers) {
             this.numResourceManagers = numResourceManagers;
@@ -103,6 +106,11 @@ public class YarnLocalCluster implements MiniCluster {
             return this;
         }
         
+        public Builder setYarnConfig(Configuration yarnConfig) {
+            this.yarnConfig = yarnConfig;
+            return this;
+        }
+        
         public YarnLocalCluster build() {
             YarnLocalCluster yarnLocalCluster = new YarnLocalCluster(this);
             validateObject(yarnLocalCluster);
@@ -125,29 +133,44 @@ public class YarnLocalCluster implements MiniCluster {
             if (yarnLocalCluster.getEnableHa() == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: Should Enable HA");
             }
+            if (yarnLocalCluster.getYarnConfig() == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Yarn Configuration");
+            }
             
         }
     }
 
-    public void configure() {
-        conf = new Configuration();
-    }
+    public void configure() { }
     
     public void stop() {
-        miniYARNCluster.stop();
-        
+        stop(true);
     }
+
+    public void stop(boolean cleanUp) {
+        LOG.info("YARN: Stopping MiniYarnCluster");
+        miniYARNCluster.stop();
+        if(cleanUp) {
+            cleanUp();
+        }
+
+    }
+    
     public void start() {
+        LOG.info("YARN: Starting MiniYarnCluster");
         configure();
         miniYARNCluster = new MiniYARNCluster(testName, numResourceManagers, numNodeManagers,
                 numLocalDirs, numLogDirs, enableHa);
         try {
-            miniYARNCluster.serviceInit(conf);
-            miniYARNCluster.init(conf);
+            miniYARNCluster.serviceInit(yarnConfig);
+            miniYARNCluster.init(yarnConfig);
         } catch(Exception e) {
             e.printStackTrace();
         }
         miniYARNCluster.start();
+    }
+
+    public void cleanUp() {
+        FileUtils.deleteFolder("target/" + testName);
     }
     
 }

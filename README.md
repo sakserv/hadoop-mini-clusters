@@ -49,6 +49,20 @@ Examples:
         hdfsLocalCluster.start();
 ```
 
+* YARN Example
+```Java
+        YarnLocalCluster yarnLocalCluster = new YarnLocalCluster.Builder()
+            .setNumResourceManagers(1)
+            .setNumNodeManagers(1)
+            .setNumLocalDirs(Integer.parseInt(1)
+            .setNumLogDirs(Integer.parseInt(1)
+            .setEnableHa(Boolean.parseBoolean(false)
+            .setYarnConfig(new Configuration())
+            .build();
+
+        yarnLocalCluster.start();
+```
+
 *  Zookeeper Example
 ```Java
         ZookeeperLocalCluster zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
