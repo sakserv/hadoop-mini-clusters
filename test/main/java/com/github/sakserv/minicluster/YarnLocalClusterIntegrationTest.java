@@ -16,6 +16,7 @@ package com.github.sakserv.minicluster;
 import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.impl.YarnLocalCluster;
+import com.github.sakserv.simpleyarnapp.Client;
 import org.apache.hadoop.conf.Configuration;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -59,11 +60,25 @@ public class YarnLocalClusterIntegrationTest {
 
     @AfterClass
     public static void tearDown() {
-        yarnLocalCluster.stop();
+        yarnLocalCluster.stop(false);
     }
 
     @Test
     public void testYarnLocalCluster() {
-        LOG.info("TESTING");
+        
+        String[] args = new String[7];
+        args[0] = "uptime";
+        args[1] = "2";
+        args[2] = getClass().getClassLoader().getResource("simple-yarn-app-1.1.0.jar").toString();
+        args[3] = yarnLocalCluster.getResourceManagerAddress();
+        args[4] = yarnLocalCluster.getResourceManagerHostname();
+        args[5] = yarnLocalCluster.getResourceManagerSchedulerAddress();
+        args[6] = yarnLocalCluster.getResourceManagerResourceTrackerAddress();
+        
+        try {
+            Client.main(args);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 }

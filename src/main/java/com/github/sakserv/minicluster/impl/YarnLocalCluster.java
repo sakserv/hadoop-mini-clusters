@@ -173,4 +173,19 @@ public class YarnLocalCluster implements MiniCluster {
         FileUtils.deleteFolder("target/" + testName);
     }
     
+    public String getResourceManagerAddress() {
+        return miniYARNCluster.getConfig().get("yarn.resourcemanager.address");
+    }
+    
+    public String getResourceManagerSchedulerAddress() {
+        return miniYARNCluster.getConfig().get("yarn.resourcemanager.scheduler.address");
+    }
+    
+    public String getResourceManagerResourceTrackerAddress() {
+        return miniYARNCluster.getConfig().get("yarn.resourcemanager.resource-tracker.address");
+    }
+
+    public String getResourceManagerHostname() {
+        return miniYARNCluster.getConfig().get("yarn.resourcemanager.hostname");
+    }
 }
