@@ -5,6 +5,7 @@ Collection of Hadoop Mini Clusters for Hortonworks Data Platform (HDP) 2.2.0.0
 Includes:
 ---------
 *   HDFS - Mini HDFS Cluster
+*   YARN - Mini YARN Cluster (no MR) - Coming in 0.0.13
 *   Zookeeper - Curator based Local Cluster
 *   HiveServer2 - Local HiveServer2 instance
 *   HiveMetaStore - Derby backed HiveMetaStore
@@ -49,7 +50,7 @@ Examples:
         hdfsLocalCluster.start();
 ```
 
-* YARN Example
+* YARN Example - Coming in 0.0.13
 ```Java
         YarnLocalCluster yarnLocalCluster = new YarnLocalCluster.Builder()
             .setNumResourceManagers(1)
