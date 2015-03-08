@@ -60,7 +60,7 @@ public class YarnLocalClusterIntegrationTest {
 
     @AfterClass
     public static void tearDown() {
-        yarnLocalCluster.stop(false);
+        yarnLocalCluster.stop();
     }
 
     @Test
