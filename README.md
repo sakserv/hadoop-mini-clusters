@@ -52,28 +52,28 @@ Examples:
 ```
 
 * YARN Example - Coming in 0.0.13
-   ```Java
-           YarnLocalCluster yarnLocalCluster = new YarnLocalCluster.Builder()
-               .setNumResourceManagers(1)
-               .setNumNodeManagers(1)
-               .setNumLocalDirs(Integer.parseInt(1)
-               .setNumLogDirs(Integer.parseInt(1)
-               .setEnableHa(Boolean.parseBoolean(false)
-               .setYarnConfig(new Configuration())
-               .build();
+```Java
+        YarnLocalCluster yarnLocalCluster = new YarnLocalCluster.Builder()
+            .setNumResourceManagers(1)
+            .setNumNodeManagers(1)
+            .setNumLocalDirs(Integer.parseInt(1)
+            .setNumLogDirs(Integer.parseInt(1)
+            .setEnableHa(Boolean.parseBoolean(false)
+            .setYarnConfig(new Configuration())
+            .build();
    
-           yarnLocalCluster.start();
-   ```
+        yarnLocalCluster.start();
+```
 
 * MapReduce Example - Coming in 0.0.13
-   ```Java
-           MRLocalCluster mrLocalCluster = new MRLocalCluster.Builder()
-               .setNumNodeManagers(1)
-               .setYarnConfig(new Configuration())
-               .build();
+```Java
+        MRLocalCluster mrLocalCluster = new MRLocalCluster.Builder()
+            .setNumNodeManagers(1)
+            .setYarnConfig(new Configuration())
+            .build();
 
-           mrLocalCluster.start();
-   ```
+        mrLocalCluster.start();
+```
 
 *  Zookeeper Example
 ```Java
