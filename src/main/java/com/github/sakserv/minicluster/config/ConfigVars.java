@@ -97,4 +97,7 @@ public class ConfigVars {
     public static final String YARN_NUM_LOG_DIRS_KEY = "yarn.num.log.dirs";
     public static final String YARN_ENABLE_HA = "yarn.enable.ha";
     
+    // MR
+    public static final String MR_NUM_NODE_MANAGERS_KEY = "mr.num.node.managers";
+    
 }

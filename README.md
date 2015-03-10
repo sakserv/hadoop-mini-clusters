@@ -6,6 +6,7 @@ Includes:
 ---------
 *   HDFS - Mini HDFS Cluster
 *   YARN - Mini YARN Cluster (no MR) - Coming in 0.0.13
+*   MapReduce - Mini MapReduce Cluster - Coming in 0.0.13
 *   Zookeeper - Curator based Local Cluster
 *   HiveServer2 - Local HiveServer2 instance
 *   HiveMetaStore - Derby backed HiveMetaStore
@@ -51,18 +52,28 @@ Examples:
 ```
 
 * YARN Example - Coming in 0.0.13
-```Java
-        YarnLocalCluster yarnLocalCluster = new YarnLocalCluster.Builder()
-            .setNumResourceManagers(1)
-            .setNumNodeManagers(1)
-            .setNumLocalDirs(Integer.parseInt(1)
-            .setNumLogDirs(Integer.parseInt(1)
-            .setEnableHa(Boolean.parseBoolean(false)
-            .setYarnConfig(new Configuration())
-            .build();
+   ```Java
+           YarnLocalCluster yarnLocalCluster = new YarnLocalCluster.Builder()
+               .setNumResourceManagers(1)
+               .setNumNodeManagers(1)
+               .setNumLocalDirs(Integer.parseInt(1)
+               .setNumLogDirs(Integer.parseInt(1)
+               .setEnableHa(Boolean.parseBoolean(false)
+               .setYarnConfig(new Configuration())
+               .build();
+   
+           yarnLocalCluster.start();
+   ```
+   
+   * MapReduce Example - Coming in 0.0.13
+   ```Java
+           MRLocalCluster mrLocalCluster = new MRLocalCluster.Builder()
+               .setNumNodeManagers(1)
+               .setYarnConfig(new Configuration())
+               .build();
 
-        yarnLocalCluster.start();
-```
+           mrLocalCluster.start();
+   ```
 
 *  Zookeeper Example
 ```Java
