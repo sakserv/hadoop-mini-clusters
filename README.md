@@ -64,8 +64,8 @@ Examples:
    
            yarnLocalCluster.start();
    ```
-   
-   * MapReduce Example - Coming in 0.0.13
+
+* MapReduce Example - Coming in 0.0.13
    ```Java
            MRLocalCluster mrLocalCluster = new MRLocalCluster.Builder()
                .setNumNodeManagers(1)
