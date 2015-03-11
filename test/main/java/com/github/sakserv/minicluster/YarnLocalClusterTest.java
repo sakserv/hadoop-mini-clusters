@@ -47,20 +47,17 @@ public class YarnLocalClusterTest {
     @BeforeClass
     public static void setUp() throws IOException {
         yarnLocalCluster = new YarnLocalCluster.Builder()
-                .setNumResourceManagers(Integer.parseInt(
-                        propertyParser.getProperty(ConfigVars.YARN_NUM_RESOURCE_MANAGERS_KEY)))
                 .setNumNodeManagers(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_NODE_MANAGERS_KEY)))
                 .setNumLocalDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOCAL_DIRS_KEY)))
                 .setNumLogDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOG_DIRS_KEY)))
-                .setEnableHa(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.YARN_ENABLE_HA)))
-                .setYarnConfig(new Configuration())
+                .setResourceManagerAddress(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
+                .setResourceManagerHostname(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_HOSTNAME_KEY))
+                .setResourceManagerSchedulerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_SCHEDULER_ADDRESS_KEY))
+                .setResourceManagerResourceTrackerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_RESOURCE_TRACKER_ADDRESS_KEY))
+                .setConfig(new Configuration())
                 .build();
-    }
-    
-    @Test
-    public void testNumResourceManagers() {
-        assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_RESOURCE_MANAGERS_KEY)),
-                (int) yarnLocalCluster.getNumResourceManagers());
     }
 
     @Test
@@ -80,16 +77,34 @@ public class YarnLocalClusterTest {
         assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOG_DIRS_KEY)),
                 (int) yarnLocalCluster.getNumLogDirs());
     }
-
+    
     @Test
-    public void testEnableHa() {
-        assertEquals(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.YARN_ENABLE_HA)),
-                yarnLocalCluster.getEnableHa());
+    public void testResourceManagerAddress() {
+        assertEquals(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY), 
+                yarnLocalCluster.getResourceManagerAddress());
     }
 
     @Test
-    public void testYarnConf() {
-        assertTrue(yarnLocalCluster.getYarnConfig() instanceof org.apache.hadoop.conf.Configuration);
+    public void testResourceManagerHostname() {
+        assertEquals(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_HOSTNAME_KEY),
+                yarnLocalCluster.getResourceManagerHostname());
+    }
+
+    @Test
+    public void testResourceManagerSchedulerAddress() {
+        assertEquals(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_SCHEDULER_ADDRESS_KEY),
+                yarnLocalCluster.getResourceManagerSchedulerAddress());
+    }
+
+    @Test
+    public void testResourceManagerResourceTrackerAddress() {
+        assertEquals(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_RESOURCE_TRACKER_ADDRESS_KEY),
+                yarnLocalCluster.getResourceManagerResourceTrackerAddress());
+    }
+
+    @Test
+    public void testConf() {
+        assertTrue(yarnLocalCluster.getConfig() instanceof org.apache.hadoop.conf.Configuration);
 
     }
 }

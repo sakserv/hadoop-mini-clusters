@@ -18,6 +18,8 @@ import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.mapred.MiniMRYarnClusterAdapter;
 import org.apache.hadoop.mapreduce.v2.MiniMRYarnCluster;
+import org.apache.hadoop.mapreduce.v2.jobhistory.JHAdminConfig;
+import org.apache.hadoop.yarn.conf.YarnConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +30,12 @@ public class MRLocalCluster implements MiniCluster {
 
     private String testName = getClass().getName();
     private Integer numNodeManagers;
-    private Configuration yarnConfig;
+    private String jobHistoryAddress;
+    private String resourceManagerAddress;
+    private String resourceManagerHostname;
+    private String resourceManagerSchedulerAddress;
+    private String resourceManagerResourceTrackerAddress;
+    private Configuration configuration;
     
     private MiniMRYarnCluster miniMRYarnCluster;
 
@@ -40,26 +47,81 @@ public class MRLocalCluster implements MiniCluster {
         return numNodeManagers;
     }
 
-    public Configuration getYarnConfig() {
-        return yarnConfig;
+    public String getJobHistoryAddress() {
+        return jobHistoryAddress;
+    }
+
+    public String getResourceManagerAddress() {
+        return resourceManagerAddress;
+    }
+
+    public String getResourceManagerHostname() {
+        return resourceManagerHostname;
+    }
+
+    public String getResourceManagerSchedulerAddress() {
+        return resourceManagerSchedulerAddress;
+    }
+
+    public String getResourceManagerResourceTrackerAddress() {
+        return resourceManagerResourceTrackerAddress;
+    }
+
+    public Configuration getConfig() {
+        return configuration;
     }
 
     private MRLocalCluster(Builder builder) {
         this.numNodeManagers = builder.numNodeManagers;
-        this.yarnConfig = builder.yarnConfig;
+        this.jobHistoryAddress = builder.jobHistoryAddress;
+        this.resourceManagerAddress = builder.resourceManagerAddress;
+        this.resourceManagerHostname = builder.resourceManagerHostname;
+        this.resourceManagerSchedulerAddress = builder.resourceManagerSchedulerAddress;
+        this.resourceManagerResourceTrackerAddress = builder.resourceManagerResourceTrackerAddress;
+        this.configuration = builder.configuration;
     }
     
     public static class Builder {
         private Integer numNodeManagers;
-        private Configuration yarnConfig;
+        private String jobHistoryAddress;
+        private String resourceManagerAddress;
+        private String resourceManagerHostname;
+        private String resourceManagerSchedulerAddress;
+        private String resourceManagerResourceTrackerAddress;
+        private Configuration configuration;
         
         public Builder setNumNodeManagers(Integer numNodeManagers) {
             this.numNodeManagers = numNodeManagers;
             return this;
         }
 
-        public Builder setYarnConfig(Configuration yarnConfig) {
-            this.yarnConfig = yarnConfig;
+        public Builder setJobHistoryAddress(String jobHistoryAddress) {
+            this.jobHistoryAddress = jobHistoryAddress;
+            return this;
+        }
+        
+        public Builder setResourceManagerAddress(String resourceManagerAddress) {
+            this.resourceManagerAddress = resourceManagerAddress;
+            return this;
+        }
+
+        public Builder setResourceManagerHostname(String resourceManagerHostname) {
+            this.resourceManagerHostname = resourceManagerHostname;
+            return this;
+        }
+
+        public Builder setResourceManagerSchedulerAddress(String resourceManagerSchedulerAddress) {
+            this.resourceManagerSchedulerAddress = resourceManagerSchedulerAddress;
+            return this;
+        }
+
+        public Builder setResourceManagerResourceTrackerAddress(String resourceManagerResourceTrackerAddress) {
+            this.resourceManagerResourceTrackerAddress = resourceManagerResourceTrackerAddress;
+            return this;
+        }
+
+        public Builder setConfig(Configuration configuration) {
+            this.configuration = configuration;
             return this;
         }
         
@@ -74,11 +136,42 @@ public class MRLocalCluster implements MiniCluster {
                 throw new IllegalArgumentException("ERROR: Missing required config: Number of Node Managers");
             }
 
-            if (mrLocalCluster.getYarnConfig() == null) {
-                throw new IllegalArgumentException("ERROR: Missing required config: Yarn Configuration");
+            if(mrLocalCluster.getJobHistoryAddress() == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: MR Job History Address");
+            }
+
+            if(mrLocalCluster.getResourceManagerAddress() == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Yarn Resource Manager Address");
+            }
+            
+            if(mrLocalCluster.getResourceManagerHostname() == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Yarn Resource Manager Hostname");
+            }
+            
+            if(mrLocalCluster.getResourceManagerSchedulerAddress() == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: " +
+                        "Yarn Resource Manager Scheduler Address");
+            }
+            
+            if(mrLocalCluster.getResourceManagerResourceTrackerAddress() == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: " +
+                        "Yarn Resource Manager Resource Tracker Address");
+            }
+
+            if (mrLocalCluster.getConfig() == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Configuration");
             }
         }
         
+    }
+
+    public void configure() {
+        configuration.set(YarnConfiguration.RM_ADDRESS, resourceManagerAddress);
+        configuration.set(YarnConfiguration.RM_HOSTNAME, resourceManagerHostname);
+        configuration.set(YarnConfiguration.RM_SCHEDULER_ADDRESS, resourceManagerSchedulerAddress);
+        configuration.set(YarnConfiguration.RM_RESOURCE_TRACKER_ADDRESS, resourceManagerResourceTrackerAddress);
+        configuration.set(JHAdminConfig.MR_HISTORY_ADDRESS, jobHistoryAddress);
+        configuration.set(YarnConfiguration.YARN_MINICLUSTER_FIXED_PORTS, "true");
     }
 
     public void start() {
@@ -86,8 +179,8 @@ public class MRLocalCluster implements MiniCluster {
         configure();
         miniMRYarnCluster = new MiniMRYarnCluster(testName, numNodeManagers);
         try {
-            miniMRYarnCluster.serviceInit(yarnConfig);
-            miniMRYarnCluster.init(yarnConfig);
+            miniMRYarnCluster.serviceInit(configuration);
+            miniMRYarnCluster.init(configuration);
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -109,5 +202,4 @@ public class MRLocalCluster implements MiniCluster {
     }
     
     public void stop() {stop(true);}
-    public void configure() {}
 }

@@ -47,9 +47,16 @@ public class MRLocalClusterIntegrationTest {
     @BeforeClass
     public static void setUp() throws IOException {
         mrLocalCluster = new MRLocalCluster.Builder()
-            .setNumNodeManagers(Integer.parseInt(propertyParser.getProperty(ConfigVars.MR_NUM_NODE_MANAGERS_KEY)))
-            .setYarnConfig(new Configuration())
-            .build();
+                .setNumNodeManagers(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_NODE_MANAGERS_KEY)))
+                .setJobHistoryAddress(propertyParser.getProperty(ConfigVars.MR_JOB_HISTORY_ADDRESS_KEY))
+                .setResourceManagerAddress(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
+                .setResourceManagerHostname(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_HOSTNAME_KEY))
+                .setResourceManagerSchedulerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_SCHEDULER_ADDRESS_KEY))
+                .setResourceManagerResourceTrackerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_RESOURCE_TRACKER_ADDRESS_KEY))
+                .setConfig(new Configuration())
+                .build();
 
         mrLocalCluster.start();
     }

@@ -91,13 +91,16 @@ public class ConfigVars {
     public static final String HSQLDB_JDBC_CONNECTION_STRING_PREFIX_KEY = "hsqldb.jdbc.connection.string.prefix";
     
     // YARN
-    public static final String YARN_NUM_RESOURCE_MANAGERS_KEY = "yarn.num.resource.managers";
     public static final String YARN_NUM_NODE_MANAGERS_KEY = "yarn.num.node.managers";
     public static final String YARN_NUM_LOCAL_DIRS_KEY = "yarn.num.local.dirs";
     public static final String YARN_NUM_LOG_DIRS_KEY = "yarn.num.log.dirs";
-    public static final String YARN_ENABLE_HA = "yarn.enable.ha";
+    public static final String YARN_RESOURCE_MANAGER_ADDRESS_KEY = "yarn.resource.manager.address";
+    public static final String YARN_RESOURCE_MANAGER_HOSTNAME_KEY = "yarn.resource.manager.hostname";
+    public static final String YARN_RESOURCE_MANAGER_SCHEDULER_ADDRESS_KEY = "yarn.resource.manager.scheduler.address";
+    public static final String YARN_RESOURCE_MANAGER_RESOURCE_TRACKER_ADDRESS_KEY = 
+            "yarn.resource.manager.resource.tracker.address";
     
     // MR
-    public static final String MR_NUM_NODE_MANAGERS_KEY = "mr.num.node.managers";
+    public static final String MR_JOB_HISTORY_ADDRESS_KEY = "mr.job.history.address";
     
 }

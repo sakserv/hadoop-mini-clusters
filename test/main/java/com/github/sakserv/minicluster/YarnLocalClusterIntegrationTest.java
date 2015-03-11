@@ -46,14 +46,17 @@ public class YarnLocalClusterIntegrationTest {
     @BeforeClass
     public static void setUp() throws IOException {
         yarnLocalCluster = new YarnLocalCluster.Builder()
-            .setNumResourceManagers(Integer.parseInt(
-                    propertyParser.getProperty(ConfigVars.YARN_NUM_RESOURCE_MANAGERS_KEY)))
-            .setNumNodeManagers(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_NODE_MANAGERS_KEY)))
-            .setNumLocalDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOCAL_DIRS_KEY)))
-            .setNumLogDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOG_DIRS_KEY)))
-            .setEnableHa(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.YARN_ENABLE_HA)))
-            .setYarnConfig(new Configuration())
-            .build();
+                .setNumNodeManagers(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_NODE_MANAGERS_KEY)))
+                .setNumLocalDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOCAL_DIRS_KEY)))
+                .setNumLogDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOG_DIRS_KEY)))
+                .setResourceManagerAddress(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
+                .setResourceManagerHostname(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_HOSTNAME_KEY))
+                .setResourceManagerSchedulerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_SCHEDULER_ADDRESS_KEY))
+                .setResourceManagerResourceTrackerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_RESOURCE_TRACKER_ADDRESS_KEY))
+                .setConfig(new Configuration())
+                .build();
 
         yarnLocalCluster.start();
     }

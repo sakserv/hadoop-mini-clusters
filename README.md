@@ -54,12 +54,14 @@ Examples:
 * YARN Example - Coming in 0.0.13
 ```Java
         YarnLocalCluster yarnLocalCluster = new YarnLocalCluster.Builder()
-            .setNumResourceManagers(1)
             .setNumNodeManagers(1)
             .setNumLocalDirs(Integer.parseInt(1)
             .setNumLogDirs(Integer.parseInt(1)
-            .setEnableHa(Boolean.parseBoolean(false)
-            .setYarnConfig(new Configuration())
+            .setResourceManagerAddress("localhost")
+            .setResourceManagerHostname("localhost:37001")
+            .setResourceManagerSchedulerAddress("localhost:37002")
+            .setResourceManagerResourceTrackerAddress("localhost:37003")
+            .setConfig(new Configuration())
             .build();
    
         yarnLocalCluster.start();
@@ -69,7 +71,12 @@ Examples:
 ```Java
         MRLocalCluster mrLocalCluster = new MRLocalCluster.Builder()
             .setNumNodeManagers(1)
-            .setYarnConfig(new Configuration())
+            .setJobHistoryAddress("localhost:37004")
+            .setResourceManagerAddress("localhost")
+            .setResourceManagerHostname("localhost:37001")
+            .setResourceManagerSchedulerAddress("localhost:37002")
+            .setResourceManagerResourceTrackerAddress("localhost:37003")
+            .setConfig(new Configuration())
             .build();
 
         mrLocalCluster.start();

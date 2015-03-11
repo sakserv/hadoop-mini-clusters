@@ -48,20 +48,57 @@ public class MRLocalClusterTest {
     @BeforeClass
     public static void setUp() throws IOException {
         mrLocalCluster = new MRLocalCluster.Builder()
-                .setNumNodeManagers(Integer.parseInt(propertyParser.getProperty(ConfigVars.MR_NUM_NODE_MANAGERS_KEY)))
-                .setYarnConfig(new Configuration())
+                .setNumNodeManagers(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_NODE_MANAGERS_KEY)))
+                .setJobHistoryAddress(propertyParser.getProperty(ConfigVars.MR_JOB_HISTORY_ADDRESS_KEY))
+                .setResourceManagerAddress(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
+                .setResourceManagerHostname(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_HOSTNAME_KEY))
+                .setResourceManagerSchedulerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_SCHEDULER_ADDRESS_KEY))
+                .setResourceManagerResourceTrackerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_RESOURCE_TRACKER_ADDRESS_KEY))
+                .setConfig(new Configuration())
                 .build();
     }
 
     @Test
     public void testNumNodeManagers() {
-        assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.MR_NUM_NODE_MANAGERS_KEY)),
+        assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_NODE_MANAGERS_KEY)),
                 (int) mrLocalCluster.getNumNodeManagers());
     }
 
     @Test
-    public void testYarnConf() {
-        assertTrue(mrLocalCluster.getYarnConfig() instanceof Configuration);
+    public void testJobHistoryAddress() {
+        assertEquals(propertyParser.getProperty(ConfigVars.MR_JOB_HISTORY_ADDRESS_KEY),
+                mrLocalCluster.getJobHistoryAddress());
+    }
+
+    @Test
+    public void testResourceManagerAddress() {
+        assertEquals(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY),
+                mrLocalCluster.getResourceManagerAddress());
+    }
+
+    @Test
+    public void testResourceManagerHostname() {
+        assertEquals(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_HOSTNAME_KEY),
+                mrLocalCluster.getResourceManagerHostname());
+    }
+
+    @Test
+    public void testResourceManagerSchedulerAddress() {
+        assertEquals(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_SCHEDULER_ADDRESS_KEY),
+                mrLocalCluster.getResourceManagerSchedulerAddress());
+    }
+
+    @Test
+    public void testResourceManagerResourceTrackerAddress() {
+        assertEquals(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_RESOURCE_TRACKER_ADDRESS_KEY),
+                mrLocalCluster.getResourceManagerResourceTrackerAddress());
+    }
+
+    @Test
+    public void testConf() {
+        assertTrue(mrLocalCluster.getConfig() instanceof Configuration);
 
     }
 }
