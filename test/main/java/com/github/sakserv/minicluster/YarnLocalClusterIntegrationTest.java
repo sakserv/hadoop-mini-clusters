@@ -17,6 +17,7 @@ import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.impl.YarnLocalCluster;
 import com.github.sakserv.simpleyarnapp.Client;
+import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.hadoop.conf.Configuration;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -24,7 +25,12 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.*;
+
+import static org.junit.Assert.assertEquals;
 
 public class YarnLocalClusterIntegrationTest {
     
@@ -70,7 +76,7 @@ public class YarnLocalClusterIntegrationTest {
     public void testYarnLocalCluster() {
         
         String[] args = new String[7];
-        args[0] = "uptime";
+        args[0] = "whoami";
         args[1] = "2";
         args[2] = getClass().getClassLoader().getResource("simple-yarn-app-1.1.0.jar").toString();
         args[3] = yarnLocalCluster.getResourceManagerAddress();
@@ -83,5 +89,42 @@ public class YarnLocalClusterIntegrationTest {
         } catch(Exception e) {
             e.printStackTrace();
         }
+        
+        // simple yarn app running "whoami", 
+        // validate the container contents matches the java user.name
+        assertEquals(System.getProperty("user.name"), getStdoutContents());
+        
+    }
+    
+    public String getStdoutContents() {
+        String contents = "";
+        try {
+            byte[] encoded = Files.readAllBytes(Paths.get(getStdoutPath()));
+            contents = new String(encoded, Charset.defaultCharset()).trim();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return contents;
+    }
+    
+    public String getStdoutPath() {
+        File dir = new File("./target/" + yarnLocalCluster.getTestName());
+        String[] nmDirs = dir.list();
+        for (String nmDir: nmDirs) {
+            if (nmDir.contains("logDir")) {
+                String[] appDirs = new File(dir.toString() + "/" + nmDir).list();
+                for (String appDir: appDirs) {
+                    if (appDir.contains("0001")) {
+                        String[] containerDirs = new File(dir.toString() + "/" + nmDir + "/" + appDir).list();
+                        for (String containerDir: containerDirs) {
+                            if(containerDir.contains("000002")) {
+                                return dir.toString() + "/" + nmDir + "/" + appDir + "/" + containerDir + "/stdout";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return "";
     }
 }
