@@ -61,6 +61,10 @@ public class YarnLocalClusterIntegrationTest {
                         ConfigVars.YARN_RESOURCE_MANAGER_SCHEDULER_ADDRESS_KEY))
                 .setResourceManagerResourceTrackerAddress(propertyParser.getProperty(
                         ConfigVars.YARN_RESOURCE_MANAGER_RESOURCE_TRACKER_ADDRESS_KEY))
+                .setResourceManagerWebappAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_WEBAPP_ADDRESS_KEY))
+                .setUseInJvmContainerExecutor(Boolean.parseBoolean(propertyParser.getProperty(
+                        ConfigVars.YARN_USE_IN_JVM_CONTAINER_EXECUTOR_KEY)))
                 .setConfig(new Configuration())
                 .build();
 

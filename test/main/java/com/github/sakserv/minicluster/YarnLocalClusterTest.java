@@ -56,6 +56,10 @@ public class YarnLocalClusterTest {
                         ConfigVars.YARN_RESOURCE_MANAGER_SCHEDULER_ADDRESS_KEY))
                 .setResourceManagerResourceTrackerAddress(propertyParser.getProperty(
                         ConfigVars.YARN_RESOURCE_MANAGER_RESOURCE_TRACKER_ADDRESS_KEY))
+                .setResourceManagerWebappAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_WEBAPP_ADDRESS_KEY))
+                .setUseInJvmContainerExecutor(Boolean.parseBoolean(propertyParser.getProperty(
+                        ConfigVars.YARN_USE_IN_JVM_CONTAINER_EXECUTOR_KEY)))
                 .setConfig(new Configuration())
                 .build();
     }
@@ -100,6 +104,20 @@ public class YarnLocalClusterTest {
     public void testResourceManagerResourceTrackerAddress() {
         assertEquals(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_RESOURCE_TRACKER_ADDRESS_KEY),
                 yarnLocalCluster.getResourceManagerResourceTrackerAddress());
+    }
+
+    @Test
+    public void testResourceManagerWebappAddress() {
+        assertEquals(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_WEBAPP_ADDRESS_KEY),
+                yarnLocalCluster.getResourceManagerWebappAddress());
+    }
+    
+    @Test
+    public void testUseInJvmContainerExecutor() {
+        assertEquals(Boolean.parseBoolean(propertyParser.getProperty(
+                        ConfigVars.YARN_USE_IN_JVM_CONTAINER_EXECUTOR_KEY)),
+                yarnLocalCluster.getUseInJvmContainerExecutor());
+        
     }
 
     @Test

@@ -28,6 +28,7 @@ public class YarnLocalCluster implements MiniCluster {
 
     private String testName = getClass().getName();
     private Integer numResourceManagers = 1;
+    private String inJvmContainerExecutorClass = "com.github.sakserv.minicluster.yarn.InJvmContainerExecutor";
     private Boolean enableHa = false;
     private Integer numNodeManagers;
     private Integer numLocalDirs;
@@ -36,6 +37,8 @@ public class YarnLocalCluster implements MiniCluster {
     private String resourceManagerHostname;
     private String resourceManagerSchedulerAddress;
     private String resourceManagerResourceTrackerAddress;
+    private String resourceManagerWebappAddress;
+    private Boolean useInJvmContainerExecutor;
     private Configuration configuration;
     
     private MiniYARNCluster miniYARNCluster;
@@ -73,6 +76,14 @@ public class YarnLocalCluster implements MiniCluster {
         return resourceManagerResourceTrackerAddress;
     }
 
+    public String getResourceManagerWebappAddress() {
+        return resourceManagerWebappAddress;
+    }
+
+    public Boolean getUseInJvmContainerExecutor() {
+        return useInJvmContainerExecutor;
+    }
+
     public Configuration getConfig() {
         return configuration;
     }
@@ -85,6 +96,8 @@ public class YarnLocalCluster implements MiniCluster {
         this.resourceManagerHostname = builder.resourceManagerHostname;
         this.resourceManagerSchedulerAddress = builder.resourceManagerSchedulerAddress;
         this.resourceManagerResourceTrackerAddress = builder.resourceManagerResourceTrackerAddress;
+        this.resourceManagerWebappAddress = builder.resourceManagerWebappAddress;
+        this.useInJvmContainerExecutor = builder.useInJvmContainerExecutor;
         this.configuration = builder.configuration;
     }
     
@@ -96,6 +109,8 @@ public class YarnLocalCluster implements MiniCluster {
         private String resourceManagerHostname;
         private String resourceManagerSchedulerAddress;
         private String resourceManagerResourceTrackerAddress;
+        private String resourceManagerWebappAddress;
+        private Boolean useInJvmContainerExecutor;
         private Configuration configuration;
         
         public Builder setNumNodeManagers(Integer numNodeManagers) {
@@ -130,6 +145,16 @@ public class YarnLocalCluster implements MiniCluster {
 
         public Builder setResourceManagerResourceTrackerAddress(String resourceManagerResourceTrackerAddress) {
             this.resourceManagerResourceTrackerAddress = resourceManagerResourceTrackerAddress;
+            return this;
+        }
+
+        public Builder setResourceManagerWebappAddress(String resourceManagerWebappAddress) {
+            this.resourceManagerWebappAddress = resourceManagerWebappAddress;
+            return this;
+        }
+        
+        public Builder setUseInJvmContainerExecutor(Boolean useInJvmContainerExecutor) {
+            this.useInJvmContainerExecutor = useInJvmContainerExecutor;
             return this;
         }
         
@@ -174,6 +199,16 @@ public class YarnLocalCluster implements MiniCluster {
                 throw new IllegalArgumentException("ERROR: Missing required config: " +
                         "Yarn Resource Manager Resource Tracker Address");
             }
+
+            if(yarnLocalCluster.getResourceManagerWebappAddress() == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: " +
+                        "Yarn Resource Manager Webapp Address");
+            }
+
+
+            if(yarnLocalCluster.getUseInJvmContainerExecutor() == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Use In JVM Container Executor");
+            }
             
             if (yarnLocalCluster.getConfig() == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: Configuration");
@@ -187,7 +222,11 @@ public class YarnLocalCluster implements MiniCluster {
         configuration.set(YarnConfiguration.RM_HOSTNAME, resourceManagerHostname);
         configuration.set(YarnConfiguration.RM_SCHEDULER_ADDRESS, resourceManagerSchedulerAddress);
         configuration.set(YarnConfiguration.RM_RESOURCE_TRACKER_ADDRESS, resourceManagerResourceTrackerAddress);
+        configuration.set(YarnConfiguration.RM_WEBAPP_ADDRESS, resourceManagerWebappAddress);
         configuration.set(YarnConfiguration.YARN_MINICLUSTER_FIXED_PORTS, "true");
+        if (getUseInJvmContainerExecutor()) {
+            configuration.set(YarnConfiguration.NM_CONTAINER_EXECUTOR, inJvmContainerExecutorClass);
+        }
     }
     
     public void stop() {
