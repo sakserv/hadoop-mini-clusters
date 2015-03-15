@@ -226,6 +226,8 @@ public class YarnLocalCluster implements MiniCluster {
         configuration.set(YarnConfiguration.YARN_MINICLUSTER_FIXED_PORTS, "true");
         if (getUseInJvmContainerExecutor()) {
             configuration.set(YarnConfiguration.NM_CONTAINER_EXECUTOR, inJvmContainerExecutorClass);
+            configuration.set("fs.hdfs.impl", org.apache.hadoop.hdfs.DistributedFileSystem.class.getName());
+            configuration.set("fs.file.impl", org.apache.hadoop.fs.LocalFileSystem.class.getName());
         }
     }
     

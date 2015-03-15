@@ -22,6 +22,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.Permission;
@@ -65,6 +66,7 @@ import com.github.sakserv.minicluster.yarn.util.ExecJavaCliParser;
 public class InJvmContainerExecutor extends DefaultContainerExecutor {
 
     private static final Log logger = LogFactory.getLog(InJvmContainerExecutor.class);
+    
 
     /**
      * Will construct the instance of this {@link ContainerExecutor} and will
@@ -134,6 +136,7 @@ public class InJvmContainerExecutor extends DefaultContainerExecutor {
                     new URLClassLoader(additionalClassPathUrls.toArray(additionalClassPathUrls.toArray(new URL[] {})), null);
             Thread.currentThread().setContextClassLoader(containerCl);
             String containerLauncher = javaCliParser.getMain();
+            logger.info("CONTAINER LAUNCHER: " + containerLauncher);
             Class<?> containerClass = Class.forName(containerLauncher, true, containerCl);
             Method mainMethod = containerClass.getMethod("main", new Class[] { String[].class });
             mainMethod.setAccessible(true);
@@ -219,12 +222,13 @@ public class InJvmContainerExecutor extends DefaultContainerExecutor {
                 this.extractUserProvidedClassPathEntries(container);
 
         for (Path resourcePath : userClassPath) {
-            String resourceName = resourcePath.getName();
+            String resourceName = "file:///" + new File(resourcePath.getName()).getAbsolutePath();
+            logger.info("IN JVM: " + resourceName);
             if (logger.isDebugEnabled()) {
                 logger.debug("\t adding " + resourceName + " to the classpath");
             }
             try {
-                additionalClassPathUrls.add(resourcePath.toUri().toURL());
+                additionalClassPathUrls.add(new URI(resourceName).toURL());
             }
             catch (Exception e) {
                 throw new IllegalArgumentException(e);
