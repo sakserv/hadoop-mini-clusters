@@ -134,6 +134,7 @@ public class InJvmContainerExecutor extends DefaultContainerExecutor {
             // class loader
             URLClassLoader containerCl =
                     new URLClassLoader(additionalClassPathUrls.toArray(additionalClassPathUrls.toArray(new URL[] {})), null);
+            logger.info("containerCl: " + containerCl.toString());
             Thread.currentThread().setContextClassLoader(containerCl);
             String containerLauncher = javaCliParser.getMain();
             logger.info("CONTAINER LAUNCHER: " + containerLauncher);
