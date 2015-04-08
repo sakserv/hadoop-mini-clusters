@@ -81,7 +81,7 @@ public class YarnLocalClusterIntegrationTest {
         
         String[] args = new String[7];
         args[0] = "whoami";
-        args[1] = "2";
+        args[1] = "1";
         args[2] = getClass().getClassLoader().getResource("simple-yarn-app-1.1.0.jar").toString();
         args[3] = yarnLocalCluster.getResourceManagerAddress();
         args[4] = yarnLocalCluster.getResourceManagerHostname();

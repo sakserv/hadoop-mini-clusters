@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Paths;
 import java.security.Permission;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -95,8 +96,10 @@ public class InJvmContainerExecutor extends DefaultContainerExecutor {
                                List<String> localDirs, List<String> logDirs) throws IOException {
 
         super.launchContainer(container, nmPrivateContainerScriptPath,
-                nmPrivateTokensPath, userName, appId, containerWorkDir, localDirs,logDirs);
+                nmPrivateTokensPath, userName, appId, containerWorkDir, localDirs, logDirs);
         logger.info("Launching container");
+        logger.info("CONTAINER DETAILS: " + container.getLaunchContext().toString());
+        ExecJavaCliParser result = this.createExecCommandParser(containerWorkDir.toString());
         int exitCode = this.doLaunch(container, containerWorkDir);
         if (logger.isInfoEnabled()) {
             logger.info(("Returned: " + exitCode));
@@ -133,10 +136,11 @@ public class InJvmContainerExecutor extends DefaultContainerExecutor {
             // create Isolated Class Loader for each container and set it as context
             // class loader
             URLClassLoader containerCl =
-                    new URLClassLoader(additionalClassPathUrls.toArray(additionalClassPathUrls.toArray(new URL[] {})), null);
-            logger.info("containerCl: " + containerCl.toString());
+                    new URLClassLoader(additionalClassPathUrls.toArray(additionalClassPathUrls.toArray(new URL[]{})), null);
             Thread.currentThread().setContextClassLoader(containerCl);
             String containerLauncher = javaCliParser.getMain();
+
+
             logger.info("CONTAINER LAUNCHER: " + containerLauncher);
             Class<?> containerClass = Class.forName(containerLauncher, true, containerCl);
             Method mainMethod = containerClass.getMethod("main", new Class[] { String[].class });
@@ -144,6 +148,7 @@ public class InJvmContainerExecutor extends DefaultContainerExecutor {
             String[] arguments = javaCliParser.getMainArguments();
 
             this.doLaunchContainer(containerClass, mainMethod, arguments);
+
         }
         catch (Exception e) {
             logger.error("Failed to launch container " + container, e);
