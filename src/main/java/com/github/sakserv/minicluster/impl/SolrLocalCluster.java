@@ -14,8 +14,13 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SolrLocalCluster implements MiniCluster {
+
+    // Logger
+    private static final Logger LOG = LoggerFactory.getLogger(SolrLocalCluster.class);
 
     public void start() {}
     public void stop() {}
