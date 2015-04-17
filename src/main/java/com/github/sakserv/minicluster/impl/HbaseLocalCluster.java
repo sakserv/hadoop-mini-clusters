@@ -14,6 +14,8 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.MiniHBaseCluster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +23,23 @@ public class HbaseLocalCluster implements MiniCluster {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(HbaseLocalCluster.class);
+
+    MiniHBaseCluster miniHBaseCluster;
+
+    private Integer hbaseMasterPort;
+    private String hdfsTempDir;
+    private Integer hdfsNumDatanodes;
+    private Boolean hdfsEnablePermissions;
+    private Boolean hdfsFormat;
+    private Configuration hdfsConfig;
+
+    private HbaseLocalCluster(Builder builder) {
+
+    }
+
+    public static class Builder {
+
+    }
 
     public void start() {}
     public void stop(){}
