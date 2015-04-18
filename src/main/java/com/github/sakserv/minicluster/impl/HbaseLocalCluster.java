@@ -27,17 +27,119 @@ public class HbaseLocalCluster implements MiniCluster {
     MiniHBaseCluster miniHBaseCluster;
 
     private Integer hbaseMasterPort;
+    private Integer hbaseMasterInfoPort;
     private Integer numRegionServers;
     private String hbaseRootDir;
     private Integer zookeeperPort;
     private String zookeeperConnectionString;
     private String zookeeperZnodeParent;
+    private String hdfsDefaultFs;
+    private Configuration hbaseConfiguration;
+
+    public Integer getHbaseMasterPort() {
+        return hbaseMasterPort;
+    }
+
+    public Integer getHbaseMasterInfoPort() {
+        return hbaseMasterInfoPort;
+    }
+
+    public Integer getNumRegionServers() {
+        return numRegionServers;
+    }
+
+    public String getHbaseRootDir() {
+        return hbaseRootDir;
+    }
+
+    public Integer getZookeeperPort() {
+        return zookeeperPort;
+    }
+
+    public String getZookeeperConnectionString() {
+        return zookeeperConnectionString;
+    }
+
+    public String getZookeeperZnodeParent() {
+        return zookeeperZnodeParent;
+    }
+
+    public String getHdfsDefaultFs() {
+        return hdfsDefaultFs;
+    }
+
+    public Configuration getHbaseConfiguration() {
+        return hbaseConfiguration;
+    }
 
     private HbaseLocalCluster(Builder builder) {
-
+        this.hbaseMasterPort = builder.hbaseMasterPort;
+        this.hbaseMasterInfoPort = builder.hbaseMasterInfoPort;
+        this.numRegionServers = builder.numRegionServers;
+        this.hbaseRootDir = builder.hbaseRootDir;
+        this.zookeeperPort = builder.zookeeperPort;
+        this.zookeeperConnectionString = builder.zookeeperConnectionString;
+        this.zookeeperZnodeParent = builder.zookeeperZnodeParent;
+        this.hdfsDefaultFs = builder.hdfsDefaultFs;
+        this.hbaseConfiguration = builder.hbaseConfiguration;
     }
 
     public static class Builder {
+        private Integer hbaseMasterPort;
+        private Integer hbaseMasterInfoPort;
+        private Integer numRegionServers;
+        private String hbaseRootDir;
+        private Integer zookeeperPort;
+        private String zookeeperConnectionString;
+        private String zookeeperZnodeParent;
+        private String hdfsDefaultFs;
+        private Configuration hbaseConfiguration;
+
+        public Builder setHbaseMasterPort(Integer hbaseMasterPort) {
+            this.hbaseMasterPort = hbaseMasterPort;
+            return this;
+        }
+
+        public Builder setHbaseMasterInfoPort(Integer hbaseMasterInfoPort) {
+            this.hbaseMasterInfoPort = hbaseMasterInfoPort;
+            return this;
+        }
+
+        public Builder setNumRegionServers(Integer numRegionServers) {
+            this.numRegionServers = numRegionServers;
+            return this;
+        }
+
+        public Builder setHbaseRootDir(String hbaseRootDir) {
+            this.hbaseRootDir = hbaseRootDir;
+            return this;
+        }
+
+        public Builder setZookeeperPort(Integer zookeeperPort) {
+            this.zookeeperPort = zookeeperPort;
+            return this;
+        }
+
+        public Builder setZookeeperConnectionString(String zookeeperConnectionString) {
+            this.zookeeperConnectionString = zookeeperConnectionString;
+            return this;
+        }
+
+        public Builder setZookeeperZnodeParent(String zookeeperZnodeParent) {
+            this.zookeeperZnodeParent = zookeeperZnodeParent;
+            return this;
+        }
+
+        public Builder setHdfsDefaultFs(String hdfsDefaultFs) {
+            this.hdfsDefaultFs = hdfsDefaultFs;
+            return this;
+        }
+
+        public Builder setHbaseConfiguration(Configuration hbaseConfiguration) {
+            this.hbaseConfiguration = hbaseConfiguration;
+            return this;
+        }
+
 
     }
 

@@ -78,6 +78,7 @@ public class HbaseLocalClusterIntegrationTest {
         configuration.set("hbase.zookeeper.property.clientPort", String.valueOf(zookeeperLocalCluster.getPort()));
         configuration.set("hbase.zookeeper.quorum", zookeeperLocalCluster.getZookeeperConnectionString());
         configuration.set("zookeeper.znode.parent", "/hbase-unsecure");
+        configuration.set("hbase.master.info.port", "-1");
         try {
             miniHBaseCluster = new MiniHBaseCluster(configuration, 1);
             miniHBaseCluster.startMaster();
