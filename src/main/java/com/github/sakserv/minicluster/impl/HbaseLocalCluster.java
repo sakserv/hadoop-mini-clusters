@@ -27,6 +27,11 @@ public class HbaseLocalCluster implements MiniCluster {
     MiniHBaseCluster miniHBaseCluster;
 
     private Integer hbaseMasterPort;
+    private Integer numRegionServers;
+    private String hbaseRootDir;
+    private Integer zookeeperPort;
+    private String zookeeperConnectionString;
+    private String zookeeperZnodeParent;
 
     private HbaseLocalCluster(Builder builder) {
 
