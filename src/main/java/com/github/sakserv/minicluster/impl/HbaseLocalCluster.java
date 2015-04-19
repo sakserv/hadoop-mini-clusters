@@ -27,11 +27,6 @@ public class HbaseLocalCluster implements MiniCluster {
     MiniHBaseCluster miniHBaseCluster;
 
     private Integer hbaseMasterPort;
-    private String hdfsTempDir;
-    private Integer hdfsNumDatanodes;
-    private Boolean hdfsEnablePermissions;
-    private Boolean hdfsFormat;
-    private Configuration hdfsConfig;
 
     private HbaseLocalCluster(Builder builder) {
 
