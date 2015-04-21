@@ -104,5 +104,12 @@ public class ConfigVars {
     
     // MR
     public static final String MR_JOB_HISTORY_ADDRESS_KEY = "mr.job.history.address";
-    
+
+    // HBase
+    public static final String HBASE_MASTER_PORT_KEY = "hbase.master.port";
+    public static final String HBASE_MASTER_INFO_PORT_KEY = "hbase.master.info.port";
+    public static final String HBASE_NUM_REGION_SERVERS_KEY = "hbase.num.region.servers";
+    public static final String HBASE_ROOT_DIR_KEY = "hbase.root.dir";
+    public static final String HBASE_ZNODE_PARENT_KEY = "hbase.znode.parent";
+
 }
