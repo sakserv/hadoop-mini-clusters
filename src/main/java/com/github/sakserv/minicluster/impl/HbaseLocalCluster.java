@@ -140,6 +140,38 @@ public class HbaseLocalCluster implements MiniCluster {
             return this;
         }
 
+        public HbaseLocalCluster build() {
+            HbaseLocalCluster hbaseLocalCluster = new HbaseLocalCluster(this);
+            validateObject(hbaseLocalCluster);
+            return hbaseLocalCluster;
+        }
+
+        public void validateObject(HbaseLocalCluster hbaseLocalCluster) {
+            if(hbaseLocalCluster.hbaseMasterPort == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: HBase Master Port");
+            }
+            if(hbaseLocalCluster.hbaseMasterInfoPort == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: HBase Master Info Port");
+            }
+            if(hbaseLocalCluster.numRegionServers == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: HBase Number of Region Servers");
+            }
+            if(hbaseLocalCluster.hbaseRootDir == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: HBase Root Dir");
+            }
+            if(hbaseLocalCluster.zookeeperPort == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Zookeeper Port");
+            }
+            if(hbaseLocalCluster.zookeeperConnectionString == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Zookeeper Connection String");
+            }
+            if(hbaseLocalCluster.zookeeperZnodeParent == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Zookeeper Znode Parent");
+            }
+            if(hbaseLocalCluster.hbaseConfiguration == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: HBase Configuration");
+            }
+        }
 
     }
 
