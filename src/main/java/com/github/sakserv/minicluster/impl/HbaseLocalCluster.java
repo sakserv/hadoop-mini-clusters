@@ -15,6 +15,7 @@ package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.HConstants;
 import org.apache.hadoop.hbase.MiniHBaseCluster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +34,6 @@ public class HbaseLocalCluster implements MiniCluster {
     private Integer zookeeperPort;
     private String zookeeperConnectionString;
     private String zookeeperZnodeParent;
-    private String hdfsDefaultFs;
     private Configuration hbaseConfiguration;
 
     public Integer getHbaseMasterPort() {
@@ -64,10 +64,6 @@ public class HbaseLocalCluster implements MiniCluster {
         return zookeeperZnodeParent;
     }
 
-    public String getHdfsDefaultFs() {
-        return hdfsDefaultFs;
-    }
-
     public Configuration getHbaseConfiguration() {
         return hbaseConfiguration;
     }
@@ -80,7 +76,6 @@ public class HbaseLocalCluster implements MiniCluster {
         this.zookeeperPort = builder.zookeeperPort;
         this.zookeeperConnectionString = builder.zookeeperConnectionString;
         this.zookeeperZnodeParent = builder.zookeeperZnodeParent;
-        this.hdfsDefaultFs = builder.hdfsDefaultFs;
         this.hbaseConfiguration = builder.hbaseConfiguration;
     }
 
@@ -92,7 +87,6 @@ public class HbaseLocalCluster implements MiniCluster {
         private Integer zookeeperPort;
         private String zookeeperConnectionString;
         private String zookeeperZnodeParent;
-        private String hdfsDefaultFs;
         private Configuration hbaseConfiguration;
 
         public Builder setHbaseMasterPort(Integer hbaseMasterPort) {
@@ -127,11 +121,6 @@ public class HbaseLocalCluster implements MiniCluster {
 
         public Builder setZookeeperZnodeParent(String zookeeperZnodeParent) {
             this.zookeeperZnodeParent = zookeeperZnodeParent;
-            return this;
-        }
-
-        public Builder setHdfsDefaultFs(String hdfsDefaultFs) {
-            this.hdfsDefaultFs = hdfsDefaultFs;
             return this;
         }
 
@@ -177,7 +166,14 @@ public class HbaseLocalCluster implements MiniCluster {
 
     public void start() {}
     public void stop(){}
-    public void configure() {}
+    public void configure() {
+        hbaseConfiguration.set(HConstants.MASTER_PORT, hbaseMasterPort.toString());
+        hbaseConfiguration.set(HConstants.MASTER_INFO_PORT, hbaseMasterInfoPort.toString());
+        hbaseConfiguration.set(HConstants.HBASE_DIR, hbaseRootDir);
+        hbaseConfiguration.set(HConstants.ZOOKEEPER_CLIENT_PORT, zookeeperPort.toString());
+        hbaseConfiguration.set(HConstants.ZOOKEEPER_QUORUM, zookeeperConnectionString);
+        hbaseConfiguration.set(HConstants.ZOOKEEPER_ZNODE_PARENT, zookeeperZnodeParent);
+    }
 
 
 }
