@@ -14,11 +14,14 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HConstants;
 import org.apache.hadoop.hbase.MiniHBaseCluster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 public class HbaseLocalCluster implements MiniCluster {
 
@@ -164,8 +167,38 @@ public class HbaseLocalCluster implements MiniCluster {
 
     }
 
-    public void start() {}
-    public void stop(){}
+    public void start() {
+        configure();
+        try {
+            LOG.info("HBASE: Starting MiniHBaseCluster");
+            miniHBaseCluster = new MiniHBaseCluster(hbaseConfiguration, numRegionServers);
+            miniHBaseCluster.startMaster();
+            miniHBaseCluster.startRegionServer();
+        } catch(InterruptedException e) {
+            LOG.error("ERROR: Failed to start MiniHBaseCluster");
+            e.printStackTrace();
+        } catch(IOException e) {
+            LOG.error("ERROR: Failed to start MiniHBaseCluster");
+            e.printStackTrace();
+        }
+    }
+
+    public void stop() {
+        stop(true);
+    }
+
+    public void stop(boolean cleanUp){
+        try {
+            LOG.info("HBASE: Stopping MiniHBaseCluster");
+            miniHBaseCluster.shutdown();
+        } catch(IOException e) {
+            LOG.error("ERROR: Failed to stop MiniHBaseCluster");
+            e.printStackTrace();
+        }
+        if(cleanUp) {
+            cleanUp();
+        }
+    }
     public void configure() {
         hbaseConfiguration.set(HConstants.MASTER_PORT, hbaseMasterPort.toString());
         hbaseConfiguration.set(HConstants.MASTER_INFO_PORT, hbaseMasterInfoPort.toString());
@@ -173,6 +206,10 @@ public class HbaseLocalCluster implements MiniCluster {
         hbaseConfiguration.set(HConstants.ZOOKEEPER_CLIENT_PORT, zookeeperPort.toString());
         hbaseConfiguration.set(HConstants.ZOOKEEPER_QUORUM, zookeeperConnectionString);
         hbaseConfiguration.set(HConstants.ZOOKEEPER_ZNODE_PARENT, zookeeperZnodeParent);
+    }
+
+    public void cleanUp() {
+        FileUtils.deleteFolder(hbaseRootDir);
     }
 
 
