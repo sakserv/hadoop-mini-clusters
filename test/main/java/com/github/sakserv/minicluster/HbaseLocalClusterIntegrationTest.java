@@ -53,7 +53,7 @@ public class HbaseLocalClusterIntegrationTest {
     private static HbaseLocalCluster hbaseLocalCluster;
     private static ZookeeperLocalCluster zookeeperLocalCluster;
 
-@BeforeClass
+    @BeforeClass
     public static void setUp(){
         zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
             .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
