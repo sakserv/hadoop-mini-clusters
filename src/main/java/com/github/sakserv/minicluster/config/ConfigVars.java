@@ -111,5 +111,6 @@ public class ConfigVars {
     public static final String HBASE_NUM_REGION_SERVERS_KEY = "hbase.num.region.servers";
     public static final String HBASE_ROOT_DIR_KEY = "hbase.root.dir";
     public static final String HBASE_ZNODE_PARENT_KEY = "hbase.znode.parent";
+    public static final String HBASE_WAL_REPLICATION_ENABLED_KEY = "hbase.wal.replication.enabled";
 
 }

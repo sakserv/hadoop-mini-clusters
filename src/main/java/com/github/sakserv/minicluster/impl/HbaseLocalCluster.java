@@ -37,6 +37,7 @@ public class HbaseLocalCluster implements MiniCluster {
     private Integer zookeeperPort;
     private String zookeeperConnectionString;
     private String zookeeperZnodeParent;
+    private Boolean hbaseWalReplicationEnabled;
     private Configuration hbaseConfiguration;
 
     public Integer getHbaseMasterPort() {
@@ -67,6 +68,10 @@ public class HbaseLocalCluster implements MiniCluster {
         return zookeeperZnodeParent;
     }
 
+    public Boolean getHbaseWalReplicationEnabled() {
+        return hbaseWalReplicationEnabled;
+    }
+
     public Configuration getHbaseConfiguration() {
         return hbaseConfiguration;
     }
@@ -79,6 +84,7 @@ public class HbaseLocalCluster implements MiniCluster {
         this.zookeeperPort = builder.zookeeperPort;
         this.zookeeperConnectionString = builder.zookeeperConnectionString;
         this.zookeeperZnodeParent = builder.zookeeperZnodeParent;
+        this.hbaseWalReplicationEnabled = builder.hbaseWalReplicationEnabled;
         this.hbaseConfiguration = builder.hbaseConfiguration;
     }
 
@@ -90,6 +96,7 @@ public class HbaseLocalCluster implements MiniCluster {
         private Integer zookeeperPort;
         private String zookeeperConnectionString;
         private String zookeeperZnodeParent;
+        private Boolean hbaseWalReplicationEnabled;
         private Configuration hbaseConfiguration;
 
         public Builder setHbaseMasterPort(Integer hbaseMasterPort) {
@@ -127,6 +134,11 @@ public class HbaseLocalCluster implements MiniCluster {
             return this;
         }
 
+        public Builder setHbaseWalReplicationEnabled(Boolean hbaseWalReplicationEnabled) {
+            this.hbaseWalReplicationEnabled = hbaseWalReplicationEnabled;
+            return this;
+        }
+
         public Builder setHbaseConfiguration(Configuration hbaseConfiguration) {
             this.hbaseConfiguration = hbaseConfiguration;
             return this;
@@ -159,6 +171,9 @@ public class HbaseLocalCluster implements MiniCluster {
             }
             if(hbaseLocalCluster.zookeeperZnodeParent == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: Zookeeper Znode Parent");
+            }
+            if(hbaseLocalCluster.hbaseWalReplicationEnabled == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: HBase WAL Replication Enabled");
             }
             if(hbaseLocalCluster.hbaseConfiguration == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: HBase Configuration");
@@ -206,6 +221,7 @@ public class HbaseLocalCluster implements MiniCluster {
         hbaseConfiguration.set(HConstants.ZOOKEEPER_CLIENT_PORT, zookeeperPort.toString());
         hbaseConfiguration.set(HConstants.ZOOKEEPER_QUORUM, zookeeperConnectionString);
         hbaseConfiguration.set(HConstants.ZOOKEEPER_ZNODE_PARENT, zookeeperZnodeParent);
+        hbaseConfiguration.set(HConstants.REPLICATION_ENABLE_KEY, hbaseWalReplicationEnabled.toString());
     }
 
     public void cleanUp() {
