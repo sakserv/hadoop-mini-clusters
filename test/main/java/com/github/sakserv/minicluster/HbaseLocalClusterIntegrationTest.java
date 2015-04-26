@@ -17,19 +17,14 @@ package com.github.sakserv.minicluster;
 import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.impl.HbaseLocalCluster;
-import com.github.sakserv.minicluster.impl.HdfsLocalCluster;
 import com.github.sakserv.minicluster.impl.ZookeeperLocalCluster;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FSDataInputStream;
-import org.apache.hadoop.fs.FSDataOutputStream;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.hbase.MiniHBaseCluster;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.apache.hadoop.hbase.client.HBaseAdmin;
 
 import java.io.IOException;
 
@@ -90,8 +85,17 @@ public class HbaseLocalClusterIntegrationTest {
     @Test
     public void testHbaseLocalCluster() throws IOException {
 
-        assertEquals(propertyParser.getProperty(ConfigVars.HBASE_ZNODE_PARENT_KEY),
-                hbaseLocalCluster.getZookeeperZnodeParent());
+        createHbaseTable(propertyParser.getProperty(ConfigVars.HBASE_TEST_TABLE_NAME_KEY),
+                hbaseLocalCluster.getHbaseConfiguration());
 
+    }
+
+    private static void createHbaseTable(String tableName, Configuration configuration) {
+
+        try {
+            final HBaseAdmin admin = new HBaseAdmin(configuration);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 }

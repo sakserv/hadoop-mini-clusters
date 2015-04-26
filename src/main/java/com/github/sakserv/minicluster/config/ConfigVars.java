@@ -113,4 +113,7 @@ public class ConfigVars {
     public static final String HBASE_ZNODE_PARENT_KEY = "hbase.znode.parent";
     public static final String HBASE_WAL_REPLICATION_ENABLED_KEY = "hbase.wal.replication.enabled";
 
+    // HBase Test
+    public static final String HBASE_TEST_TABLE_NAME_KEY = "hbase.test.table.name";
+
 }
