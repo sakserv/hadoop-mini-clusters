@@ -82,6 +82,23 @@ Examples:
         mrLocalCluster.start();
 ```
 
+* HBase Example - Coming in 0.0.13
+```Java
+        HbaseLocalCluster hbaseLocalCluster = new HbaseLocalCluster.Builder()
+            .setHbaseMasterPort(25111)
+            .setHbaseMasterInfoPort(-1)
+            .setNumRegionServers(1)
+            .setHbaseRootDir("embedded_hbase")
+            .setZookeeperPort(12345)
+            .setZookeeperConnectionString("localhost:12345")
+            .setZookeeperZnodeParent("/hbase-unsecure")
+            .setHbaseWalReplicationEnabled(false)
+            .setHbaseConfiguration(new Configuration())
+            .build();
+            
+        hbaseLocalCluster.start();
+```
+
 *  Zookeeper Example
 ```Java
         ZookeeperLocalCluster zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
