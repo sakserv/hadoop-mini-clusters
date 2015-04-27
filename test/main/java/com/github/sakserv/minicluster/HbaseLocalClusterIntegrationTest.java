@@ -19,6 +19,9 @@ import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.impl.HbaseLocalCluster;
 import com.github.sakserv.minicluster.impl.ZookeeperLocalCluster;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.HColumnDescriptor;
+import org.apache.hadoop.hbase.HTableDescriptor;
+import org.apache.hadoop.hbase.TableName;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -85,17 +88,28 @@ public class HbaseLocalClusterIntegrationTest {
     @Test
     public void testHbaseLocalCluster() throws IOException {
 
-        createHbaseTable(propertyParser.getProperty(ConfigVars.HBASE_TEST_TABLE_NAME_KEY),
-                hbaseLocalCluster.getHbaseConfiguration());
+        String tableName = propertyParser.getProperty(ConfigVars.HBASE_TEST_TABLE_NAME_KEY);
+        String colFamName = propertyParser.getProperty(ConfigVars.HBASE_TEST_COL_FAMILY_NAME_KEY);
+
+        LOG.info("HBASE: Creating table " + tableName + " with column family " + colFamName);
+        createHbaseTable(tableName, colFamName, hbaseLocalCluster.getHbaseConfiguration());
 
     }
 
-    private static void createHbaseTable(String tableName, Configuration configuration) {
+    private static void createHbaseTable(String tableNameToCreate, String colFamily, Configuration configuration) {
 
         try {
             final HBaseAdmin admin = new HBaseAdmin(configuration);
+            TableName tableName =  TableName.valueOf(tableNameToCreate);
+            HTableDescriptor hTableDescriptor = new HTableDescriptor(tableName);
+            HColumnDescriptor hColumnDescriptor = new HColumnDescriptor(colFamily);
+
+            hTableDescriptor.addFamily(hColumnDescriptor);
+            admin.createTable(hTableDescriptor);
+
         } catch(IOException e) {
             e.printStackTrace();
         }
     }
+
 }
