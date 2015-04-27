@@ -116,5 +116,7 @@ public class ConfigVars {
     // HBase Test
     public static final String HBASE_TEST_TABLE_NAME_KEY = "hbase.test.table.name";
     public static final String HBASE_TEST_COL_FAMILY_NAME_KEY = "hbase.test.col.family.name";
+    public static final String HBASE_TEST_COL_QUALIFIER_NAME_KEY = "hbase.test.col.qualifier.name";
+    public static final String HBASE_TEST_NUM_ROWS_TO_PUT_KEY = "hbase.test.num.rows.to.put";
 
 }
