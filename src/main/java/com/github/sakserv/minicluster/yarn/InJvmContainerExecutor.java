@@ -13,13 +13,7 @@
  */
 package com.github.sakserv.minicluster.yarn;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URI;
@@ -34,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.LockSupport;
 
+import com.github.sakserv.minicluster.yarn.util.ExecShellCliParser;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
@@ -97,12 +92,23 @@ public class InJvmContainerExecutor extends DefaultContainerExecutor {
 
         super.launchContainer(container, nmPrivateContainerScriptPath,
                 nmPrivateTokensPath, userName, appId, containerWorkDir, localDirs, logDirs);
-        logger.info("Launching container");
-        logger.info("CONTAINER DETAILS: " + container.getLaunchContext().toString());
-        ExecJavaCliParser result = this.createExecCommandParser(containerWorkDir.toString());
-        int exitCode = this.doLaunch(container, containerWorkDir);
-        if (logger.isInfoEnabled()) {
-            logger.info(("Returned: " + exitCode));
+        int exitCode = 0;
+        if (container.getLaunchContext().getCommands().toString().contains("bin/java")) {
+            ExecJavaCliParser result = this.createExecCommandParser(containerWorkDir.toString());
+            exitCode = this.doLaunch(container, containerWorkDir);
+            if (logger.isInfoEnabled()) {
+                logger.info(("Returned: " + exitCode));
+            }
+        } else {
+            String cmd = container.getLaunchContext().getCommands().get(0);
+            if (logger.isInfoEnabled()) {
+                logger.info("Running Command: " + cmd);
+            }
+            ExecShellCliParser execShellCliParser = new ExecShellCliParser(cmd);
+            exitCode = execShellCliParser.runCommand();
+            if (logger.isInfoEnabled()) {
+                logger.info(("Returned: " + exitCode));
+            }
         }
         return exitCode;
     }
@@ -141,7 +147,6 @@ public class InJvmContainerExecutor extends DefaultContainerExecutor {
             String containerLauncher = javaCliParser.getMain();
 
 
-            logger.info("CONTAINER LAUNCHER: " + containerLauncher);
             Class<?> containerClass = Class.forName(containerLauncher, true, containerCl);
             Method mainMethod = containerClass.getMethod("main", new Class[] { String[].class });
             mainMethod.setAccessible(true);
@@ -229,7 +234,6 @@ public class InJvmContainerExecutor extends DefaultContainerExecutor {
 
         for (Path resourcePath : userClassPath) {
             String resourceName = "file:///" + new File(resourcePath.getName()).getAbsolutePath();
-            logger.info("IN JVM: " + resourceName);
             if (logger.isDebugEnabled()) {
                 logger.debug("\t adding " + resourceName + " to the classpath");
             }

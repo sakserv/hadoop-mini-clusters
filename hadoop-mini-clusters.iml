@@ -52,7 +52,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.clojure:tools.logging:0.2.3" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.clojure:math.numeric-tower:0.0.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.clojure:tools.cli:0.2.4" level="project" />
-    <orderEntry type="library" name="Maven: commons-io:commons-io:2.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.commons:commons-exec:1.1" level="project" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.5" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.googlecode.json-simple:json-simple:1.1" level="project" />
@@ -254,5 +253,6 @@
     <orderEntry type="library" name="Maven: org.mongodb:mongo-java-driver:2.11.3" level="project" />
     <orderEntry type="library" name="Maven: net.sf.jopt-simple:jopt-simple:4.8" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:4.1.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: commons-io:commons-io:2.4" level="project" />
   </component>
 </module>
