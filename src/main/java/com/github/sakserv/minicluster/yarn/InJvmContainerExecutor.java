@@ -426,4 +426,34 @@ public class InJvmContainerExecutor extends DefaultContainerExecutor {
             throw new SystemExitException();
         }
     }
+
+    /**
+     * An implementation of the {@link SecurityManager} which can be used to
+     * intercept System.exit. This implementation will simply throw an exception
+     * when such call is made essentially making such call ineffective.
+     *
+     * It is used by this class to intercept System.exit calls made by some
+     * implementations of YARN containers (e.g., Tez's DAGAppMaster). Since this
+     * container executor will use the same JVM its running in to start those
+     * containers any System.exit call will shut down the entire cluster. Using
+     * such {@link SecurityManager} would allow such calls to be intercepted by
+     * catching {@link SystemExitException}.
+     */
+    public static class SystemExitAllowSecurityManager extends
+            SecurityManager {
+        @Override
+        public void checkPermission(Permission perm) {
+            // allow anything.
+        }
+
+        @Override
+        public void checkPermission(Permission perm, Object context) {
+            // allow anything.
+        }
+
+        @Override
+        public void checkExit(int status) {
+            super.checkExit(status);
+        }
+    }
 }

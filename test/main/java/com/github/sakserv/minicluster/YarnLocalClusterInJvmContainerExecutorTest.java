@@ -16,6 +16,7 @@ package com.github.sakserv.minicluster;
 import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.impl.YarnLocalCluster;
+import com.github.sakserv.minicluster.yarn.InJvmContainerExecutor;
 import com.github.sakserv.simpleyarnapp.Client;
 import org.apache.hadoop.conf.Configuration;
 import org.junit.AfterClass;
@@ -72,6 +73,8 @@ public class YarnLocalClusterInJvmContainerExecutorTest {
 
     @AfterClass
     public static void tearDown() {
+        // We want the cluster to be able to shut down
+        System.setSecurityManager(new InJvmContainerExecutor.SystemExitAllowSecurityManager());
         yarnLocalCluster.stop(false);
     }
 
