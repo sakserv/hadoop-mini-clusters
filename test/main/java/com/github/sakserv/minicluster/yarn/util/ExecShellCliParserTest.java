@@ -41,11 +41,11 @@ public class ExecShellCliParserTest {
         execShellCliParser = new ExecShellCliParser(cliString);
     }
 
-/*    @Test
+    @Test
     public void testGetCommand() {
         assertEquals(command, execShellCliParser.getCommand());
 
-    }*/
+    }
 
     @Test
     public void testGetStdoutPath() {
@@ -59,8 +59,8 @@ public class ExecShellCliParserTest {
 
     @Test
     public void testRunCommand() throws InterruptedException, IOException {
-        Process process = Runtime.getRuntime().exec("/bin/bash -c export PATH=/usr/bin && whoami");
+        Process process = Runtime.getRuntime().exec("whoami");
         process.waitFor();
-        LOG.info(String.valueOf(process.exitValue()));
+        assertEquals(0, process.exitValue());
     }
 }

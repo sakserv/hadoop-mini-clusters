@@ -71,11 +71,6 @@ public class ExecShellCliParser {
         String stdoutFile = getStdoutPath();
         String stderrFile = getStderrPath();
 
-        LOG.info("CLI STRING: " + cliString);
-        LOG.info("COMMAND: " + command);
-        LOG.info("STDOUT FILE: " + stdoutFile);
-        LOG.info("STDERR FILE: " + stderrFile);
-
         Process p = Runtime.getRuntime().exec(command.split(" "));
 
         String stdout = getOutput(p.getInputStream());
@@ -106,8 +101,6 @@ public class ExecShellCliParser {
 
     public void writeOutputToFile(String output, File outputFile) throws IOException {
         File parentDir = outputFile.getAbsoluteFile().getParentFile();
-        LOG.info("OUTPUT FILE: " + outputFile);
-        LOG.info("PARENT DIR: " + parentDir);
         parentDir.mkdirs();
         org.apache.commons.io.FileUtils.writeStringToFile(outputFile, output);
     }
