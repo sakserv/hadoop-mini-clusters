@@ -24,6 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.security.Permission;
 
 public class HiveLocalMetaStore implements MiniCluster {
@@ -37,8 +39,7 @@ public class HiveLocalMetaStore implements MiniCluster {
     private String hiveScratchDir;
     private String hiveWarehouseDir;
     private HiveConf hiveConf;
-    
-    private static SecurityManager securityManager;
+
     private Thread t;
     
     private HiveLocalMetaStore(Builder builder) {
@@ -148,25 +149,6 @@ public class HiveLocalMetaStore implements MiniCluster {
         
     }
 
-    public class NoExitSecurityManager extends SecurityManager {
-
-        @Override
-        public void checkPermission(Permission perm) {
-            // allow anything.
-        }
-
-        @Override
-        public void checkPermission(Permission perm, Object context) {
-            // allow anything.
-        }
-
-        @Override
-        public void checkExit(int status) {
-
-            super.checkExit(status);
-        }
-    }
-
     private static class StartHiveLocalMetaStore implements Runnable {
         
         private Integer hiveMetastorePort;
@@ -187,7 +169,7 @@ public class HiveLocalMetaStore implements MiniCluster {
                         new HadoopThriftAuthBridge(), 
                         hiveConf);
             } catch (Throwable t) {
-                t.printStackTrace();
+                LOG.error("Exiting. Got exception from metastore: ", t);
             }
         }
     }
@@ -195,8 +177,6 @@ public class HiveLocalMetaStore implements MiniCluster {
     
     
     public void configure() {
-        securityManager = System.getSecurityManager();
-        System.setSecurityManager(new NoExitSecurityManager());
         hiveConf.setVar(HiveConf.ConfVars.METASTOREURIS, 
                 "thrift://" + hiveMetastoreHostname + ":" + hiveMetastorePort);
         hiveConf.set(HiveConf.ConfVars.SCRATCHDIR.varname, hiveScratchDir);
@@ -215,12 +195,13 @@ public class HiveLocalMetaStore implements MiniCluster {
         if(cleanUp) {
             cleanDb();
         }
-        
+
         t.interrupt();
-        
+
         if (cleanUp) {
             cleanUp();
         }
+
     }
 
     private void cleanUp() {
@@ -234,6 +215,7 @@ public class HiveLocalMetaStore implements MiniCluster {
         startHiveLocalMetaStore.setHiveMetastorePort(hiveMetastorePort);
         startHiveLocalMetaStore.setHiveConf(hiveConf);
         t = new Thread(startHiveLocalMetaStore);
+        t.setDaemon(true);
         t.start();
         try {
             Thread.sleep(5000);

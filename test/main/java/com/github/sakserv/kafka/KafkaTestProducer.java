@@ -109,7 +109,6 @@ public class KafkaTestProducer {
                 obj.put("dt", GenerateRandomDay.genRandomDay());
             } catch(JSONException e) {
                 e.printStackTrace();
-                System.exit(3);
             }
             String payload = obj.toString();
 

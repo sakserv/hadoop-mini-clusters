@@ -126,6 +126,7 @@ public class ZookeeperLocalCluster implements MiniCluster {
         if (cleanUp) {
             cleanUp();
         }
+
     }
 
     private void cleanUp() {

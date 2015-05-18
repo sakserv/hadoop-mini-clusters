@@ -35,6 +35,7 @@ public class MRLocalCluster implements MiniCluster {
     private String resourceManagerHostname;
     private String resourceManagerSchedulerAddress;
     private String resourceManagerResourceTrackerAddress;
+    private String resourceManagerWebappAddress;
     private Configuration configuration;
     
     private MiniMRYarnCluster miniMRYarnCluster;
@@ -67,6 +68,10 @@ public class MRLocalCluster implements MiniCluster {
         return resourceManagerResourceTrackerAddress;
     }
 
+    public String getResourceManagerWebappAddress() {
+        return resourceManagerWebappAddress;
+    }
+
     public Configuration getConfig() {
         return configuration;
     }
@@ -78,6 +83,7 @@ public class MRLocalCluster implements MiniCluster {
         this.resourceManagerHostname = builder.resourceManagerHostname;
         this.resourceManagerSchedulerAddress = builder.resourceManagerSchedulerAddress;
         this.resourceManagerResourceTrackerAddress = builder.resourceManagerResourceTrackerAddress;
+        this.resourceManagerWebappAddress = builder.resourceManagerWebappAddress;
         this.configuration = builder.configuration;
     }
     
@@ -88,6 +94,7 @@ public class MRLocalCluster implements MiniCluster {
         private String resourceManagerHostname;
         private String resourceManagerSchedulerAddress;
         private String resourceManagerResourceTrackerAddress;
+        private String resourceManagerWebappAddress;
         private Configuration configuration;
         
         public Builder setNumNodeManagers(Integer numNodeManagers) {
@@ -117,6 +124,11 @@ public class MRLocalCluster implements MiniCluster {
 
         public Builder setResourceManagerResourceTrackerAddress(String resourceManagerResourceTrackerAddress) {
             this.resourceManagerResourceTrackerAddress = resourceManagerResourceTrackerAddress;
+            return this;
+        }
+
+        public Builder setResourceManagerWebappAddress(String resourceManagerWebappAddress) {
+            this.resourceManagerWebappAddress = resourceManagerWebappAddress;
             return this;
         }
 
@@ -158,6 +170,11 @@ public class MRLocalCluster implements MiniCluster {
                         "Yarn Resource Manager Resource Tracker Address");
             }
 
+            if(mrLocalCluster.getResourceManagerWebappAddress() == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: " +
+                        "Yarn Resource Manager Webapp Address");
+            }
+
             if (mrLocalCluster.getConfig() == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: Configuration");
             }
@@ -170,6 +187,7 @@ public class MRLocalCluster implements MiniCluster {
         configuration.set(YarnConfiguration.RM_HOSTNAME, resourceManagerHostname);
         configuration.set(YarnConfiguration.RM_SCHEDULER_ADDRESS, resourceManagerSchedulerAddress);
         configuration.set(YarnConfiguration.RM_RESOURCE_TRACKER_ADDRESS, resourceManagerResourceTrackerAddress);
+        configuration.set(YarnConfiguration.RM_WEBAPP_ADDRESS, resourceManagerWebappAddress);
         configuration.set(JHAdminConfig.MR_HISTORY_ADDRESS, jobHistoryAddress);
         configuration.set(YarnConfiguration.YARN_MINICLUSTER_FIXED_PORTS, "true");
     }
@@ -193,8 +211,12 @@ public class MRLocalCluster implements MiniCluster {
     }
 
     public void stop(boolean cleanUp) {
-        LOG.info("MR: Stopping MiniMRYarnCluster");
-        miniMRYarnCluster.stop();
+        try {
+            LOG.info("MR: Stopping MiniMRYarnCluster");
+            miniMRYarnCluster.stop();
+        } catch (Exception e) {
+            LOG.info("MR: Failed to stop the MiniMRYarnCluster: ", e);
+        }
         if(cleanUp) {
             cleanUp();
         }

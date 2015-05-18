@@ -206,6 +206,12 @@ public class HbaseLocalCluster implements MiniCluster {
         try {
             LOG.info("HBASE: Stopping MiniHBaseCluster");
             miniHBaseCluster.shutdown();
+            miniHBaseCluster.join();
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } catch(IOException e) {
             LOG.error("ERROR: Failed to stop MiniHBaseCluster");
             e.printStackTrace();
@@ -213,6 +219,7 @@ public class HbaseLocalCluster implements MiniCluster {
         if(cleanUp) {
             cleanUp();
         }
+
     }
     public void configure() {
         hbaseConfiguration.set(HConstants.MASTER_PORT, hbaseMasterPort.toString());

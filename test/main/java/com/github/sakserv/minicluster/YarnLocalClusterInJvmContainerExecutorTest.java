@@ -49,7 +49,7 @@ public class YarnLocalClusterInJvmContainerExecutorTest {
     }
     
     private static YarnLocalCluster yarnLocalCluster;
-    
+
     @BeforeClass
     public static void setUp() throws IOException {
         yarnLocalCluster = new YarnLocalCluster.Builder()
@@ -64,7 +64,7 @@ public class YarnLocalClusterInJvmContainerExecutorTest {
                         ConfigVars.YARN_RESOURCE_MANAGER_RESOURCE_TRACKER_ADDRESS_KEY))
                 .setResourceManagerWebappAddress(propertyParser.getProperty(
                         ConfigVars.YARN_RESOURCE_MANAGER_WEBAPP_ADDRESS_KEY))
-                .setUseInJvmContainerExecutor(true)
+                .setUseInJvmContainerExecutor(true) // Cant automate a test as it hangs all tests, disabling.
                 .setConfig(new Configuration())
                 .build();
 
@@ -75,7 +75,7 @@ public class YarnLocalClusterInJvmContainerExecutorTest {
     public static void tearDown() {
         // We want the cluster to be able to shut down
         System.setSecurityManager(new InJvmContainerExecutor.SystemExitAllowSecurityManager());
-        yarnLocalCluster.stop(false);
+        yarnLocalCluster.stop();
     }
 
     @Test

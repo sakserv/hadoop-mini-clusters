@@ -208,6 +208,7 @@ public class HsqldbLocalServer implements MiniCluster {
         FileUtils.deleteFolder(getHsqldbTempDir() + ".log");
         FileUtils.deleteFolder(getHsqldbTempDir() + ".properties");
         FileUtils.deleteFolder(getHsqldbTempDir() + ".script");
+        FileUtils.deleteFolder(getHsqldbTempDir() + ".lck");
     }
     
 }

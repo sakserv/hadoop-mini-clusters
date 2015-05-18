@@ -1,12 +1,12 @@
 hadoop-mini-clusters
 ====================
-Collection of Hadoop Mini Clusters for Hortonworks Data Platform (HDP) 2.2.0.0
+Collection of Hadoop Mini Clusters
 
 Includes:
 ---------
 *   HDFS - Mini HDFS Cluster
-*   YARN - Mini YARN Cluster (no MR) - Coming in 0.0.13
-*   MapReduce - Mini MapReduce Cluster - Coming in 0.0.13
+*   YARN - Mini YARN Cluster (no MR)
+*   MapReduce - Mini MapReduce Cluster
 *   Zookeeper - Curator based Local Cluster
 *   HiveServer2 - Local HiveServer2 instance
 *   HiveMetaStore - Derby backed HiveMetaStore
@@ -34,24 +34,22 @@ Using:
 
 Examples:
 ---------
-**Starting with 0.0.11, all mini clusters have moved to the builder pattern**
-
-**Some mini clusters depend on others (i.e. KafkaLocalBroker depends on ZookeeperLocalCluster), see tests for examples**
 
 *  HDFS Example
 ```Java
         HdfsLocalCluster hdfsLocalCluster = new HdfsLocalCluster.Builder()
-                .setHdfsNamenodePort(12345)
-                .setHdfsTempDir("embedded_hdfs")
-                .setHdfsNumDatanodes(1)
-                .setHdfsEnablePermissions(false)
-                .setHdfsFormat(true)
-                .setHdfsConfig(new Configuration())
-                .build();
+            .setHdfsNamenodePort(12345)
+            .setHdfsTempDir("embedded_hdfs")
+            .setHdfsNumDatanodes(1)
+            .setHdfsEnablePermissions(false)
+            .setHdfsFormat(true)
+            .setHdfsConfig(new Configuration())
+            .build();
+                
         hdfsLocalCluster.start();
 ```
 
-* YARN Example - Coming in 0.0.13
+* YARN Example
 ```Java
         YarnLocalCluster yarnLocalCluster = new YarnLocalCluster.Builder()
             .setNumNodeManagers(1)
@@ -61,28 +59,31 @@ Examples:
             .setResourceManagerHostname("localhost:37001")
             .setResourceManagerSchedulerAddress("localhost:37002")
             .setResourceManagerResourceTrackerAddress("localhost:37003")
+            .setResourceManagerWebappAddress("localhost:37004")
+            .setUseInJvmContainerExecutor(false)
             .setConfig(new Configuration())
             .build();
    
         yarnLocalCluster.start();
 ```
 
-* MapReduce Example - Coming in 0.0.13
+* MapReduce Example
 ```Java
         MRLocalCluster mrLocalCluster = new MRLocalCluster.Builder()
             .setNumNodeManagers(1)
-            .setJobHistoryAddress("localhost:37004")
+            .setJobHistoryAddress("localhost:37005")
             .setResourceManagerAddress("localhost")
             .setResourceManagerHostname("localhost:37001")
             .setResourceManagerSchedulerAddress("localhost:37002")
             .setResourceManagerResourceTrackerAddress("localhost:37003")
+            .setResourceManagerWebappAddress("localhost:37004")
             .setConfig(new Configuration())
             .build();
 
         mrLocalCluster.start();
 ```
 
-* HBase Example - Coming in 0.0.13
+* HBase Example
 ```Java
         HbaseLocalCluster hbaseLocalCluster = new HbaseLocalCluster.Builder()
             .setHbaseMasterPort(25111)
@@ -102,85 +103,85 @@ Examples:
 *  Zookeeper Example
 ```Java
         ZookeeperLocalCluster zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
-                .setPort(12345)
-                .setTempDir("embedded_zookeeper")
-                .setZookeeperConnectionString("localhost:12345")
-                .build();
+            .setPort(12345)
+            .setTempDir("embedded_zookeeper")
+            .setZookeeperConnectionString("localhost:12345")
+            .build();
         zookeeperLocalCluster.start();
 ```
 
 *  HiveServer2 Example
 ```Java
         HiveLocalServer2 hiveLocalServer2 = new HiveLocalServer2.Builder()
-                .setHiveServer2Hostname("localhost")
-                .setHiveServer2Port(12348)
-                .setHiveMetastoreHostname("localhost")
-                .setHiveMetastorePort(12347)
-                .setHiveMetastoreDerbyDbDir("metastore_db")
-                .setHiveScratchDir("hive_scratch_dir")
-                .setHiveWarehouseDir("warehouse_dir")
-                .setHiveConf(new HiveConf())
-                .setZookeeperConnectionString("localhost:12345")
-                .build();
+            .setHiveServer2Hostname("localhost")
+            .setHiveServer2Port(12348)
+            .setHiveMetastoreHostname("localhost")
+            .setHiveMetastorePort(12347)
+            .setHiveMetastoreDerbyDbDir("metastore_db")
+            .setHiveScratchDir("hive_scratch_dir")
+            .setHiveWarehouseDir("warehouse_dir")
+            .setHiveConf(new HiveConf())
+            .setZookeeperConnectionString("localhost:12345")
+            .build();
         hiveLocalServer2.start();
 ```
 
 *  HiveMetastore Example
 ```Java
         HiveLocalMetaStore hiveLocalMetaStore = new HiveLocalMetaStore.Builder()
-                .setHiveMetastoreHostname("localhost")
-                .setHiveMetastorePort(12347)
-                .setHiveMetastoreDerbyDbDir("metastore_db")
-                .setHiveScratchDir("hive_scratch_dir")
-                .setHiveWarehouseDir("warehouse_dir")
-                .setHiveConf(new HiveConf())
-                .build();
+            .setHiveMetastoreHostname("localhost")
+            .setHiveMetastorePort(12347)
+            .setHiveMetastoreDerbyDbDir("metastore_db")
+            .setHiveScratchDir("hive_scratch_dir")
+            .setHiveWarehouseDir("warehouse_dir")
+            .setHiveConf(new HiveConf())
+            .build();
         hiveLocalMetaStore.start();
 ```
 
 *  Storm Example
 ```Java
         StormLocalCluster stormLocalCluster = new StormLocalCluster.Builder()
-                .setZookeeperHost("localhost")
-                .setZookeeperPort(12345)
-                .setEnableDebug(true)
-                .setNumWorkers(1)
-                .build();
+            .setZookeeperHost("localhost")
+            .setZookeeperPort(12345)
+            .setEnableDebug(true)
+            .setNumWorkers(1)
+            .build();
         stormLocalCluster.start();
 ```
 
 *  Kafka Example
 ```Java
         KafkaLocalBroker kafkaLocalBroker = new KafkaLocalBroker.Builder()
-                .setKafkaHostname("localhost")
-                .setKafkaPort(11111)
-                .setKafkaBrokerId(0)
-                .setKafkaProperties(new Properties())
-                .setKafkaTempDir("embedded_kafka")
-                .setZookeeperConnectionString("localhost:12345")
-                .build();
+            .setKafkaHostname("localhost")
+            .setKafkaPort(11111)
+            .setKafkaBrokerId(0)
+            .setKafkaProperties(new Properties())
+            .setKafkaTempDir("embedded_kafka")
+            .setZookeeperConnectionString("localhost:12345")
+            .build();
         kafkaLocalBroker.start();
 ```
 
 *  MongoDB Example
 ```Java
         MongodbLocalServer mongodbLocalServer = new MongodbLocalServer.Builder()
-                .setIp("127.0.0.1")
-                .setPort(11112)
-                .build();
+            .setIp("127.0.0.1")
+            .setPort(11112)
+            .build();
         mongodbLocalServer.start();
 ```
 
 *  ActiveMQ Example
 ```Java
         ActivemqLocalBroker amq = new ActivemqLocalBroker.Builder()
-                .setHostName("localhost")
-                .setPort(11113)
-                .setQueueName("defaultQueue")
-                .setStoreDir("activemq-data")
-                .setUriPrefix("vm://")
-                .setUriPostfix("?create=false")
-                .build();
+            .setHostName("localhost")
+            .setPort(11113)
+            .setQueueName("defaultQueue")
+            .setStoreDir("activemq-data")
+            .setUriPrefix("vm://")
+            .setUriPostfix("?create=false")
+            .build();
         amq.start();
 ```
 
@@ -201,3 +202,14 @@ Examples:
 Modifying Properties
 --------------------
 To change the defaults used to construct the mini clusters, modify src/main/java/resources/default.properties as needed.
+
+
+Intellij Testing
+----------------
+
+If you desire running the full test suite from Intellij, make sure Fork Mode is set to method (Run -> Edit Configurations -> fork mode)
+
+
+InJvmContainerExecutor
+----------------------
+YarnLocalCluster now supports Oleg Z's InJvmContainerExecutor. See [Oleg Z's Github](https://github.com/hortonworks/mini-dev-cluster/wiki/Core-Features) for more.

@@ -44,7 +44,6 @@ public class KafkaLocalBrokerTest {
         }
     }
 
-    private static ZookeeperLocalCluster zookeeperLocalCluster;
     private static KafkaLocalBroker kafkaLocalBroker;
     
     @BeforeClass

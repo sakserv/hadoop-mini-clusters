@@ -44,9 +44,7 @@ public class HiveLocalServer2Test {
             LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
         }
     }
-    
-    private static ZookeeperLocalCluster zookeeperLocalCluster;
-    private static HiveLocalMetaStore hiveLocalMetaStore;
+
     private static HiveLocalServer2 hiveLocalServer2;
 
     @BeforeClass
