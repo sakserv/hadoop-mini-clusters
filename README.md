@@ -7,6 +7,7 @@ Includes:
 *   HDFS - Mini HDFS Cluster
 *   YARN - Mini YARN Cluster (no MR)
 *   MapReduce - Mini MapReduce Cluster
+*   HBase - Mini HBase Cluster
 *   Zookeeper - Curator based Local Cluster
 *   HiveServer2 - Local HiveServer2 instance
 *   HiveMetaStore - Derby backed HiveMetaStore
