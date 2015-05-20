@@ -78,6 +78,7 @@ Examples:
             .setResourceManagerSchedulerAddress("localhost:37002")
             .setResourceManagerResourceTrackerAddress("localhost:37003")
             .setResourceManagerWebappAddress("localhost:37004")
+            .setUseInJvmContainerExecutor(false)
             .setConfig(new Configuration())
             .build();
 
