@@ -13,12 +13,15 @@
  */
 package com.github.sakserv.minicluster;
 
+import com.github.sakserv.mapreduce.Driver;
 import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
+import com.github.sakserv.minicluster.impl.HdfsLocalCluster;
 import com.github.sakserv.minicluster.impl.MRLocalCluster;
 import com.github.sakserv.minicluster.impl.YarnLocalCluster;
 import com.github.sakserv.simpleyarnapp.Client;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -26,6 +29,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Scanner;
+
+import static org.junit.Assert.assertEquals;
 
 public class MRLocalClusterIntegrationTest {
     
@@ -41,11 +48,29 @@ public class MRLocalClusterIntegrationTest {
             LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
         }
     }
-    
+
+    private static HdfsLocalCluster dfsCluster;
     private static MRLocalCluster mrLocalCluster;
+    private static String testFile = propertyParser.getProperty(ConfigVars.MR_TEST_DATA_FILENAME_KEY);
+    private static String testDataHdfsInputDir =
+            propertyParser.getProperty(ConfigVars.MR_TEST_DATA_HDFS_INPUT_DIR_KEY);
+    private static String testDataHdfsOutputDir =
+            propertyParser.getProperty(ConfigVars.MR_TEST_DATA_HDFS_OUTPUT_DIR_KEY);
+    private static String mrOutputText = "1";
     
     @BeforeClass
     public static void setUp() throws IOException {
+        dfsCluster = new HdfsLocalCluster.Builder()
+                .setHdfsNamenodePort(Integer.parseInt(propertyParser.getProperty(ConfigVars.HDFS_NAMENODE_PORT_KEY)))
+                .setHdfsTempDir(propertyParser.getProperty(ConfigVars.HDFS_TEMP_DIR_KEY))
+                .setHdfsNumDatanodes(Integer.parseInt(propertyParser.getProperty(ConfigVars.HDFS_NUM_DATANODES_KEY)))
+                .setHdfsEnablePermissions(
+                        Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HDFS_ENABLE_PERMISSIONS_KEY)))
+                .setHdfsFormat(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HDFS_FORMAT_KEY)))
+                .setHdfsConfig(new Configuration())
+                .build();
+        dfsCluster.start();
+
         mrLocalCluster = new MRLocalCluster.Builder()
                 .setNumNodeManagers(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_NODE_MANAGERS_KEY)))
                 .setJobHistoryAddress(propertyParser.getProperty(ConfigVars.MR_JOB_HISTORY_ADDRESS_KEY))
@@ -57,6 +82,9 @@ public class MRLocalClusterIntegrationTest {
                         ConfigVars.YARN_RESOURCE_MANAGER_RESOURCE_TRACKER_ADDRESS_KEY))
                 .setResourceManagerWebappAddress(propertyParser.getProperty(
                         ConfigVars.YARN_RESOURCE_MANAGER_WEBAPP_ADDRESS_KEY))
+                .setUseInJvmContainerExecutor(Boolean.parseBoolean(propertyParser.getProperty(
+                        ConfigVars.YARN_USE_IN_JVM_CONTAINER_EXECUTOR_KEY)))
+                .setHdfsDefaultFs(dfsCluster.getHdfsConfig().get("fs.defaultFS"))
                 .setConfig(new Configuration())
                 .build();
 
@@ -65,26 +93,56 @@ public class MRLocalClusterIntegrationTest {
 
     @AfterClass
     public static void tearDown() {
-        mrLocalCluster.stop();
+        mrLocalCluster.stop(false);
+        dfsCluster.stop();
     }
 
     @Test
-    public void testYarnLocalCluster() {
-        LOG.info("TESTING");
-        
-/*        String[] args = new String[7];
-        args[0] = "uptime";
-        args[1] = "2";
-        args[2] = getClass().getClassLoader().getResource("simple-yarn-app-1.1.0.jar").toString();
-        args[3] = yarnLocalCluster.getResourceManagerAddress();
-        args[4] = yarnLocalCluster.getResourceManagerHostname();
-        args[5] = yarnLocalCluster.getResourceManagerSchedulerAddress();
-        args[6] = yarnLocalCluster.getResourceManagerResourceTrackerAddress();
-        
-        try {
-            Client.main(args);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }*/
+    public void testYarnLocalCluster() throws Exception {
+
+        String inputFileContents = resourceFileToString(testFile);
+        writeFileToHdfs(testDataHdfsInputDir + "/" + testFile, inputFileContents);
+        Driver driver = new Driver();
+        driver.setConfiguration(mrLocalCluster.getConfig());
+        String[] args = new String[2];
+        args[0] = testDataHdfsInputDir;
+        args[1] = testDataHdfsOutputDir;
+        Driver.main(args);
+        assertEquals(mrOutputText, getCountForWord(testDataHdfsOutputDir + "/part-r-00000", "This"));
+
+    }
+
+    private void writeFileToHdfs(String fileName, String contents) throws Exception {
+        // Write a file to HDFS containing the test string
+        FileSystem hdfsFsHandle = dfsCluster.getHdfsFileSystemHandle();
+        FSDataOutputStream writer = hdfsFsHandle.create(new Path(fileName));
+        writer.writeUTF(contents);
+        writer.close();
+        hdfsFsHandle.close();
+    }
+
+    private String getCountForWord(String fileName, String word) throws Exception {
+        String output = readFileFromHdfs(fileName);
+        for(String line: output.split("\n")) {
+            if(line.contains(word)) {
+                return line.split("\t")[1];
+            }
+        }
+        return "";
+    }
+
+    private String readFileFromHdfs(String filename) throws IOException {
+        FileSystem hdfsFsHandle = dfsCluster.getHdfsFileSystemHandle();
+        FSDataInputStream reader = hdfsFsHandle.open(new Path(filename));
+        String output = reader.readUTF();
+        reader.close();
+        hdfsFsHandle.close();
+        return output;
+    }
+
+    private String resourceFileToString(String fileName) {
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(fileName);
+        Scanner scanner = new Scanner(inputStream).useDelimiter("\\A");
+        return scanner.hasNext() ? scanner.next() : "";
     }
 }

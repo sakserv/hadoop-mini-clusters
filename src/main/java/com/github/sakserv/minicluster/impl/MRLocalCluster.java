@@ -29,6 +29,7 @@ public class MRLocalCluster implements MiniCluster {
     private static final Logger LOG = LoggerFactory.getLogger(YarnLocalCluster.class);
 
     private String testName = getClass().getName();
+    private String inJvmContainerExecutorClass = "com.github.sakserv.minicluster.yarn.InJvmContainerExecutor";
     private Integer numNodeManagers;
     private String jobHistoryAddress;
     private String resourceManagerAddress;
@@ -36,6 +37,8 @@ public class MRLocalCluster implements MiniCluster {
     private String resourceManagerSchedulerAddress;
     private String resourceManagerResourceTrackerAddress;
     private String resourceManagerWebappAddress;
+    private Boolean useInJvmContainerExecutor;
+    private String hdfsDefaultFs;
     private Configuration configuration;
     
     private MiniMRYarnCluster miniMRYarnCluster;
@@ -72,6 +75,14 @@ public class MRLocalCluster implements MiniCluster {
         return resourceManagerWebappAddress;
     }
 
+    public Boolean getUseInJvmContainerExecutor() {
+        return useInJvmContainerExecutor;
+    }
+
+    public String getHdfsDefaultFs() {
+        return hdfsDefaultFs;
+    }
+
     public Configuration getConfig() {
         return configuration;
     }
@@ -84,6 +95,8 @@ public class MRLocalCluster implements MiniCluster {
         this.resourceManagerSchedulerAddress = builder.resourceManagerSchedulerAddress;
         this.resourceManagerResourceTrackerAddress = builder.resourceManagerResourceTrackerAddress;
         this.resourceManagerWebappAddress = builder.resourceManagerWebappAddress;
+        this.useInJvmContainerExecutor = builder.useInJvmContainerExecutor;
+        this.hdfsDefaultFs = builder.hdfsDefaultFs;
         this.configuration = builder.configuration;
     }
     
@@ -95,6 +108,8 @@ public class MRLocalCluster implements MiniCluster {
         private String resourceManagerSchedulerAddress;
         private String resourceManagerResourceTrackerAddress;
         private String resourceManagerWebappAddress;
+        private Boolean useInJvmContainerExecutor;
+        private String hdfsDefaultFs;
         private Configuration configuration;
         
         public Builder setNumNodeManagers(Integer numNodeManagers) {
@@ -129,6 +144,16 @@ public class MRLocalCluster implements MiniCluster {
 
         public Builder setResourceManagerWebappAddress(String resourceManagerWebappAddress) {
             this.resourceManagerWebappAddress = resourceManagerWebappAddress;
+            return this;
+        }
+
+        public Builder setUseInJvmContainerExecutor(Boolean useInJvmContainerExecutor) {
+            this.useInJvmContainerExecutor = useInJvmContainerExecutor;
+            return this;
+        }
+
+        public Builder setHdfsDefaultFs(String hdfsDefaultFs) {
+            this.hdfsDefaultFs = hdfsDefaultFs;
             return this;
         }
 
@@ -175,6 +200,10 @@ public class MRLocalCluster implements MiniCluster {
                         "Yarn Resource Manager Webapp Address");
             }
 
+            if(mrLocalCluster.getUseInJvmContainerExecutor() == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Use In JVM Container Executor");
+            }
+
             if (mrLocalCluster.getConfig() == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: Configuration");
             }
@@ -190,6 +219,15 @@ public class MRLocalCluster implements MiniCluster {
         configuration.set(YarnConfiguration.RM_WEBAPP_ADDRESS, resourceManagerWebappAddress);
         configuration.set(JHAdminConfig.MR_HISTORY_ADDRESS, jobHistoryAddress);
         configuration.set(YarnConfiguration.YARN_MINICLUSTER_FIXED_PORTS, "true");
+        if (getUseInJvmContainerExecutor()) {
+            configuration.set(YarnConfiguration.NM_CONTAINER_EXECUTOR, inJvmContainerExecutorClass);
+            configuration.set("fs.hdfs.impl", org.apache.hadoop.hdfs.DistributedFileSystem.class.getName());
+            configuration.set("fs.file.impl", org.apache.hadoop.fs.LocalFileSystem.class.getName());
+        }
+
+        if (null != hdfsDefaultFs) {
+            configuration.set("fs.defaultFS", hdfsDefaultFs);
+        }
     }
 
     public void start() {

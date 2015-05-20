@@ -1,5 +1,12 @@
 Change Log
 ==========
+### 0.0.13 - 05/20/2015
+* Added YARN Support
+* Added MRv2 Support
+* Added HBase Support
+* Added support for the InJvmContainerExecutor
+* Updated dependencies to apache releases due to HWX repo issues
+* Added additional details to the README
 
 ### 0.0.12 - 02/08/2015
 * Added HyperSQL support

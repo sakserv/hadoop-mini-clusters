@@ -105,6 +105,11 @@ public class ConfigVars {
     // MR
     public static final String MR_JOB_HISTORY_ADDRESS_KEY = "mr.job.history.address";
 
+    // MR Test
+    public static final String MR_TEST_DATA_FILENAME_KEY = "mr.test.data.filename";
+    public static final String MR_TEST_DATA_HDFS_INPUT_DIR_KEY = "mr.test.data.hdfs.input.dir";
+    public static final String MR_TEST_DATA_HDFS_OUTPUT_DIR_KEY = "mr.test.data.hdfs.output.dir";
+
     // HBase
     public static final String HBASE_MASTER_PORT_KEY = "hbase.master.port";
     public static final String HBASE_MASTER_INFO_PORT_KEY = "hbase.master.info.port";
