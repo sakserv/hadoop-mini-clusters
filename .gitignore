@@ -32,3 +32,6 @@ build/
 # Gradle:
 .idea/gradle.xml
 .idea/libraries
+
+# Coverage report
+coverage-error.log

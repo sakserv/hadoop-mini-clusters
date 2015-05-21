@@ -15,6 +15,7 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.MiniClusterWithExceptions;
 import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -25,7 +26,7 @@ import org.slf4j.LoggerFactory;
 import javax.jms.*;
 import java.util.Properties;
 
-public class ActivemqLocalBroker implements MiniCluster {
+public class ActivemqLocalBroker implements MiniClusterWithExceptions {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(ActivemqLocalBroker.class);
@@ -151,49 +152,40 @@ public class ActivemqLocalBroker implements MiniCluster {
     }
 
     @Override
-    public void start() {
+    public void start() throws Exception {
         String uri = uriPrefix + hostName + ":" + port;
-        try {
-            configure();
-            
-            broker = new BrokerService();
-            broker.addConnector(uri);
-            broker.start();
+        configure();
 
-            ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(uri + uriPostfix);
-            Connection conn = factory.createConnection();
-            conn.start();
+        broker = new BrokerService();
+        broker.addConnector(uri);
+        broker.start();
 
-            session = conn.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            dest = session.createQueue(queueName);
-            consumer = session.createConsumer(dest);
-            producer = session.createProducer(dest);
-            producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+        ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(uri + uriPostfix);
+        Connection conn = factory.createConnection();
+        conn.start();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        session = conn.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        dest = session.createQueue(queueName);
+        consumer = session.createConsumer(dest);
+        producer = session.createProducer(dest);
+        producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
     }
 
     @Override
-    public void stop() {
+    public void stop() throws Exception {
         stop(true);
     }
 
-    public void stop(boolean cleanUp) {
-        try {
-            if (consumer != null ) {
-                consumer.close();
-            }
-            if (session != null) {
-                session.close();
-            }
-            broker.stop();
-        } catch (JMSException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public void stop(boolean cleanUp) throws Exception {
+
+        if (consumer != null ) {
+            consumer.close();
         }
+        if (session != null) {
+            session.close();
+        }
+        broker.stop();
+
         if(cleanUp) {
             cleanUp();
         }
@@ -214,9 +206,6 @@ public class ActivemqLocalBroker implements MiniCluster {
     }
     public String getTextMessage() throws JMSException {
         Message msg = consumer.receive(100);
-        if (msg instanceof TextMessage) {
-            return ((TextMessage) msg).getText();
-        }
-        return "";
+        return ((TextMessage) msg).getText();
     }
 }
