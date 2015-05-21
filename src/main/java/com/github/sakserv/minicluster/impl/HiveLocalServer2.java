@@ -22,8 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.net.InetSocketAddress;
-import java.net.Socket;
 
 public class HiveLocalServer2 implements MiniCluster {
 

@@ -16,7 +16,6 @@ package com.github.sakserv.minicluster.impl;
 import com.github.sakserv.minicluster.MiniCluster;
 import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.mapred.MiniMRYarnClusterAdapter;
 import org.apache.hadoop.mapreduce.v2.MiniMRYarnCluster;
 import org.apache.hadoop.mapreduce.v2.jobhistory.JHAdminConfig;
 import org.apache.hadoop.yarn.conf.YarnConfiguration;

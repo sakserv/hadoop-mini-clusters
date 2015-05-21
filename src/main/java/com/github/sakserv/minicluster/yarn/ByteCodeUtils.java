@@ -13,10 +13,6 @@
  */
 package com.github.sakserv.minicluster.yarn;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-
 /**
  * @author Oleg Zhurakousky
  *

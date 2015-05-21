@@ -13,7 +13,6 @@
  */
 package com.github.sakserv.minicluster.yarn.util;
 
-import com.github.sakserv.minicluster.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -124,4 +124,7 @@ public class ConfigVars {
     public static final String HBASE_TEST_COL_QUALIFIER_NAME_KEY = "hbase.test.col.qualifier.name";
     public static final String HBASE_TEST_NUM_ROWS_TO_PUT_KEY = "hbase.test.num.rows.to.put";
 
+    public String toString() {
+        return "ConfigVars";
+    }
 }

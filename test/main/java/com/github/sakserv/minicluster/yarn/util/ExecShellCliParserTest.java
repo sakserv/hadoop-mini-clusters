@@ -1,6 +1,5 @@
 package com.github.sakserv.minicluster.yarn.util;
 
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;

@@ -13,24 +13,10 @@
  */
 package com.github.sakserv.minicluster.yarn;
 
-import java.io.*;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.nio.file.Paths;
-import java.security.Permission;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.locks.LockSupport;
-
+import com.github.sakserv.minicluster.yarn.util.EnvironmentUtils;
+import com.github.sakserv.minicluster.yarn.util.ExecJavaCliParser;
 import com.github.sakserv.minicluster.yarn.util.ExecShellCliParser;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.fs.Path;
@@ -43,8 +29,15 @@ import org.apache.hadoop.yarn.server.nodemanager.DefaultContainerExecutor;
 import org.apache.hadoop.yarn.server.nodemanager.containermanager.container.Container;
 import org.apache.hadoop.yarn.server.nodemanager.containermanager.container.ContainerDiagnosticsUpdateEvent;
 
-import com.github.sakserv.minicluster.yarn.util.EnvironmentUtils;
-import com.github.sakserv.minicluster.yarn.util.ExecJavaCliParser;
+import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.security.Permission;
+import java.util.*;
+import java.util.concurrent.locks.LockSupport;
 
 /**
  * !!!!! FOR TESTING WITH MINI CLUSTER ONLY !!!!!
