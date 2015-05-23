@@ -17,7 +17,9 @@ import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
 import org.apache.hadoop.conf.Configuration;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +42,9 @@ public class HbaseLocalClusterTest {
             LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
         }
     }
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     private static HbaseLocalCluster hbaseLocalCluster;
 
@@ -69,9 +74,45 @@ public class HbaseLocalClusterTest {
     }
 
     @Test
+    public void testMissingHbaseMasterPort() {
+        exception.expect(IllegalArgumentException.class);
+        hbaseLocalCluster = new HbaseLocalCluster.Builder()
+                .setHbaseMasterInfoPort(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_MASTER_INFO_PORT_KEY)))
+                .setNumRegionServers(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_NUM_REGION_SERVERS_KEY)))
+                .setHbaseRootDir(propertyParser.getProperty(ConfigVars.HBASE_ROOT_DIR_KEY))
+                .setZookeeperPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
+                .setZookeeperConnectionString(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY))
+                .setZookeeperZnodeParent(propertyParser.getProperty(ConfigVars.HBASE_ZNODE_PARENT_KEY))
+                .setHbaseWalReplicationEnabled(
+                        Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HBASE_WAL_REPLICATION_ENABLED_KEY)))
+                .setHbaseConfiguration(new Configuration())
+                .build();
+    }
+
+    @Test
     public void testHbaseMasterInfoPort() {
         assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_MASTER_INFO_PORT_KEY)),
                 (int) hbaseLocalCluster.getHbaseMasterInfoPort());
+    }
+
+    @Test
+    public void testMissingHbaseMasterInfoPort() {
+        exception.expect(IllegalArgumentException.class);
+        hbaseLocalCluster = new HbaseLocalCluster.Builder()
+                .setHbaseMasterPort(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_MASTER_PORT_KEY)))
+                .setNumRegionServers(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_NUM_REGION_SERVERS_KEY)))
+                .setHbaseRootDir(propertyParser.getProperty(ConfigVars.HBASE_ROOT_DIR_KEY))
+                .setZookeeperPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
+                .setZookeeperConnectionString(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY))
+                .setZookeeperZnodeParent(propertyParser.getProperty(ConfigVars.HBASE_ZNODE_PARENT_KEY))
+                .setHbaseWalReplicationEnabled(
+                        Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HBASE_WAL_REPLICATION_ENABLED_KEY)))
+                .setHbaseConfiguration(new Configuration())
+                .build();
     }
 
     @Test
@@ -81,8 +122,45 @@ public class HbaseLocalClusterTest {
     }
 
     @Test
+    public void testMissingHbaseNumRegionsServers() {
+        exception.expect(IllegalArgumentException.class);
+        hbaseLocalCluster = new HbaseLocalCluster.Builder()
+                .setHbaseMasterPort(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_MASTER_PORT_KEY)))
+                .setHbaseMasterInfoPort(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_MASTER_INFO_PORT_KEY)))
+                .setHbaseRootDir(propertyParser.getProperty(ConfigVars.HBASE_ROOT_DIR_KEY))
+                .setZookeeperPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
+                .setZookeeperConnectionString(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY))
+                .setZookeeperZnodeParent(propertyParser.getProperty(ConfigVars.HBASE_ZNODE_PARENT_KEY))
+                .setHbaseWalReplicationEnabled(
+                        Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HBASE_WAL_REPLICATION_ENABLED_KEY)))
+                .setHbaseConfiguration(new Configuration())
+                .build();
+    }
+
+    @Test
     public void testHbaseRootDir() {
         assertEquals(propertyParser.getProperty(ConfigVars.HBASE_ROOT_DIR_KEY), hbaseLocalCluster.getHbaseRootDir());
+    }
+
+    @Test
+    public void testMissingHbaseRootDir() {
+        exception.expect(IllegalArgumentException.class);
+        hbaseLocalCluster = new HbaseLocalCluster.Builder()
+                .setHbaseMasterPort(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_MASTER_PORT_KEY)))
+                .setHbaseMasterInfoPort(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_MASTER_INFO_PORT_KEY)))
+                .setNumRegionServers(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_NUM_REGION_SERVERS_KEY)))
+                .setZookeeperPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
+                .setZookeeperConnectionString(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY))
+                .setZookeeperZnodeParent(propertyParser.getProperty(ConfigVars.HBASE_ZNODE_PARENT_KEY))
+                .setHbaseWalReplicationEnabled(
+                        Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HBASE_WAL_REPLICATION_ENABLED_KEY)))
+                .setHbaseConfiguration(new Configuration())
+                .build();
     }
 
     @Test
@@ -92,9 +170,47 @@ public class HbaseLocalClusterTest {
     }
 
     @Test
+    public void testMissingZookeeperPort() {
+        exception.expect(IllegalArgumentException.class);
+        hbaseLocalCluster = new HbaseLocalCluster.Builder()
+                .setHbaseMasterPort(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_MASTER_PORT_KEY)))
+                .setHbaseMasterInfoPort(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_MASTER_INFO_PORT_KEY)))
+                .setNumRegionServers(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_NUM_REGION_SERVERS_KEY)))
+                .setHbaseRootDir(propertyParser.getProperty(ConfigVars.HBASE_ROOT_DIR_KEY))
+                .setZookeeperConnectionString(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY))
+                .setZookeeperZnodeParent(propertyParser.getProperty(ConfigVars.HBASE_ZNODE_PARENT_KEY))
+                .setHbaseWalReplicationEnabled(
+                        Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HBASE_WAL_REPLICATION_ENABLED_KEY)))
+                .setHbaseConfiguration(new Configuration())
+                .build();
+    }
+
+    @Test
     public void testZookeeperConnectionString() {
         assertEquals(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY),
                 hbaseLocalCluster.getZookeeperConnectionString());
+    }
+
+    @Test
+    public void testMissingZookeeperConnectionString() {
+        exception.expect(IllegalArgumentException.class);
+        hbaseLocalCluster = new HbaseLocalCluster.Builder()
+                .setHbaseMasterPort(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_MASTER_PORT_KEY)))
+                .setHbaseMasterInfoPort(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_MASTER_INFO_PORT_KEY)))
+                .setNumRegionServers(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_NUM_REGION_SERVERS_KEY)))
+                .setHbaseRootDir(propertyParser.getProperty(ConfigVars.HBASE_ROOT_DIR_KEY))
+                .setZookeeperPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
+                .setZookeeperZnodeParent(propertyParser.getProperty(ConfigVars.HBASE_ZNODE_PARENT_KEY))
+                .setHbaseWalReplicationEnabled(
+                        Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HBASE_WAL_REPLICATION_ENABLED_KEY)))
+                .setHbaseConfiguration(new Configuration())
+                .build();
     }
 
     @Test
@@ -104,14 +220,70 @@ public class HbaseLocalClusterTest {
     }
 
     @Test
+    public void testMissingZookeeperZnodeParent() {
+        exception.expect(IllegalArgumentException.class);
+        hbaseLocalCluster = new HbaseLocalCluster.Builder()
+                .setHbaseMasterPort(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_MASTER_PORT_KEY)))
+                .setHbaseMasterInfoPort(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_MASTER_INFO_PORT_KEY)))
+                .setNumRegionServers(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_NUM_REGION_SERVERS_KEY)))
+                .setHbaseRootDir(propertyParser.getProperty(ConfigVars.HBASE_ROOT_DIR_KEY))
+                .setZookeeperPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
+                .setZookeeperConnectionString(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY))
+                .setHbaseWalReplicationEnabled(
+                        Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HBASE_WAL_REPLICATION_ENABLED_KEY)))
+                .setHbaseConfiguration(new Configuration())
+                .build();
+    }
+
+    @Test
     public void testHbaseWalReplicationEnabled() {
         assertEquals(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HBASE_WAL_REPLICATION_ENABLED_KEY)),
                 (boolean) hbaseLocalCluster.getHbaseWalReplicationEnabled());
     }
 
     @Test
+    public void testMissingHbaseWalReplicationEnabled() {
+        exception.expect(IllegalArgumentException.class);
+        hbaseLocalCluster = new HbaseLocalCluster.Builder()
+                .setHbaseMasterPort(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_MASTER_PORT_KEY)))
+                .setHbaseMasterInfoPort(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_MASTER_INFO_PORT_KEY)))
+                .setNumRegionServers(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_NUM_REGION_SERVERS_KEY)))
+                .setHbaseRootDir(propertyParser.getProperty(ConfigVars.HBASE_ROOT_DIR_KEY))
+                .setZookeeperPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
+                .setZookeeperConnectionString(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY))
+                .setZookeeperZnodeParent(propertyParser.getProperty(ConfigVars.HBASE_ZNODE_PARENT_KEY))
+                .setHbaseConfiguration(new Configuration())
+                .build();
+    }
+
+    @Test
     public void testHdfsConf() {
         assertTrue(hbaseLocalCluster.getHbaseConfiguration() instanceof org.apache.hadoop.conf.Configuration);
 
+    }
+
+    @Test
+    public void testMissingHdfsConf() {
+        exception.expect(IllegalArgumentException.class);
+        hbaseLocalCluster = new HbaseLocalCluster.Builder()
+                .setHbaseMasterPort(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_MASTER_PORT_KEY)))
+                .setHbaseMasterInfoPort(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_MASTER_INFO_PORT_KEY)))
+                .setNumRegionServers(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_NUM_REGION_SERVERS_KEY)))
+                .setHbaseRootDir(propertyParser.getProperty(ConfigVars.HBASE_ROOT_DIR_KEY))
+                .setZookeeperPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
+                .setZookeeperConnectionString(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY))
+                .setZookeeperZnodeParent(propertyParser.getProperty(ConfigVars.HBASE_ZNODE_PARENT_KEY))
+                .setHbaseWalReplicationEnabled(
+                        Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HBASE_WAL_REPLICATION_ENABLED_KEY)))
+                .build();
     }
 }

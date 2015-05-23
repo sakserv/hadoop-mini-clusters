@@ -14,6 +14,7 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.MiniClusterWithExceptions;
 import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HConstants;
@@ -23,7 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-public class HbaseLocalCluster implements MiniCluster {
+public class HbaseLocalCluster implements MiniClusterWithExceptions {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(HbaseLocalCluster.class);
@@ -182,40 +183,24 @@ public class HbaseLocalCluster implements MiniCluster {
 
     }
 
-    public void start() {
+    public void start() throws Exception {
         configure();
-        try {
-            LOG.info("HBASE: Starting MiniHBaseCluster");
-            miniHBaseCluster = new MiniHBaseCluster(hbaseConfiguration, numRegionServers);
-            miniHBaseCluster.startMaster();
-            miniHBaseCluster.startRegionServer();
-        } catch(InterruptedException e) {
-            LOG.error("ERROR: Failed to start MiniHBaseCluster");
-            e.printStackTrace();
-        } catch(IOException e) {
-            LOG.error("ERROR: Failed to start MiniHBaseCluster");
-            e.printStackTrace();
-        }
+        LOG.info("HBASE: Starting MiniHBaseCluster");
+        miniHBaseCluster = new MiniHBaseCluster(hbaseConfiguration, numRegionServers);
+        miniHBaseCluster.startMaster();
+        miniHBaseCluster.startRegionServer();
     }
 
-    public void stop() {
+    public void stop() throws Exception {
         stop(true);
     }
 
-    public void stop(boolean cleanUp){
-        try {
-            LOG.info("HBASE: Stopping MiniHBaseCluster");
-            miniHBaseCluster.shutdown();
-            miniHBaseCluster.join();
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        } catch(IOException e) {
-            LOG.error("ERROR: Failed to stop MiniHBaseCluster");
-            e.printStackTrace();
-        }
+    public void stop(boolean cleanUp) throws Exception {
+        LOG.info("HBASE: Stopping MiniHBaseCluster");
+        miniHBaseCluster.shutdown();
+        miniHBaseCluster.join();
+        //Thread.sleep(5000);
+
         if(cleanUp) {
             cleanUp();
         }
