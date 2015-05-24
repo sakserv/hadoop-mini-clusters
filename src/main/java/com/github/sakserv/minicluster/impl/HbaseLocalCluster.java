@@ -191,21 +191,6 @@ public class HbaseLocalCluster implements MiniClusterWithExceptions {
         miniHBaseCluster.startRegionServer();
     }
 
-    public void stop() throws Exception {
-        stop(true);
-    }
-
-    public void stop(boolean cleanUp) throws Exception {
-        LOG.info("HBASE: Stopping MiniHBaseCluster");
-        miniHBaseCluster.shutdown();
-        miniHBaseCluster.join();
-        //Thread.sleep(5000);
-
-        if(cleanUp) {
-            cleanUp();
-        }
-
-    }
     public void configure() {
         hbaseConfiguration.set(HConstants.MASTER_PORT, hbaseMasterPort.toString());
         hbaseConfiguration.set(HConstants.MASTER_INFO_PORT, hbaseMasterInfoPort.toString());
@@ -214,6 +199,23 @@ public class HbaseLocalCluster implements MiniClusterWithExceptions {
         hbaseConfiguration.set(HConstants.ZOOKEEPER_QUORUM, zookeeperConnectionString);
         hbaseConfiguration.set(HConstants.ZOOKEEPER_ZNODE_PARENT, zookeeperZnodeParent);
         hbaseConfiguration.set(HConstants.REPLICATION_ENABLE_KEY, hbaseWalReplicationEnabled.toString());
+    }
+
+    public void stop() throws Exception {
+        stop(true);
+    }
+
+    public void stop(boolean cleanUp) throws Exception {
+        LOG.info("HBASE: Stopping MiniHBaseCluster");
+        miniHBaseCluster.shutdown();
+        miniHBaseCluster.join();
+        miniHBaseCluster.waitUntilShutDown();
+        //Thread.sleep(5000);
+
+        if(cleanUp) {
+            cleanUp();
+        }
+
     }
 
     public void cleanUp() {

@@ -18,7 +18,9 @@ import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
 import org.apache.hadoop.conf.Configuration;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +45,8 @@ public class HdfsLocalClusterTest {
         }
     }
 
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     private static HdfsLocalCluster hdfsLocalCluster;
 
@@ -66,9 +70,35 @@ public class HdfsLocalClusterTest {
     }
 
     @Test
+    public void testMissingHdfsNamenodePort() {
+        exception.expect(IllegalArgumentException.class);
+        hdfsLocalCluster = new HdfsLocalCluster.Builder()
+                .setHdfsTempDir(propertyParser.getProperty(ConfigVars.HDFS_TEMP_DIR_KEY))
+                .setHdfsNumDatanodes(Integer.parseInt(propertyParser.getProperty(ConfigVars.HDFS_NUM_DATANODES_KEY)))
+                .setHdfsEnablePermissions(
+                        Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HDFS_ENABLE_PERMISSIONS_KEY)))
+                .setHdfsFormat(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HDFS_FORMAT_KEY)))
+                .setHdfsConfig(new Configuration())
+                .build();
+    }
+
+    @Test
     public void testHdfsTempDir() {
         assertEquals(propertyParser.getProperty(ConfigVars.HDFS_TEMP_DIR_KEY),
                 hdfsLocalCluster.getHdfsTempDir());
+    }
+
+    @Test
+    public void testMissingHdfsTempDir() {
+        exception.expect(IllegalArgumentException.class);
+        hdfsLocalCluster = new HdfsLocalCluster.Builder()
+                .setHdfsNamenodePort(Integer.parseInt(propertyParser.getProperty(ConfigVars.HDFS_NAMENODE_PORT_KEY)))
+                .setHdfsNumDatanodes(Integer.parseInt(propertyParser.getProperty(ConfigVars.HDFS_NUM_DATANODES_KEY)))
+                .setHdfsEnablePermissions(
+                        Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HDFS_ENABLE_PERMISSIONS_KEY)))
+                .setHdfsFormat(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HDFS_FORMAT_KEY)))
+                .setHdfsConfig(new Configuration())
+                .build();
     }
 
     @Test
@@ -78,9 +108,34 @@ public class HdfsLocalClusterTest {
     }
 
     @Test
+    public void testMissingHdfsNumDatanodes() {
+        exception.expect(IllegalArgumentException.class);
+        hdfsLocalCluster = new HdfsLocalCluster.Builder()
+                .setHdfsNamenodePort(Integer.parseInt(propertyParser.getProperty(ConfigVars.HDFS_NAMENODE_PORT_KEY)))
+                .setHdfsTempDir(propertyParser.getProperty(ConfigVars.HDFS_TEMP_DIR_KEY))
+                .setHdfsEnablePermissions(
+                        Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HDFS_ENABLE_PERMISSIONS_KEY)))
+                .setHdfsFormat(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HDFS_FORMAT_KEY)))
+                .setHdfsConfig(new Configuration())
+                .build();
+    }
+
+    @Test
     public void testHdfsEnablePermissions() {
         assertEquals(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HDFS_ENABLE_PERMISSIONS_KEY)),
                 (boolean) hdfsLocalCluster.getHdfsEnablePermissions());
+    }
+
+    @Test
+    public void testMissingHdfsEnablePermissions() {
+        exception.expect(IllegalArgumentException.class);
+        hdfsLocalCluster = new HdfsLocalCluster.Builder()
+                .setHdfsNamenodePort(Integer.parseInt(propertyParser.getProperty(ConfigVars.HDFS_NAMENODE_PORT_KEY)))
+                .setHdfsTempDir(propertyParser.getProperty(ConfigVars.HDFS_TEMP_DIR_KEY))
+                .setHdfsNumDatanodes(Integer.parseInt(propertyParser.getProperty(ConfigVars.HDFS_NUM_DATANODES_KEY)))
+                .setHdfsFormat(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HDFS_FORMAT_KEY)))
+                .setHdfsConfig(new Configuration())
+                .build();
     }
 
     @Test
@@ -90,8 +145,34 @@ public class HdfsLocalClusterTest {
     }
 
     @Test
+    public void testMissingHdfsFormat() {
+        exception.expect(IllegalArgumentException.class);
+        hdfsLocalCluster = new HdfsLocalCluster.Builder()
+                .setHdfsNamenodePort(Integer.parseInt(propertyParser.getProperty(ConfigVars.HDFS_NAMENODE_PORT_KEY)))
+                .setHdfsTempDir(propertyParser.getProperty(ConfigVars.HDFS_TEMP_DIR_KEY))
+                .setHdfsNumDatanodes(Integer.parseInt(propertyParser.getProperty(ConfigVars.HDFS_NUM_DATANODES_KEY)))
+                .setHdfsEnablePermissions(
+                        Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HDFS_ENABLE_PERMISSIONS_KEY)))
+                .setHdfsConfig(new Configuration())
+                .build();
+    }
+
+    @Test
     public void testHdfsConf() {
         assertTrue(hdfsLocalCluster.getHdfsConfig() instanceof org.apache.hadoop.conf.Configuration);
 
+    }
+
+    @Test
+    public void testMissingHdfsConf() {
+        exception.expect(IllegalArgumentException.class);
+        hdfsLocalCluster = new HdfsLocalCluster.Builder()
+                .setHdfsNamenodePort(Integer.parseInt(propertyParser.getProperty(ConfigVars.HDFS_NAMENODE_PORT_KEY)))
+                .setHdfsTempDir(propertyParser.getProperty(ConfigVars.HDFS_TEMP_DIR_KEY))
+                .setHdfsNumDatanodes(Integer.parseInt(propertyParser.getProperty(ConfigVars.HDFS_NUM_DATANODES_KEY)))
+                .setHdfsEnablePermissions(
+                        Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HDFS_ENABLE_PERMISSIONS_KEY)))
+                .setHdfsFormat(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HDFS_FORMAT_KEY)))
+                .build();
     }
 }

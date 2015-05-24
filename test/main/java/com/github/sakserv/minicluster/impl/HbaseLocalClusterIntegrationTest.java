@@ -81,8 +81,10 @@ public class HbaseLocalClusterIntegrationTest {
 
     @AfterClass
     public static void tearDown() throws Exception {
+        hbaseLocalCluster.configure();
         hbaseLocalCluster.stop();
         zookeeperLocalCluster.stop();
+        hbaseLocalCluster.cleanUp();
     }
 
     @Test

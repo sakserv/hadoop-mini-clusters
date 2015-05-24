@@ -15,6 +15,7 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.MiniClusterWithExceptions;
 import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -25,7 +26,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 
-public class HdfsLocalCluster implements MiniCluster {
+public class HdfsLocalCluster implements MiniClusterWithExceptions {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(HdfsLocalCluster.class);
@@ -149,27 +150,24 @@ public class HdfsLocalCluster implements MiniCluster {
         System.setProperty("test.build.data", hdfsTempDir);
     }
     
-    public void start() {
-        try {
-            LOG.info("HDFS: Starting MiniDfsCluster");
-            configure();
-            miniDFSCluster = new MiniDFSCluster.Builder(hdfsConfig)
-                    .nameNodePort(hdfsNamenodePort)
-                    .numDataNodes(hdfsNumDatanodes)
-                    .format(hdfsFormat)
-                    .racks(null)
-                    .build();
-        } catch(IOException e) {
-            LOG.error("ERROR: Failed to start MiniDfsCluster");
-            e.printStackTrace();
-        }
+    public void start() throws Exception {
+
+        LOG.info("HDFS: Starting MiniDfsCluster");
+        configure();
+        miniDFSCluster = new MiniDFSCluster.Builder(hdfsConfig)
+                .nameNodePort(hdfsNamenodePort)
+                .numDataNodes(hdfsNumDatanodes)
+                .format(hdfsFormat)
+                .racks(null)
+                .build();
+
     }
 
-    public void stop() {
+    public void stop() throws Exception {
         stop(true);
     }
     
-    public void stop(boolean cleanUp) {
+    public void stop(boolean cleanUp) throws Exception {
         LOG.info("HDFS: Stopping MiniDfsCluster");
         miniDFSCluster.shutdown();
         if(cleanUp) {
@@ -182,14 +180,9 @@ public class HdfsLocalCluster implements MiniCluster {
         FileUtils.deleteFolder(hdfsTempDir);
     }
 
-    public FileSystem getHdfsFileSystemHandle() {
+    public FileSystem getHdfsFileSystemHandle() throws Exception {
         FileSystem hdfsFileSystemHandle = null;
-        try {
-            hdfsFileSystemHandle = miniDFSCluster.getFileSystem();
-        } catch(IOException e) {
-            LOG.error("ERROR: Failed to return MiniDFsCluster URI");
-            e.printStackTrace();
-        }
+        hdfsFileSystemHandle = miniDFSCluster.getFileSystem();
         return hdfsFileSystemHandle;
     }
 }

@@ -59,7 +59,7 @@ public class MRLocalClusterIntegrationTest {
     private static String mrOutputText = "1";
     
     @BeforeClass
-    public static void setUp() throws IOException {
+    public static void setUp() throws Exception {
         dfsCluster = new HdfsLocalCluster.Builder()
                 .setHdfsNamenodePort(Integer.parseInt(propertyParser.getProperty(ConfigVars.HDFS_NAMENODE_PORT_KEY)))
                 .setHdfsTempDir(propertyParser.getProperty(ConfigVars.HDFS_TEMP_DIR_KEY))
@@ -92,7 +92,7 @@ public class MRLocalClusterIntegrationTest {
     }
 
     @AfterClass
-    public static void tearDown() {
+    public static void tearDown() throws Exception {
         mrLocalCluster.stop(false);
         dfsCluster.stop();
     }
@@ -131,7 +131,7 @@ public class MRLocalClusterIntegrationTest {
         return "";
     }
 
-    private String readFileFromHdfs(String filename) throws IOException {
+    private String readFileFromHdfs(String filename) throws Exception {
         FileSystem hdfsFsHandle = dfsCluster.getHdfsFileSystemHandle();
         FSDataInputStream reader = hdfsFsHandle.open(new Path(filename));
         String output = reader.readUTF();

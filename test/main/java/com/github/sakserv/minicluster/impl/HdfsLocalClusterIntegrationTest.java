@@ -50,7 +50,7 @@ public class HdfsLocalClusterIntegrationTest {
     private static HdfsLocalCluster dfsCluster;
 
     @BeforeClass
-    public static void setUp(){
+    public static void setUp() throws Exception {
         dfsCluster = new HdfsLocalCluster.Builder()
                 .setHdfsNamenodePort(Integer.parseInt(propertyParser.getProperty(ConfigVars.HDFS_NAMENODE_PORT_KEY)))
                 .setHdfsTempDir(propertyParser.getProperty(ConfigVars.HDFS_TEMP_DIR_KEY))
@@ -64,12 +64,12 @@ public class HdfsLocalClusterIntegrationTest {
     }
 
     @AfterClass
-    public static void tearDown(){
+    public static void tearDown() throws Exception {
         dfsCluster.stop();
     }
 
     @Test
-    public void testDfsClusterStart() throws IOException {
+    public void testDfsClusterStart() throws Exception {
         
         // Write a file to HDFS containing the test string
         FileSystem hdfsFsHandle = dfsCluster.getHdfsFileSystemHandle();
