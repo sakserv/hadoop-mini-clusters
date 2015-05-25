@@ -56,7 +56,7 @@ public class HiveLocalMetaStoreIntegrationTest {
     private static HiveLocalMetaStore hiveLocalMetaStore;
 
     /*@BeforeClass*/
-    public static void setUp() {
+    public static void setUp() throws Exception {
 
         hiveLocalMetaStore = new HiveLocalMetaStore.Builder()
                 .setHiveMetastoreHostname(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_HOSTNAME_KEY))
@@ -71,7 +71,7 @@ public class HiveLocalMetaStoreIntegrationTest {
     }
 
     /*@AfterClass*/
-    public static void tearDown() {
+    public static void tearDown() throws Exception {
         hiveLocalMetaStore.stop();
         FileUtils.deleteFolder(new File(
                 propertyParser.getProperty(ConfigVars.HIVE_TEST_TABLE_NAME_KEY)).getAbsolutePath());

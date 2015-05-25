@@ -81,14 +81,12 @@ public class HbaseLocalClusterIntegrationTest {
 
     @AfterClass
     public static void tearDown() throws Exception {
-        hbaseLocalCluster.configure();
         hbaseLocalCluster.stop();
         zookeeperLocalCluster.stop();
-        hbaseLocalCluster.cleanUp();
     }
 
     @Test
-    public void testHbaseLocalCluster() throws IOException {
+    public void testHbaseLocalCluster() throws Exception {
 
         String tableName = propertyParser.getProperty(ConfigVars.HBASE_TEST_TABLE_NAME_KEY);
         String colFamName = propertyParser.getProperty(ConfigVars.HBASE_TEST_COL_FAMILY_NAME_KEY);
@@ -112,47 +110,35 @@ public class HbaseLocalClusterIntegrationTest {
 
     }
 
-    private static void createHbaseTable(String tableName, String colFamily, Configuration configuration) {
+    private static void createHbaseTable(String tableName, String colFamily,
+                                         Configuration configuration) throws Exception {
 
-        try {
-            final HBaseAdmin admin = new HBaseAdmin(configuration);
-            HTableDescriptor hTableDescriptor = new HTableDescriptor(TableName.valueOf(tableName));
-            HColumnDescriptor hColumnDescriptor = new HColumnDescriptor(colFamily);
+        final HBaseAdmin admin = new HBaseAdmin(configuration);
+        HTableDescriptor hTableDescriptor = new HTableDescriptor(TableName.valueOf(tableName));
+        HColumnDescriptor hColumnDescriptor = new HColumnDescriptor(colFamily);
 
-            hTableDescriptor.addFamily(hColumnDescriptor);
-            admin.createTable(hTableDescriptor);
-
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+        hTableDescriptor.addFamily(hColumnDescriptor);
+        admin.createTable(hTableDescriptor);
     }
 
     private static void putRow(String tableName, String colFamName, String rowKey, String colQualifier, String value,
-                                 Configuration configuration) {
-        try {
-            HTable table = new HTable(configuration, tableName);
-            Put put = new Put(Bytes.toBytes(rowKey));
-            put.add(Bytes.toBytes(colFamName), Bytes.toBytes(colQualifier), Bytes.toBytes(value));
-            table.put(put);
-            table.flushCommits();
-            table.close();
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+                                 Configuration configuration) throws Exception {
+        HTable table = new HTable(configuration, tableName);
+        Put put = new Put(Bytes.toBytes(rowKey));
+        put.add(Bytes.toBytes(colFamName), Bytes.toBytes(colQualifier), Bytes.toBytes(value));
+        table.put(put);
+        table.flushCommits();
+        table.close();
     }
 
     private static Result getRow(String tableName, String colFamName, String rowKey, String colQualifier,
-                               Configuration configuration) {
+                               Configuration configuration) throws Exception {
         Result result = new Result();
-        try {
-            HTable table = new HTable(configuration, tableName);
-            Get get = new Get(Bytes.toBytes(rowKey));
-            get.addColumn(Bytes.toBytes(colFamName), Bytes.toBytes(colQualifier));
-            get.setMaxVersions(1);
-            result = table.get(get);
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+        HTable table = new HTable(configuration, tableName);
+        Get get = new Get(Bytes.toBytes(rowKey));
+        get.addColumn(Bytes.toBytes(colFamName), Bytes.toBytes(colQualifier));
+        get.setMaxVersions(1);
+        result = table.get(get);
         return result;
     }
 

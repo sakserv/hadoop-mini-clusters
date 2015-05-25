@@ -15,6 +15,7 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.MiniClusterWithExceptions;
 import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.metastore.HiveMetaStore;
@@ -25,7 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
-public class HiveLocalMetaStore implements MiniCluster {
+public class HiveLocalMetaStore implements MiniClusterWithExceptions {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(HiveLocalMetaStore.class);
@@ -166,7 +167,7 @@ public class HiveLocalMetaStore implements MiniCluster {
                         new HadoopThriftAuthBridge(), 
                         hiveConf);
             } catch (Throwable t) {
-                LOG.error("Exiting. Got exception from metastore: ", t);
+                t.printStackTrace();
             }
         }
     }
@@ -183,63 +184,40 @@ public class HiveLocalMetaStore implements MiniCluster {
         hiveConf.setBoolVar(HiveConf.ConfVars.HIVE_IN_TEST, true);
     }
 
-    public void stop() {
-        LOG.info("HIVESERVER2: Stopping Hive Metastore on port: " + hiveMetastorePort);
-        stop(true);
-    }
-
-    public void stop(boolean cleanUp) {
-        if(cleanUp) {
-            cleanDb();
-        }
-
-        t.interrupt();
-
-        if (cleanUp) {
-            cleanUp();
-        }
-
-    }
-
-    private void cleanUp() {
-        FileUtils.deleteFolder(hiveMetastoreDerbyDbDir);
-        FileUtils.deleteFolder(new File("derby.log").getAbsolutePath());
-    }
-
-    public void start() {
+    public void start() throws Exception {
         LOG.info("HIVESERVER2: Starting Hive Metastore on port: " + hiveMetastorePort);
+        configure();
         StartHiveLocalMetaStore startHiveLocalMetaStore = new StartHiveLocalMetaStore();
         startHiveLocalMetaStore.setHiveMetastorePort(hiveMetastorePort);
         startHiveLocalMetaStore.setHiveConf(hiveConf);
         t = new Thread(startHiveLocalMetaStore);
         t.setDaemon(true);
         t.start();
-        try {
-            Thread.sleep(5000);
-        } catch(InterruptedException e) {
-            e.printStackTrace();
-        }
         prepDb();
     }
 
-    public void prepDb() {
-        try {
-            LOG.info("HIVE METASTORE: Prepping the database");
-            TxnDbUtil.setConfValues(hiveConf);
-            TxnDbUtil.prepDb();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+    public void stop() throws Exception {
+        LOG.info("HIVESERVER2: Stopping Hive Metastore on port: " + hiveMetastorePort);
+        stop(true);
     }
 
-    public void cleanDb() {
-        try {
-            LOG.info("HIVE METASTORE: Cleaning up the database");
-            TxnDbUtil.setConfValues(hiveConf);
-            TxnDbUtil.cleanDb();
-        } catch(Exception e) {
-            e.printStackTrace();
+    public void stop(boolean cleanUp) throws Exception {
+        t.interrupt();
+        if (cleanUp) {
+            cleanUp();
         }
+
     }
 
+    public void cleanUp() {
+        FileUtils.deleteFolder(hiveMetastoreDerbyDbDir);
+        FileUtils.deleteFolder(hiveWarehouseDir);
+        FileUtils.deleteFolder(new File("derby.log").getAbsolutePath());
+    }
+
+    public void prepDb() throws Exception {
+        LOG.info("HIVE METASTORE: Prepping the database");
+        TxnDbUtil.setConfValues(hiveConf);
+        TxnDbUtil.prepDb();
+    }
 }

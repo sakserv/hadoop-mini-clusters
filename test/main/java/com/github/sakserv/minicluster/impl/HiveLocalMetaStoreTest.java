@@ -18,11 +18,14 @@ import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -42,6 +45,9 @@ public class HiveLocalMetaStoreTest {
             LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
         }
     }
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
     
     private static HiveLocalMetaStore hiveLocalMetaStore;
 
@@ -81,9 +87,33 @@ public class HiveLocalMetaStoreTest {
     }
 
     @Test
+    public void testMissingHiveMetastoreHostname() {
+        exception.expect(IllegalArgumentException.class);
+        hiveLocalMetaStore = new HiveLocalMetaStore.Builder()
+                .setHiveMetastorePort(Integer.parseInt(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_PORT_KEY)))
+                .setHiveMetastoreDerbyDbDir(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_DERBY_DB_DIR_KEY))
+                .setHiveScratchDir(propertyParser.getProperty(ConfigVars.HIVE_SCRATCH_DIR_KEY))
+                .setHiveWarehouseDir(propertyParser.getProperty(ConfigVars.HIVE_WAREHOUSE_DIR_KEY))
+                .setHiveConf(buildHiveConf())
+                .build();
+    }
+
+    @Test
     public void testHiveMetastorePort() {
         assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_PORT_KEY)),
                 (int) hiveLocalMetaStore.getHiveMetastorePort());
+    }
+
+    @Test
+    public void testMissingHivemetastorePort() {
+        exception.expect(IllegalArgumentException.class);
+        hiveLocalMetaStore = new HiveLocalMetaStore.Builder()
+                .setHiveMetastoreHostname(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_HOSTNAME_KEY))
+                .setHiveMetastoreDerbyDbDir(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_DERBY_DB_DIR_KEY))
+                .setHiveScratchDir(propertyParser.getProperty(ConfigVars.HIVE_SCRATCH_DIR_KEY))
+                .setHiveWarehouseDir(propertyParser.getProperty(ConfigVars.HIVE_WAREHOUSE_DIR_KEY))
+                .setHiveConf(buildHiveConf())
+                .build();
     }
 
     @Test
@@ -93,9 +123,33 @@ public class HiveLocalMetaStoreTest {
     }
 
     @Test
+    public void testMissingHiveMetastoreDerbyDbDir() {
+        exception.expect(IllegalArgumentException.class);
+        hiveLocalMetaStore = new HiveLocalMetaStore.Builder()
+                .setHiveMetastoreHostname(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_HOSTNAME_KEY))
+                .setHiveMetastorePort(Integer.parseInt(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_PORT_KEY)))
+                .setHiveScratchDir(propertyParser.getProperty(ConfigVars.HIVE_SCRATCH_DIR_KEY))
+                .setHiveWarehouseDir(propertyParser.getProperty(ConfigVars.HIVE_WAREHOUSE_DIR_KEY))
+                .setHiveConf(buildHiveConf())
+                .build();
+    }
+
+    @Test
     public void testHiveScratchDir() {
         assertEquals(propertyParser.getProperty(ConfigVars.HIVE_SCRATCH_DIR_KEY),
                 hiveLocalMetaStore.getHiveScratchDir());
+    }
+
+    @Test
+    public void testMissingHiveScratchDir() {
+        exception.expect(IllegalArgumentException.class);
+        hiveLocalMetaStore = new HiveLocalMetaStore.Builder()
+                .setHiveMetastoreHostname(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_HOSTNAME_KEY))
+                .setHiveMetastorePort(Integer.parseInt(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_PORT_KEY)))
+                .setHiveMetastoreDerbyDbDir(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_DERBY_DB_DIR_KEY))
+                .setHiveWarehouseDir(propertyParser.getProperty(ConfigVars.HIVE_WAREHOUSE_DIR_KEY))
+                .setHiveConf(buildHiveConf())
+                .build();
     }
 
     @Test
@@ -103,11 +157,50 @@ public class HiveLocalMetaStoreTest {
         assertEquals(propertyParser.getProperty(ConfigVars.HIVE_WAREHOUSE_DIR_KEY),
                 hiveLocalMetaStore.getHiveWarehouseDir());
     }
+
+    @Test
+    public void testMissingHiveWarehouseDir() {
+        exception.expect(IllegalArgumentException.class);
+        hiveLocalMetaStore = new HiveLocalMetaStore.Builder()
+                .setHiveMetastoreHostname(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_HOSTNAME_KEY))
+                .setHiveMetastorePort(Integer.parseInt(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_PORT_KEY)))
+                .setHiveMetastoreDerbyDbDir(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_DERBY_DB_DIR_KEY))
+                .setHiveScratchDir(propertyParser.getProperty(ConfigVars.HIVE_SCRATCH_DIR_KEY))
+                .setHiveConf(buildHiveConf())
+                .build();
+    }
     
     @Test
     public void testHiveConf() {
         assertTrue(hiveLocalMetaStore.getHiveConf() instanceof org.apache.hadoop.hive.conf.HiveConf);
 
+    }
+
+    @Test
+    public void testMissingHiveConf() {
+        exception.expect(IllegalArgumentException.class);
+        hiveLocalMetaStore = new HiveLocalMetaStore.Builder()
+                .setHiveMetastoreHostname(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_HOSTNAME_KEY))
+                .setHiveMetastorePort(Integer.parseInt(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_PORT_KEY)))
+                .setHiveMetastoreDerbyDbDir(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_DERBY_DB_DIR_KEY))
+                .setHiveScratchDir(propertyParser.getProperty(ConfigVars.HIVE_SCRATCH_DIR_KEY))
+                .setHiveWarehouseDir(propertyParser.getProperty(ConfigVars.HIVE_WAREHOUSE_DIR_KEY))
+                .build();
+    }
+
+    @Test
+    public void testThrowableOnStart() throws Exception {
+        //exception.expect(SQLException.class);
+        HiveLocalMetaStore hiveLocalMetaStore = new HiveLocalMetaStore.Builder()
+                .setHiveMetastoreHostname(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_HOSTNAME_KEY))
+                .setHiveMetastorePort(99999999)
+                .setHiveMetastoreDerbyDbDir(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_DERBY_DB_DIR_KEY))
+                .setHiveScratchDir(propertyParser.getProperty(ConfigVars.HIVE_SCRATCH_DIR_KEY))
+                .setHiveWarehouseDir(propertyParser.getProperty(ConfigVars.HIVE_WAREHOUSE_DIR_KEY))
+                .setHiveConf(buildHiveConf())
+                .build();
+        hiveLocalMetaStore.start();
+        hiveLocalMetaStore.cleanUp();
     }
 
 }

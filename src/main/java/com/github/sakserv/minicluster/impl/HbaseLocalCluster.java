@@ -207,15 +207,15 @@ public class HbaseLocalCluster implements MiniClusterWithExceptions {
 
     public void stop(boolean cleanUp) throws Exception {
         LOG.info("HBASE: Stopping MiniHBaseCluster");
-        miniHBaseCluster.shutdown();
-        miniHBaseCluster.join();
-        miniHBaseCluster.waitUntilShutDown();
-        //Thread.sleep(5000);
-
+        try {
+            miniHBaseCluster.shutdown();
+            miniHBaseCluster.killAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if(cleanUp) {
             cleanUp();
         }
-
     }
 
     public void cleanUp() {

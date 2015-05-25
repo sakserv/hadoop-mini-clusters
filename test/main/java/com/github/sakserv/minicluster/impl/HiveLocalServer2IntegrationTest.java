@@ -17,6 +17,7 @@ package com.github.sakserv.minicluster.impl;
 import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
 import org.apache.hadoop.hive.conf.HiveConf;
+import org.apache.hadoop.hive.metastore.api.AlreadyExistsException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -49,7 +50,7 @@ public class HiveLocalServer2IntegrationTest {
     private static HiveLocalServer2 hiveLocalServer2;
 
     @BeforeClass
-    public static void setUp() throws IOException {
+    public static void setUp() throws Exception {
 
         zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
                 .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
@@ -58,16 +59,20 @@ public class HiveLocalServer2IntegrationTest {
                 .build();
         zookeeperLocalCluster.start();
 
-        hiveLocalMetaStore = new HiveLocalMetaStore.Builder()
-                .setHiveMetastoreHostname(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_HOSTNAME_KEY))
-                .setHiveMetastorePort(Integer.parseInt(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_PORT_KEY)))
-                .setHiveMetastoreDerbyDbDir(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_DERBY_DB_DIR_KEY))
-                .setHiveScratchDir(propertyParser.getProperty(ConfigVars.HIVE_SCRATCH_DIR_KEY))
-                .setHiveWarehouseDir(propertyParser.getProperty(ConfigVars.HIVE_WAREHOUSE_DIR_KEY))
-                .setHiveConf(buildHiveConf())
-                .build();
+        try {
+            hiveLocalMetaStore = new HiveLocalMetaStore.Builder()
+                    .setHiveMetastoreHostname(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_HOSTNAME_KEY))
+                    .setHiveMetastorePort(Integer.parseInt(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_PORT_KEY)))
+                    .setHiveMetastoreDerbyDbDir(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_DERBY_DB_DIR_KEY))
+                    .setHiveScratchDir(propertyParser.getProperty(ConfigVars.HIVE_SCRATCH_DIR_KEY))
+                    .setHiveWarehouseDir(propertyParser.getProperty(ConfigVars.HIVE_WAREHOUSE_DIR_KEY))
+                    .setHiveConf(buildHiveConf())
+                    .build();
 
-        hiveLocalMetaStore.start();
+            hiveLocalMetaStore.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
         hiveLocalServer2 = new HiveLocalServer2.Builder()
                 .setHiveServer2Hostname(propertyParser.getProperty(ConfigVars.HIVE_SERVER2_HOSTNAME_KEY))
@@ -84,10 +89,10 @@ public class HiveLocalServer2IntegrationTest {
     }
 
     @AfterClass
-    public static void tearDown() {
-        hiveLocalServer2.stop();
-        hiveLocalMetaStore.stop();
-        zookeeperLocalCluster.stop();
+    public static void tearDown() throws Exception {
+            hiveLocalServer2.stop();
+            hiveLocalMetaStore.stop();
+            zookeeperLocalCluster.stop();
     }
 
     public static HiveConf buildHiveConf() {
@@ -124,12 +129,17 @@ public class HiveLocalServer2IntegrationTest {
                 "user",
                 "pass");
 
-        // Create the DB
-        String createDbDdl = "CREATE DATABASE IF NOT EXISTS " + 
-                propertyParser.getProperty(ConfigVars.HIVE_TEST_DATABASE_NAME_KEY);
-        Statement stmt = con.createStatement();
-        LOG.info("HIVE: Running Create Database Statement: " + createDbDdl);
-        stmt.execute(createDbDdl);
+       // Create the DB
+        Statement stmt;
+/*        try {
+            String createDbDdl = "CREATE DATABASE IF NOT EXISTS " +
+                    propertyParser.getProperty(ConfigVars.HIVE_TEST_DATABASE_NAME_KEY);
+            stmt = con.createStatement();
+            LOG.info("HIVE: Running Create Database Statement: " + createDbDdl);
+            stmt.execute(createDbDdl);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
 
         // Drop the table incase it still exists
         String dropDdl = "DROP TABLE " + propertyParser.getProperty(ConfigVars.HIVE_TEST_DATABASE_NAME_KEY) + "." +
