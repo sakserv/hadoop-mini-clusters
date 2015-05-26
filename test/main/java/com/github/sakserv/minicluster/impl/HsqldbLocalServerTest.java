@@ -16,7 +16,9 @@ package com.github.sakserv.minicluster.impl;
 import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +41,10 @@ public class HsqldbLocalServerTest {
             LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
         }
     }
-    
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
     private static HsqldbLocalServer hsqldbLocalServer;
     
     @BeforeClass
@@ -62,13 +67,55 @@ public class HsqldbLocalServerTest {
     }
 
     @Test
+    public void testMissingHsqldbHostName() {
+        exception.expect(IllegalArgumentException.class);
+        hsqldbLocalServer = new HsqldbLocalServer.Builder()
+                .setHsqldbPort(propertyParser.getProperty(ConfigVars.HSQLDB_PORT_KEY))
+                .setHsqldbTempDir(propertyParser.getProperty(ConfigVars.HSQLDB_TEMP_DIR_KEY))
+                .setHsqldbDatabaseName(propertyParser.getProperty(ConfigVars.HSQLDB_DATABASE_NAME_KEY))
+                .setHsqldbCompatibilityMode(propertyParser.getProperty(ConfigVars.HSQLDB_COMPATIBILITY_MODE_KEY))
+                .setHsqldbJdbcDriver(propertyParser.getProperty(ConfigVars.HSQLDB_JDBC_DRIVER_KEY))
+                .setHsqldbJdbcConnectionStringPrefix(propertyParser.getProperty(
+                        ConfigVars.HSQLDB_JDBC_CONNECTION_STRING_PREFIX_KEY))
+                .build();
+    }
+
+    @Test
     public void testHsqldbPort() {
         assertEquals(propertyParser.getProperty(ConfigVars.HSQLDB_PORT_KEY), hsqldbLocalServer.getHsqldbPort());
     }
 
     @Test
+    public void testMissingHsqldbPort() {
+        exception.expect(IllegalArgumentException.class);
+        hsqldbLocalServer = new HsqldbLocalServer.Builder()
+                .setHsqldbHostName(propertyParser.getProperty(ConfigVars.HSQLDB_HOSTNAME_KEY))
+                .setHsqldbTempDir(propertyParser.getProperty(ConfigVars.HSQLDB_TEMP_DIR_KEY))
+                .setHsqldbDatabaseName(propertyParser.getProperty(ConfigVars.HSQLDB_DATABASE_NAME_KEY))
+                .setHsqldbCompatibilityMode(propertyParser.getProperty(ConfigVars.HSQLDB_COMPATIBILITY_MODE_KEY))
+                .setHsqldbJdbcDriver(propertyParser.getProperty(ConfigVars.HSQLDB_JDBC_DRIVER_KEY))
+                .setHsqldbJdbcConnectionStringPrefix(propertyParser.getProperty(
+                        ConfigVars.HSQLDB_JDBC_CONNECTION_STRING_PREFIX_KEY))
+                .build();
+    }
+
+    @Test
     public void testHsqldbTempDir() {
         assertEquals(propertyParser.getProperty(ConfigVars.HSQLDB_TEMP_DIR_KEY), hsqldbLocalServer.getHsqldbTempDir());
+    }
+
+    @Test
+    public void testMissingHsqldbTempDir() {
+        exception.expect(IllegalArgumentException.class);
+        hsqldbLocalServer = new HsqldbLocalServer.Builder()
+                .setHsqldbHostName(propertyParser.getProperty(ConfigVars.HSQLDB_HOSTNAME_KEY))
+                .setHsqldbPort(propertyParser.getProperty(ConfigVars.HSQLDB_PORT_KEY))
+                .setHsqldbDatabaseName(propertyParser.getProperty(ConfigVars.HSQLDB_DATABASE_NAME_KEY))
+                .setHsqldbCompatibilityMode(propertyParser.getProperty(ConfigVars.HSQLDB_COMPATIBILITY_MODE_KEY))
+                .setHsqldbJdbcDriver(propertyParser.getProperty(ConfigVars.HSQLDB_JDBC_DRIVER_KEY))
+                .setHsqldbJdbcConnectionStringPrefix(propertyParser.getProperty(
+                        ConfigVars.HSQLDB_JDBC_CONNECTION_STRING_PREFIX_KEY))
+                .build();
     }
 
     @Test
@@ -78,20 +125,139 @@ public class HsqldbLocalServerTest {
     }
 
     @Test
+    public void testMissingHsqldbDatabaseName() {
+        exception.expect(IllegalArgumentException.class);
+        hsqldbLocalServer = new HsqldbLocalServer.Builder()
+                .setHsqldbHostName(propertyParser.getProperty(ConfigVars.HSQLDB_HOSTNAME_KEY))
+                .setHsqldbPort(propertyParser.getProperty(ConfigVars.HSQLDB_PORT_KEY))
+                .setHsqldbTempDir(propertyParser.getProperty(ConfigVars.HSQLDB_TEMP_DIR_KEY))
+                .setHsqldbCompatibilityMode(propertyParser.getProperty(ConfigVars.HSQLDB_COMPATIBILITY_MODE_KEY))
+                .setHsqldbJdbcDriver(propertyParser.getProperty(ConfigVars.HSQLDB_JDBC_DRIVER_KEY))
+                .setHsqldbJdbcConnectionStringPrefix(propertyParser.getProperty(
+                        ConfigVars.HSQLDB_JDBC_CONNECTION_STRING_PREFIX_KEY))
+                .build();
+    }
+
+    @Test
     public void testHsqldbCompatibilityMode() {
         assertEquals(propertyParser.getProperty(ConfigVars.HSQLDB_COMPATIBILITY_MODE_KEY), 
                 hsqldbLocalServer.getHsqldbCompatibilityMode());
     }
 
     @Test
-         public void testHsqldbJdbcDriver() {
+    public void testMissingHsqldbCompatibilityMode() {
+        exception.expect(IllegalArgumentException.class);
+        hsqldbLocalServer = new HsqldbLocalServer.Builder()
+                .setHsqldbHostName(propertyParser.getProperty(ConfigVars.HSQLDB_HOSTNAME_KEY))
+                .setHsqldbPort(propertyParser.getProperty(ConfigVars.HSQLDB_PORT_KEY))
+                .setHsqldbTempDir(propertyParser.getProperty(ConfigVars.HSQLDB_TEMP_DIR_KEY))
+                .setHsqldbDatabaseName(propertyParser.getProperty(ConfigVars.HSQLDB_DATABASE_NAME_KEY))
+                .setHsqldbJdbcDriver(propertyParser.getProperty(ConfigVars.HSQLDB_JDBC_DRIVER_KEY))
+                .setHsqldbJdbcConnectionStringPrefix(propertyParser.getProperty(
+                        ConfigVars.HSQLDB_JDBC_CONNECTION_STRING_PREFIX_KEY))
+                .build();
+    }
+
+    @Test
+    public void testHsqldbJdbcDriver() {
         assertEquals(propertyParser.getProperty(ConfigVars.HSQLDB_JDBC_DRIVER_KEY),
                 hsqldbLocalServer.getHsqldbJdbcDriver());
+    }
+
+    @Test
+    public void testMissingHsqldbJdbcDriver() {
+        exception.expect(IllegalArgumentException.class);
+        hsqldbLocalServer = new HsqldbLocalServer.Builder()
+                .setHsqldbHostName(propertyParser.getProperty(ConfigVars.HSQLDB_HOSTNAME_KEY))
+                .setHsqldbPort(propertyParser.getProperty(ConfigVars.HSQLDB_PORT_KEY))
+                .setHsqldbTempDir(propertyParser.getProperty(ConfigVars.HSQLDB_TEMP_DIR_KEY))
+                .setHsqldbDatabaseName(propertyParser.getProperty(ConfigVars.HSQLDB_DATABASE_NAME_KEY))
+                .setHsqldbCompatibilityMode(propertyParser.getProperty(ConfigVars.HSQLDB_COMPATIBILITY_MODE_KEY))
+                .setHsqldbJdbcConnectionStringPrefix(propertyParser.getProperty(
+                        ConfigVars.HSQLDB_JDBC_CONNECTION_STRING_PREFIX_KEY))
+                .build();
     }
 
     @Test
     public void testHsqldbJdbcConnectionStringPrefix() {
         assertEquals(propertyParser.getProperty(ConfigVars.HSQLDB_JDBC_CONNECTION_STRING_PREFIX_KEY),
                 hsqldbLocalServer.getHsqldbJdbcConnectionStringPrefix());
+    }
+
+    @Test
+    public void testMissingHsqldbJdbcConnectionStringPrefix() {
+        exception.expect(IllegalArgumentException.class);
+        hsqldbLocalServer = new HsqldbLocalServer.Builder()
+                .setHsqldbHostName(propertyParser.getProperty(ConfigVars.HSQLDB_HOSTNAME_KEY))
+                .setHsqldbPort(propertyParser.getProperty(ConfigVars.HSQLDB_PORT_KEY))
+                .setHsqldbTempDir(propertyParser.getProperty(ConfigVars.HSQLDB_TEMP_DIR_KEY))
+                .setHsqldbDatabaseName(propertyParser.getProperty(ConfigVars.HSQLDB_DATABASE_NAME_KEY))
+                .setHsqldbCompatibilityMode(propertyParser.getProperty(ConfigVars.HSQLDB_COMPATIBILITY_MODE_KEY))
+                .setHsqldbJdbcDriver(propertyParser.getProperty(ConfigVars.HSQLDB_JDBC_DRIVER_KEY))
+                .build();
+    }
+
+    @Test
+    public void testPostgresCompatMode() {
+        HsqldbLocalServer hsqldbLocalServer = new HsqldbLocalServer.Builder()
+                .setHsqldbHostName(propertyParser.getProperty(ConfigVars.HSQLDB_HOSTNAME_KEY))
+                .setHsqldbPort(propertyParser.getProperty(ConfigVars.HSQLDB_PORT_KEY))
+                .setHsqldbTempDir(propertyParser.getProperty(ConfigVars.HSQLDB_TEMP_DIR_KEY))
+                .setHsqldbDatabaseName(propertyParser.getProperty(ConfigVars.HSQLDB_DATABASE_NAME_KEY))
+                .setHsqldbCompatibilityMode("postresql")
+                .setHsqldbJdbcDriver(propertyParser.getProperty(ConfigVars.HSQLDB_JDBC_DRIVER_KEY))
+                .setHsqldbJdbcConnectionStringPrefix(propertyParser.getProperty(
+                        ConfigVars.HSQLDB_JDBC_CONNECTION_STRING_PREFIX_KEY))
+                .build();
+        assertEquals("SET DATABASE SQL SYNTAX PGS TRUE",
+                hsqldbLocalServer.getHsqldbCompatibilityModeStatement());
+    }
+
+    @Test
+    public void testOracleCompatMode() {
+        HsqldbLocalServer hsqldbLocalServer = new HsqldbLocalServer.Builder()
+                .setHsqldbHostName(propertyParser.getProperty(ConfigVars.HSQLDB_HOSTNAME_KEY))
+                .setHsqldbPort(propertyParser.getProperty(ConfigVars.HSQLDB_PORT_KEY))
+                .setHsqldbTempDir(propertyParser.getProperty(ConfigVars.HSQLDB_TEMP_DIR_KEY))
+                .setHsqldbDatabaseName(propertyParser.getProperty(ConfigVars.HSQLDB_DATABASE_NAME_KEY))
+                .setHsqldbCompatibilityMode("oracle")
+                .setHsqldbJdbcDriver(propertyParser.getProperty(ConfigVars.HSQLDB_JDBC_DRIVER_KEY))
+                .setHsqldbJdbcConnectionStringPrefix(propertyParser.getProperty(
+                        ConfigVars.HSQLDB_JDBC_CONNECTION_STRING_PREFIX_KEY))
+                .build();
+        assertEquals("SET DATABASE SQL SYNTAX ORA TRUE",
+                hsqldbLocalServer.getHsqldbCompatibilityModeStatement());
+    }
+
+    @Test
+    public void testDb2CompatMode() {
+        HsqldbLocalServer hsqldbLocalServer = new HsqldbLocalServer.Builder()
+                .setHsqldbHostName(propertyParser.getProperty(ConfigVars.HSQLDB_HOSTNAME_KEY))
+                .setHsqldbPort(propertyParser.getProperty(ConfigVars.HSQLDB_PORT_KEY))
+                .setHsqldbTempDir(propertyParser.getProperty(ConfigVars.HSQLDB_TEMP_DIR_KEY))
+                .setHsqldbDatabaseName(propertyParser.getProperty(ConfigVars.HSQLDB_DATABASE_NAME_KEY))
+                .setHsqldbCompatibilityMode("db2")
+                .setHsqldbJdbcDriver(propertyParser.getProperty(ConfigVars.HSQLDB_JDBC_DRIVER_KEY))
+                .setHsqldbJdbcConnectionStringPrefix(propertyParser.getProperty(
+                        ConfigVars.HSQLDB_JDBC_CONNECTION_STRING_PREFIX_KEY))
+                .build();
+        assertEquals("SET DATABASE SQL SYNTAX DB2 TRUE",
+                hsqldbLocalServer.getHsqldbCompatibilityModeStatement());
+    }
+
+    @Test
+    public void testMssqlCompatMode() {
+        HsqldbLocalServer hsqldbLocalServer = new HsqldbLocalServer.Builder()
+                .setHsqldbHostName(propertyParser.getProperty(ConfigVars.HSQLDB_HOSTNAME_KEY))
+                .setHsqldbPort(propertyParser.getProperty(ConfigVars.HSQLDB_PORT_KEY))
+                .setHsqldbTempDir(propertyParser.getProperty(ConfigVars.HSQLDB_TEMP_DIR_KEY))
+                .setHsqldbDatabaseName(propertyParser.getProperty(ConfigVars.HSQLDB_DATABASE_NAME_KEY))
+                .setHsqldbCompatibilityMode("mssql")
+                .setHsqldbJdbcDriver(propertyParser.getProperty(ConfigVars.HSQLDB_JDBC_DRIVER_KEY))
+                .setHsqldbJdbcConnectionStringPrefix(propertyParser.getProperty(
+                        ConfigVars.HSQLDB_JDBC_CONNECTION_STRING_PREFIX_KEY))
+                .build();
+        assertEquals("SET DATABASE SQL SYNTAX MSS TRUE",
+                hsqldbLocalServer.getHsqldbCompatibilityModeStatement());
     }
 }
