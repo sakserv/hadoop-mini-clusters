@@ -19,10 +19,12 @@ import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HConstants;
 import org.apache.hadoop.hbase.MiniHBaseCluster;
+import org.apache.hadoop.hbase.util.JVMClusterUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.List;
 
 public class HbaseLocalCluster implements MiniClusterWithExceptions {
 
@@ -199,6 +201,8 @@ public class HbaseLocalCluster implements MiniClusterWithExceptions {
         hbaseConfiguration.set(HConstants.ZOOKEEPER_QUORUM, zookeeperConnectionString);
         hbaseConfiguration.set(HConstants.ZOOKEEPER_ZNODE_PARENT, zookeeperZnodeParent);
         hbaseConfiguration.set(HConstants.REPLICATION_ENABLE_KEY, hbaseWalReplicationEnabled.toString());
+        hbaseConfiguration.set("hbase.splitlog.manager.unassigned.timeout", "999999999");
+        hbaseConfiguration.set("hbase.splitlog.manager.timeoutmonitor.period", "999999999");
     }
 
     public void stop() throws Exception {
@@ -208,8 +212,18 @@ public class HbaseLocalCluster implements MiniClusterWithExceptions {
     public void stop(boolean cleanUp) throws Exception {
         LOG.info("HBASE: Stopping MiniHBaseCluster");
         try {
+
+            miniHBaseCluster.flushcache();
+            miniHBaseCluster.close();
             miniHBaseCluster.shutdown();
-            miniHBaseCluster.killAll();
+            miniHBaseCluster.waitUntilShutDown();
+
+            try {
+                miniHBaseCluster.killAll();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

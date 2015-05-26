@@ -31,6 +31,7 @@ public class ActivemqLocalBrokerIntegrationTest {
     
     // Setup the activemq broker before running tests
     private static ActivemqLocalBroker amq;
+
     @BeforeClass
     public static void setUp() throws Exception {
         amq = new ActivemqLocalBroker.Builder()

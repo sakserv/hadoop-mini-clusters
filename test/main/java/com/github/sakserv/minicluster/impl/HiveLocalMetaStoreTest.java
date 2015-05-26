@@ -199,7 +199,11 @@ public class HiveLocalMetaStoreTest {
                 .setHiveWarehouseDir(propertyParser.getProperty(ConfigVars.HIVE_WAREHOUSE_DIR_KEY))
                 .setHiveConf(buildHiveConf())
                 .build();
-        hiveLocalMetaStore.start();
+        try {
+            hiveLocalMetaStore.start();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         hiveLocalMetaStore.cleanUp();
     }
 

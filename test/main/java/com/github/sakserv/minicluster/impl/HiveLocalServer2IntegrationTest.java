@@ -59,26 +59,22 @@ public class HiveLocalServer2IntegrationTest {
                 .build();
         zookeeperLocalCluster.start();
 
-        try {
-            hiveLocalMetaStore = new HiveLocalMetaStore.Builder()
-                    .setHiveMetastoreHostname(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_HOSTNAME_KEY))
-                    .setHiveMetastorePort(Integer.parseInt(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_PORT_KEY)))
-                    .setHiveMetastoreDerbyDbDir(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_DERBY_DB_DIR_KEY))
-                    .setHiveScratchDir(propertyParser.getProperty(ConfigVars.HIVE_SCRATCH_DIR_KEY))
-                    .setHiveWarehouseDir(propertyParser.getProperty(ConfigVars.HIVE_WAREHOUSE_DIR_KEY))
-                    .setHiveConf(buildHiveConf())
-                    .build();
+        hiveLocalMetaStore = new HiveLocalMetaStore.Builder()
+                .setHiveMetastoreHostname(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_HOSTNAME_KEY))
+                .setHiveMetastorePort(Integer.parseInt(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_PORT_KEY)) + 50)
+                .setHiveMetastoreDerbyDbDir(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_DERBY_DB_DIR_KEY))
+                .setHiveScratchDir(propertyParser.getProperty(ConfigVars.HIVE_SCRATCH_DIR_KEY))
+                .setHiveWarehouseDir(propertyParser.getProperty(ConfigVars.HIVE_WAREHOUSE_DIR_KEY))
+                .setHiveConf(buildHiveConf())
+                .build();
+        hiveLocalMetaStore.start();
 
-            hiveLocalMetaStore.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         
         hiveLocalServer2 = new HiveLocalServer2.Builder()
                 .setHiveServer2Hostname(propertyParser.getProperty(ConfigVars.HIVE_SERVER2_HOSTNAME_KEY))
                 .setHiveServer2Port(Integer.parseInt(propertyParser.getProperty(ConfigVars.HIVE_SERVER2_PORT_KEY)))
                 .setHiveMetastoreHostname(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_HOSTNAME_KEY))
-                .setHiveMetastorePort(Integer.parseInt(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_PORT_KEY)))
+                .setHiveMetastorePort(Integer.parseInt(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_PORT_KEY)) + 50)
                 .setHiveMetastoreDerbyDbDir(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_DERBY_DB_DIR_KEY))
                 .setHiveScratchDir(propertyParser.getProperty(ConfigVars.HIVE_SCRATCH_DIR_KEY))
                 .setHiveWarehouseDir(propertyParser.getProperty(ConfigVars.HIVE_WAREHOUSE_DIR_KEY))
@@ -131,7 +127,7 @@ public class HiveLocalServer2IntegrationTest {
 
        // Create the DB
         Statement stmt;
-/*        try {
+        try {
             String createDbDdl = "CREATE DATABASE IF NOT EXISTS " +
                     propertyParser.getProperty(ConfigVars.HIVE_TEST_DATABASE_NAME_KEY);
             stmt = con.createStatement();
@@ -139,7 +135,7 @@ public class HiveLocalServer2IntegrationTest {
             stmt.execute(createDbDdl);
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
 
         // Drop the table incase it still exists
         String dropDdl = "DROP TABLE " + propertyParser.getProperty(ConfigVars.HIVE_TEST_DATABASE_NAME_KEY) + "." +

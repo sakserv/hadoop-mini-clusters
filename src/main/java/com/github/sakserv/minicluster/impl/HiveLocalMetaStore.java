@@ -185,7 +185,7 @@ public class HiveLocalMetaStore implements MiniClusterWithExceptions {
     }
 
     public void start() throws Exception {
-        LOG.info("HIVESERVER2: Starting Hive Metastore on port: " + hiveMetastorePort);
+        LOG.info("HIVEMETASTORE: Starting Hive Metastore on port: " + hiveMetastorePort);
         configure();
         StartHiveLocalMetaStore startHiveLocalMetaStore = new StartHiveLocalMetaStore();
         startHiveLocalMetaStore.setHiveMetastorePort(hiveMetastorePort);
@@ -197,7 +197,7 @@ public class HiveLocalMetaStore implements MiniClusterWithExceptions {
     }
 
     public void stop() throws Exception {
-        LOG.info("HIVESERVER2: Stopping Hive Metastore on port: " + hiveMetastorePort);
+        LOG.info("HIVEMETASTORE: Stopping Hive Metastore on port: " + hiveMetastorePort);
         stop(true);
     }
 

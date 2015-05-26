@@ -29,6 +29,12 @@ public class FileUtils {
                 }
             }
         }
+        LOG.info("FILEUTILS: Deleting file: " + directoryToClean.getAbsolutePath());
         directoryToClean.delete();
+    }
+
+    @Override
+    public String toString() {
+        return this.toString();
     }
 }

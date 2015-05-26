@@ -133,7 +133,7 @@ public class HbaseLocalClusterIntegrationTest {
 
     private static Result getRow(String tableName, String colFamName, String rowKey, String colQualifier,
                                Configuration configuration) throws Exception {
-        Result result = new Result();
+        Result result;
         HTable table = new HTable(configuration, tableName);
         Get get = new Get(Bytes.toBytes(rowKey));
         get.addColumn(Bytes.toBytes(colFamName), Bytes.toBytes(colQualifier));

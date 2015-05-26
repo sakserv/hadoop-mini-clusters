@@ -177,13 +177,8 @@ public class ActivemqLocalBroker implements MiniClusterWithExceptions {
     }
 
     public void stop(boolean cleanUp) throws Exception {
-
-        if (consumer != null ) {
-            consumer.close();
-        }
-        if (session != null) {
-            session.close();
-        }
+        consumer.close();
+        session.close();
         broker.stop();
 
         if(cleanUp) {

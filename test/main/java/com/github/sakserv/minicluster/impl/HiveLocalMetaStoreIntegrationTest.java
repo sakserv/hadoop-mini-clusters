@@ -27,6 +27,10 @@ import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.junit.BeforeClass;
+import org.junit.AfterClass;
+import org.junit.Test;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,7 +59,7 @@ public class HiveLocalMetaStoreIntegrationTest {
     
     private static HiveLocalMetaStore hiveLocalMetaStore;
 
-    /*@BeforeClass*/
+    @BeforeClass
     public static void setUp() throws Exception {
 
         hiveLocalMetaStore = new HiveLocalMetaStore.Builder()
@@ -70,7 +74,7 @@ public class HiveLocalMetaStoreIntegrationTest {
         hiveLocalMetaStore.start();
     }
 
-    /*@AfterClass*/
+    @AfterClass
     public static void tearDown() throws Exception {
         hiveLocalMetaStore.stop();
         FileUtils.deleteFolder(new File(
@@ -94,7 +98,7 @@ public class HiveLocalMetaStoreIntegrationTest {
     }
 
     @SuppressWarnings("deprecation")
-    /*@Test*/
+    @Test
     public void testHiveLocalMetaStore() {
 
         // Create a table and display it back
