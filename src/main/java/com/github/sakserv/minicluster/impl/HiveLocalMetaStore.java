@@ -173,7 +173,7 @@ public class HiveLocalMetaStore implements MiniClusterWithExceptions {
     }
     
     
-    
+    @Override
     public void configure() {
         hiveConf.setVar(HiveConf.ConfVars.METASTOREURIS, 
                 "thrift://" + hiveMetastoreHostname + ":" + hiveMetastorePort);
@@ -184,6 +184,7 @@ public class HiveLocalMetaStore implements MiniClusterWithExceptions {
         hiveConf.setBoolVar(HiveConf.ConfVars.HIVE_IN_TEST, true);
     }
 
+    @Override
     public void start() throws Exception {
         LOG.info("HIVEMETASTORE: Starting Hive Metastore on port: " + hiveMetastorePort);
         configure();
@@ -196,6 +197,7 @@ public class HiveLocalMetaStore implements MiniClusterWithExceptions {
         prepDb();
     }
 
+    @Override
     public void stop() throws Exception {
         LOG.info("HIVEMETASTORE: Stopping Hive Metastore on port: " + hiveMetastorePort);
         stop(true);

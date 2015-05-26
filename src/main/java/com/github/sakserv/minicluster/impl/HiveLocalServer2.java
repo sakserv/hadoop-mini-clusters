@@ -190,7 +190,8 @@ public class HiveLocalServer2 implements MiniCluster {
         }
         
     }
-    
+
+    @Override
     public void configure() {
         hiveConf.setVar(HiveConf.ConfVars.METASTOREURIS,
                 "thrift://" + hiveMetastoreHostname + ":" + hiveMetastorePort);
@@ -203,7 +204,8 @@ public class HiveLocalServer2 implements MiniCluster {
         hiveConf.set(HiveConf.ConfVars.HIVE_SERVER2_THRIFT_PORT.varname, String.valueOf(hiveServer2Port));
         hiveConf.set(HiveConf.ConfVars.HIVE_ZOOKEEPER_QUORUM.varname, zookeeperConnectionString);
     }
-    
+
+    @Override
     public void start() {
         hiveServer2 = new HiveServer2();
         LOG.info("HIVESERVER2: Starting HiveServer2 on port: " + hiveServer2Port);
@@ -212,6 +214,7 @@ public class HiveLocalServer2 implements MiniCluster {
         hiveServer2.start();
     }
 
+    @Override
     public void stop() {
         LOG.info("HIVESERVER2: Stopping HiveServer2 on port: " + hiveServer2Port);
         stop(true);

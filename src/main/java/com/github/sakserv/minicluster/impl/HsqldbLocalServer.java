@@ -14,6 +14,7 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.MiniClusterWithExceptions;
 import com.github.sakserv.minicluster.util.FileUtils;
 import org.hsqldb.persist.HsqlProperties;
 import org.hsqldb.server.Server;
@@ -24,7 +25,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 
-public class HsqldbLocalServer implements MiniCluster {
+public class HsqldbLocalServer implements MiniClusterWithExceptions {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(HsqldbLocalServer.class);
@@ -155,25 +156,21 @@ public class HsqldbLocalServer implements MiniCluster {
         
     }
 
-    public void start() {
+    @Override
+    public void start() throws Exception {
         configure();
         server = new Server();
-        try {
-            server.setProperties(hsqlProperties);
-        } catch (ServerAcl.AclFormatException e) {
-            LOG.error(e.getMessage());
-        } catch (IOException e) {
-            LOG.error(e.getMessage());
-        }
+        server.setProperties(hsqlProperties);
         server.start();
-
     }
-    
-    public void stop() {
+
+    @Override
+    public void stop() throws Exception {
         server.stop();
         cleanUp();
     }
-    
+
+    @Override
     public void configure() {
         hsqlProperties.setProperty("server.address", getHsqldbHostName());
         hsqlProperties.setProperty("server.port", getHsqldbPort());

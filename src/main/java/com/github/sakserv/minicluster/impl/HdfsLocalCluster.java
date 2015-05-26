@@ -144,12 +144,14 @@ public class HdfsLocalCluster implements MiniClusterWithExceptions {
             
         }
     }
-    
+
+    @Override
     public void configure() {
         hdfsConfig.setBoolean("dfs.permissions", hdfsEnablePermissions);
         System.setProperty("test.build.data", hdfsTempDir);
     }
-    
+
+    @Override
     public void start() throws Exception {
 
         LOG.info("HDFS: Starting MiniDfsCluster");
@@ -163,6 +165,7 @@ public class HdfsLocalCluster implements MiniClusterWithExceptions {
 
     }
 
+    @Override
     public void stop() throws Exception {
         stop(true);
     }

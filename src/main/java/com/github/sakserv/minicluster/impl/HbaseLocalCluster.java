@@ -185,6 +185,7 @@ public class HbaseLocalCluster implements MiniClusterWithExceptions {
 
     }
 
+    @Override
     public void start() throws Exception {
         configure();
         LOG.info("HBASE: Starting MiniHBaseCluster");
@@ -193,6 +194,7 @@ public class HbaseLocalCluster implements MiniClusterWithExceptions {
         miniHBaseCluster.startRegionServer();
     }
 
+    @Override
     public void configure() {
         hbaseConfiguration.set(HConstants.MASTER_PORT, hbaseMasterPort.toString());
         hbaseConfiguration.set(HConstants.MASTER_INFO_PORT, hbaseMasterInfoPort.toString());
@@ -205,28 +207,18 @@ public class HbaseLocalCluster implements MiniClusterWithExceptions {
         hbaseConfiguration.set("hbase.splitlog.manager.timeoutmonitor.period", "999999999");
     }
 
+    @Override
     public void stop() throws Exception {
         stop(true);
     }
 
     public void stop(boolean cleanUp) throws Exception {
         LOG.info("HBASE: Stopping MiniHBaseCluster");
-        try {
 
-            miniHBaseCluster.flushcache();
-            miniHBaseCluster.close();
-            miniHBaseCluster.shutdown();
-            miniHBaseCluster.waitUntilShutDown();
-
-            try {
-                miniHBaseCluster.killAll();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        miniHBaseCluster.flushcache();
+        miniHBaseCluster.close();
+        miniHBaseCluster.shutdown();
+        miniHBaseCluster.waitUntilShutDown();
         if(cleanUp) {
             cleanUp();
         }

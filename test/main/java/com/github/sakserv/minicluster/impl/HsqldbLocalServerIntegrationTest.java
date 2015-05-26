@@ -47,7 +47,7 @@ public class HsqldbLocalServerIntegrationTest {
     private static HsqldbLocalServer hsqldbLocalServer;
     
     @BeforeClass
-    public static void setUp() {
+    public static void setUp() throws Exception {
         hsqldbLocalServer = new HsqldbLocalServer.Builder()
             .setHsqldbHostName(propertyParser.getProperty(ConfigVars.HSQLDB_HOSTNAME_KEY))
             .setHsqldbPort(propertyParser.getProperty(ConfigVars.HSQLDB_PORT_KEY))
@@ -62,7 +62,7 @@ public class HsqldbLocalServerIntegrationTest {
     }
     
     @AfterClass
-    public static void tearDown() {
+    public static void tearDown() throws Exception {
         hsqldbLocalServer.stop();
     }
     
