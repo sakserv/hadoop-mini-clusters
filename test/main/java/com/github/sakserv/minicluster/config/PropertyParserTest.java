@@ -28,9 +28,10 @@ public class PropertyParserTest {
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(PropertyParserTest.class);
 
-    private String propFileName = "default.properties";
-    private String badPropFileName = "bad.properties";
-    private String localPropFileName = "test/resources/localonly.properties";
+    private static final String propFileName = "default.properties";
+    private static final String badPropFileName = "bad.properties";
+    private static final String localPropFileName = "test/resources/localonly.properties";
+    private static final String testPropValue = "embedded_zk";
 
     private PropertyParser propertyParser = new PropertyParser(propFileName);
 
@@ -54,6 +55,13 @@ public class PropertyParserTest {
     public void testLocalOnlyPropFileName() throws IOException {
         propertyParser.setPropFileName(localPropFileName);
         propertyParser.parsePropsFile();
+    }
+
+    @Test
+    public void testGetProperty() throws Exception {
+        propertyParser.setPropFileName(propFileName);
+        propertyParser.parsePropsFile();
+        assertEquals(testPropValue, propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY));
     }
 
 }
