@@ -16,9 +16,9 @@ package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
 import com.github.sakserv.minicluster.util.FileUtils;
+import com.github.sakserv.minicluster.util.LocalSystemTime;
 import kafka.server.KafkaConfig;
 import kafka.server.KafkaServer;
-import kafka.utils.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -185,26 +185,5 @@ public class KafkaLocalBroker implements MiniCluster {
     private void cleanUp() {
         FileUtils.deleteFolder(kafkaTempDir);
     }
-    
-    public class LocalSystemTime implements Time {
 
-        @Override
-        public long milliseconds() {
-            return System.currentTimeMillis();
-        }
-
-        public long nanoseconds() {
-            return System.nanoTime();
-        }
-
-        @Override
-        public void sleep(long ms) {
-            try {
-                Thread.sleep(ms);
-            } catch (InterruptedException e) {
-                // no stress
-            }
-        }
-
-    }
 }
