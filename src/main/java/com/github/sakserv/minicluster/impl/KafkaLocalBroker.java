@@ -15,6 +15,7 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.MiniClusterWithExceptions;
 import com.github.sakserv.minicluster.util.FileUtils;
 import com.github.sakserv.minicluster.util.LocalSystemTime;
 import kafka.server.KafkaConfig;
@@ -28,7 +29,7 @@ import java.util.Properties;
  * In memory Kafka Broker for testing
  */
 
-public class KafkaLocalBroker implements MiniCluster {
+public class KafkaLocalBroker implements MiniClusterWithExceptions {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(KafkaLocalBroker.class);
@@ -162,18 +163,18 @@ public class KafkaLocalBroker implements MiniCluster {
         kafkaConfig = new KafkaConfig(kafkaProperties);
     }
 
-    public void start() {
+    public void start() throws Exception {
         configure();
         kafkaServer = new KafkaServer(kafkaConfig, new LocalSystemTime());
         LOG.info("KAFKA: Starting Kafka on port: " + kafkaPort);
         kafkaServer.startup();
     }
 
-    public void stop() {
+    public void stop() throws Exception {
         stop(true);
     }
 
-    public void stop(boolean cleanUp){
+    public void stop(boolean cleanUp) throws Exception {
         LOG.info("KAFKA: Stopping Kafka on port: " + kafkaPort);
         kafkaServer.shutdown();
 

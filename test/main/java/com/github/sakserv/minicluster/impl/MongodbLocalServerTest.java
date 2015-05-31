@@ -17,7 +17,9 @@ package com.github.sakserv.minicluster.impl;
 import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +43,9 @@ public class MongodbLocalServerTest {
         }
     }
 
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
     private static MongodbLocalServer mongodbLocalServer;
 
     @BeforeClass
@@ -55,10 +60,26 @@ public class MongodbLocalServerTest {
     public void testIp() {
         assertEquals(propertyParser.getProperty(ConfigVars.MONGO_IP_KEY), mongodbLocalServer.getIp());
     }
+
+    @Test
+    public void testMissingIp() {
+        exception.expect(IllegalArgumentException.class);
+        MongodbLocalServer mongodbLocalServer = new MongodbLocalServer.Builder()
+                .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.MONGO_PORT_KEY)))
+                .build();
+    }
     
     @Test
     public void testPort() {
         assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.MONGO_PORT_KEY)),
                 (int) mongodbLocalServer.getPort());
+    }
+
+    @Test
+    public void testMissingPort() {
+        exception.expect(IllegalArgumentException.class);
+        MongodbLocalServer mongodbLocalServer = new MongodbLocalServer.Builder()
+                .setIp(propertyParser.getProperty(ConfigVars.MONGO_IP_KEY))
+                .build();
     }
 }

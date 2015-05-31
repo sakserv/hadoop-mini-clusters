@@ -15,6 +15,7 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.MiniClusterWithExceptions;
 import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hive.service.server.HiveServer2;
@@ -23,7 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
-public class HiveLocalServer2 implements MiniCluster {
+public class HiveLocalServer2 implements MiniClusterWithExceptions {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(HiveLocalServer2.class);
@@ -206,7 +207,7 @@ public class HiveLocalServer2 implements MiniCluster {
     }
 
     @Override
-    public void start() {
+    public void start() throws Exception {
         hiveServer2 = new HiveServer2();
         LOG.info("HIVESERVER2: Starting HiveServer2 on port: " + hiveServer2Port);
         configure();
@@ -215,12 +216,12 @@ public class HiveLocalServer2 implements MiniCluster {
     }
 
     @Override
-    public void stop() {
+    public void stop() throws Exception {
         LOG.info("HIVESERVER2: Stopping HiveServer2 on port: " + hiveServer2Port);
         stop(true);
     }
 
-    public void stop(boolean cleanUp) {
+    public void stop(boolean cleanUp) throws Exception {
         hiveServer2.stop();
         if (cleanUp) {
             cleanUp();

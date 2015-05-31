@@ -20,6 +20,6 @@ public interface MiniClusterWithExceptions {
 
     public void stop() throws Exception;
 
-    public void configure();
+    public void configure() throws Exception;
 
 }

@@ -15,6 +15,7 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.MiniClusterWithExceptions;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
@@ -27,7 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-public class MongodbLocalServer implements MiniCluster {
+public class MongodbLocalServer implements MiniClusterWithExceptions {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(MongodbLocalServer.class);
@@ -85,32 +86,23 @@ public class MongodbLocalServer implements MiniCluster {
         
     }
     
-    public void start() {
-        try {
-            starter = MongodStarter.getDefaultInstance();
-            configure();
-            mongodExe = starter.prepare(conf);
-            mongod = mongodExe.start();
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+    public void start() throws Exception {
+        starter = MongodStarter.getDefaultInstance();
+        configure();
+        mongodExe = starter.prepare(conf);
+        mongod = mongodExe.start();
     }
     
-    public void stop() {
+    public void stop() throws Exception {
         mongod.stop();
         mongodExe.stop();
     }
 
-    public void configure() {
-        try {
-            conf = new MongodConfigBuilder()
-                    .version(Version.Main.PRODUCTION)
-                    .net(new Net(ip, port, false))
-                    .build();
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-        
+    public void configure() throws Exception {
+        conf = new MongodConfigBuilder()
+                .version(Version.Main.PRODUCTION)
+                .net(new Net(ip, port, false))
+                .build();
     }
 
 }

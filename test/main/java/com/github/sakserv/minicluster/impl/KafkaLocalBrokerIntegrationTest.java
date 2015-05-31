@@ -51,7 +51,7 @@ public class KafkaLocalBrokerIntegrationTest {
     private static KafkaLocalBroker kafkaLocalBroker;
     
     @BeforeClass
-    public static void setUp() {
+    public static void setUp() throws Exception {
         zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
                 .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
                 .setTempDir(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY))
@@ -72,7 +72,7 @@ public class KafkaLocalBrokerIntegrationTest {
     }
 
     @AfterClass
-    public static void tearDown() {
+    public static void tearDown() throws Exception {
 
         kafkaLocalBroker.stop();
         zookeeperLocalCluster.stop();
