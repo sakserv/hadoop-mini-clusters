@@ -14,6 +14,7 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.MiniClusterWithExceptions;
 import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.mapreduce.v2.MiniMRYarnCluster;
@@ -22,7 +23,7 @@ import org.apache.hadoop.yarn.conf.YarnConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MRLocalCluster implements MiniCluster {
+public class MRLocalCluster implements MiniClusterWithExceptions {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(YarnLocalCluster.class);
@@ -229,36 +230,29 @@ public class MRLocalCluster implements MiniCluster {
         }
     }
 
-    public void start() {
+    public void start() throws Exception {
         LOG.info("MR: Starting MiniMRYarnCluster");
         configure();
         miniMRYarnCluster = new MiniMRYarnCluster(testName, numNodeManagers);
-        try {
-            miniMRYarnCluster.serviceInit(configuration);
-            miniMRYarnCluster.init(configuration);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+        miniMRYarnCluster.serviceInit(configuration);
+        miniMRYarnCluster.init(configuration);
         miniMRYarnCluster.start();
-        
     }
 
     public void cleanUp() {
         FileUtils.deleteFolder("target/" + testName);
     }
 
-    public void stop(boolean cleanUp) {
-        try {
-            LOG.info("MR: Stopping MiniMRYarnCluster");
-            miniMRYarnCluster.stop();
-        } catch (Exception e) {
-            LOG.info("MR: Failed to stop the MiniMRYarnCluster: ", e);
-        }
+    public void stop(boolean cleanUp) throws Exception {
+
+        LOG.info("MR: Stopping MiniMRYarnCluster");
+        miniMRYarnCluster.stop();
+
         if(cleanUp) {
             cleanUp();
         }
 
     }
     
-    public void stop() {stop(true);}
+    public void stop() throws Exception {stop(true);}
 }

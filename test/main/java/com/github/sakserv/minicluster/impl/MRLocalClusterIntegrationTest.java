@@ -93,7 +93,7 @@ public class MRLocalClusterIntegrationTest {
 
     @AfterClass
     public static void tearDown() throws Exception {
-        mrLocalCluster.stop(false);
+        mrLocalCluster.stop();
         dfsCluster.stop();
     }
 
