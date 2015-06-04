@@ -98,7 +98,7 @@ public class MRLocalClusterIntegrationTest {
     }
 
     @Test
-    public void testYarnLocalCluster() throws Exception {
+    public void testMRLocalCluster() throws Exception {
 
         String inputFileContents = resourceFileToString(testFile);
         writeFileToHdfs(testDataHdfsInputDir + "/" + testFile, inputFileContents);
