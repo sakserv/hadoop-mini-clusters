@@ -148,6 +148,7 @@ Examples:
             .setZookeeperPort(12345)
             .setEnableDebug(true)
             .setNumWorkers(1)
+            .setStormConfig(new Config())
             .build();
         stormLocalCluster.start();
 ```
