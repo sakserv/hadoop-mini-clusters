@@ -35,6 +35,6 @@ public class FileUtils {
 
     @Override
     public String toString() {
-        return this.toString();
+        return "FileUtils";
     }
 }
