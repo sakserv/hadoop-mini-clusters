@@ -19,10 +19,11 @@ import backtype.storm.LocalCluster;
 import backtype.storm.generated.KillOptions;
 import backtype.storm.generated.StormTopology;
 import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.MiniClusterWithExceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class StormLocalCluster implements MiniCluster {
+public class StormLocalCluster implements MiniClusterWithExceptions {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(StormLocalCluster.class);
@@ -31,7 +32,7 @@ public class StormLocalCluster implements MiniCluster {
     private Long zookeeperPort;
     private Boolean enableDebug;
     private Integer numWorkers;
-    private Config conf = new Config();
+    private Config stormConf;
     private LocalCluster localCluster;
     
     private StormLocalCluster(Builder builder) {
@@ -39,6 +40,7 @@ public class StormLocalCluster implements MiniCluster {
         this.zookeeperPort = builder.zookeeperPort;
         this.enableDebug = builder.enableDebug;
         this.numWorkers = builder.numWorkers;
+        this.stormConf = builder.stormConf;
     }
     
     public String getZookeeperHost() {
@@ -55,13 +57,14 @@ public class StormLocalCluster implements MiniCluster {
     
     public Integer getNumWorkers() { return numWorkers;  }
     
-    public Config getConf() { return conf; }
+    public Config getStormConf() { return stormConf; }
     
     public static class Builder {
         private String zookeeperHost;
         private Long zookeeperPort;
         private Boolean enableDebug;
         private Integer numWorkers;
+        private Config stormConf;
         
         public Builder setZookeeperHost(String zookeeperHost) {
             this.zookeeperHost = zookeeperHost;
@@ -80,6 +83,11 @@ public class StormLocalCluster implements MiniCluster {
         
         public Builder setNumWorkers(Integer numWorkers) {
             this.numWorkers = numWorkers;
+            return this;
+        }
+
+        public Builder setStormConfig(Config stormConf) {
+            this.stormConf = stormConf;
             return this;
         }
         
@@ -105,12 +113,16 @@ public class StormLocalCluster implements MiniCluster {
             if (stormLocalCluster.getNumWorkers() == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: Num Workers");
             }
+
+            if (stormLocalCluster.getStormConf() == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Storm Config");
+            }
         }
     }
 
     public void configure() {
-        conf.setDebug(enableDebug);
-        conf.setNumWorkers(numWorkers);
+        stormConf.setDebug(enableDebug);
+        stormConf.setNumWorkers(numWorkers);
     }
 
     public void start() {
@@ -125,13 +137,6 @@ public class StormLocalCluster implements MiniCluster {
 
     public void stop(String topologyName) {
         localCluster.killTopology(topologyName);
-        stop();
-    }
-    
-    public void stop(String topologyName, int waitSecs) {
-        KillOptions killOptions = new KillOptions();
-        killOptions.set_wait_secs(waitSecs);
-        localCluster.killTopologyWithOpts(topologyName, killOptions);
         stop();
     }
 

@@ -14,6 +14,7 @@
 
 package com.github.sakserv.minicluster.impl;
 
+import backtype.storm.Config;
 import backtype.storm.topology.TopologyBuilder;
 import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
@@ -60,6 +61,7 @@ public class StormLocalClusterIntegrationTest {
                 .setZookeeperPort(Long.parseLong(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
                 .setEnableDebug(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.STORM_ENABLE_DEBUG_KEY)))
                 .setNumWorkers(Integer.parseInt(propertyParser.getProperty(ConfigVars.STORM_NUM_WORKERS_KEY)))
+                .setStormConfig(new Config())
                 .build();
         stormLocalCluster.start();
     }
@@ -76,7 +78,7 @@ public class StormLocalClusterIntegrationTest {
         builder.setSpout("randomsentencespout", new RandomSentenceSpout(), 1);
         builder.setBolt("print", new PrinterBolt(), 1).shuffleGrouping("randomsentencespout");
         stormLocalCluster.submitTopology(propertyParser.getProperty(ConfigVars.STORM_TOPOLOGY_NAME_KEY), 
-                stormLocalCluster.getConf(), builder.createTopology());
+                stormLocalCluster.getStormConf(), builder.createTopology());
 
         try {
             Thread.sleep(5000L);

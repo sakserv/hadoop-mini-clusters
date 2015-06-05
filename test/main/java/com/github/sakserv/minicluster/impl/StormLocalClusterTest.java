@@ -14,10 +14,13 @@
 
 package com.github.sakserv.minicluster.impl;
 
+import backtype.storm.Config;
 import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +44,10 @@ public class StormLocalClusterTest {
             LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
         }
     }
-    
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
     private static StormLocalCluster stormLocalCluster;
 
     @BeforeClass
@@ -51,6 +57,7 @@ public class StormLocalClusterTest {
                 .setZookeeperPort(Long.parseLong(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
                 .setEnableDebug(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.STORM_ENABLE_DEBUG_KEY)))
                 .setNumWorkers(Integer.parseInt(propertyParser.getProperty(ConfigVars.STORM_NUM_WORKERS_KEY)))
+                .setStormConfig(new Config())
                 .build();
     }
 
@@ -61,9 +68,31 @@ public class StormLocalClusterTest {
     }
 
     @Test
+    public void testMissingZookeeperHost() {
+        exception.expect(IllegalArgumentException.class);
+        stormLocalCluster = new StormLocalCluster.Builder()
+                .setZookeeperPort(Long.parseLong(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
+                .setEnableDebug(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.STORM_ENABLE_DEBUG_KEY)))
+                .setNumWorkers(Integer.parseInt(propertyParser.getProperty(ConfigVars.STORM_NUM_WORKERS_KEY)))
+                .setStormConfig(new Config())
+                .build();
+    }
+
+    @Test
     public void testZookeeperPort() {
         assertEquals(Long.parseLong(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)),
                 (long) stormLocalCluster.getZookeeperPort());
+    }
+
+    @Test
+    public void testMissingZookeeperPort() {
+        exception.expect(IllegalArgumentException.class);
+        stormLocalCluster = new StormLocalCluster.Builder()
+                .setZookeeperHost(propertyParser.getProperty(ConfigVars.ZOOKEEPER_HOST_KEY))
+                .setEnableDebug(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.STORM_ENABLE_DEBUG_KEY)))
+                .setNumWorkers(Integer.parseInt(propertyParser.getProperty(ConfigVars.STORM_NUM_WORKERS_KEY)))
+                .setStormConfig(new Config())
+                .build();
     }
 
     @Test
@@ -73,15 +102,48 @@ public class StormLocalClusterTest {
     }
 
     @Test
+    public void testMissingEnableDebug() {
+        exception.expect(IllegalArgumentException.class);
+        stormLocalCluster = new StormLocalCluster.Builder()
+                .setZookeeperHost(propertyParser.getProperty(ConfigVars.ZOOKEEPER_HOST_KEY))
+                .setZookeeperPort(Long.parseLong(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
+                .setNumWorkers(Integer.parseInt(propertyParser.getProperty(ConfigVars.STORM_NUM_WORKERS_KEY)))
+                .setStormConfig(new Config())
+                .build();
+    }
+
+    @Test
     public void testNumWorkers() {
         assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.STORM_NUM_WORKERS_KEY)),
                 (int) stormLocalCluster.getNumWorkers());
     }
+
+    @Test
+    public void testMissingNumWorkers() {
+        exception.expect(IllegalArgumentException.class);
+        stormLocalCluster = new StormLocalCluster.Builder()
+                .setZookeeperHost(propertyParser.getProperty(ConfigVars.ZOOKEEPER_HOST_KEY))
+                .setZookeeperPort(Long.parseLong(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
+                .setEnableDebug(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.STORM_ENABLE_DEBUG_KEY)))
+                .setStormConfig(new Config())
+                .build();
+    }
     
     @Test
-    public void testStormConfig() {
-        assertTrue(stormLocalCluster.getConf() instanceof backtype.storm.Config);
+    public void testStormConf() {
+        assertTrue(stormLocalCluster.getStormConf() instanceof backtype.storm.Config);
         
+    }
+
+    @Test
+    public void testMissingStormConf() {
+        exception.expect(IllegalArgumentException.class);
+        stormLocalCluster = new StormLocalCluster.Builder()
+                .setZookeeperHost(propertyParser.getProperty(ConfigVars.ZOOKEEPER_HOST_KEY))
+                .setZookeeperPort(Long.parseLong(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
+                .setEnableDebug(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.STORM_ENABLE_DEBUG_KEY)))
+                .setNumWorkers(Integer.parseInt(propertyParser.getProperty(ConfigVars.STORM_NUM_WORKERS_KEY)))
+                .build();
     }
 
 }
