@@ -48,7 +48,7 @@ public class StormLocalClusterIntegrationTest {
     private static StormLocalCluster stormLocalCluster;
 
     @BeforeClass
-    public static void setUp() {
+    public static void setUp() throws Exception {
         zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
                 .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
                 .setTempDir(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY))
@@ -67,7 +67,7 @@ public class StormLocalClusterIntegrationTest {
     }
 
     @AfterClass
-    public static void tearDown() {
+    public static void tearDown() throws Exception {
         stormLocalCluster.stop(propertyParser.getProperty(ConfigVars.STORM_TOPOLOGY_NAME_KEY));
         zookeeperLocalCluster.stop();
     }

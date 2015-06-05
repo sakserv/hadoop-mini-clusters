@@ -51,7 +51,7 @@ public class YarnLocalClusterInJvmContainerExecutorTest {
     private static YarnLocalCluster yarnLocalCluster;
 
     @BeforeClass
-    public static void setUp() throws IOException {
+    public static void setUp() throws Exception {
         yarnLocalCluster = new YarnLocalCluster.Builder()
                 .setNumNodeManagers(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_NODE_MANAGERS_KEY)))
                 .setNumLocalDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOCAL_DIRS_KEY)))
@@ -64,7 +64,7 @@ public class YarnLocalClusterInJvmContainerExecutorTest {
                         ConfigVars.YARN_RESOURCE_MANAGER_RESOURCE_TRACKER_ADDRESS_KEY))
                 .setResourceManagerWebappAddress(propertyParser.getProperty(
                         ConfigVars.YARN_RESOURCE_MANAGER_WEBAPP_ADDRESS_KEY))
-                .setUseInJvmContainerExecutor(false)
+                .setUseInJvmContainerExecutor(true)
                 .setConfig(new Configuration())
                 .build();
 
@@ -72,14 +72,14 @@ public class YarnLocalClusterInJvmContainerExecutorTest {
     }
 
     @AfterClass
-    public static void tearDown() {
+    public static void tearDown() throws Exception {
         // We want the cluster to be able to shut down
         System.setSecurityManager(new InJvmContainerExecutor.SystemExitAllowSecurityManager());
         yarnLocalCluster.stop();
     }
 
     @Test
-    public void testYarnLocalCluster() {
+    public void testYarnLocalClusterWithInJvmContainerExecutor() {
         
         String[] args = new String[7];
         args[0] = "whoami";

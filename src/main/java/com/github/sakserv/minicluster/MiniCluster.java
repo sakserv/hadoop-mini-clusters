@@ -16,10 +16,14 @@ package com.github.sakserv.minicluster;
 
 public interface MiniCluster {
 
-    public void start();
+    public void start() throws Exception;
 
-    public void stop();
+    public void stop() throws Exception;
 
-    public void configure();
+    public void stop(boolean cleanUp) throws Exception;
+
+    public void configure() throws Exception;
+
+    public void cleanUp() throws Exception;
 
 }

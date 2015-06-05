@@ -16,14 +16,12 @@ package com.github.sakserv.minicluster.impl;
 
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
-import backtype.storm.generated.KillOptions;
 import backtype.storm.generated.StormTopology;
 import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.MiniClusterWithExceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class StormLocalCluster implements MiniClusterWithExceptions {
+public class StormLocalCluster implements MiniCluster {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(StormLocalCluster.class);
@@ -120,28 +118,44 @@ public class StormLocalCluster implements MiniClusterWithExceptions {
         }
     }
 
-    public void configure() {
-        stormConf.setDebug(enableDebug);
-        stormConf.setNumWorkers(numWorkers);
-    }
-
-    public void start() {
-        LOG.info("STORM: Instantiating LocalCluster");
+    @Override
+    public void start() throws Exception {
+        LOG.info("STORM: Starting StormLocalCluster");
         configure();
         localCluster = new LocalCluster(zookeeperHost, zookeeperPort);
     }
 
-    public void stop() {
-        localCluster.shutdown();
+    @Override
+    public void stop() throws Exception {
+        stop(true);
     }
 
-    public void stop(String topologyName) {
-        localCluster.killTopology(topologyName);
-        stop();
+    @Override
+    public void stop(boolean cleanUp) throws Exception {
+        LOG.info("STORM: Stopping StormLocalCluster");
+        localCluster.shutdown();
+        if(cleanUp) {
+            cleanUp();
+        }
+    }
+
+    @Override
+    public void configure() throws Exception {
+        stormConf.setDebug(enableDebug);
+        stormConf.setNumWorkers(numWorkers);
+    }
+
+    @Override
+    public void cleanUp() throws Exception {
     }
 
     public void submitTopology(String topologyName, Config conf, StormTopology topology) {
         localCluster.submitTopology(topologyName, conf, topology);
+    }
+
+    public void stop(String topologyName) throws Exception {
+        localCluster.killTopology(topologyName);
+        stop();
     }
 
 }

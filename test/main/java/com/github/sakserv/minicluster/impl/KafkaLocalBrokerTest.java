@@ -16,7 +16,6 @@ package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
-import com.github.sakserv.minicluster.util.LocalSystemTime;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;

@@ -51,7 +51,7 @@ public class ActivemqLocalBrokerTest {
     }
 
     @AfterClass
-    public static void tearDown() {
+    public static void tearDown() throws Exception {
         amq.cleanUp();
     }
     

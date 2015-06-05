@@ -21,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * In memory ZK cluster using Curator
@@ -95,41 +94,33 @@ public class ZookeeperLocalCluster implements MiniCluster {
 
     }
 
-    // Curator does not leverage a configuration object
     @Override
-    public void configure() {}
-
-    @Override
-    public void start() {
+    public void start() throws Exception {
         LOG.info("ZOOKEEPER: Starting Zookeeper on port: " + port);
-        try {
-            testingServer = new TestingServer(port, new File(tempDir));
-        } catch(Exception e) {
-            LOG.info("ERROR: Failed to start Zookeeper");
-            e.getStackTrace();
-        }
+        testingServer = new TestingServer(port, new File(tempDir));
     }
 
     @Override
-    public void stop()  {
+    public void stop() throws Exception {
         stop(true);
     }
 
-    public void stop(boolean cleanUp) {
+    @Override
+    public void stop(boolean cleanUp) throws Exception {
         LOG.info("ZOOKEEPER: Stopping Zookeeper on port: " + port);
-        try {
-            testingServer.stop();
-        } catch(IOException e) {
-            LOG.info("ERROR: Failed to stop Zookeeper");
-            e.printStackTrace();
-        }
+        testingServer.stop();
         if (cleanUp) {
             cleanUp();
         }
 
     }
 
-    private void cleanUp() {
+    // Curator does not leverage a configuration object
+    @Override
+    public void configure() throws Exception {}
+
+    @Override
+    public void cleanUp() throws Exception {
         FileUtils.deleteFolder(tempDir);
     }
 

@@ -15,7 +15,6 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.MiniClusterWithExceptions;
 import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.metastore.HiveMetaStore;
@@ -26,7 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
-public class HiveLocalMetaStore implements MiniClusterWithExceptions {
+public class HiveLocalMetaStore implements MiniCluster {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(HiveLocalMetaStore.class);
@@ -172,17 +171,6 @@ public class HiveLocalMetaStore implements MiniClusterWithExceptions {
         }
     }
     
-    
-    @Override
-    public void configure() {
-        hiveConf.setVar(HiveConf.ConfVars.METASTOREURIS, 
-                "thrift://" + hiveMetastoreHostname + ":" + hiveMetastorePort);
-        hiveConf.set(HiveConf.ConfVars.SCRATCHDIR.varname, hiveScratchDir);
-        hiveConf.set(HiveConf.ConfVars.METASTORECONNECTURLKEY.varname, 
-                "jdbc:derby:;databaseName=" + hiveMetastoreDerbyDbDir + ";create=true");
-        hiveConf.set(HiveConf.ConfVars.METASTOREWAREHOUSE.varname, new File(hiveWarehouseDir).getAbsolutePath());
-        hiveConf.setBoolVar(HiveConf.ConfVars.HIVE_IN_TEST, true);
-    }
 
     @Override
     public void start() throws Exception {
@@ -199,11 +187,12 @@ public class HiveLocalMetaStore implements MiniClusterWithExceptions {
 
     @Override
     public void stop() throws Exception {
-        LOG.info("HIVEMETASTORE: Stopping Hive Metastore on port: " + hiveMetastorePort);
         stop(true);
     }
 
+    @Override
     public void stop(boolean cleanUp) throws Exception {
+        LOG.info("HIVEMETASTORE: Stopping Hive Metastore on port: " + hiveMetastorePort);
         t.interrupt();
         if (cleanUp) {
             cleanUp();
@@ -211,7 +200,19 @@ public class HiveLocalMetaStore implements MiniClusterWithExceptions {
 
     }
 
-    public void cleanUp() {
+    @Override
+    public void configure() throws Exception {
+        hiveConf.setVar(HiveConf.ConfVars.METASTOREURIS,
+                "thrift://" + hiveMetastoreHostname + ":" + hiveMetastorePort);
+        hiveConf.set(HiveConf.ConfVars.SCRATCHDIR.varname, hiveScratchDir);
+        hiveConf.set(HiveConf.ConfVars.METASTORECONNECTURLKEY.varname,
+                "jdbc:derby:;databaseName=" + hiveMetastoreDerbyDbDir + ";create=true");
+        hiveConf.set(HiveConf.ConfVars.METASTOREWAREHOUSE.varname, new File(hiveWarehouseDir).getAbsolutePath());
+        hiveConf.setBoolVar(HiveConf.ConfVars.HIVE_IN_TEST, true);
+    }
+
+    @Override
+    public void cleanUp() throws Exception {
         FileUtils.deleteFolder(hiveMetastoreDerbyDbDir);
         FileUtils.deleteFolder(hiveWarehouseDir);
         FileUtils.deleteFolder(new File("derby.log").getAbsolutePath());

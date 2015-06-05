@@ -14,19 +14,14 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.MiniClusterWithExceptions;
 import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HConstants;
 import org.apache.hadoop.hbase.MiniHBaseCluster;
-import org.apache.hadoop.hbase.util.JVMClusterUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.List;
-
-public class HbaseLocalCluster implements MiniClusterWithExceptions {
+public class HbaseLocalCluster implements MiniCluster {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(HbaseLocalCluster.class);
@@ -187,24 +182,11 @@ public class HbaseLocalCluster implements MiniClusterWithExceptions {
 
     @Override
     public void start() throws Exception {
-        configure();
         LOG.info("HBASE: Starting MiniHBaseCluster");
+        configure();
         miniHBaseCluster = new MiniHBaseCluster(hbaseConfiguration, numRegionServers);
         miniHBaseCluster.startMaster();
         miniHBaseCluster.startRegionServer();
-    }
-
-    @Override
-    public void configure() {
-        hbaseConfiguration.set(HConstants.MASTER_PORT, hbaseMasterPort.toString());
-        hbaseConfiguration.set(HConstants.MASTER_INFO_PORT, hbaseMasterInfoPort.toString());
-        hbaseConfiguration.set(HConstants.HBASE_DIR, hbaseRootDir);
-        hbaseConfiguration.set(HConstants.ZOOKEEPER_CLIENT_PORT, zookeeperPort.toString());
-        hbaseConfiguration.set(HConstants.ZOOKEEPER_QUORUM, zookeeperConnectionString);
-        hbaseConfiguration.set(HConstants.ZOOKEEPER_ZNODE_PARENT, zookeeperZnodeParent);
-        hbaseConfiguration.set(HConstants.REPLICATION_ENABLE_KEY, hbaseWalReplicationEnabled.toString());
-        hbaseConfiguration.set("hbase.splitlog.manager.unassigned.timeout", "999999999");
-        hbaseConfiguration.set("hbase.splitlog.manager.timeoutmonitor.period", "999999999");
     }
 
     @Override
@@ -212,6 +194,7 @@ public class HbaseLocalCluster implements MiniClusterWithExceptions {
         stop(true);
     }
 
+    @Override
     public void stop(boolean cleanUp) throws Exception {
         LOG.info("HBASE: Stopping MiniHBaseCluster");
 
@@ -224,7 +207,21 @@ public class HbaseLocalCluster implements MiniClusterWithExceptions {
         }
     }
 
-    public void cleanUp() {
+    @Override
+    public void configure() throws Exception {
+        hbaseConfiguration.set(HConstants.MASTER_PORT, hbaseMasterPort.toString());
+        hbaseConfiguration.set(HConstants.MASTER_INFO_PORT, hbaseMasterInfoPort.toString());
+        hbaseConfiguration.set(HConstants.HBASE_DIR, hbaseRootDir);
+        hbaseConfiguration.set(HConstants.ZOOKEEPER_CLIENT_PORT, zookeeperPort.toString());
+        hbaseConfiguration.set(HConstants.ZOOKEEPER_QUORUM, zookeeperConnectionString);
+        hbaseConfiguration.set(HConstants.ZOOKEEPER_ZNODE_PARENT, zookeeperZnodeParent);
+        hbaseConfiguration.set(HConstants.REPLICATION_ENABLE_KEY, hbaseWalReplicationEnabled.toString());
+        hbaseConfiguration.set("hbase.splitlog.manager.unassigned.timeout", "999999999");
+        hbaseConfiguration.set("hbase.splitlog.manager.timeoutmonitor.period", "999999999");
+    }
+
+    @Override
+    public void cleanUp() throws Exception {
         FileUtils.deleteFolder(hbaseRootDir);
     }
 

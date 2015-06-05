@@ -15,7 +15,6 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.MiniClusterWithExceptions;
 import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -26,7 +25,7 @@ import org.slf4j.LoggerFactory;
 import javax.jms.*;
 import java.util.Properties;
 
-public class ActivemqLocalBroker implements MiniClusterWithExceptions {
+public class ActivemqLocalBroker implements MiniCluster {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(ActivemqLocalBroker.class);
@@ -154,6 +153,7 @@ public class ActivemqLocalBroker implements MiniClusterWithExceptions {
     @Override
     public void start() throws Exception {
         String uri = uriPrefix + hostName + ":" + port;
+        LOG.info("ACTIVEMQ: Starting ActiveMQ on " + uri);
         configure();
 
         broker = new BrokerService();
@@ -176,7 +176,9 @@ public class ActivemqLocalBroker implements MiniClusterWithExceptions {
         stop(true);
     }
 
+    @Override
     public void stop(boolean cleanUp) throws Exception {
+        LOG.info("ACTIVEMQ: Stopping ActiveMQ");
         consumer.close();
         session.close();
         broker.stop();
@@ -185,14 +187,16 @@ public class ActivemqLocalBroker implements MiniClusterWithExceptions {
             cleanUp();
         }
     }
-    public void cleanUp() {
-        FileUtils.deleteFolder(storeDir);
-    }
-    
+
     @Override
-    public void configure() {
+    public void configure() throws Exception {
         Properties props = System.getProperties();
         props.setProperty(ConfigVars.ACTIVEMQ_STORE_DIR_KEY, storeDir);
+    }
+
+    @Override
+    public void cleanUp() throws Exception {
+        FileUtils.deleteFolder(storeDir);
     }
 
     public void sendTextMessage(String text) throws JMSException {

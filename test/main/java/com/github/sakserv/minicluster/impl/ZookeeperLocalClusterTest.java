@@ -17,7 +17,9 @@ package com.github.sakserv.minicluster.impl;
 import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +43,11 @@ public class ZookeeperLocalClusterTest {
         }
     }
 
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
     private static ZookeeperLocalCluster zookeeperLocalCluster;
+
     @BeforeClass
     public static void setUp() throws IOException {
         zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
@@ -58,14 +64,51 @@ public class ZookeeperLocalClusterTest {
     }
 
     @Test
+    public void testMissingPort() {
+        exception.expect(IllegalArgumentException.class);
+        ZookeeperLocalCluster zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
+                .setTempDir(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY))
+                .setZookeeperConnectionString(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY))
+                .build();
+    }
+
+    @Test
     public void testTempDir() {
         assertEquals(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY), zookeeperLocalCluster.getTempDir());
+    }
+
+    @Test
+    public void testMissingTempDir() {
+        exception.expect(IllegalArgumentException.class);
+        ZookeeperLocalCluster zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
+                .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
+                .setZookeeperConnectionString(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY))
+                .build();
     }
 
     @Test
     public void testZookeeperConnectionString() {
         assertEquals(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY), 
                 zookeeperLocalCluster.getZookeeperConnectionString());
+    }
+
+    @Test
+    public void testMissingZookeeperConnectionString() {
+        exception.expect(IllegalArgumentException.class);
+        ZookeeperLocalCluster zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
+                .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
+                .setTempDir(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY))
+                .build();
+    }
+
+    @Test
+    public void testEmptyConfigure() throws Exception {
+        ZookeeperLocalCluster zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
+                .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
+                .setTempDir(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY))
+                .setZookeeperConnectionString(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY))
+                .build();
+        zookeeperLocalCluster.configure();
     }
 
 }

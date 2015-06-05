@@ -313,7 +313,7 @@ public class MRLocalClusterTest {
     }
 
     @Test
-    public void testWithInJvmContainerExecutor() {
+    public void testWithInJvmContainerExecutor() throws Exception {
         MRLocalCluster mrLocalCluster = new MRLocalCluster.Builder()
                 .setNumNodeManagers(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_NODE_MANAGERS_KEY)))
                 .setJobHistoryAddress(propertyParser.getProperty(ConfigVars.MR_JOB_HISTORY_ADDRESS_KEY))

@@ -15,7 +15,6 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.MiniClusterWithExceptions;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
@@ -26,9 +25,7 @@ import de.flapdoodle.embed.mongo.distribution.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-
-public class MongodbLocalServer implements MiniClusterWithExceptions {
+public class MongodbLocalServer implements MiniCluster {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(MongodbLocalServer.class);
@@ -85,24 +82,42 @@ public class MongodbLocalServer implements MiniClusterWithExceptions {
         }
         
     }
-    
+
+    @Override
     public void start() throws Exception {
+        LOG.info("MONGODB: Starting MongoDB on " + ip + ":" + port);
         starter = MongodStarter.getDefaultInstance();
         configure();
         mongodExe = starter.prepare(conf);
         mongod = mongodExe.start();
     }
-    
+
+    @Override
     public void stop() throws Exception {
-        mongod.stop();
-        mongodExe.stop();
+        stop(true);
     }
 
+    @Override
+    public void stop(boolean cleanUp) throws Exception {
+        LOG.info("MONGODB: Stopping MongoDB on " + ip + ":" + port);
+        mongod.stop();
+        mongodExe.stop();
+        if(cleanUp) {
+            cleanUp();
+        }
+    }
+
+    @Override
     public void configure() throws Exception {
         conf = new MongodConfigBuilder()
                 .version(Version.Main.PRODUCTION)
                 .net(new Net(ip, port, false))
                 .build();
+    }
+
+    @Override
+    public void cleanUp() throws Exception {
+
     }
 
 }

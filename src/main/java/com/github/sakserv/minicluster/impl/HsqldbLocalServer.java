@@ -14,18 +14,15 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.MiniClusterWithExceptions;
 import com.github.sakserv.minicluster.util.FileUtils;
 import org.hsqldb.persist.HsqlProperties;
 import org.hsqldb.server.Server;
-import org.hsqldb.server.ServerAcl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.IOException;
 
-public class HsqldbLocalServer implements MiniClusterWithExceptions {
+public class HsqldbLocalServer implements MiniCluster {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(HsqldbLocalServer.class);
@@ -158,6 +155,7 @@ public class HsqldbLocalServer implements MiniClusterWithExceptions {
 
     @Override
     public void start() throws Exception {
+        LOG.info("HSQLDB: Starting HSQLDB");
         configure();
         server = new Server();
         server.setProperties(hsqlProperties);
@@ -166,12 +164,20 @@ public class HsqldbLocalServer implements MiniClusterWithExceptions {
 
     @Override
     public void stop() throws Exception {
-        server.stop();
-        cleanUp();
+        stop(true);
     }
 
     @Override
-    public void configure() {
+    public void stop(boolean cleanUp) throws Exception {
+        LOG.info("HSQLDB: Stopping HSQLDB");
+        server.stop();
+        if (cleanUp) {
+            cleanUp();
+        }
+    }
+
+    @Override
+    public void configure() throws Exception {
         hsqlProperties.setProperty("server.address", getHsqldbHostName());
         hsqlProperties.setProperty("server.port", getHsqldbPort());
         hsqlProperties.setProperty("server.database.0", "file:" + new File(getHsqldbTempDir()).getAbsolutePath());
@@ -179,10 +185,20 @@ public class HsqldbLocalServer implements MiniClusterWithExceptions {
         hsqlProperties.setProperty("server.remote_open", "true");
         hsqlProperties.setProperty("server.max_allowed_packet", "32M");
     }
-    
+
+    @Override
+    public void cleanUp() throws Exception {
+        
+        FileUtils.deleteFolder(getHsqldbTempDir() + ".tmp");
+        FileUtils.deleteFolder(getHsqldbTempDir() + ".log");
+        FileUtils.deleteFolder(getHsqldbTempDir() + ".properties");
+        FileUtils.deleteFolder(getHsqldbTempDir() + ".script");
+        FileUtils.deleteFolder(getHsqldbTempDir() + ".lck");
+    }
+
     public String getHsqldbCompatibilityModeStatement() {
         String dbTypeString = "MYS"; // default to mysql if called
-        
+
         if(getHsqldbCompatibilityMode().equals("postresql")) {
             dbTypeString = "PGS";
         } else if(getHsqldbCompatibilityMode().equals("mysql")) {
@@ -194,18 +210,9 @@ public class HsqldbLocalServer implements MiniClusterWithExceptions {
         } else if(getHsqldbCompatibilityMode().equals("mssql")) {
             dbTypeString = "MSS";
         }
-        
-        return "SET DATABASE SQL SYNTAX " + dbTypeString + " TRUE";
-        
-    }
 
-    private void cleanUp() {
-        
-        FileUtils.deleteFolder(getHsqldbTempDir() + ".tmp");
-        FileUtils.deleteFolder(getHsqldbTempDir() + ".log");
-        FileUtils.deleteFolder(getHsqldbTempDir() + ".properties");
-        FileUtils.deleteFolder(getHsqldbTempDir() + ".script");
-        FileUtils.deleteFolder(getHsqldbTempDir() + ".lck");
+        return "SET DATABASE SQL SYNTAX " + dbTypeString + " TRUE";
+
     }
     
 }

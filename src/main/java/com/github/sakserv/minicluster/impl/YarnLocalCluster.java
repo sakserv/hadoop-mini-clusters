@@ -217,7 +217,35 @@ public class YarnLocalCluster implements MiniCluster {
         }
     }
 
-    public void configure() {
+    @Override
+    public void start() throws Exception {
+        LOG.info("YARN: Starting MiniYarnCluster");
+        configure();
+        miniYARNCluster = new MiniYARNCluster(testName, numResourceManagers, numNodeManagers,
+                numLocalDirs, numLogDirs, enableHa);
+
+        miniYARNCluster.serviceInit(configuration);
+        miniYARNCluster.init(configuration);
+        miniYARNCluster.start();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        stop(true);
+    }
+
+    @Override
+    public void stop(boolean cleanUp) throws Exception {
+        LOG.info("YARN: Stopping MiniYarnCluster");
+        miniYARNCluster.stop();
+        if(cleanUp) {
+            cleanUp();
+        }
+
+    }
+
+    @Override
+    public void configure() throws Exception {
         configuration.set(YarnConfiguration.RM_ADDRESS, resourceManagerAddress);
         configuration.set(YarnConfiguration.RM_HOSTNAME, resourceManagerHostname);
         configuration.set(YarnConfiguration.RM_SCHEDULER_ADDRESS, resourceManagerSchedulerAddress);
@@ -230,35 +258,9 @@ public class YarnLocalCluster implements MiniCluster {
             configuration.set("fs.file.impl", org.apache.hadoop.fs.LocalFileSystem.class.getName());
         }
     }
-    
-    public void stop() {
-        stop(true);
-    }
 
-    public void stop(boolean cleanUp) {
-        LOG.info("YARN: Stopping MiniYarnCluster");
-        miniYARNCluster.stop();
-        if(cleanUp) {
-            cleanUp();
-        }
-
-    }
-    
-    public void start() {
-        LOG.info("YARN: Starting MiniYarnCluster");
-        configure();
-        miniYARNCluster = new MiniYARNCluster(testName, numResourceManagers, numNodeManagers,
-                numLocalDirs, numLogDirs, enableHa);
-        try {
-            miniYARNCluster.serviceInit(configuration);
-            miniYARNCluster.init(configuration);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-        miniYARNCluster.start();
-    }
-
-    public void cleanUp() {
+    @Override
+    public void cleanUp() throws Exception {
         FileUtils.deleteFolder("target/" + testName);
     }
 }

@@ -24,12 +24,11 @@ import org.apache.hadoop.hive.metastore.api.*;
 import org.apache.hadoop.hive.ql.io.orc.OrcSerde;
 import org.apache.hadoop.hive.serde.Constants;
 import org.apache.thrift.TException;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.junit.BeforeClass;
-import org.junit.AfterClass;
-import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;

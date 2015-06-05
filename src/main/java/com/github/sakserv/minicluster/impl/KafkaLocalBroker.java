@@ -15,7 +15,6 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.MiniClusterWithExceptions;
 import com.github.sakserv.minicluster.util.FileUtils;
 import com.github.sakserv.minicluster.util.LocalSystemTime;
 import kafka.server.KafkaConfig;
@@ -29,7 +28,7 @@ import java.util.Properties;
  * In memory Kafka Broker for testing
  */
 
-public class KafkaLocalBroker implements MiniClusterWithExceptions {
+public class KafkaLocalBroker implements MiniCluster {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(KafkaLocalBroker.class);
@@ -149,31 +148,21 @@ public class KafkaLocalBroker implements MiniClusterWithExceptions {
             }
         }
     }
-    /**
-     * default constructor
-     */
-    
-    public void configure() {
-        kafkaProperties.put("advertised.host.name", kafkaHostname);
-        kafkaProperties.put("port", kafkaPort+"");
-        kafkaProperties.put("broker.id", kafkaBrokerId+"");
-        kafkaProperties.put("log.dir", kafkaTempDir);
-        kafkaProperties.put("enable.zookeeper", "true");
-        kafkaProperties.put("zookeeper.connect", zookeeperConnectionString);
-        kafkaConfig = new KafkaConfig(kafkaProperties);
-    }
 
+    @Override
     public void start() throws Exception {
+        LOG.info("KAFKA: Starting Kafka on port: " + kafkaPort);
         configure();
         kafkaServer = new KafkaServer(kafkaConfig, new LocalSystemTime());
-        LOG.info("KAFKA: Starting Kafka on port: " + kafkaPort);
         kafkaServer.startup();
     }
 
+    @Override
     public void stop() throws Exception {
         stop(true);
     }
 
+    @Override
     public void stop(boolean cleanUp) throws Exception {
         LOG.info("KAFKA: Stopping Kafka on port: " + kafkaPort);
         kafkaServer.shutdown();
@@ -183,7 +172,19 @@ public class KafkaLocalBroker implements MiniClusterWithExceptions {
         }
     }
 
-    private void cleanUp() {
+    @Override
+    public void configure() throws Exception {
+        kafkaProperties.put("advertised.host.name", kafkaHostname);
+        kafkaProperties.put("port", kafkaPort+"");
+        kafkaProperties.put("broker.id", kafkaBrokerId+"");
+        kafkaProperties.put("log.dir", kafkaTempDir);
+        kafkaProperties.put("enable.zookeeper", "true");
+        kafkaProperties.put("zookeeper.connect", zookeeperConnectionString);
+        kafkaConfig = new KafkaConfig(kafkaProperties);
+    }
+
+    @Override
+    public void cleanUp() throws Exception {
         FileUtils.deleteFolder(kafkaTempDir);
     }
 

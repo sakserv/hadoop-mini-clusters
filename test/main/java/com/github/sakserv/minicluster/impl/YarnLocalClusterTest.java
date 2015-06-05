@@ -17,7 +17,9 @@ import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.config.PropertyParser;
 import org.apache.hadoop.conf.Configuration;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +43,9 @@ public class YarnLocalClusterTest {
             LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
         }
     }
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     private static YarnLocalCluster yarnLocalCluster;
 
@@ -71,15 +76,75 @@ public class YarnLocalClusterTest {
     }
 
     @Test
+    public void testMissingNumNodeManagers() {
+        exception.expect(IllegalArgumentException.class);
+        YarnLocalCluster yarnLocalCluster = new YarnLocalCluster.Builder()
+                .setNumLocalDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOCAL_DIRS_KEY)))
+                .setNumLogDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOG_DIRS_KEY)))
+                .setResourceManagerAddress(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
+                .setResourceManagerHostname(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_HOSTNAME_KEY))
+                .setResourceManagerSchedulerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_SCHEDULER_ADDRESS_KEY))
+                .setResourceManagerResourceTrackerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_RESOURCE_TRACKER_ADDRESS_KEY))
+                .setResourceManagerWebappAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_WEBAPP_ADDRESS_KEY))
+                .setUseInJvmContainerExecutor(Boolean.parseBoolean(propertyParser.getProperty(
+                        ConfigVars.YARN_USE_IN_JVM_CONTAINER_EXECUTOR_KEY)))
+                .setConfig(new Configuration())
+                .build();
+    }
+
+    @Test
     public void testNumLocalDirs() {
         assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOCAL_DIRS_KEY)),
                 (int) yarnLocalCluster.getNumLocalDirs());
     }
 
     @Test
+    public void testMissingNumLocalDirs() {
+        exception.expect(IllegalArgumentException.class);
+        YarnLocalCluster yarnLocalCluster = new YarnLocalCluster.Builder()
+                .setNumNodeManagers(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_NODE_MANAGERS_KEY)))
+                .setNumLogDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOG_DIRS_KEY)))
+                .setResourceManagerAddress(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
+                .setResourceManagerHostname(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_HOSTNAME_KEY))
+                .setResourceManagerSchedulerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_SCHEDULER_ADDRESS_KEY))
+                .setResourceManagerResourceTrackerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_RESOURCE_TRACKER_ADDRESS_KEY))
+                .setResourceManagerWebappAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_WEBAPP_ADDRESS_KEY))
+                .setUseInJvmContainerExecutor(Boolean.parseBoolean(propertyParser.getProperty(
+                        ConfigVars.YARN_USE_IN_JVM_CONTAINER_EXECUTOR_KEY)))
+                .setConfig(new Configuration())
+                .build();
+    }
+
+    @Test
     public void testNumLogDirs() {
         assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOG_DIRS_KEY)),
                 (int) yarnLocalCluster.getNumLogDirs());
+    }
+
+    @Test
+    public void testMissingNumLogDirs() {
+        exception.expect(IllegalArgumentException.class);
+        YarnLocalCluster yarnLocalCluster = new YarnLocalCluster.Builder()
+                .setNumNodeManagers(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_NODE_MANAGERS_KEY)))
+                .setNumLocalDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOCAL_DIRS_KEY)))
+                .setResourceManagerAddress(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
+                .setResourceManagerHostname(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_HOSTNAME_KEY))
+                .setResourceManagerSchedulerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_SCHEDULER_ADDRESS_KEY))
+                .setResourceManagerResourceTrackerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_RESOURCE_TRACKER_ADDRESS_KEY))
+                .setResourceManagerWebappAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_WEBAPP_ADDRESS_KEY))
+                .setUseInJvmContainerExecutor(Boolean.parseBoolean(propertyParser.getProperty(
+                        ConfigVars.YARN_USE_IN_JVM_CONTAINER_EXECUTOR_KEY)))
+                .setConfig(new Configuration())
+                .build();
     }
     
     @Test
@@ -89,9 +154,49 @@ public class YarnLocalClusterTest {
     }
 
     @Test
+    public void testMissingResourceManagerAddress() {
+        exception.expect(IllegalArgumentException.class);
+        YarnLocalCluster yarnLocalCluster = new YarnLocalCluster.Builder()
+                .setNumNodeManagers(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_NODE_MANAGERS_KEY)))
+                .setNumLocalDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOCAL_DIRS_KEY)))
+                .setNumLogDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOG_DIRS_KEY)))
+                .setResourceManagerHostname(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_HOSTNAME_KEY))
+                .setResourceManagerSchedulerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_SCHEDULER_ADDRESS_KEY))
+                .setResourceManagerResourceTrackerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_RESOURCE_TRACKER_ADDRESS_KEY))
+                .setResourceManagerWebappAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_WEBAPP_ADDRESS_KEY))
+                .setUseInJvmContainerExecutor(Boolean.parseBoolean(propertyParser.getProperty(
+                        ConfigVars.YARN_USE_IN_JVM_CONTAINER_EXECUTOR_KEY)))
+                .setConfig(new Configuration())
+                .build();
+    }
+
+    @Test
     public void testResourceManagerHostname() {
         assertEquals(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_HOSTNAME_KEY),
                 yarnLocalCluster.getResourceManagerHostname());
+    }
+
+    @Test
+    public void testMissingResourceManagerHostname() {
+        exception.expect(IllegalArgumentException.class);
+        YarnLocalCluster yarnLocalCluster = new YarnLocalCluster.Builder()
+                .setNumNodeManagers(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_NODE_MANAGERS_KEY)))
+                .setNumLocalDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOCAL_DIRS_KEY)))
+                .setNumLogDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOG_DIRS_KEY)))
+                .setResourceManagerAddress(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
+                .setResourceManagerSchedulerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_SCHEDULER_ADDRESS_KEY))
+                .setResourceManagerResourceTrackerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_RESOURCE_TRACKER_ADDRESS_KEY))
+                .setResourceManagerWebappAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_WEBAPP_ADDRESS_KEY))
+                .setUseInJvmContainerExecutor(Boolean.parseBoolean(propertyParser.getProperty(
+                        ConfigVars.YARN_USE_IN_JVM_CONTAINER_EXECUTOR_KEY)))
+                .setConfig(new Configuration())
+                .build();
     }
 
     @Test
@@ -101,15 +206,72 @@ public class YarnLocalClusterTest {
     }
 
     @Test
+    public void testMissingResourceManagerSchedulerAddress() {
+        exception.expect(IllegalArgumentException.class);
+        YarnLocalCluster yarnLocalCluster = new YarnLocalCluster.Builder()
+                .setNumNodeManagers(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_NODE_MANAGERS_KEY)))
+                .setNumLocalDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOCAL_DIRS_KEY)))
+                .setNumLogDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOG_DIRS_KEY)))
+                .setResourceManagerAddress(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
+                .setResourceManagerHostname(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_HOSTNAME_KEY))
+                .setResourceManagerResourceTrackerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_RESOURCE_TRACKER_ADDRESS_KEY))
+                .setResourceManagerWebappAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_WEBAPP_ADDRESS_KEY))
+                .setUseInJvmContainerExecutor(Boolean.parseBoolean(propertyParser.getProperty(
+                        ConfigVars.YARN_USE_IN_JVM_CONTAINER_EXECUTOR_KEY)))
+                .setConfig(new Configuration())
+                .build();
+    }
+
+    @Test
     public void testResourceManagerResourceTrackerAddress() {
         assertEquals(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_RESOURCE_TRACKER_ADDRESS_KEY),
                 yarnLocalCluster.getResourceManagerResourceTrackerAddress());
     }
 
     @Test
+    public void testMissingResourceManagerResourceTrackerAddress() {
+        exception.expect(IllegalArgumentException.class);
+        YarnLocalCluster yarnLocalCluster = new YarnLocalCluster.Builder()
+                .setNumNodeManagers(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_NODE_MANAGERS_KEY)))
+                .setNumLocalDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOCAL_DIRS_KEY)))
+                .setNumLogDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOG_DIRS_KEY)))
+                .setResourceManagerAddress(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
+                .setResourceManagerHostname(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_HOSTNAME_KEY))
+                .setResourceManagerSchedulerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_SCHEDULER_ADDRESS_KEY))
+                .setResourceManagerWebappAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_WEBAPP_ADDRESS_KEY))
+                .setUseInJvmContainerExecutor(Boolean.parseBoolean(propertyParser.getProperty(
+                        ConfigVars.YARN_USE_IN_JVM_CONTAINER_EXECUTOR_KEY)))
+                .setConfig(new Configuration())
+                .build();
+    }
+
+    @Test
     public void testResourceManagerWebappAddress() {
         assertEquals(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_WEBAPP_ADDRESS_KEY),
                 yarnLocalCluster.getResourceManagerWebappAddress());
+    }
+
+    @Test
+    public void testMissingResourceManagerWebappAddress() {
+        exception.expect(IllegalArgumentException.class);
+        YarnLocalCluster yarnLocalCluster = new YarnLocalCluster.Builder()
+                .setNumNodeManagers(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_NODE_MANAGERS_KEY)))
+                .setNumLocalDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOCAL_DIRS_KEY)))
+                .setNumLogDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOG_DIRS_KEY)))
+                .setResourceManagerAddress(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
+                .setResourceManagerHostname(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_HOSTNAME_KEY))
+                .setResourceManagerSchedulerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_SCHEDULER_ADDRESS_KEY))
+                .setResourceManagerResourceTrackerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_RESOURCE_TRACKER_ADDRESS_KEY))
+                .setUseInJvmContainerExecutor(Boolean.parseBoolean(propertyParser.getProperty(
+                        ConfigVars.YARN_USE_IN_JVM_CONTAINER_EXECUTOR_KEY)))
+                .setConfig(new Configuration())
+                .build();
     }
     
     @Test
@@ -121,8 +283,47 @@ public class YarnLocalClusterTest {
     }
 
     @Test
+    public void testMissingUseInJvmContainerExecutor() {
+        exception.expect(IllegalArgumentException.class);
+        YarnLocalCluster yarnLocalCluster = new YarnLocalCluster.Builder()
+                .setNumNodeManagers(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_NODE_MANAGERS_KEY)))
+                .setNumLocalDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOCAL_DIRS_KEY)))
+                .setNumLogDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOG_DIRS_KEY)))
+                .setResourceManagerAddress(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
+                .setResourceManagerHostname(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_HOSTNAME_KEY))
+                .setResourceManagerSchedulerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_SCHEDULER_ADDRESS_KEY))
+                .setResourceManagerResourceTrackerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_RESOURCE_TRACKER_ADDRESS_KEY))
+                .setResourceManagerWebappAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_WEBAPP_ADDRESS_KEY))
+                .setConfig(new Configuration())
+                .build();
+    }
+
+    @Test
     public void testConf() {
         assertTrue(yarnLocalCluster.getConfig() instanceof org.apache.hadoop.conf.Configuration);
 
+    }
+
+    @Test
+    public void testMissingConf() {
+        exception.expect(IllegalArgumentException.class);
+        YarnLocalCluster yarnLocalCluster = new YarnLocalCluster.Builder()
+                .setNumNodeManagers(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_NODE_MANAGERS_KEY)))
+                .setNumLocalDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOCAL_DIRS_KEY)))
+                .setNumLogDirs(Integer.parseInt(propertyParser.getProperty(ConfigVars.YARN_NUM_LOG_DIRS_KEY)))
+                .setResourceManagerAddress(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
+                .setResourceManagerHostname(propertyParser.getProperty(ConfigVars.YARN_RESOURCE_MANAGER_HOSTNAME_KEY))
+                .setResourceManagerSchedulerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_SCHEDULER_ADDRESS_KEY))
+                .setResourceManagerResourceTrackerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_RESOURCE_TRACKER_ADDRESS_KEY))
+                .setResourceManagerWebappAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_WEBAPP_ADDRESS_KEY))
+                .setUseInJvmContainerExecutor(Boolean.parseBoolean(propertyParser.getProperty(
+                        ConfigVars.YARN_USE_IN_JVM_CONTAINER_EXECUTOR_KEY)))
+                .build();
     }
 }

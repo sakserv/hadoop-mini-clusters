@@ -15,7 +15,6 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.MiniClusterWithExceptions;
 import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -23,10 +22,8 @@ import org.apache.hadoop.hdfs.MiniDFSCluster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 
-
-public class HdfsLocalCluster implements MiniClusterWithExceptions {
+public class HdfsLocalCluster implements MiniCluster {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(HdfsLocalCluster.class);
@@ -146,12 +143,6 @@ public class HdfsLocalCluster implements MiniClusterWithExceptions {
     }
 
     @Override
-    public void configure() {
-        hdfsConfig.setBoolean("dfs.permissions", hdfsEnablePermissions);
-        System.setProperty("test.build.data", hdfsTempDir);
-    }
-
-    @Override
     public void start() throws Exception {
 
         LOG.info("HDFS: Starting MiniDfsCluster");
@@ -169,7 +160,8 @@ public class HdfsLocalCluster implements MiniClusterWithExceptions {
     public void stop() throws Exception {
         stop(true);
     }
-    
+
+    @Override
     public void stop(boolean cleanUp) throws Exception {
         LOG.info("HDFS: Stopping MiniDfsCluster");
         miniDFSCluster.shutdown();
@@ -178,8 +170,15 @@ public class HdfsLocalCluster implements MiniClusterWithExceptions {
         }
         
     }
-    
-    public void cleanUp() {
+
+    @Override
+    public void configure() throws Exception {
+        hdfsConfig.setBoolean("dfs.permissions", hdfsEnablePermissions);
+        System.setProperty("test.build.data", hdfsTempDir);
+    }
+
+    @Override
+    public void cleanUp() throws Exception {
         FileUtils.deleteFolder(hdfsTempDir);
     }
 
