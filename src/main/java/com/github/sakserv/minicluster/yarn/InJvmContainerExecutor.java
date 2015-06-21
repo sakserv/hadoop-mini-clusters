@@ -88,10 +88,14 @@ public class InJvmContainerExecutor extends DefaultContainerExecutor {
         int exitCode = 0;
         if (container.getLaunchContext().getCommands().toString().contains("bin/java")) {
             ExecJavaCliParser result = this.createExecCommandParser(containerWorkDir.toString());
-            exitCode = this.doLaunch(container, containerWorkDir);
-            if (logger.isInfoEnabled()) {
-                logger.info(("Returned: " + exitCode));
-            }
+                try {
+                    exitCode = this.doLaunch(container, containerWorkDir);
+                    if (logger.isInfoEnabled()) {
+                        logger.info(("Returned: " + exitCode));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
         } else {
             String cmd = container.getLaunchContext().getCommands().get(0);
             if (logger.isInfoEnabled()) {
@@ -122,7 +126,7 @@ public class InJvmContainerExecutor extends DefaultContainerExecutor {
      * ClassLoader for each container - Calling doLaunchContainer(..) method to
      * launch Container
      */
-    private int doLaunch(Container container, Path containerWorkDir) {
+    private int doLaunch(Container container, Path containerWorkDir) throws Exception {
         Map<String, String> environment = container.getLaunchContext().getEnvironment();
         EnvironmentUtils.putAll(environment);
 

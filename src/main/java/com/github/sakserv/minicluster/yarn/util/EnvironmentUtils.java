@@ -32,13 +32,13 @@ public class EnvironmentUtils {
      * @param key
      * @param value
      */
-    public static void put(String key, String value){
+    public static void put(String key, String value) throws Exception {
         Map<String, String> environemnt = new HashMap<String, String>(System.getenv());
         environemnt.put(key, value);
         updateEnvironment(environemnt);
     }
 
-    public static synchronized void putAll(Map<String, String> additionalEnvironment) {
+    public static synchronized void putAll(Map<String, String> additionalEnvironment) throws Exception {
         Map<String, String> environemnt = new HashMap<String, String>(System.getenv());
         environemnt.putAll(additionalEnvironment);
         updateEnvironment(environemnt);
@@ -48,9 +48,8 @@ public class EnvironmentUtils {
      *
      * @param newenv
      */
-    @SuppressWarnings("unchecked")
-    private static void updateEnvironment(Map<String, String> environemnt) {
-        try {
+    private static void updateEnvironment(Map<String, String> environemnt) throws Exception {
+
             Class<?>[] classes = Collections.class.getDeclaredClasses();
             for (Class<?> clazz : classes) {
                 if ("java.util.Collections$UnmodifiableMap".equals(clazz.getName())) {
@@ -61,9 +60,6 @@ public class EnvironmentUtils {
                     map.putAll(environemnt);
                 }
             }
-        }
-        catch (IllegalAccessException e) {
-            throw new IllegalStateException("Failed to update Environment variables", e);
-        }
+
     }
 }
