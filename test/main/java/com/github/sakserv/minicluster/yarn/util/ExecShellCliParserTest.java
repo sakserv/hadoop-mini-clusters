@@ -57,9 +57,7 @@ public class ExecShellCliParserTest {
     }
 
     @Test
-    public void testRunCommand() throws InterruptedException, IOException {
-        Process process = Runtime.getRuntime().exec("whoami");
-        process.waitFor();
-        assertEquals(0, process.exitValue());
+    public void testRunCommand() throws Exception {
+        assertEquals(0, execShellCliParser.runCommand());
     }
 }

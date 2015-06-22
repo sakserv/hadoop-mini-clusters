@@ -65,7 +65,7 @@ public class ExecShellCliParser {
         return sb.toString().trim();
     }
 
-    public int runCommand() throws IOException {
+    public int runCommand() throws Exception {
         String command = getCommand();
         String stdoutFile = getStdoutPath();
         String stderrFile = getStderrPath();
@@ -78,12 +78,7 @@ public class ExecShellCliParser {
         writeOutputToFile(stdout, new File(stdoutFile));
         writeOutputToFile(stderr, new File(stderrFile));
 
-        try {
-            p.waitFor();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        p.waitFor();
         return p.exitValue();
     }
 

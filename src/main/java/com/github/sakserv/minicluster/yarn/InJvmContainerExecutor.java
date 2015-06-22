@@ -102,7 +102,11 @@ public class InJvmContainerExecutor extends DefaultContainerExecutor {
                 logger.info("Running Command: " + cmd);
             }
             ExecShellCliParser execShellCliParser = new ExecShellCliParser(cmd);
-            exitCode = execShellCliParser.runCommand();
+            try {
+                exitCode = execShellCliParser.runCommand();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (logger.isInfoEnabled()) {
                 logger.info(("Returned: " + exitCode));
             }
