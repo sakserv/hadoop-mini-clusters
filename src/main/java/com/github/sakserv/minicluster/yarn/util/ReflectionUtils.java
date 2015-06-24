@@ -31,8 +31,6 @@ public class ReflectionUtils {
      * @return
      */
     public static Method getMethodAndMakeAccessible(Class<?> clazz, String name, Class<?>... arguments) {
-        ObjectAssertUtils.assertNotNull(clazz);
-        StringAssertUtils.assertNotEmptyAndNoSpaces(name);
 
         try {
             Method m = org.springframework.util.ReflectionUtils.findMethod(clazz, name, arguments);
@@ -51,8 +49,6 @@ public class ReflectionUtils {
      * @return
      */
     public static Field getFieldAndMakeAccessible(Class<?> clazz, String fieldName) {
-        ObjectAssertUtils.assertNotNull(clazz);
-        StringAssertUtils.assertNotEmptyAndNoSpaces(fieldName);
         Class<?> searchType = clazz;
         while (!Object.class.equals(searchType) && searchType != null) {
             Field[] fields = searchType.getDeclaredFields();
