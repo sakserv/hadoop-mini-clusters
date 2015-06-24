@@ -24,8 +24,6 @@ import java.util.Map;
  */
 public class EnvironmentUtils {
 
-    private EnvironmentUtils(){}
-
     /**
      * Allows dynamic update to the environment variables.
      *

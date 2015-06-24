@@ -44,32 +44,7 @@ public class ExecJavaCliParser {
 
     private String main;
 
-    // TODO move to isolated test
-    public static void main(String[] args) {
-        String line = "-Djava.net.preferIPv4Stack=true -Dhadoop.metrics.log.level=WARN -Xmx200m -Dlog4j.configuration=tez-container-log4j.properties "
-                + "-Dyarn.app.container.log.dir=/Users/ozhurakousky/dev/on-tez/tez-mini-cluster/target/MINI_TEZ_CLUSTER/MINI_TEZ_CLUSTER-logDir-nm-1_0/application_1401456720720_0001/container_1401456720720_0001_01_000002 "
-                + "-Dtez.root.logger=INFO,CLA  -Djava.io.tmpdir=$PWD/tmp org.apache.hadoop.mapred.YarnTezDagChild 192.168.15.101 52598 container_1401456720720_0001_01_000002 application_1401456720720_0001 1 "
-                + "1>/Users/ozhurakousky/dev/on-tez/tez-mini-cluster/target/MINI_TEZ_CLUSTER/MINI_TEZ_CLUSTER-logDir-nm-1_0/application_1401456720720_0001/container_1401456720720_0001_01_000002/stdout "
-                + "2>/Users/ozhurakousky/dev/on-tez/tez-mini-cluster/target/MINI_TEZ_CLUSTER/MINI_TEZ_CLUSTER-logDir-nm-1_0/application_1401456720720_0001/container_1401456720720_0001_01_000002/stderr ";
 
-        String line2 = "-Dlog4j.configuration=tez-container-log4j.properties "
-                + "-Dyarn.app.container.log.dir=/Users/ozhurakousky/dev/on-tez/tez-mini-cluster/target/MINI_TEZ_CLUSTER/MINI_TEZ_CLUSTER-logDir-nm-0_0/application_1401456720720_0001/container_1401456720720_0001_01_000001 "
-                + "-Dtez.root.logger=INFO,CLA  -Xmx1024m -Dsun.nio.ch.bugLevel='' org.apache.tez.dag.app.DAGAppMaster --session "
-                + "1>/Users/ozhurakousky/dev/on-tez/tez-mini-cluster/target/MINI_TEZ_CLUSTER/MINI_TEZ_CLUSTER-logDir-nm-0_0/application_1401456720720_0001/container_1401456720720_0001_01_000001/stdout "
-                + "2>/Users/ozhurakousky/dev/on-tez/tez-mini-cluster/target/MINI_TEZ_CLUSTER/MINI_TEZ_CLUSTER-logDir-nm-0_0/application_1401456720720_0001/container_1401456720720_0001_01_000001/stderr ";
-
-        ExecJavaCliParser parser = new ExecJavaCliParser(line2);
-        System.out.println(Arrays.asList(parser.getSysProperties()));
-        System.out.println(Arrays.asList(parser.getXValues()));
-        System.out.println(parser.getMain());
-        System.out.println(Arrays.asList(parser.getMainArguments()));
-
-//		parser = new ExecJavaCliParser(line);
-//		System.out.println(Arrays.asList(parser.getSysProperties()));
-//		System.out.println(Arrays.asList(parser.getXValues()));
-//		System.out.println(parser.getMain());
-//		System.out.println(Arrays.asList(parser.getMainArguments()));
-    }
 
     /**
      *

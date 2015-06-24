@@ -21,15 +21,17 @@ import static org.junit.Assert.*;
  *  limitations under the License.
  */public class EnvironmentUtilsTest {
 
+    EnvironmentUtils environmentUtils = new EnvironmentUtils();
+
     @Test
     public void testPut() throws Exception {
-        EnvironmentUtils.put("test", "test");
+        environmentUtils.put("test", "test");
     }
 
     @Test
     public void testPutAll() throws Exception {
         Map<String, String> map = new HashMap<>();
         map.put("test", "test");
-        EnvironmentUtils.putAll(map);
+        environmentUtils.putAll(map);
     }
 }
