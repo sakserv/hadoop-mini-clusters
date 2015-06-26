@@ -198,10 +198,8 @@ public class InJvmContainerExecutor extends DefaultContainerExecutor {
 
         try {
             mainMethod.invoke(null, (Object) arguments);
-            if (ByteCodeUtils.hasSystemExit(containerClass)) {
-                logger.info("Keeping " + containerClass.getName() + " process alive");
-                LockSupport.park();
-            }
+            logger.info("Keeping " + containerClass.getName() + " process alive");
+            LockSupport.park();
         }
         catch (SystemExitException e) {
             logger.warn("Ignoring System.exit(..) call in " + containerClass.getName());
