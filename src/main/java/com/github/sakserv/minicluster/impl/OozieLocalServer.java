@@ -152,6 +152,14 @@ public class OozieLocalServer implements MiniCluster {
 
     @Override
     public void configure() throws Exception {
+        /*
+        let hadoop find winutils.exe
+          the binaries come from hdp windows distribution, from hadoop-2.6.0.2.2.6.0-2800.winpkg.zip
+          also need to set hadoop-windows\lib as a dependency of the project in intelliJ
+         */
+        if (System.getProperty("os.name").startsWith("Windows")) {
+            System.setProperty("hadoop.home.dir", new File("hadoop-windows").getAbsolutePath());
+        }
         oozieHome.mkdirs();
     }
 
