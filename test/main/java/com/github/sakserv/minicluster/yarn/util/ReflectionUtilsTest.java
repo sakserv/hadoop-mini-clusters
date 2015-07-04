@@ -1,6 +1,11 @@
 package com.github.sakserv.minicluster.yarn.util;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import static org.junit.Assert.*;
 
@@ -18,24 +23,53 @@ import static org.junit.Assert.*;
  *  limitations under the License.
  */public class ReflectionUtilsTest {
 
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
+    ReflectionUtils reflectionUtils = new ReflectionUtils();
+
+    public class ReflectTester {
+
+        private String foo = "baz";
+
+        public ReflectTester() {
+            setFoo("bar");
+        }
+
+        private String getFoo() {
+            return foo;
+        }
+
+        private void setFoo(String foo) {
+            this.foo = foo;
+        }
+    }
+
     @Test
     public void testGetMethodAndMakeAccessible() throws Exception {
+        Method m = reflectionUtils.getMethodAndMakeAccessible(ReflectTester.class, "getFoo");
+        assertTrue(m.isAccessible());
+    }
 
+    @Test
+    public void testIllegalArgumentExceptionGetMethodAndMakeAccessible() {
+        exception.expect(IllegalArgumentException.class);
+        Method m = reflectionUtils.getMethodAndMakeAccessible(ReflectTester.class, "getBar");
     }
 
     @Test
     public void testGetFieldAndMakeAccessible() throws Exception {
+        Field f = reflectionUtils.getFieldAndMakeAccessible(ReflectTester.class, "foo");
+        assertTrue(f.isAccessible());
+    }
 
+    @Test
+    public void testVoidGetFieldAndMakeAccessible() {
+        assertNull(reflectionUtils.getFieldAndMakeAccessible(ReflectTester.class, "bar"));
     }
 
     @Test
     public void testGetFieldValue() throws Exception {
-
-    }
-
-    @Test
-    public void testNewDefaultInstance() throws Exception {
-
     }
 
     @Test

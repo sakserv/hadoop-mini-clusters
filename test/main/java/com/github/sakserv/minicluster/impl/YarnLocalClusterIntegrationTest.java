@@ -77,7 +77,7 @@ public class YarnLocalClusterIntegrationTest {
     }
 
     @Test
-    public void testYarnLocalCluster() {
+    public void testYarnLocalClusterIntegrationTest() {
         
         String[] args = new String[7];
         args[0] = "whoami";
