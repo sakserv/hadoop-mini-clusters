@@ -29,7 +29,7 @@ Using:
 	<dependency>
 		<groupId>com.github.sakserv</groupId>
 		<artifactId>hadoop-mini-clusters</artifactId>
-		<version>0.0.12</version>
+		<version>0.0.13</version>
 	</dependency>
 ```
 
