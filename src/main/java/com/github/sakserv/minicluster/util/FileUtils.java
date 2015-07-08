@@ -4,9 +4,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
-/**
- * Created by skumpf on 12/31/14.
- */
+
 public class FileUtils {
 
     // Logger
