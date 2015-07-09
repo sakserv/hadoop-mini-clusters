@@ -21,7 +21,10 @@ Tests:
 ------
 Tests are included to show how to configure and use each of the mini clusters.
 
--> ![travis-ci](https://travis-ci.org/sakserv/hadoop-mini-clusters.svg?branch=master) <-
+<p align="center">
+  <img src="https://travis-ci.org/sakserv/hadoop-mini-clusters.svg?branch=master"/>
+</p>
+
 
 Using:
 ------
