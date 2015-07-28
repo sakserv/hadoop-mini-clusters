@@ -59,6 +59,8 @@ public class HdfsLocalClusterTest {
                 .setHdfsEnablePermissions(
                         Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HDFS_ENABLE_PERMISSIONS_KEY)))
                 .setHdfsFormat(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HDFS_FORMAT_KEY)))
+                .setHdfsEnableRunningUserAsProxyUser(Boolean.parseBoolean(
+                        propertyParser.getProperty(ConfigVars.HDFS_ENABLE_RUNNING_USER_AS_PROXY_USER)))
                 .setHdfsConfig(new Configuration())
                 .build();
     }
@@ -139,6 +141,12 @@ public class HdfsLocalClusterTest {
     }
 
     @Test
+    public void testHdfsEnableRunningUserAsProxyUser() {
+        assertEquals(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HDFS_ENABLE_RUNNING_USER_AS_PROXY_USER)),
+                (boolean) hdfsLocalCluster.getHdfsEnableRunningUserAsProxyUser());
+    }
+
+    @Test
     public void testHdfsFormat() {
         assertEquals(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HDFS_FORMAT_KEY)),
                 (boolean) hdfsLocalCluster.getHdfsFormat());
@@ -175,4 +183,6 @@ public class HdfsLocalClusterTest {
                 .setHdfsFormat(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HDFS_FORMAT_KEY)))
                 .build();
     }
+
+
 }

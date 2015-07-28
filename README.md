@@ -49,6 +49,7 @@ Examples:
             .setHdfsNumDatanodes(1)
             .setHdfsEnablePermissions(false)
             .setHdfsFormat(true)
+            .setHdfsEnableRunningUserAsProxyUser(true)
             .setHdfsConfig(new Configuration())
             .build();
                 
@@ -169,6 +170,20 @@ Examples:
             .setZookeeperConnectionString("localhost:12345")
             .build();
         kafkaLocalBroker.start();
+```
+
+*  Oozie Example
+```Java
+        OozieLocalServer oozieLocalServer = new OozieLocalServer.Builder()
+                .setOozieTestDir("embedded_oozie")
+                .setOozieHomeDir("oozie_home")
+                .setOozieUsername(System.getProperty("user.name"))
+                .setOozieGroupname("testgroup")
+                .setOozieYarnResourceManagerAddress("localhost")
+                .setOozieHdfsDefaultFs("hdfs://localhost:8020/)
+                .setOozieConf(new Configuration())
+                .build();
+        oozieLocalServer.start();
 ```
 
 *  MongoDB Example

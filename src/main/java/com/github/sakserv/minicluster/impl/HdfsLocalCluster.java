@@ -35,6 +35,7 @@ public class HdfsLocalCluster implements MiniCluster {
     private Integer hdfsNumDatanodes;
     private Boolean hdfsEnablePermissions;
     private Boolean hdfsFormat;
+    private Boolean hdfsEnableRunningUserAsProxyUser;
     private Configuration hdfsConfig;
 
     public Integer getHdfsNamenodePort() {
@@ -57,6 +58,10 @@ public class HdfsLocalCluster implements MiniCluster {
         return hdfsFormat;
     }
 
+    public Boolean getHdfsEnableRunningUserAsProxyUser() {
+        return hdfsEnableRunningUserAsProxyUser;
+    }
+
     public Configuration getHdfsConfig() {
         return hdfsConfig;
     }
@@ -67,6 +72,7 @@ public class HdfsLocalCluster implements MiniCluster {
         this.hdfsNumDatanodes = builder.hdfsNumDatanodes;
         this.hdfsEnablePermissions = builder.hdfsEnablePermissions;
         this.hdfsFormat = builder.hdfsFormat;
+        this.hdfsEnableRunningUserAsProxyUser = builder.hdfsEnableRunningUserAsProxyUser;
         this.hdfsConfig = builder.hdfsConfig;
     }
     
@@ -76,7 +82,9 @@ public class HdfsLocalCluster implements MiniCluster {
         private Integer hdfsNumDatanodes;
         private Boolean hdfsEnablePermissions;
         private Boolean hdfsFormat;
+        private Boolean hdfsEnableRunningUserAsProxyUser;
         private Configuration hdfsConfig;
+
         
         public Builder setHdfsNamenodePort(Integer hdfsNameNodePort) {
             this.hdfsNamenodePort = hdfsNameNodePort;
@@ -97,9 +105,14 @@ public class HdfsLocalCluster implements MiniCluster {
             this.hdfsEnablePermissions = hdfsEnablePermissions;
             return this;
         }
-        
+
         public Builder setHdfsFormat(Boolean hdfsFormat) {
             this.hdfsFormat = hdfsFormat;
+            return this;
+        }
+
+        public Builder setHdfsEnableRunningUserAsProxyUser(Boolean hdfsEnableRunningUserAsProxyUser) {
+            this.hdfsEnableRunningUserAsProxyUser = hdfsEnableRunningUserAsProxyUser;
             return this;
         }
         
@@ -173,6 +186,11 @@ public class HdfsLocalCluster implements MiniCluster {
 
     @Override
     public void configure() throws Exception {
+        if(hdfsEnableRunningUserAsProxyUser) {
+            hdfsConfig.set("hadoop.proxyuser." + System.getProperty("user.name") + ".hosts", "*");
+            hdfsConfig.set("hadoop.proxyuser." + System.getProperty("user.name") + ".groups", "*");
+        }
+
         hdfsConfig.setBoolean("dfs.permissions", hdfsEnablePermissions);
         System.setProperty("test.build.data", hdfsTempDir);
     }

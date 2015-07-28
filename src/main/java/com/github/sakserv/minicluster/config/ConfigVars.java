@@ -76,6 +76,7 @@ public class ConfigVars {
     public static final String HDFS_NUM_DATANODES_KEY = "hdfs.num.datanodes";
     public static final String HDFS_ENABLE_PERMISSIONS_KEY = "hdfs.enable.permissions";
     public static final String HDFS_FORMAT_KEY = "hdfs.format";
+    public static final String HDFS_ENABLE_RUNNING_USER_AS_PROXY_USER = "hdfs.enable.running.user.as.proxy.user";
     
     // HDFS Test
     public static final String HDFS_TEST_FILE_KEY = "hdfs.test.file";
@@ -126,6 +127,9 @@ public class ConfigVars {
 
     //Oozie
     public static final String OOZIE_TEST_DIR_KEY = "oozie.test.dir";
+    public static final String OOZIE_HOME_DIR_KEY = "oozie.home.dir";
+    public static final String OOZIE_USERNAME_KEY = "oozie.username";
+    public static final String OOZIE_GROUPNAME_KEY = "oozie.groupname";
 
     public String toString() {
         return "ConfigVars";

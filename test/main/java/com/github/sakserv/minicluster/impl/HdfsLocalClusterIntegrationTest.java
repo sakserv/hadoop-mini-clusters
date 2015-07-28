@@ -58,6 +58,8 @@ public class HdfsLocalClusterIntegrationTest {
                 .setHdfsEnablePermissions(
                         Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HDFS_ENABLE_PERMISSIONS_KEY)))
                 .setHdfsFormat(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HDFS_FORMAT_KEY)))
+                .setHdfsEnableRunningUserAsProxyUser(Boolean.parseBoolean(
+                        propertyParser.getProperty(ConfigVars.HDFS_ENABLE_RUNNING_USER_AS_PROXY_USER)))
                 .setHdfsConfig(new Configuration())
                 .build();
         dfsCluster.start();
