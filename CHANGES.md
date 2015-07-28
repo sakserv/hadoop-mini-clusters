@@ -1,5 +1,9 @@
 Change Log
 ==========
+### 0.0.14 - 07/28/2015
+* Added Oozie Support
+* Added optional argument to HDFS to enable the current user as a proxy user
+
 ### 0.0.13 - 07/04/2015
 * Added YARN Support
 * Added MRv2 Support
