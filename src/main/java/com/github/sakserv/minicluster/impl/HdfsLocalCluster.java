@@ -186,7 +186,7 @@ public class HdfsLocalCluster implements MiniCluster {
 
     @Override
     public void configure() throws Exception {
-        if(hdfsEnableRunningUserAsProxyUser) {
+        if(null != hdfsEnableRunningUserAsProxyUser && hdfsEnableRunningUserAsProxyUser) {
             hdfsConfig.set("hadoop.proxyuser." + System.getProperty("user.name") + ".hosts", "*");
             hdfsConfig.set("hadoop.proxyuser." + System.getProperty("user.name") + ".groups", "*");
         }
