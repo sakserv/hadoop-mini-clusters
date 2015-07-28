@@ -13,6 +13,7 @@ Includes:
 *   HiveMetaStore - Derby backed HiveMetaStore
 *   Storm - Storm LocalCluster
 *   Kafka - Local Kafka Broker
+*   Oozie - Local Oozie Server - Thanks again Vladimir
 *   MongoDB - I know... not Hadoop
 *   ActiveMQ - Thanks Vladimir Zlatkin!
 *   HyperSQL DB - For testing various databases
