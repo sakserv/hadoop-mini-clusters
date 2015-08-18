@@ -7,7 +7,8 @@ import org.junit.rules.ExpectedException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /*
  *  Licensed under the Apache License, Version 2.0 (the "License");

@@ -1,28 +1,20 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.oozie.util.OozieConfigHelpers;
 import com.github.sakserv.minicluster.util.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.oozie.client.OozieClient;
 import org.apache.oozie.local.LocalOozie;
 import org.apache.oozie.service.ConfigurationService;
 import org.apache.oozie.service.HadoopAccessorService;
-import org.apache.oozie.service.JPAService;
 import org.apache.oozie.service.Services;
 import org.apache.oozie.test.XTestCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.io.File;
 
 
 /**
