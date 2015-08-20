@@ -132,6 +132,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.twitter:carbonite:1.4.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.twitter:chill-java:0.3.5" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.yaml:snakeyaml:1.11" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.googlecode.disruptor:disruptor:2.10.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.jgrapht:jgrapht-core:0.9.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: ch.qos.logback:logback-classic:1.0.13" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: ch.qos.logback:logback-core:1.0.13" level="project" />
@@ -284,12 +285,12 @@
     <orderEntry type="library" name="Maven: tomcat:jasper-compiler:5.5.23" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: tomcat:jasper-runtime:5.5.23" level="project" />
     <orderEntry type="library" name="Maven: org.jamon:jamon-runtime:2.3.1" level="project" />
-    <orderEntry type="library" name="Maven: com.lmax:disruptor:3.3.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.hbase:hbase-server:test-jar:tests:1.1.1.2.3.0.0-2557" level="project" />
     <orderEntry type="library" name="Maven: org.apache.hbase:hbase-hadoop-compat:1.1.1.2.3.0.0-2557" level="project" />
     <orderEntry type="library" name="Maven: org.apache.hbase:hbase-hadoop-compat:test-jar:tests:1.1.1.2.3.0.0-2557" level="project" />
     <orderEntry type="library" name="Maven: org.apache.hbase:hbase-hadoop2-compat:1.1.1.2.3.0.0-2557" level="project" />
     <orderEntry type="library" name="Maven: org.apache.hbase:hbase-hadoop2-compat:test-jar:tests:1.1.1.2.3.0.0-2557" level="project" />
+    <orderEntry type="library" name="Maven: com.lmax:disruptor:3.3.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.kafka:kafka_2.9.2:0.8.2.2.3.0.0-2557" level="project" />
     <orderEntry type="library" name="Maven: org.scala-lang:scala-library:2.9.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.kafka:kafka-clients:0.8.2.2.3.0.0-2557" level="project" />

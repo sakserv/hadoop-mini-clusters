@@ -49,7 +49,7 @@
         <storm.version>0.10.0.2.3.0.0-2557</storm.version>
         <hive.version>1.2.1.2.3.0.0-2557</hive.version>
         <hadoop.version>2.7.1.2.3.0.0-2557</hadoop.version>
-        <hbase.version>1.1.1.2.3.0.0-2557</hbase.version>
+        <hbase.version>0.98.4.2.2.6.9-1-hadoop2</hbase.version>
         <kafka.version>0.8.2.2.3.0.0-2557</kafka.version>
         <oozie.version>4.2.0.2.3.0.0-2557</oozie.version>
         <snakeyaml.version>1.11</snakeyaml.version>
@@ -155,18 +155,8 @@
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-log4j12</artifactId>
                 </exclusion>
-                <exclusion>
-                    <groupId>com.googlecode.disruptor</groupId>
-                    <artifactId>disruptor</artifactId>
-                </exclusion>
             </exclusions>
         </dependency>
-<!--        <dependency>
-            <groupId>com.googlecode.disruptor</groupId>
-            <artifactId>disruptor</artifactId>
-            <version>2.10.4</version>
-            <scope>provided</scope>
-        </dependency>-->
 
 
         <!-- Hive -->
@@ -269,11 +259,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-<!--        <dependency>
-            <groupId>com.lmax</groupId>
-            <artifactId>disruptor</artifactId>
-            <version>3.3.2</version>
-        </dependency>-->
 
 
         <!-- Kafka -->
@@ -358,6 +343,12 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <relocations>
+                                <relocation>
+                                    <pattern>backtype.storm.disruptor</pattern>
+                                    <shadedPattern>backtype.shaded.storm.disruptor</shadedPattern>
+                                </relocation>
+                            </relocations>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer" />
