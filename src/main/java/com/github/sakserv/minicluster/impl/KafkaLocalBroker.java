@@ -180,7 +180,7 @@ public class KafkaLocalBroker implements MiniCluster {
         kafkaProperties.put("log.dir", kafkaTempDir);
         kafkaProperties.put("enable.zookeeper", "true");
         kafkaProperties.put("zookeeper.connect", zookeeperConnectionString);
-        kafkaConfig = new KafkaConfig(kafkaProperties);
+        kafkaConfig = KafkaConfig.fromProps(kafkaProperties);
     }
 
     @Override

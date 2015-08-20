@@ -227,6 +227,7 @@ public class HiveLocalServer2 implements MiniCluster {
         hiveConf.set(HiveConf.ConfVars.HIVE_SERVER2_THRIFT_BIND_HOST.varname, String.valueOf(hiveServer2Hostname));
         hiveConf.set(HiveConf.ConfVars.HIVE_SERVER2_THRIFT_PORT.varname, String.valueOf(hiveServer2Port));
         hiveConf.set(HiveConf.ConfVars.HIVE_ZOOKEEPER_QUORUM.varname, zookeeperConnectionString);
+        hiveConf.set(HiveConf.ConfVars.HIVE_SUPPORT_CONCURRENCY.varname, "true");
     }
 
     @Override

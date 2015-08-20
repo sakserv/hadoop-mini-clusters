@@ -19,6 +19,7 @@ import kafka.common.ErrorMapping;
 import kafka.javaapi.*;
 import kafka.javaapi.consumer.SimpleConsumer;
 import kafka.message.MessageAndOffset;
+import org.apache.kafka.common.protocol.SecurityProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -164,7 +165,7 @@ public class KafkaTestConsumer {
         }
         if (returnMetaData != null) {
             m_replicaBrokers.clear();
-            for (kafka.cluster.Broker replica : returnMetaData.replicas()) {
+            for (kafka.cluster.BrokerEndPoint replica : returnMetaData.replicas()) {
                 m_replicaBrokers.add(replica.host());
             }
         }

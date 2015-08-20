@@ -46,6 +46,7 @@ public class EnvironmentUtils {
      *
      * @param newenv
      */
+    @SuppressWarnings("unchecked")
     private static void updateEnvironment(Map<String, String> environemnt) throws Exception {
 
             Class<?>[] classes = Collections.class.getDeclaredClasses();

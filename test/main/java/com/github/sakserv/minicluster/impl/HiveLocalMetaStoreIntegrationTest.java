@@ -22,7 +22,7 @@ import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 import org.apache.hadoop.hive.metastore.TableType;
 import org.apache.hadoop.hive.metastore.api.*;
 import org.apache.hadoop.hive.ql.io.orc.OrcSerde;
-import org.apache.hadoop.hive.serde.Constants;
+import org.apache.hadoop.hive.serde.serdeConstants;
 import org.apache.thrift.TException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -79,16 +79,14 @@ public class HiveLocalMetaStoreIntegrationTest {
         FileUtils.deleteFolder(new File(
                 propertyParser.getProperty(ConfigVars.HIVE_TEST_TABLE_NAME_KEY)).getAbsolutePath());
     }
-    
+
     public static HiveConf buildHiveConf() {
         HiveConf hiveConf = new HiveConf();
         hiveConf.set(HiveConf.ConfVars.HIVE_TXN_MANAGER.varname, "org.apache.hadoop.hive.ql.lockmgr.DbTxnManager");
         hiveConf.set(HiveConf.ConfVars.HIVE_COMPACTOR_INITIATOR_ON.varname, "true");
         hiveConf.set(HiveConf.ConfVars.HIVE_COMPACTOR_WORKER_THREADS.varname, "5");
         hiveConf.set("hive.root.logger", "DEBUG,console");
-        hiveConf.set(HiveConf.ConfVars.HIVE_SUPPORT_CONCURRENCY.varname, "false");
         hiveConf.setIntVar(HiveConf.ConfVars.METASTORETHRIFTCONNECTIONRETRIES, 3);
-        hiveConf.set(HiveConf.ConfVars.HIVE_SUPPORT_CONCURRENCY.varname, "false");
         hiveConf.set(HiveConf.ConfVars.PREEXECHOOKS.varname, "");
         hiveConf.set(HiveConf.ConfVars.POSTEXECHOOKS.varname, "");
         System.setProperty(HiveConf.ConfVars.PREEXECHOOKS.varname, " ");
@@ -96,7 +94,6 @@ public class HiveLocalMetaStoreIntegrationTest {
         return hiveConf;
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testHiveLocalMetaStore() {
 
@@ -109,8 +106,8 @@ public class HiveLocalMetaStoreIntegrationTest {
 
             // Define the cols
             List<FieldSchema> cols = new ArrayList<FieldSchema>();
-            cols.add(new FieldSchema("id", Constants.INT_TYPE_NAME, ""));
-            cols.add(new FieldSchema("msg", Constants.STRING_TYPE_NAME, ""));
+            cols.add(new FieldSchema("id", serdeConstants.INT_TYPE_NAME, ""));
+            cols.add(new FieldSchema("msg", serdeConstants.STRING_TYPE_NAME, ""));
 
             // Values for the StorageDescriptor
             String location = new File(propertyParser.getProperty(
@@ -147,7 +144,7 @@ public class HiveLocalMetaStoreIntegrationTest {
             tbl.setViewExpandedText("");
             tbl.setTableType(TableType.EXTERNAL_TABLE.name());
             List<FieldSchema> partitions = new ArrayList<FieldSchema>();
-            partitions.add(new FieldSchema("dt", Constants.STRING_TYPE_NAME, ""));
+            partitions.add(new FieldSchema("dt", serdeConstants.STRING_TYPE_NAME, ""));
             tbl.setPartitionKeys(partitions);
 
             // Create the table
