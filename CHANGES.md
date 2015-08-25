@@ -1,5 +1,8 @@
 Change Log
 ==========
+### 0.0.15 - 08/24/2015
+* Upgraded dependencies to Hadoop 2.7.1 (HDP 2.3)
+
 ### 0.0.14 - 07/28/2015
 * Added Oozie Support
 * Added optional argument to HDFS to enable the current user as a proxy user
