@@ -49,11 +49,6 @@ public class ActivemqLocalBrokerTest {
                 .setUriPostfix(propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_POSTFIX_KEY))
                 .build();
     }
-
-    @AfterClass
-    public static void tearDown() throws Exception {
-        amq.cleanUp();
-    }
     
     @Test
     public void testHostname() throws Exception {
@@ -168,8 +163,8 @@ public class ActivemqLocalBrokerTest {
                 .setUriPostfix(propertyParser.getProperty(ConfigVars.ACTIVEMQ_URI_POSTFIX_KEY))
                 .build();
 
-        exception.expect(JMSException.class);
-        amq.start();
+        exception.expect(NullPointerException.class);
+        amq.stop();
         amq.cleanUp();
     }
 }
