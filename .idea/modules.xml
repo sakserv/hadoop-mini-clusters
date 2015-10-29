@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters.iml" />
       <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-activemq/hadoop-mini-clusters-activemq.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-activemq/hadoop-mini-clusters-activemq.iml" />
       <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-common/hadoop-mini-clusters-common.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-common/hadoop-mini-clusters-common.iml" />
-      <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-examples/hadoop-mini-clusters-examples.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-examples/hadoop-mini-clusters-examples.iml" />
       <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-hbase/hadoop-mini-clusters-hbase.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-hbase/hadoop-mini-clusters-hbase.iml" />
       <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-hdfs/hadoop-mini-clusters-hdfs.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-hdfs/hadoop-mini-clusters-hdfs.iml" />
       <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-hivemetastore/hadoop-mini-clusters-hivemetastore.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-hivemetastore/hadoop-mini-clusters-hivemetastore.iml" />

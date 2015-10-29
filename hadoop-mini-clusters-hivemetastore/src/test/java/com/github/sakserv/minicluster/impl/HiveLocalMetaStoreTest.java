@@ -15,8 +15,9 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.minicluster.config.PropertyParser;
+import com.github.sakserv.propertyparser.PropertyParser;
 import org.apache.hadoop.hive.conf.HiveConf;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -80,7 +81,7 @@ public class HiveLocalMetaStoreTest {
 
     @Test
     public void testHiveMetastoreHostname() {
-        assertEquals(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_HOSTNAME_KEY), 
+        Assert.assertEquals(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_HOSTNAME_KEY),
                 hiveLocalMetaStore.getHiveMetastoreHostname());
     }
 
@@ -116,7 +117,7 @@ public class HiveLocalMetaStoreTest {
 
     @Test
     public void testHiveMetastoreDerbyDbDir() {
-        assertEquals(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_DERBY_DB_DIR_KEY),
+        Assert.assertEquals(propertyParser.getProperty(ConfigVars.HIVE_METASTORE_DERBY_DB_DIR_KEY),
                 hiveLocalMetaStore.getHiveMetastoreDerbyDbDir());
     }
 
@@ -134,7 +135,7 @@ public class HiveLocalMetaStoreTest {
 
     @Test
     public void testHiveScratchDir() {
-        assertEquals(propertyParser.getProperty(ConfigVars.HIVE_SCRATCH_DIR_KEY),
+        Assert.assertEquals(propertyParser.getProperty(ConfigVars.HIVE_SCRATCH_DIR_KEY),
                 hiveLocalMetaStore.getHiveScratchDir());
     }
 
@@ -152,7 +153,7 @@ public class HiveLocalMetaStoreTest {
 
     @Test
     public void testHiveWarehouseDir() {
-        assertEquals(propertyParser.getProperty(ConfigVars.HIVE_WAREHOUSE_DIR_KEY),
+        Assert.assertEquals(propertyParser.getProperty(ConfigVars.HIVE_WAREHOUSE_DIR_KEY),
                 hiveLocalMetaStore.getHiveWarehouseDir());
     }
 

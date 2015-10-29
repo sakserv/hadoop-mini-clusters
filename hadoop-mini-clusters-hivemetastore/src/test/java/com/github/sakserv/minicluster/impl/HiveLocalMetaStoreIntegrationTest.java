@@ -15,8 +15,8 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.minicluster.config.PropertyParser;
 import com.github.sakserv.minicluster.util.FileUtils;
+import com.github.sakserv.propertyparser.PropertyParser;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 import org.apache.hadoop.hive.metastore.TableType;
