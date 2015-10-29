@@ -85,6 +85,7 @@
 
         <!-- non hadoop deps -->
         <activemq.version>5.10.0</activemq.version>
+        <curator.version>2.5.0</curator.version>
 
     </properties>
 

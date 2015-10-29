@@ -11,5 +11,16 @@
 
     <artifactId>hadoop-mini-clusters-zookeeper</artifactId>
 
+    <dependencies>
+
+        <!-- Zookeeper Curator -->
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-test</artifactId>
+            <version>${curator.version}</version>
+        </dependency>
+
+    </dependencies>
+
 
 </project>
