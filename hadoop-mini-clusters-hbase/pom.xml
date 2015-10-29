@@ -11,5 +11,30 @@
 
     <artifactId>hadoop-mini-clusters-hbase</artifactId>
 
+    <dependencies>
+
+        <!-- Zookeeper Local Cluster -->
+        <dependency>
+            <groupId>com.github.sakserv</groupId>
+            <artifactId>hadoop-mini-clusters-zookeeper</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Hbase Client -->
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-client</artifactId>
+            <version>${hbase.version}</version>
+        </dependency>
+
+        <!-- Hbase Testing Util -->
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-testing-util</artifactId>
+            <version>${hbase.version}</version>
+        </dependency>
+
+    </dependencies>
+
 
 </project>
