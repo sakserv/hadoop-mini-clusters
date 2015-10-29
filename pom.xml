@@ -83,6 +83,9 @@
         <!-- mini cluster module deps -->
         <hadoop-mini-clusters-common.version>0.0.16-SNAPSHOT</hadoop-mini-clusters-common.version>
 
+        <!-- non hadoop deps -->
+        <activemq.version>5.10.0</activemq.version>
+
     </properties>
 
     <dependencies>
