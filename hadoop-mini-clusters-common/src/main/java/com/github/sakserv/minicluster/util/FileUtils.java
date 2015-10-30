@@ -14,7 +14,7 @@ public class FileUtils {
         File directoryToClean = new File(directory);
         String directoryAbsPath = directoryToClean.getAbsolutePath();
 
-        LOG.info("FILEUTILS: Deleting contents of directory: " + directoryAbsPath);
+        LOG.info("FILEUTILS: Deleting contents of directory: {}", directoryAbsPath);
 
         File[] files = directoryToClean.listFiles();
         if(files!=null) { //some JVMs return null for empty dirs
@@ -22,12 +22,12 @@ public class FileUtils {
                 if(f.isDirectory()) {
                     deleteFolder(f.getAbsolutePath());
                 } else {
-                    LOG.info("FILEUTILS: Deleting file: " + f.getAbsolutePath());
+                    LOG.info("FILEUTILS: Deleting file: {}", f.getAbsolutePath());
                     f.delete();
                 }
             }
         }
-        LOG.info("FILEUTILS: Deleting file: " + directoryToClean.getAbsolutePath());
+        LOG.info("FILEUTILS: Deleting file: {}", directoryToClean.getAbsolutePath());
         directoryToClean.delete();
     }
 

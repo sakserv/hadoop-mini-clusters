@@ -96,7 +96,7 @@ public class ZookeeperLocalCluster implements MiniCluster {
 
     @Override
     public void start() throws Exception {
-        LOG.info("ZOOKEEPER: Starting Zookeeper on port: " + port);
+        LOG.info("ZOOKEEPER: Starting Zookeeper on port: {}",  port);
         testingServer = new TestingServer(port, new File(tempDir));
     }
 
@@ -107,7 +107,7 @@ public class ZookeeperLocalCluster implements MiniCluster {
 
     @Override
     public void stop(boolean cleanUp) throws Exception {
-        LOG.info("ZOOKEEPER: Stopping Zookeeper on port: " + port);
+        LOG.info("ZOOKEEPER: Stopping Zookeeper on port: {}", port);
         testingServer.stop();
         if (cleanUp) {
             cleanUp();

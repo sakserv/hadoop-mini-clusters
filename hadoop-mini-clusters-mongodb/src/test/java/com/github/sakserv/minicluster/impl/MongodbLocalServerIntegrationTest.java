@@ -41,7 +41,7 @@ public class MongodbLocalServerIntegrationTest {
             propertyParser = new PropertyParser(ConfigVars.DEFAULT_PROPS_FILE);
             propertyParser.parsePropsFile();
         } catch(IOException e) {
-            LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
+            LOG.error("Unable to load property file: {}", propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
         }
     }
     
@@ -70,12 +70,12 @@ public class MongodbLocalServerIntegrationTest {
                 new BasicDBObject());
         
         col.save(new BasicDBObject("testDoc", new Date()));
-        LOG.info("MONGODB: Number of items in collection: " + col.count());
+        LOG.info("MONGODB: Number of items in collection: {}", col.count());
         assertEquals(1, col.count());
         
         DBCursor cursor = col.find();
         while(cursor.hasNext()) {
-            LOG.info("MONGODB: Document output: " + cursor.next());
+            LOG.info("MONGODB: Document output: {}", cursor.next());
         }
         cursor.close();
     }

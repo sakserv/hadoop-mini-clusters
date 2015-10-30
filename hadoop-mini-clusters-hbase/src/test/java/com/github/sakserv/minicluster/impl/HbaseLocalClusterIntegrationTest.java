@@ -44,7 +44,7 @@ public class HbaseLocalClusterIntegrationTest {
             propertyParser = new PropertyParser(ConfigVars.DEFAULT_PROPS_FILE);
             propertyParser.parsePropsFile();
         } catch(IOException e) {
-            LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
+            LOG.error("Unable to load property file: {}", propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
         }
     }
     
@@ -94,10 +94,10 @@ public class HbaseLocalClusterIntegrationTest {
         Integer numRowsToPut = Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_TEST_NUM_ROWS_TO_PUT_KEY));
         Configuration configuration = hbaseLocalCluster.getHbaseConfiguration();
 
-        LOG.info("HBASE: Creating table " + tableName + " with column family " + colFamName);
+        LOG.info("HBASE: Creating table {} with column family {}", tableName, colFamName);
         createHbaseTable(tableName, colFamName, configuration);
 
-        LOG.info("HBASE: Populate the table with " + numRowsToPut + " rows.");
+        LOG.info("HBASE: Populate the table with {} rows.", numRowsToPut);
         for (int i=0; i<numRowsToPut; i++) {
             putRow(tableName, colFamName, String.valueOf(i), colQualiferName, "row_" + i, configuration);
         }

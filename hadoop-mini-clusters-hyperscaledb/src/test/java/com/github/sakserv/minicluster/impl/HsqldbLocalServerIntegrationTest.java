@@ -40,7 +40,7 @@ public class HsqldbLocalServerIntegrationTest {
             propertyParser = new PropertyParser(ConfigVars.DEFAULT_PROPS_FILE);
             propertyParser.parsePropsFile();
         } catch(IOException e) {
-            LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
+            LOG.error("Unable to load property file: {}", propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
         }
     }
     
@@ -69,7 +69,7 @@ public class HsqldbLocalServerIntegrationTest {
     @Test
     public void testHsqldbLocalServer() throws ClassNotFoundException, SQLException {
 
-        LOG.info("HSQLDB: Loading the JDBC Driver: " + propertyParser.getProperty(ConfigVars.HSQLDB_JDBC_DRIVER_KEY));
+        LOG.info("HSQLDB: Loading the JDBC Driver: {}", propertyParser.getProperty(ConfigVars.HSQLDB_JDBC_DRIVER_KEY));
         Class.forName(propertyParser.getProperty(ConfigVars.HSQLDB_JDBC_DRIVER_KEY));
 
         // Get the connection
@@ -79,7 +79,6 @@ public class HsqldbLocalServerIntegrationTest {
                 propertyParser.getProperty(ConfigVars.HSQLDB_PORT_KEY) + "/" +
                 propertyParser.getProperty(ConfigVars.HSQLDB_DATABASE_NAME_KEY),
                 "SA", "");
-        LOG.info("DETAILS: " + connection.getMetaData().getURL());
         assertThat(connection.getMetaData().getURL(),
                 containsString(propertyParser.getProperty(ConfigVars.HSQLDB_DATABASE_NAME_KEY)));
     }

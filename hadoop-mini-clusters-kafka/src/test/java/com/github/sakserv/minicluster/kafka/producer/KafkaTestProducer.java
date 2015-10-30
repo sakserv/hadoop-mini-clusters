@@ -98,7 +98,7 @@ public class KafkaTestProducer {
         Producer<String, String> producer = new Producer<String, String>(config);
 
         // Send 10 messages to the local kafka server:
-        LOG.info("KAFKA: Preparing To Send " + messageCount + " Initial Messages");
+        LOG.info("KAFKA: Preparing to send {} initial messages", messageCount);
         for (int i=0; i<messageCount; i++){
 
             // Create the JSON object
@@ -114,9 +114,9 @@ public class KafkaTestProducer {
 
             KeyedMessage<String, String> data = new KeyedMessage<String, String>(getTopic(), null, payload);
             producer.send(data);
-            LOG.info("Sent message: " + data.toString());
+            LOG.info("Sent message: {}", data.toString());
         }
-        LOG.info("KAFKA: Initial Messages Sent");
+        LOG.info("KAFKA: Initial messages sent");
         
         producer.close();
     }

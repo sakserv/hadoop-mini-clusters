@@ -85,7 +85,7 @@ public class MongodbLocalServer implements MiniCluster {
 
     @Override
     public void start() throws Exception {
-        LOG.info("MONGODB: Starting MongoDB on " + ip + ":" + port);
+        LOG.info("MONGODB: Starting MongoDB on {}:{}", ip, port);
         starter = MongodStarter.getDefaultInstance();
         configure();
         mongodExe = starter.prepare(conf);
@@ -99,7 +99,7 @@ public class MongodbLocalServer implements MiniCluster {
 
     @Override
     public void stop(boolean cleanUp) throws Exception {
-        LOG.info("MONGODB: Stopping MongoDB on " + ip + ":" + port);
+        LOG.info("MONGODB: Stopping MongoDB on {}:{}", ip, port);
         mongod.stop();
         mongodExe.stop();
         if(cleanUp) {

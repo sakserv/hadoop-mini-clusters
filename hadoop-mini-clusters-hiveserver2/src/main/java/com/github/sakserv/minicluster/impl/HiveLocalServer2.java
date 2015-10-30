@@ -195,7 +195,7 @@ public class HiveLocalServer2 implements MiniCluster {
     @Override
     public void start() throws Exception {
         hiveServer2 = new HiveServer2();
-        LOG.info("HIVESERVER2: Starting HiveServer2 on port: " + hiveServer2Port);
+        LOG.info("HIVESERVER2: Starting HiveServer2 on port: {}", hiveServer2Port);
         configure();
         hiveServer2.init(hiveConf);
         hiveServer2.start();
@@ -208,7 +208,7 @@ public class HiveLocalServer2 implements MiniCluster {
 
     @Override
     public void stop(boolean cleanUp) throws Exception {
-        LOG.info("HIVESERVER2: Stopping HiveServer2 on port: " + hiveServer2Port);
+        LOG.info("HIVESERVER2: Stopping HiveServer2 on port: {}", hiveServer2Port);
         hiveServer2.stop();
         if (cleanUp) {
             cleanUp();

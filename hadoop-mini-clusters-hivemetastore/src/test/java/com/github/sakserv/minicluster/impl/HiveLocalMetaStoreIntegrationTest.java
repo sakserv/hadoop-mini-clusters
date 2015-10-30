@@ -52,7 +52,7 @@ public class HiveLocalMetaStoreIntegrationTest {
             propertyParser = new PropertyParser(ConfigVars.DEFAULT_PROPS_FILE);
             propertyParser.parsePropsFile();
         } catch(IOException e) {
-            LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
+            LOG.error("Unable to load property file: {}", propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
         }
     }
     
@@ -154,7 +154,7 @@ public class HiveLocalMetaStoreIntegrationTest {
             Table createdTable = hiveClient.getTable(
                     propertyParser.getProperty(ConfigVars.HIVE_TEST_DATABASE_NAME_KEY),
                     propertyParser.getProperty(ConfigVars.HIVE_TEST_TABLE_NAME_KEY));
-            LOG.info("HIVE: Created Table: " + createdTable.toString());
+            LOG.info("HIVE: Created Table: {}", createdTable.toString());
             assertThat(createdTable.toString(), 
                     containsString(propertyParser.getProperty(ConfigVars.HIVE_TEST_TABLE_NAME_KEY)));
 

@@ -69,7 +69,7 @@ public class KafkaTestConsumer {
                 numErrors++;
                 // Something went wrong!
                 short code = fetchResponse.errorCode(a_topic, a_partition);
-                LOG.info("Error fetching data from the Broker:" + leadBroker + " Reason: " + code);
+                LOG.info("Error fetching data from the Broker: {} Reason: {}", leadBroker, code);
                 if (numErrors > 5) break;
                 if (code == ErrorMapping.OffsetOutOfRangeCode())  {
                     // We asked for an invalid offset. For simple case ask for the last element to reset
@@ -86,7 +86,7 @@ public class KafkaTestConsumer {
             for (MessageAndOffset messageAndOffset : fetchResponse.messageSet(a_topic, a_partition)) {
                 long currentOffset = messageAndOffset.offset();
                 if (currentOffset < readOffset) {
-                    LOG.info("Found an old offset: " + currentOffset + " Expecting: " + readOffset);
+                    LOG.info("Found an old offset: {} Expecting: {}", currentOffset, readOffset);
                     continue;
                 }
                 readOffset = messageAndOffset.nextOffset();
@@ -94,7 +94,7 @@ public class KafkaTestConsumer {
 
                 byte[] bytes = new byte[payload.limit()];
                 payload.get(bytes);
-                LOG.info("Consumed: " + String.valueOf(messageAndOffset.offset()) + ": " + new String(bytes, "UTF-8"));
+                LOG.info("Consumed: {}: {}", String.valueOf(messageAndOffset.offset()), new String(bytes, "UTF-8"));
                 numRead++;
                 a_maxReads--;
             }
@@ -157,8 +157,8 @@ public class KafkaTestConsumer {
                     }
                 }
             } catch (Exception e) {
-                LOG.info("Error communicating with Broker [" + seed + "] to find Leader for [" + a_topic
-                        + ", " + a_partition + "] Reason: " + e);
+                LOG.info("Error communicating with Broker [{}] to find Leader for [{},{}] Reason: {}",
+                        seed, a_topic, a_partition, e);
             } finally {
                 if (consumer != null) consumer.close();
             }

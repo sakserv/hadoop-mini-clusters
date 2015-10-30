@@ -25,7 +25,7 @@ public class ActivemqLocalBrokerIntegrationTest {
             propertyParser = new PropertyParser(ConfigVars.DEFAULT_PROPS_FILE);
             propertyParser.parsePropsFile();
         } catch(IOException e) {
-            LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
+            LOG.error("Unable to load property file: {}", propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
         }
     }
     
@@ -61,7 +61,7 @@ public class ActivemqLocalBrokerIntegrationTest {
         int n = 10000;
         String msg;
         
-        LOG.info("ACTIVEMQ: Sending " + n + " messages");
+        LOG.info("ACTIVEMQ: Sending {} messages", n);
 
         //send a lot of messages
         for (int i = 0; i < n; i++) {

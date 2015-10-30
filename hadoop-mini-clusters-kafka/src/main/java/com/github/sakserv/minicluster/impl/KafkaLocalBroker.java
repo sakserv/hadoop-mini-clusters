@@ -151,7 +151,7 @@ public class KafkaLocalBroker implements MiniCluster {
 
     @Override
     public void start() throws Exception {
-        LOG.info("KAFKA: Starting Kafka on port: " + kafkaPort);
+        LOG.info("KAFKA: Starting Kafka on port: {}", kafkaPort);
         configure();
         kafkaServer = new KafkaServer(kafkaConfig, new LocalSystemTime());
         kafkaServer.startup();
@@ -164,7 +164,7 @@ public class KafkaLocalBroker implements MiniCluster {
 
     @Override
     public void stop(boolean cleanUp) throws Exception {
-        LOG.info("KAFKA: Stopping Kafka on port: " + kafkaPort);
+        LOG.info("KAFKA: Stopping Kafka on port: {}", kafkaPort);
         kafkaServer.shutdown();
 
         if (cleanUp) {

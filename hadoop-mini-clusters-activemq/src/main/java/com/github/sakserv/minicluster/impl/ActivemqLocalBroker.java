@@ -153,7 +153,7 @@ public class ActivemqLocalBroker implements MiniCluster {
     @Override
     public void start() throws Exception {
         String uri = uriPrefix + hostName + ":" + port;
-        LOG.info("ACTIVEMQ: Starting ActiveMQ on " + uri);
+        LOG.info("ACTIVEMQ: Starting ActiveMQ on {}", uri);
         configure();
 
         broker = new BrokerService();

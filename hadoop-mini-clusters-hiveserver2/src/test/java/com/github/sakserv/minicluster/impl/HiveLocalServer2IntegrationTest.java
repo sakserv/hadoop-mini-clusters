@@ -40,7 +40,7 @@ public class HiveLocalServer2IntegrationTest {
             propertyParser = new PropertyParser(ConfigVars.DEFAULT_PROPS_FILE);
             propertyParser.parsePropsFile();
         } catch(IOException e) {
-            LOG.error("Unable to load property file: " + propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
+            LOG.error("Unable to load property file: {}", propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
         }
     }
     
@@ -128,7 +128,7 @@ public class HiveLocalServer2IntegrationTest {
             String createDbDdl = "CREATE DATABASE IF NOT EXISTS " +
                     propertyParser.getProperty(ConfigVars.HIVE_TEST_DATABASE_NAME_KEY);
             stmt = con.createStatement();
-            LOG.info("HIVE: Running Create Database Statement: " + createDbDdl);
+            LOG.info("HIVE: Running Create Database Statement: {}", createDbDdl);
             stmt.execute(createDbDdl);
         } catch (Exception e) {
             e.printStackTrace();
@@ -138,7 +138,7 @@ public class HiveLocalServer2IntegrationTest {
         String dropDdl = "DROP TABLE " + propertyParser.getProperty(ConfigVars.HIVE_TEST_DATABASE_NAME_KEY) + "." +
                 propertyParser.getProperty(ConfigVars.HIVE_TEST_TABLE_NAME_KEY);
         stmt = con.createStatement();
-        LOG.info("HIVE: Running Drop Table Statement: " + dropDdl);
+        LOG.info("HIVE: Running Drop Table Statement: {}", dropDdl);
         stmt.execute(dropDdl);
 
         // Create the ORC table
@@ -149,7 +149,7 @@ public class HiveLocalServer2IntegrationTest {
             "CLUSTERED BY (id) INTO 16 BUCKETS " +
             "STORED AS ORC tblproperties(\"orc.compress\"=\"NONE\")";
         stmt = con.createStatement();
-        LOG.info("HIVE: Running Create Table Statement: " + createDdl);
+        LOG.info("HIVE: Running Create Table Statement: {}", createDdl);
         stmt.execute(createDdl);
 
         // Issue a describe on the new table and display the output
@@ -171,7 +171,7 @@ public class HiveLocalServer2IntegrationTest {
         dropDdl = "DROP TABLE " + propertyParser.getProperty(ConfigVars.HIVE_TEST_DATABASE_NAME_KEY) + "." +
                 propertyParser.getProperty(ConfigVars.HIVE_TEST_TABLE_NAME_KEY);
         stmt = con.createStatement();
-        LOG.info("HIVE: Running Drop Table Statement: " + dropDdl);
+        LOG.info("HIVE: Running Drop Table Statement: {}", dropDdl);
         stmt.execute(dropDdl);
     }
 
