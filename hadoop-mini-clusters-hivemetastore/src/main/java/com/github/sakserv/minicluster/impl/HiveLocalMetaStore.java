@@ -204,10 +204,10 @@ public class HiveLocalMetaStore implements MiniCluster {
     public void configure() throws Exception {
         hiveConf.setVar(HiveConf.ConfVars.METASTOREURIS,
                 "thrift://" + hiveMetastoreHostname + ":" + hiveMetastorePort);
-        hiveConf.set(HiveConf.ConfVars.SCRATCHDIR.varname, hiveScratchDir);
-        hiveConf.set(HiveConf.ConfVars.METASTORECONNECTURLKEY.varname,
+        hiveConf.setVar(HiveConf.ConfVars.SCRATCHDIR, hiveScratchDir);
+        hiveConf.setVar(HiveConf.ConfVars.METASTORECONNECTURLKEY,
                 "jdbc:derby:;databaseName=" + hiveMetastoreDerbyDbDir + ";create=true");
-        hiveConf.set(HiveConf.ConfVars.METASTOREWAREHOUSE.varname, new File(hiveWarehouseDir).getAbsolutePath());
+        hiveConf.setVar(HiveConf.ConfVars.METASTOREWAREHOUSE, new File(hiveWarehouseDir).getAbsolutePath());
         hiveConf.setBoolVar(HiveConf.ConfVars.HIVE_IN_TEST, true);
     }
 

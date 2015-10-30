@@ -219,15 +219,15 @@ public class HiveLocalServer2 implements MiniCluster {
     public void configure() throws Exception {
         hiveConf.setVar(HiveConf.ConfVars.METASTOREURIS,
                 "thrift://" + hiveMetastoreHostname + ":" + hiveMetastorePort);
-        hiveConf.set(HiveConf.ConfVars.SCRATCHDIR.varname, hiveScratchDir);
-        hiveConf.set(HiveConf.ConfVars.METASTORECONNECTURLKEY.varname,
+        hiveConf.setVar(HiveConf.ConfVars.SCRATCHDIR, hiveScratchDir);
+        hiveConf.setVar(HiveConf.ConfVars.METASTORECONNECTURLKEY,
                 "jdbc:derby:;databaseName=" + hiveMetastoreDerbyDbDir + ";create=true");
-        hiveConf.set(HiveConf.ConfVars.METASTOREWAREHOUSE.varname, new File(hiveWarehouseDir).getAbsolutePath());
+        hiveConf.setVar(HiveConf.ConfVars.METASTOREWAREHOUSE, new File(hiveWarehouseDir).getAbsolutePath());
         hiveConf.setBoolVar(HiveConf.ConfVars.HIVE_IN_TEST, true);
-        hiveConf.set(HiveConf.ConfVars.HIVE_SERVER2_THRIFT_BIND_HOST.varname, String.valueOf(hiveServer2Hostname));
-        hiveConf.set(HiveConf.ConfVars.HIVE_SERVER2_THRIFT_PORT.varname, String.valueOf(hiveServer2Port));
-        hiveConf.set(HiveConf.ConfVars.HIVE_ZOOKEEPER_QUORUM.varname, zookeeperConnectionString);
-        hiveConf.set(HiveConf.ConfVars.HIVE_SUPPORT_CONCURRENCY.varname, "true");
+        hiveConf.setVar(HiveConf.ConfVars.HIVE_SERVER2_THRIFT_BIND_HOST, String.valueOf(hiveServer2Hostname));
+        hiveConf.setIntVar(HiveConf.ConfVars.HIVE_SERVER2_THRIFT_PORT, hiveServer2Port);
+        hiveConf.setVar(HiveConf.ConfVars.HIVE_ZOOKEEPER_QUORUM, zookeeperConnectionString);
+        hiveConf.setBoolVar(HiveConf.ConfVars.HIVE_SUPPORT_CONCURRENCY, Boolean.TRUE);
     }
 
     @Override

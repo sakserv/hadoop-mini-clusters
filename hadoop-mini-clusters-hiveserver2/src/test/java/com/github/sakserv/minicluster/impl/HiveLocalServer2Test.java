@@ -15,7 +15,7 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.minicluster.config.PropertyParser;
+import com.github.sakserv.propertyparser.PropertyParser;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.junit.BeforeClass;
 import org.junit.Rule;

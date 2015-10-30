@@ -14,6 +14,7 @@
     <dependencies>
 
         <!-- Hadoop Client -->
+        <!-- HiveConf inherits from Configuration, thus hadoop-client -->
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-client</artifactId>
@@ -30,6 +31,7 @@
             <groupId>org.apache.hive</groupId>
             <artifactId>hive-jdbc</artifactId>
             <version>${hive.version}</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
