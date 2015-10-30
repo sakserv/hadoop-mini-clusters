@@ -81,9 +81,6 @@
         <jopt-simple.version>4.8</jopt-simple.version>
         <spring-core.version>4.1.5.RELEASE</spring-core.version>
 
-        <!-- mini cluster module deps -->
-        <hadoop-mini-clusters-common.version>0.0.16-SNAPSHOT</hadoop-mini-clusters-common.version>
-
         <!-- non hadoop deps -->
         <activemq.version>5.10.0</activemq.version>
         <curator.version>2.5.0</curator.version>
@@ -149,11 +146,6 @@
     <dependencies>
 
         <!-- common deps -->
-        <dependency>
-            <groupId>com.github.sakserv</groupId>
-            <artifactId>hadoop-mini-clusters-common</artifactId>
-            <version>${hadoop-mini-clusters-common.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>

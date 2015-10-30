@@ -20,6 +20,13 @@
             <version>${curator.version}</version>
         </dependency>
 
+        <!-- Hadoop Mini Clusters Common -->
+        <dependency>
+            <groupId>com.github.sakserv</groupId>
+            <artifactId>hadoop-mini-clusters-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
 
 
