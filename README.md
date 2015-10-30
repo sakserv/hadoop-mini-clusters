@@ -2,21 +2,25 @@ hadoop-mini-clusters
 ====================
 Collection of Hadoop Mini Clusters
 
-Includes:
----------
-*   HDFS - Mini HDFS Cluster
-*   YARN - Mini YARN Cluster (no MR)
-*   MapReduce - Mini MapReduce Cluster
-*   HBase - Mini HBase Cluster
-*   Zookeeper - Curator based Local Cluster
-*   HiveServer2 - Local HiveServer2 instance
-*   HiveMetaStore - Derby backed HiveMetaStore
-*   Storm - Storm LocalCluster
-*   Kafka - Local Kafka Broker
-*   Oozie - Local Oozie Server - Thanks again Vladimir
-*   MongoDB - I know... not Hadoop
-*   ActiveMQ - Thanks Vladimir Zlatkin!
-*   HyperSQL DB - For testing various databases
+Modules:
+------------
+The project structure changed with 0.1.0. Each mini cluster now resides in a module of its own. See the module names below.
+
+Modules Included:
+-----------------
+*   hadoop-mini-clusters-hdfs - Mini HDFS Cluster
+*   hadoop-mini-clusters-yarn - Mini YARN Cluster (no MR)
+*   hadoop-mini-clusters-mapreduce - Mini MapReduce Cluster
+*   hadoop-mini-clusters-hbase - Mini HBase Cluster
+*   hadoop-mini-clusters-zookeeper - Curator based Local Cluster
+*   hadoop-mini-clusters-hiveserver2 - Local HiveServer2 instance
+*   hadoop-mini-clusters-hivemetastore - Derby backed HiveMetaStore
+*   hadoop-mini-clusters-storm - Storm LocalCluster
+*   hadoop-mini-clusters-kafka - Local Kafka Broker
+*   hadoop-mini-clusters-oozie - Local Oozie Server - Thanks again Vladimir
+*   hadoop-mini-clusters-mongodb - I know... not Hadoop
+*   hadoop-mini-clusters-activemq - Thanks Vladimir Zlatkin!
+*   hadoop-mini-clusters-hyperscaledb - For testing various databases
 
 Tests:
 ------
@@ -35,14 +39,26 @@ Using:
 	<dependency>
 		<groupId>com.github.sakserv</groupId>
 		<artifactId>hadoop-mini-clusters</artifactId>
-		<version>0.0.15</version>
+		<version>0.1.0</version>
 	</dependency>
+	<dependency>
+    	<groupId>com.github.sakserv</groupId>
+    	<artifactId>hadoop-mini-clusters-common</artifactId>
+    	<version>0.1.0</version>
+    </dependency>
 ```
 
 Examples:
 ---------
 
 *  HDFS Example
+```XML
+	<dependency>
+    	<groupId>com.github.sakserv</groupId>
+    	<artifactId>hadoop-mini-clusters-hdfs</artifactId>
+    	<version>0.1.0</version>
+    </dependency>
+```
 ```Java
         HdfsLocalCluster hdfsLocalCluster = new HdfsLocalCluster.Builder()
             .setHdfsNamenodePort(12345)
@@ -58,6 +74,13 @@ Examples:
 ```
 
 * YARN Example
+```XML
+	<dependency>
+    	<groupId>com.github.sakserv</groupId>
+    	<artifactId>hadoop-mini-clusters-yarn</artifactId>
+    	<version>0.1.0</version>
+    </dependency>
+```
 ```Java
         YarnLocalCluster yarnLocalCluster = new YarnLocalCluster.Builder()
             .setNumNodeManagers(1)
@@ -76,6 +99,13 @@ Examples:
 ```
 
 * MapReduce Example
+```XML
+	<dependency>
+    	<groupId>com.github.sakserv</groupId>
+    	<artifactId>hadoop-mini-clusters-mapreduce</artifactId>
+    	<version>0.1.0</version>
+    </dependency>
+```
 ```Java
         MRLocalCluster mrLocalCluster = new MRLocalCluster.Builder()
             .setNumNodeManagers(1)
@@ -93,6 +123,13 @@ Examples:
 ```
 
 * HBase Example
+```XML
+	<dependency>
+    	<groupId>com.github.sakserv</groupId>
+    	<artifactId>hadoop-mini-clusters-hbase</artifactId>
+    	<version>0.1.0</version>
+    </dependency>
+```
 ```Java
         HbaseLocalCluster hbaseLocalCluster = new HbaseLocalCluster.Builder()
             .setHbaseMasterPort(25111)
@@ -110,6 +147,13 @@ Examples:
 ```
 
 *  Zookeeper Example
+```XML
+	<dependency>
+    	<groupId>com.github.sakserv</groupId>
+    	<artifactId>hadoop-mini-clusters-zookeeper</artifactId>
+    	<version>0.1.0</version>
+    </dependency>
+```
 ```Java
         ZookeeperLocalCluster zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
             .setPort(12345)
@@ -120,6 +164,13 @@ Examples:
 ```
 
 *  HiveServer2 Example
+```XML
+	<dependency>
+    	<groupId>com.github.sakserv</groupId>
+    	<artifactId>hadoop-mini-clusters-hiveserver2</artifactId>
+    	<version>0.1.0</version>
+    </dependency>
+```
 ```Java
         HiveLocalServer2 hiveLocalServer2 = new HiveLocalServer2.Builder()
             .setHiveServer2Hostname("localhost")
@@ -136,6 +187,13 @@ Examples:
 ```
 
 *  HiveMetastore Example
+```XML
+	<dependency>
+    	<groupId>com.github.sakserv</groupId>
+    	<artifactId>hadoop-mini-clusters-hivemetastore</artifactId>
+    	<version>0.1.0</version>
+    </dependency>
+```
 ```Java
         HiveLocalMetaStore hiveLocalMetaStore = new HiveLocalMetaStore.Builder()
             .setHiveMetastoreHostname("localhost")
@@ -149,6 +207,13 @@ Examples:
 ```
 
 *  Storm Example
+```XML
+	<dependency>
+    	<groupId>com.github.sakserv</groupId>
+    	<artifactId>hadoop-mini-clusters-storm</artifactId>
+    	<version>0.1.0</version>
+    </dependency>
+```
 ```Java
         StormLocalCluster stormLocalCluster = new StormLocalCluster.Builder()
             .setZookeeperHost("localhost")
@@ -161,6 +226,13 @@ Examples:
 ```
 
 *  Kafka Example
+```XML
+	<dependency>
+    	<groupId>com.github.sakserv</groupId>
+    	<artifactId>hadoop-mini-clusters-kafka</artifactId>
+    	<version>0.1.0</version>
+    </dependency>
+```
 ```Java
         KafkaLocalBroker kafkaLocalBroker = new KafkaLocalBroker.Builder()
             .setKafkaHostname("localhost")
@@ -174,6 +246,13 @@ Examples:
 ```
 
 *  Oozie Example
+```XML
+	<dependency>
+    	<groupId>com.github.sakserv</groupId>
+    	<artifactId>hadoop-mini-clusters-oozie</artifactId>
+    	<version>0.1.0</version>
+    </dependency>
+```
 ```Java
         OozieLocalServer oozieLocalServer = new OozieLocalServer.Builder()
                 .setOozieTestDir("embedded_oozie")
@@ -188,6 +267,13 @@ Examples:
 ```
 
 *  MongoDB Example
+```XML
+	<dependency>
+    	<groupId>com.github.sakserv</groupId>
+    	<artifactId>hadoop-mini-clusters-mongodb</artifactId>
+    	<version>0.1.0</version>
+    </dependency>
+```
 ```Java
         MongodbLocalServer mongodbLocalServer = new MongodbLocalServer.Builder()
             .setIp("127.0.0.1")
@@ -197,6 +283,13 @@ Examples:
 ```
 
 *  ActiveMQ Example
+```XML
+	<dependency>
+    	<groupId>com.github.sakserv</groupId>
+    	<artifactId>hadoop-mini-clusters-activemq</artifactId>
+    	<version>0.1.0</version>
+    </dependency>
+```
 ```Java
         ActivemqLocalBroker amq = new ActivemqLocalBroker.Builder()
             .setHostName("localhost")
@@ -210,6 +303,13 @@ Examples:
 ```
 
 *  HyperSQL DB
+```XML
+	<dependency>
+    	<groupId>com.github.sakserv</groupId>
+    	<artifactId>hadoop-mini-clusters-hyperscaledb</artifactId>
+    	<version>0.1.0</version>
+    </dependency>
+```
 ```Java
         hsqldbLocalServer = new HsqldbLocalServer.Builder()
             .setHsqldbHostName("127.0.0.1")
