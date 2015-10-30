@@ -11,5 +11,30 @@
 
     <artifactId>hadoop-mini-clusters-yarn</artifactId>
 
+    <dependencies>
+
+        <!-- Mini Clusters -->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-minicluster</artifactId>
+            <version>${hadoop.version}</version>
+        </dependency>
+
+        <!-- jopt simple -->
+        <dependency>
+            <groupId>net.sf.jopt-simple</groupId>
+            <artifactId>jopt-simple</artifactId>
+            <version>${jopt-simple.version}</version>
+        </dependency>
+
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring-core.version}</version>
+        </dependency>
+
+    </dependencies>
+
 
 </project>

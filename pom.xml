@@ -78,6 +78,8 @@
         <junit.version>4.12</junit.version>
         <slf4j.version>1.7.10</slf4j.version>
         <property-parser.version>0.0.2</property-parser.version>
+        <jopt-simple.version>4.8</jopt-simple.version>
+        <spring-core.version>4.1.5.RELEASE</spring-core.version>
 
         <!-- mini cluster module deps -->
         <hadoop-mini-clusters-common.version>0.0.16-SNAPSHOT</hadoop-mini-clusters-common.version>
