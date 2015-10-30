@@ -11,9 +11,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.github.sakserv.minicluster.kafka;
+package com.github.sakserv.minicluster.kafka.producer;
 
-import com.github.sakserv.minicluster.datetime.GenerateRandomDay;
+import com.github.sakserv.minicluster.datatime.GenerateRandomDay;
 import kafka.javaapi.producer.Producer;
 import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerConfig;

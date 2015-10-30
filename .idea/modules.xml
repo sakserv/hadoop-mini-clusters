@@ -9,7 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-hdfs/hadoop-mini-clusters-hdfs.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-hdfs/hadoop-mini-clusters-hdfs.iml" />
       <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-hivemetastore/hadoop-mini-clusters-hivemetastore.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-hivemetastore/hadoop-mini-clusters-hivemetastore.iml" />
       <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-hiveserver2/hadoop-mini-clusters-hiveserver2.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-hiveserver2/hadoop-mini-clusters-hiveserver2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-hypersql/hadoop-mini-clusters-hypersql.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-hypersql/hadoop-mini-clusters-hypersql.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-hyperscaledb/hadoop-mini-clusters-hyperscaledb.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-hyperscaledb/hadoop-mini-clusters-hyperscaledb.iml" />
       <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-kafka/hadoop-mini-clusters-kafka.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-kafka/hadoop-mini-clusters-kafka.iml" />
       <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-mapreduce/hadoop-mini-clusters-mapreduce.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-mapreduce/hadoop-mini-clusters-mapreduce.iml" />
       <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-mongodb/hadoop-mini-clusters-mongodb.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-mongodb/hadoop-mini-clusters-mongodb.iml" />

@@ -131,6 +131,7 @@
       <module name="hadoop-mini-clusters-hdfs" target="1.7" />
       <module name="hadoop-mini-clusters-hivemetastore" target="1.7" />
       <module name="hadoop-mini-clusters-hiveserver2" target="1.7" />
+      <module name="hadoop-mini-clusters-hyperscaledb" target="1.7" />
       <module name="hadoop-mini-clusters-hypersql" target="1.7" />
       <module name="hadoop-mini-clusters-kafka" target="1.7" />
       <module name="hadoop-mini-clusters-mapreduce" target="1.7" />

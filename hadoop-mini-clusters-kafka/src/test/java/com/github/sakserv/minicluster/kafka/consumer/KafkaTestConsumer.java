@@ -11,7 +11,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.github.sakserv.minicluster.kafka;
+package com.github.sakserv.minicluster.kafka.consumer;
 
 import kafka.api.FetchRequest;
 import kafka.api.FetchRequestBuilder;

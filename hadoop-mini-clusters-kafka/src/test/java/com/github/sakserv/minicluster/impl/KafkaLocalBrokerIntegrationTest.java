@@ -15,10 +15,11 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.minicluster.config.PropertyParser;
-import com.github.sakserv.minicluster.kafka.KafkaTestConsumer;
-import com.github.sakserv.minicluster.kafka.KafkaTestProducer;
+import com.github.sakserv.minicluster.kafka.consumer.KafkaTestConsumer;
+import com.github.sakserv.minicluster.kafka.producer.KafkaTestProducer;
+import com.github.sakserv.propertyparser.PropertyParser;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -103,7 +104,7 @@ public class KafkaLocalBrokerIntegrationTest {
                 kafkaLocalBroker.getKafkaPort());
         
         // Assert num of messages produced = num of message consumed
-        assertEquals(Long.parseLong(propertyParser.getProperty(ConfigVars.KAFKA_TEST_MESSAGE_COUNT_KEY)),
+        Assert.assertEquals(Long.parseLong(propertyParser.getProperty(ConfigVars.KAFKA_TEST_MESSAGE_COUNT_KEY)),
                 kafkaTestConsumer.getNumRead());
 
     }
