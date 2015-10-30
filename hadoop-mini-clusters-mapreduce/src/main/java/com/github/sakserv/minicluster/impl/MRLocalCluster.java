@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 public class MRLocalCluster implements MiniCluster {
 
     // Logger
-    private static final Logger LOG = LoggerFactory.getLogger(YarnLocalCluster.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MRLocalCluster.class);
 
     private String testName = getClass().getName();
     private String inJvmContainerExecutorClass = "com.github.sakserv.minicluster.yarn.InJvmContainerExecutor";
