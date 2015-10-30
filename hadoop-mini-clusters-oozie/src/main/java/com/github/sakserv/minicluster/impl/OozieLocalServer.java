@@ -62,7 +62,7 @@ public class OozieLocalServer implements MiniCluster {
         return oozieHomeDir;
     }
 
-        public String getOozieUsername() {
+    public String getOozieUsername() {
         return oozieUsername;
     }
 

@@ -21,6 +21,10 @@ import org.apache.hadoop.yarn.server.MiniYARNCluster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 public class YarnLocalCluster implements MiniCluster {
 
     // Logger
@@ -261,6 +265,17 @@ public class YarnLocalCluster implements MiniCluster {
 
     @Override
     public void cleanUp() throws Exception {
-        FileUtils.deleteFolder("target/" + testName);
+        // Depending on if we are running in the module or the parent
+        // project, the target folder will be in a different location.
+        // We don't want to nuke the entire target directory, unless only
+        // the mini cluster is using it.
+        // A reasonable check to keep things clean is to check for the existence
+        // of ./target/classes and only delete the mini cluster temporary dir if true.
+        // Delete the entire ./target if false
+        if (new File("./target/classes").exists()) {
+            FileUtils.deleteFolder("./target/" + testName);
+        } else {
+            FileUtils.deleteFolder("./target");
+        }
     }
 }
