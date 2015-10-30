@@ -125,13 +125,28 @@
             Build profiles to use different versions of Hadoop
         -->
 
-        <!-- Latest - HDP 2.3.0.0 -->
+        <!-- HDP 2.3.2.0 -->
         <profile>
-            <id>latest</id>
+            <id>2.3.2.0</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
+                <hdp.release.version>2.3.2.0</hdp.release.version>
+                <storm.version>0.10.0.2.3.2.0-2950</storm.version>
+                <hive.version>1.2.1.2.3.2.0-2950</hive.version>
+                <hadoop.version>2.7.1.2.3.2.0-2950</hadoop.version>
+                <hbase.version>1.1.2.2.3.2.0-2950</hbase.version>
+                <kafka.version>0.8.2.2.3.2.0-2950</kafka.version>
+                <oozie.version>4.2.0.2.3.2.0-2950</oozie.version>
+            </properties>
+        </profile>
+
+        <!-- HDP 2.3.0.0 -->
+        <profile>
+            <id>2.3.0.0</id>
+            <properties>
+                <hdp.release.version>2.3.0.0</hdp.release.version>
                 <storm.version>0.10.0.2.3.0.0-2557</storm.version>
                 <hive.version>1.2.1.2.3.0.0-2557</hive.version>
                 <hadoop.version>2.7.1.2.3.0.0-2557</hadoop.version>
@@ -165,6 +180,7 @@
             <version>${property-parser.version}</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <build>
