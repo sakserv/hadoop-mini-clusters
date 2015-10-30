@@ -16,7 +16,7 @@ package com.github.sakserv.minicluster.impl;
 
 import backtype.storm.Config;
 import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.minicluster.config.PropertyParser;
+import com.github.sakserv.propertyparser.PropertyParser;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
