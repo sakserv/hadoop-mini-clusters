@@ -11,5 +11,45 @@
 
     <artifactId>hadoop-mini-clusters-oozie</artifactId>
 
+    <dependencies>
+
+        <!-- Oozie -->
+        <dependency>
+            <groupId>org.apache.oozie.test</groupId>
+            <artifactId>oozie-mini</artifactId>
+            <version>${oozie.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.oozie</groupId>
+            <artifactId>oozie-core</artifactId>
+            <version>${oozie.version}</version>
+            <type>test-jar</type>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.oozie</groupId>
+            <artifactId>oozie-core</artifactId>
+            <version>${oozie.version}</version>
+        </dependency>
+
+        <!-- HDFS Mini Cluster -->
+        <dependency>
+            <groupId>com.github.sakserv</groupId>
+            <artifactId>hadoop-mini-clusters-hdfs</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- MR Mini Cluster -->
+        <dependency>
+            <groupId>com.github.sakserv</groupId>
+            <artifactId>hadoop-mini-clusters-mapreduce</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
 
 </project>
