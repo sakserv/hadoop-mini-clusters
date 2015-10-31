@@ -60,15 +60,20 @@ public class OozieShareLibUtil {
     // Instance variables
     String shareLibCacheDir;
     Boolean purgeLocalShareLibCache;
+    String hdfsUri;
+    FileSystem hdfsFileSystem;
 
     // Constructor
-    public OozieShareLibUtil(String shareLibCacheDir, Boolean purgeLocalShareLibCache) {
+    public OozieShareLibUtil(String shareLibCacheDir, Boolean purgeLocalShareLibCache, String hdfsUri,
+                             FileSystem hdfsFileSystem) {
         this.shareLibCacheDir = shareLibCacheDir;
         this.purgeLocalShareLibCache = purgeLocalShareLibCache;
+        this.hdfsUri = hdfsUri;
+        this.hdfsFileSystem = hdfsFileSystem;
     }
 
     // Main driver that downloads, extracts, and deploys the oozie sharelib
-    public void createShareLib(String hdfsUri, FileSystem hdfsFileSystem) {
+    public void createShareLib() {
 
         final String fullOozieTarFilePath = shareLibCacheDir + Path.SEPARATOR + getOozieTarFileName();
 
@@ -89,6 +94,10 @@ public class OozieShareLibUtil {
             Path destPath = new Path(hdfsUri +  Path.SEPARATOR +  SHARE_LIB_PREFIX + getTimestampDirectory());
             LOG.info("OOZIE: Writing share lib contents to: {}", destPath);
             hdfsFileSystem.copyFromLocalFile(false, new Path(new File(oozieShareLibExtractTempDir).toURI()), destPath);
+
+            if(purgeLocalShareLibCache) {
+                FileUtils.deleteDirectory(new File(shareLibCacheDir));
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -123,15 +132,13 @@ public class OozieShareLibUtil {
 
         if(purgeLocalShareLibCache) {
             FileUtils.deleteDirectory(new File(shareLibCacheDir));
-        } else {
-            if (new File(fullOozieTarFilePath).exists()) {
-                LOG.info("OOZIE: Found Oozie tarball in cache, skipping download: {}", fullOozieTarFilePath);
-            } else {
-                downloadOozieTarFileToLocalCacheDir();
-            }
         }
 
-        extractOozieTarFileToTempDir(new File(fullOozieTarFilePath));
+        if (new File(fullOozieTarFilePath).exists()) {
+            LOG.info("OOZIE: Found Oozie tarball in cache, skipping download: {}", fullOozieTarFilePath);
+        } else {
+            downloadOozieTarFileToLocalCacheDir();
+        }
     }
 
     public void downloadOozieTarFileToLocalCacheDir() throws IOException {

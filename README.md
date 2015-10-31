@@ -48,6 +48,18 @@ Using:
     </dependency>
 ```
 
+Profile Support:
+----------------
+Multiple versions of HDP are supported. The current list is:
+
+*   HDP 2.3.2.0
+*   HDP 2.3.0.0
+
+To use a different profiles, add the profile name to your maven build:
+```
+mvn test -P2.3.0.0
+```
+
 Examples:
 ---------
 
@@ -263,7 +275,9 @@ Examples:
                 .setOozieHdfsDefaultFs("hdfs://localhost:8020/)
                 .setOozieConf(new Configuration())
                 .setOozieHdfsShareLibDir("/tmp/oozie_share_lib")
-                .setOozieShareLibCreate(true)
+                .setOozieShareLibCreate(Boolean.TRUE)
+                .setOozieLocalShareLibCacheDir("share_lib_cache")
+                .setOoziePurgeLocalShareLibCache(Boolean.FALSE)
                 .build();
         oozieLocalServer.start();
 ```

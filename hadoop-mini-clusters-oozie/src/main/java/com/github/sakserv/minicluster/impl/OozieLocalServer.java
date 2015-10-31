@@ -2,6 +2,7 @@ package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
 import com.github.sakserv.minicluster.oozie.util.OozieConfigUtil;
+import com.github.sakserv.minicluster.oozie.util.OozieShareLibUtil;
 import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.security.UserGroupInformation;
@@ -250,6 +251,12 @@ public class OozieLocalServer implements MiniCluster {
 
         LocalOozie.start();
         oozieClient = LocalOozie.getClient();
+
+        if(oozieShareLibCreate) {
+            OozieShareLibUtil oozieShareLibUtil = new OozieShareLibUtil(getOozieLocalShareLibCacheDir(),
+                    getOoziePurgeLocalShareLibCache());
+            oozieShareLibUtil.createShareLib(getOozieHdfsShareLibDir());
+        }
 
     }
 

@@ -66,6 +66,10 @@ public class OozieLocalServerTest {
                 .setOozieHdfsShareLibDir(propertyParser.getProperty(ConfigVars.OOZIE_HDFS_SHARE_LIB_DIR_KEY))
                 .setOozieShareLibCreate(Boolean.parseBoolean(
                         propertyParser.getProperty(ConfigVars.OOZIE_SHARE_LIB_CREATE_KEY)))
+                .setOozieLocalShareLibCacheDir(propertyParser.getProperty(
+                        ConfigVars.OOZIE_LOCAL_SHARE_LIB_CACHE_DIR_KEY))
+                .setOoziePurgeLocalShareLibCache(Boolean.parseBoolean(propertyParser.getProperty(
+                        ConfigVars.OOZIE_PURGE_LOCAL_SHARE_LIB_CACHE_KEY)))
                 .build();
     }
 
