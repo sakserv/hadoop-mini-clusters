@@ -3,6 +3,20 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-activemq/hadoop-mini-clusters-activemq.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-activemq/hadoop-mini-clusters-activemq.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-common/hadoop-mini-clusters-common.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-common/hadoop-mini-clusters-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-hbase/hadoop-mini-clusters-hbase.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-hbase/hadoop-mini-clusters-hbase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-hdfs/hadoop-mini-clusters-hdfs.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-hdfs/hadoop-mini-clusters-hdfs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-hivemetastore/hadoop-mini-clusters-hivemetastore.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-hivemetastore/hadoop-mini-clusters-hivemetastore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-hiveserver2/hadoop-mini-clusters-hiveserver2.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-hiveserver2/hadoop-mini-clusters-hiveserver2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-hyperscaledb/hadoop-mini-clusters-hyperscaledb.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-hyperscaledb/hadoop-mini-clusters-hyperscaledb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-kafka/hadoop-mini-clusters-kafka.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-kafka/hadoop-mini-clusters-kafka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-mapreduce/hadoop-mini-clusters-mapreduce.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-mapreduce/hadoop-mini-clusters-mapreduce.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-mongodb/hadoop-mini-clusters-mongodb.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-mongodb/hadoop-mini-clusters-mongodb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-oozie/hadoop-mini-clusters-oozie.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-oozie/hadoop-mini-clusters-oozie.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-storm/hadoop-mini-clusters-storm.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-storm/hadoop-mini-clusters-storm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-yarn/hadoop-mini-clusters-yarn.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-yarn/hadoop-mini-clusters-yarn.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hadoop-mini-clusters-zookeeper/hadoop-mini-clusters-zookeeper.iml" filepath="$PROJECT_DIR$/hadoop-mini-clusters-zookeeper/hadoop-mini-clusters-zookeeper.iml" />
     </modules>
   </component>
 </project>

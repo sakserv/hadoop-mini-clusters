@@ -2,5 +2,19 @@
 <project version="4">
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hadoop-mini-clusters-activemq" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hadoop-mini-clusters-common" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hadoop-mini-clusters-hbase" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hadoop-mini-clusters-hdfs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hadoop-mini-clusters-hivemetastore" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hadoop-mini-clusters-hiveserver2" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hadoop-mini-clusters-hyperscaledb" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hadoop-mini-clusters-kafka" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hadoop-mini-clusters-mapreduce" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hadoop-mini-clusters-mongodb" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hadoop-mini-clusters-oozie" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hadoop-mini-clusters-storm" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hadoop-mini-clusters-yarn" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hadoop-mini-clusters-zookeeper" charset="UTF-8" />
   </component>
 </project>
