@@ -272,7 +272,7 @@ Examples:
                 .setOozieUsername(System.getProperty("user.name"))
                 .setOozieGroupname("testgroup")
                 .setOozieYarnResourceManagerAddress("localhost")
-                .setOozieHdfsDefaultFs("hdfs://localhost:8020/)
+                .setOozieHdfsDefaultFs("hdfs://localhost:8020/")
                 .setOozieConf(new Configuration())
                 .setOozieHdfsShareLibDir("/tmp/oozie_share_lib")
                 .setOozieShareLibCreate(Boolean.TRUE)
