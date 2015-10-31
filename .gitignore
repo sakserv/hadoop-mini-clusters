@@ -35,3 +35,6 @@ build/
 
 # Coverage report
 coverage-error.log
+
+# Oozie sharelib cache
+share_lib_cache

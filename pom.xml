@@ -192,7 +192,7 @@
                 <configuration>
                     <forkCount>1</forkCount>
                     <reuseForks>false</reuseForks>
-                    <argLine>-Xms4g -Xmx4g -XX:MaxPermSize=1024M</argLine>
+                    <argLine>-Xms4g -Xmx4g -XX:MaxPermSize=1024M -Dhdp.release.version=${hdp.release.version}</argLine>
                 </configuration>
             </plugin>
 

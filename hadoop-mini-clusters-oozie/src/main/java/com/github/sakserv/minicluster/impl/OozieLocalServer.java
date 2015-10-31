@@ -44,6 +44,8 @@ public class OozieLocalServer implements MiniCluster {
     private Configuration oozieConf;
     private String oozieHdfsShareLibDir;
     private Boolean oozieShareLibCreate;
+    private String oozieLocalShareLibCacheDir;
+    private Boolean ooziePurgeLocalShareLibCache;
 
     private OozieClient oozieClient;
 
@@ -57,6 +59,8 @@ public class OozieLocalServer implements MiniCluster {
         this.oozieConf = builder.oozieConf;
         this.oozieHdfsShareLibDir = builder.oozieHdfsShareLibDir;
         this.oozieShareLibCreate = builder.oozieShareLibCreate;
+        this.oozieLocalShareLibCacheDir = builder.oozieLocalShareLibCacheDir;
+        this.ooziePurgeLocalShareLibCache = builder.ooziePurgeLocalShareLibCache;
     }
 
     public String getOozieTestDir() {
@@ -95,6 +99,14 @@ public class OozieLocalServer implements MiniCluster {
         return oozieShareLibCreate;
     }
 
+    public String getOozieLocalShareLibCacheDir() {
+        return oozieLocalShareLibCacheDir;
+    }
+
+    public Boolean getOoziePurgeLocalShareLibCache() {
+        return ooziePurgeLocalShareLibCache;
+    }
+
     public static class Builder {
         private String oozieTestDir;
         private String oozieHomeDir;
@@ -105,6 +117,8 @@ public class OozieLocalServer implements MiniCluster {
         private Configuration oozieConf;
         private String oozieHdfsShareLibDir;
         private Boolean oozieShareLibCreate;
+        private String oozieLocalShareLibCacheDir;
+        private Boolean ooziePurgeLocalShareLibCache;
 
         public Builder setOozieTestDir(String oozieTestDir) {
             this.oozieTestDir = oozieTestDir;
@@ -151,6 +165,16 @@ public class OozieLocalServer implements MiniCluster {
             return this;
         }
 
+        public Builder setOozieLocalShareLibCacheDir(String oozieLocalShareLibCacheDir) {
+            this.oozieLocalShareLibCacheDir = oozieLocalShareLibCacheDir;
+            return this;
+        }
+
+        public Builder setOoziePurgeLocalShareLibCache(Boolean ooziePurgeLocalShareLibCache) {
+            this.ooziePurgeLocalShareLibCache = ooziePurgeLocalShareLibCache;
+            return this;
+        }
+
         public OozieLocalServer build() {
             OozieLocalServer oozieLocalServer = new OozieLocalServer(this);
             validateObject(oozieLocalServer);
@@ -193,6 +217,14 @@ public class OozieLocalServer implements MiniCluster {
 
             if (oozieLocalServer.getOozieShareLibCreate() == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: Oozie Share Lib Create");
+            }
+
+            if (oozieLocalServer.getOozieLocalShareLibCacheDir() == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Oozie Local Share Lib Cache Dir");
+            }
+
+            if (oozieLocalServer.getOoziePurgeLocalShareLibCache() == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Oozie Purge Local Share Lib Cache");
             }
         }
     }

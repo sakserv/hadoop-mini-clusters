@@ -62,6 +62,13 @@
             <version>${project.version}</version>
         </dependency>
 
+        <!-- Property parser -->
+        <dependency>
+            <groupId>com.github.sakserv</groupId>
+            <artifactId>property-parser</artifactId>
+            <version>${property-parser.version}</version>
+        </dependency>
+
     </dependencies>
 
 
