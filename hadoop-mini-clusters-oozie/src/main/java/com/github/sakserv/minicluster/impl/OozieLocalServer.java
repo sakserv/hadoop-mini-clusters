@@ -1,7 +1,7 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.oozie.util.OozieConfigHelpers;
+import com.github.sakserv.minicluster.oozie.util.OozieConfigUtil;
 import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.security.UserGroupInformation;
@@ -9,6 +9,7 @@ import org.apache.oozie.client.OozieClient;
 import org.apache.oozie.local.LocalOozie;
 import org.apache.oozie.service.ConfigurationService;
 import org.apache.oozie.service.HadoopAccessorService;
+import org.apache.oozie.service.JPAService;
 import org.apache.oozie.service.Services;
 import org.apache.oozie.test.XTestCase;
 import org.slf4j.Logger;
@@ -41,6 +42,8 @@ public class OozieLocalServer implements MiniCluster {
     private String oozieYarnResourceManagerAddress;
     private String oozieHdfsDefaultFs;
     private Configuration oozieConf;
+    private String oozieHdfsShareLibDir;
+    private Boolean oozieShareLibCreate;
 
     private OozieClient oozieClient;
 
@@ -52,6 +55,8 @@ public class OozieLocalServer implements MiniCluster {
         this.oozieYarnResourceManagerAddress = builder.oozieYarnResourceManagerAddress;
         this.oozieHdfsDefaultFs = builder.oozieHdfsDefaultFs;
         this.oozieConf = builder.oozieConf;
+        this.oozieHdfsShareLibDir = builder.oozieHdfsShareLibDir;
+        this.oozieShareLibCreate = builder.oozieShareLibCreate;
     }
 
     public String getOozieTestDir() {
@@ -82,6 +87,14 @@ public class OozieLocalServer implements MiniCluster {
         return oozieConf;
     }
 
+    public String getOozieHdfsShareLibDir() {
+        return oozieHdfsShareLibDir;
+    }
+
+    public Boolean getOozieShareLibCreate() {
+        return oozieShareLibCreate;
+    }
+
     public static class Builder {
         private String oozieTestDir;
         private String oozieHomeDir;
@@ -90,6 +103,8 @@ public class OozieLocalServer implements MiniCluster {
         private String oozieYarnResourceManagerAddress;
         private String oozieHdfsDefaultFs;
         private Configuration oozieConf;
+        private String oozieHdfsShareLibDir;
+        private Boolean oozieShareLibCreate;
 
         public Builder setOozieTestDir(String oozieTestDir) {
             this.oozieTestDir = oozieTestDir;
@@ -123,6 +138,16 @@ public class OozieLocalServer implements MiniCluster {
 
         public Builder setOozieConf(Configuration oozieConf) {
             this.oozieConf = oozieConf;
+            return this;
+        }
+
+        public Builder setOozieHdfsShareLibDir(String oozieHdfsShareLibDir) {
+            this.oozieHdfsShareLibDir = oozieHdfsShareLibDir;
+            return this;
+        }
+
+        public Builder setOozieShareLibCreate(Boolean oozieShareLibCreate) {
+            this.oozieShareLibCreate = oozieShareLibCreate;
             return this;
         }
 
@@ -161,6 +186,14 @@ public class OozieLocalServer implements MiniCluster {
             if (oozieLocalServer.getOozieConf() == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: Oozie Configuration");
             }
+
+            if (oozieLocalServer.getOozieHdfsShareLibDir() == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Oozie Hdfs Share Lib Dir");
+            }
+
+            if (oozieLocalServer.getOozieShareLibCreate() == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Oozie Share Lib Create");
+            }
         }
     }
 
@@ -175,11 +208,10 @@ public class OozieLocalServer implements MiniCluster {
         new File(fullOozieActionDir).mkdirs();
 
         // Create the configs
-        OozieConfigHelpers.writeXml(OozieConfigHelpers.getOozieSite(new Configuration()),
-                fullOozieConfDir + "/oozie-site.xml");
+        OozieConfigUtil.writeXml(getOozieConf(), fullOozieConfDir + "/oozie-site.xml");
 
         // Note: Oozie requires the Hadoop config be stored in a directory "hadoop-conf", handle that here.
-        OozieConfigHelpers.writeXml(new Configuration(), fullOozieHadoopConfDir + "/core-site.xml");
+        OozieConfigUtil.writeXml(new Configuration(), fullOozieHadoopConfDir + "/core-site.xml");
 
         //setup users
         UserGroupInformation.createUserForTesting(oozieUsername, new String[]{oozieGroupname});
@@ -213,6 +245,8 @@ public class OozieLocalServer implements MiniCluster {
     @Override
     public void configure() throws Exception {
 
+        Configuration configuration = getOozieConf();
+
         // Oozie has very particular naming conventions for these directories, don't change
         fullOozieHomeDir = oozieTestDir + "/" + oozieHomeDir;
         fullOozieConfDir = fullOozieHomeDir + "/conf";
@@ -229,10 +263,15 @@ public class OozieLocalServer implements MiniCluster {
         System.setProperty(ConfigurationService.OOZIE_DATA_DIR, fullOozieHomeDir);
         System.setProperty(HadoopAccessorService.SUPPORTED_FILESYSTEMS, "*");
 
-        // Handle defining hadoop home dir to include the Windows libs
-        if (System.getProperty("os.name").startsWith("Windows")) {
-            System.setProperty("hadoop.home.dir", new File("hadoop-windows").getAbsolutePath());
+        if (oozieShareLibCreate) {
+            configuration.set("oozie.service.WorkflowAppService.system.libpath",
+                    oozieHdfsDefaultFs + oozieHdfsShareLibDir);
+            configuration.set("use.system.libpath.for.mapreduce.and.pig.jobs", "true");
         }
+
+        configuration.set("oozie.service.JPAService.jdbc.driver", "org.hsqldb.jdbcDriver");
+        configuration.set("oozie.service.JPAService.jdbc.url", "jdbc:hsqldb:mem:oozie-db;create=true");
+        configuration.set(JPAService.CONF_CREATE_DB_SCHEMA, "true");
     }
 
     public OozieClient getOozieClient() {

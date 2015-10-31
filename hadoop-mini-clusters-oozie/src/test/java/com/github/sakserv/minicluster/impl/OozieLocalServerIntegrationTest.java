@@ -1,8 +1,10 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.minicluster.oozie.util.OozieShareLibUtil;
 import com.github.sakserv.propertyparser.PropertyParser;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.security.UserGroupInformation;
@@ -33,6 +35,9 @@ public class OozieLocalServerIntegrationTest {
     private static OozieLocalServer oozieLocalServer;
     private static HdfsLocalCluster hdfsLocalCluster;
     private static MRLocalCluster mrLocalCluster;
+
+    // HDFS Filesystem Handle
+    private static FileSystem hdfsFs;
 
     static {
         try {
@@ -87,24 +92,31 @@ public class OozieLocalServerIntegrationTest {
                         ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
                 .setOozieHdfsDefaultFs(hdfsLocalCluster.getHdfsConfig().get("fs.defaultFS"))
                 .setOozieConf(hdfsLocalCluster.getHdfsConfig())
+                .setOozieHdfsShareLibDir(propertyParser.getProperty(ConfigVars.OOZIE_HDFS_SHARE_LIB_DIR_KEY))
+                .setOozieShareLibCreate(Boolean.parseBoolean(
+                        propertyParser.getProperty(ConfigVars.OOZIE_SHARE_LIB_CREATE_KEY)))
                 .build();
         oozieLocalServer.start();
+
+        hdfsFs = hdfsLocalCluster.getHdfsFileSystemHandle();
     }
 
     @AfterClass
     public static void tearDown() throws Exception {
-        oozieLocalServer.stop(false);
+        oozieLocalServer.stop();
         mrLocalCluster.stop();
         hdfsLocalCluster.stop();
     }
 
     @Test
-    public void submitWorkflow() throws Exception {
-        OozieClient oozie = oozieLocalServer.getOozieClient();
-        FileSystem fs = hdfsLocalCluster.getHdfsFileSystemHandle();
+    public void testSubmitWorkflow() throws Exception {
 
-        Path appPath = new Path(fs.getHomeDirectory(), "testApp");
-        fs.mkdirs(new Path(appPath, "lib"));
+        LOG.info("OOZIE: Test Submit Workflow Start");
+
+        OozieClient oozie = oozieLocalServer.getOozieClient();
+
+        Path appPath = new Path(hdfsFs.getHomeDirectory(), "testApp");
+        hdfsFs.mkdirs(new Path(appPath, "lib"));
         Path workflow = new Path(appPath, "workflow.xml");
 
         //write workflow.xml
@@ -113,7 +125,7 @@ public class OozieLocalServerIntegrationTest {
                 "    <end name='end'/>" +
                 "</workflow-app>";
 
-        Writer writer = new OutputStreamWriter(fs.create(workflow));
+        Writer writer = new OutputStreamWriter(hdfsFs.create(workflow));
         writer.write(wfApp);
         writer.close();
 
@@ -129,6 +141,25 @@ public class OozieLocalServerIntegrationTest {
         assertEquals(WorkflowJob.Status.PREP, wf.getStatus());
 
         LOG.info("OOZIE: Workflow: {}", wf.toString());
+
+    }
+
+    @Test
+    public void testOozieShareLib() throws Exception {
+
+        LOG.info("OOZIE: Test Oozie Share Lib Start");
+
+        OozieShareLibUtil oozieShareLibUtil = new OozieShareLibUtil();
+
+        String fullHdfsUri = hdfsLocalCluster.getHdfsConfig().get("fs.defaultFS") +
+                oozieLocalServer.getOozieHdfsShareLibDir();
+
+        LOG.info("OOZIE: Creating ShareLib");
+        oozieShareLibUtil.createShareLib(fullHdfsUri, hdfsFs);
+
+        // Validate the share lib dir was created and contains a single directory
+        FileStatus[] fileStatuses = hdfsFs.listStatus(new Path(fullHdfsUri));
+        assertEquals(1, fileStatuses.length);
 
     }
 }

@@ -33,6 +33,12 @@
             <version>${oozie.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.oozie</groupId>
+            <artifactId>oozie-tools</artifactId>
+            <version>${oozie.version}</version>
+        </dependency>
+
         <!-- HDFS Mini Cluster -->
         <dependency>
             <groupId>com.github.sakserv</groupId>

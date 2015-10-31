@@ -46,6 +46,8 @@ public class ConfigVars {
     public static final String OOZIE_HOME_DIR_KEY = "oozie.home.dir";
     public static final String OOZIE_USERNAME_KEY = "oozie.username";
     public static final String OOZIE_GROUPNAME_KEY = "oozie.groupname";
+    public static final String OOZIE_HDFS_SHARE_LIB_DIR_KEY = "oozie.hdfs.share.lib.dir";
+    public static final String OOZIE_SHARE_LIB_CREATE_KEY = "oozie.share.lib.create";
 
     public String toString() {
         return "ConfigVars";

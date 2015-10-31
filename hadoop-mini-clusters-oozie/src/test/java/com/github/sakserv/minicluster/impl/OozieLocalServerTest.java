@@ -63,6 +63,9 @@ public class OozieLocalServerTest {
                         ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
                 .setOozieHdfsDefaultFs(defaultFs)
                 .setOozieConf(new Configuration())
+                .setOozieHdfsShareLibDir(propertyParser.getProperty(ConfigVars.OOZIE_HDFS_SHARE_LIB_DIR_KEY))
+                .setOozieShareLibCreate(Boolean.parseBoolean(
+                        propertyParser.getProperty(ConfigVars.OOZIE_SHARE_LIB_CREATE_KEY)))
                 .build();
     }
 
@@ -203,5 +206,52 @@ public class OozieLocalServerTest {
                         ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
                 .setOozieHdfsDefaultFs(defaultFs)
                 .build();
+    }
+
+    @Test
+    public void testOozieHdfsShareLibDir() {
+        assertEquals(propertyParser.getProperty(ConfigVars.OOZIE_HDFS_SHARE_LIB_DIR_KEY),
+                oozieLocalServer.getOozieHdfsShareLibDir());
+    }
+
+    @Test
+    public void testMissingOozieHdfsShareLibDir() {
+        exception.expect(IllegalArgumentException.class);
+        OozieLocalServer oozieLocalServer = new OozieLocalServer.Builder()
+                .setOozieTestDir(propertyParser.getProperty(ConfigVars.OOZIE_TEST_DIR_KEY))
+                .setOozieHomeDir(propertyParser.getProperty(ConfigVars.OOZIE_HOME_DIR_KEY))
+                .setOozieUsername(System.getProperty("user.name"))
+                .setOozieGroupname(propertyParser.getProperty(ConfigVars.OOZIE_GROUPNAME_KEY))
+                .setOozieYarnResourceManagerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
+                .setOozieHdfsDefaultFs(defaultFs)
+                .setOozieConf(new Configuration())
+                .setOozieShareLibCreate(Boolean.parseBoolean(
+                        propertyParser.getProperty(ConfigVars.OOZIE_SHARE_LIB_CREATE_KEY)))
+                .build();
+
+    }
+
+    @Test
+    public void testOozieShareLibCreate() {
+        assertEquals(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.OOZIE_SHARE_LIB_CREATE_KEY)),
+                oozieLocalServer.getOozieShareLibCreate());
+    }
+
+    @Test
+    public void testMissingOozieShareLibCreate() {
+        exception.expect(IllegalArgumentException.class);
+        OozieLocalServer oozieLocalServer = new OozieLocalServer.Builder()
+                .setOozieTestDir(propertyParser.getProperty(ConfigVars.OOZIE_TEST_DIR_KEY))
+                .setOozieHomeDir(propertyParser.getProperty(ConfigVars.OOZIE_HOME_DIR_KEY))
+                .setOozieUsername(System.getProperty("user.name"))
+                .setOozieGroupname(propertyParser.getProperty(ConfigVars.OOZIE_GROUPNAME_KEY))
+                .setOozieYarnResourceManagerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
+                .setOozieHdfsDefaultFs(defaultFs)
+                .setOozieConf(new Configuration())
+                .setOozieHdfsShareLibDir(propertyParser.getProperty(ConfigVars.OOZIE_HDFS_SHARE_LIB_DIR_KEY))
+                .build();
+
     }
 }

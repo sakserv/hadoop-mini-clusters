@@ -22,17 +22,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class OozieConfigHelpers {
+public class OozieConfigUtil {
 
     // Logger
-    private static final Logger LOG = LoggerFactory.getLogger(OozieConfigHelpers.class);
-
-    public static Configuration getOozieSite(Configuration configuration) {
-        configuration.set("oozie.service.JPAService.jdbc.driver", "org.hsqldb.jdbcDriver");
-        configuration.set("oozie.service.JPAService.jdbc.url", "jdbc:hsqldb:mem:oozie-db;create=true");
-        configuration.set(JPAService.CONF_CREATE_DB_SCHEMA, "true");
-        return configuration;
-    }
+    private static final Logger LOG = LoggerFactory.getLogger(OozieConfigUtil.class);
 
     public static void writeXml(Configuration configuration, String outputLocation) throws IOException {
         new File(new File(outputLocation).getParent()).mkdirs();

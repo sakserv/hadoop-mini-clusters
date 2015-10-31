@@ -262,6 +262,8 @@ Examples:
                 .setOozieYarnResourceManagerAddress("localhost")
                 .setOozieHdfsDefaultFs("hdfs://localhost:8020/)
                 .setOozieConf(new Configuration())
+                .setOozieHdfsShareLibDir("/tmp/oozie_share_lib")
+                .setOozieShareLibCreate(true)
                 .build();
         oozieLocalServer.start();
 ```
