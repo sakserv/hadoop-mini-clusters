@@ -141,6 +141,7 @@ public class OozieLocalServerIntegrationTest {
         assertEquals(WorkflowJob.Status.PREP, wf.getStatus());
 
         LOG.info("OOZIE: Workflow: {}", wf.toString());
+        hdfsFs.close();
 
     }
 
@@ -158,6 +159,7 @@ public class OozieLocalServerIntegrationTest {
         // Validate the share lib dir was created and contains a single directory
         FileStatus[] fileStatuses = hdfsFs.listStatus(new Path(oozieLocalServer.getOozieHdfsShareLibDir()));
         assertEquals(1, fileStatuses.length);
+        hdfsFs.close();
 
     }
 }
