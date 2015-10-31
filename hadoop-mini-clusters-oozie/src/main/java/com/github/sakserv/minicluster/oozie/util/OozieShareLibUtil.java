@@ -13,27 +13,18 @@
  */
 package com.github.sakserv.minicluster.oozie.util;
 
-import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.http.HttpUtils;
 import com.github.sakserv.propertyparser.PropertyParser;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.TrueFileFilter;
-import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.FileUtil;
 import org.apache.hadoop.fs.Path;
-import org.apache.oozie.tools.OozieSharelibCLI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 
 public class OozieShareLibUtil {
@@ -58,49 +49,57 @@ public class OozieShareLibUtil {
     private static final String SHARE_LIB_LOCAL_TEMP_PREFIX = "oozie_share_lib_tmp";
 
     // Instance variables
+    String oozieHdfsShareLibDir;
+    Boolean oozieShareLibCreate;
     String shareLibCacheDir;
     Boolean purgeLocalShareLibCache;
-    String hdfsUri;
     FileSystem hdfsFileSystem;
 
     // Constructor
-    public OozieShareLibUtil(String shareLibCacheDir, Boolean purgeLocalShareLibCache, String hdfsUri,
-                             FileSystem hdfsFileSystem) {
+    public OozieShareLibUtil(String oozieHdfsShareLibDir, Boolean oozieShareLibCreate, String shareLibCacheDir,
+                             Boolean purgeLocalShareLibCache, FileSystem hdfsFileSystem) {
+        this.oozieHdfsShareLibDir = oozieHdfsShareLibDir;
+        this.oozieShareLibCreate = oozieShareLibCreate;
         this.shareLibCacheDir = shareLibCacheDir;
         this.purgeLocalShareLibCache = purgeLocalShareLibCache;
-        this.hdfsUri = hdfsUri;
         this.hdfsFileSystem = hdfsFileSystem;
     }
 
     // Main driver that downloads, extracts, and deploys the oozie sharelib
     public void createShareLib() {
 
-        final String fullOozieTarFilePath = shareLibCacheDir + Path.SEPARATOR + getOozieTarFileName();
+        if (!oozieShareLibCreate) {
+            LOG.info("OOZIE: Share Lib Create Disabled... skipping");
+        } else {
 
-        try {
+            final String fullOozieTarFilePath = shareLibCacheDir + Path.SEPARATOR + getOozieTarFileName();
 
-            // Get and extract the oozie release
-            getOozieTarFileFromRepo();
-            String oozieExtractTempDir = extractOozieTarFileToTempDir(new File(fullOozieTarFilePath));
+            try {
 
-            // Extract the sharelib tarball to a temp dir
-            String fullOozieShareLibTarFilePath = oozieExtractTempDir + Path.SEPARATOR +
-                    "oozie-" + getOozieVersionFromOozieTarFileName() + Path.SEPARATOR +
-                    "oozie-sharelib-" + getOozieVersionFromOozieTarFileName() + ".tar.gz";
-            String oozieShareLibExtractTempDir = extractOozieShareLibTarFileToTempDir(
-                    new File(fullOozieShareLibTarFilePath));
+                // Get and extract the oozie release
+                getOozieTarFileFromRepo();
+                String oozieExtractTempDir = extractOozieTarFileToTempDir(new File(fullOozieTarFilePath));
 
-            // Copy the sharelib into HDFS
-            Path destPath = new Path(hdfsUri +  Path.SEPARATOR +  SHARE_LIB_PREFIX + getTimestampDirectory());
-            LOG.info("OOZIE: Writing share lib contents to: {}", destPath);
-            hdfsFileSystem.copyFromLocalFile(false, new Path(new File(oozieShareLibExtractTempDir).toURI()), destPath);
+                // Extract the sharelib tarball to a temp dir
+                String fullOozieShareLibTarFilePath = oozieExtractTempDir + Path.SEPARATOR +
+                        "oozie-" + getOozieVersionFromOozieTarFileName() + Path.SEPARATOR +
+                        "oozie-sharelib-" + getOozieVersionFromOozieTarFileName() + ".tar.gz";
+                String oozieShareLibExtractTempDir = extractOozieShareLibTarFileToTempDir(
+                        new File(fullOozieShareLibTarFilePath));
 
-            if(purgeLocalShareLibCache) {
-                FileUtils.deleteDirectory(new File(shareLibCacheDir));
+                // Copy the sharelib into HDFS
+                Path destPath = new Path(oozieHdfsShareLibDir + Path.SEPARATOR +
+                        SHARE_LIB_PREFIX + getTimestampDirectory());
+                LOG.info("OOZIE: Writing share lib contents to: {}", destPath);
+                hdfsFileSystem.copyFromLocalFile(false, new Path(new File(oozieShareLibExtractTempDir).toURI()), destPath);
+
+                if (purgeLocalShareLibCache) {
+                    FileUtils.deleteDirectory(new File(shareLibCacheDir));
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

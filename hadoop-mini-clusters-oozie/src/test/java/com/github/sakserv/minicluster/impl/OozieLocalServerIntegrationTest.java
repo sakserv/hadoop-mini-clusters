@@ -150,8 +150,9 @@ public class OozieLocalServerIntegrationTest {
         LOG.info("OOZIE: Test Oozie Share Lib Start");
 
         FileSystem hdfsFs = hdfsLocalCluster.getHdfsFileSystemHandle();
-        OozieShareLibUtil oozieShareLibUtil = new OozieShareLibUtil(oozieLocalServer.getOozieLocalShareLibCacheDir(),
-                oozieLocalServer.getOoziePurgeLocalShareLibCache(), oozieLocalServer.getOozieHdfsShareLibDir(), hdfsFs);
+        OozieShareLibUtil oozieShareLibUtil = new OozieShareLibUtil(oozieLocalServer.getOozieHdfsShareLibDir(),
+                oozieLocalServer.getOozieShareLibCreate(), oozieLocalServer.getOozieLocalShareLibCacheDir(),
+                oozieLocalServer.getOoziePurgeLocalShareLibCache(), hdfsFs);
         oozieShareLibUtil.createShareLib();
 
         // Validate the share lib dir was created and contains a single directory

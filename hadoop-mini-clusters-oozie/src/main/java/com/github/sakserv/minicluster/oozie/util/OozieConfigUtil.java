@@ -14,7 +14,6 @@
 package com.github.sakserv.minicluster.oozie.util;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.oozie.service.JPAService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
