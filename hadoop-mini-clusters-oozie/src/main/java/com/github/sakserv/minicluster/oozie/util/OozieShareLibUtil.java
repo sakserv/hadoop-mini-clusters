@@ -41,20 +41,20 @@ public class OozieShareLibUtil {
 
     public void createShareLib(String hdfsUri, FileSystem hdfsFileSystem) {
 
-        shareLibTarFile = new File("./hadoop-mini-clusters-oozie/sharelib/2.3.2.0/oozie-sharelib.tar.gz");
+        shareLibTarFile = new File("./hadoop-mini-clusters-oozie/sharelib/2.3.2.0/");
 
         try {
             File tempDir = File.createTempFile(SHARE_LIB_LOCAL_TEMP_PREFIX, "");
 
-            LOG.info("OOZIE: Untar to {}", tempDir.getAbsoluteFile());
+            /*LOG.info("OOZIE: Untar to {}", tempDir.getAbsoluteFile());
             tempDir.delete();
             tempDir.mkdir();
             tempDir.deleteOnExit();
-            FileUtil.unTar(shareLibTarFile, tempDir);
+            FileUtil.unTar(shareLibTarFile, tempDir);*/
 
             Path destPath = new Path(hdfsUri +  Path.SEPARATOR +  SHARE_LIB_PREFIX + getTimestampDirectory());
             LOG.info("OOZIE: Writing share lib contents to: {}", destPath);
-            hdfsFileSystem.copyFromLocalFile(false, new Path(tempDir.toURI()), destPath);
+            hdfsFileSystem.copyFromLocalFile(false, new Path(shareLibTarFile.toURI()), destPath);
 
             // Validate the share lib dir was created and contains a single directory
             FileStatus[] fileStatuses = hdfsFileSystem.listStatus(destPath);
