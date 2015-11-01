@@ -1,5 +1,15 @@
 Change Log
 ==========
+### 0.1.0 - 11/01/2015
+* Major changes in this release
+* Moved each mini cluster to a seperate module to reduce deps - fixes #3
+* Removed the shade plugin
+* Added maven profile support to allow for supporting multiple versions of HDP
+* Added Oozie Share Lib support - fixes #2
+* Added Windows support - fixes #1
+* Avoid needlessly creating Strings for log messages
+* Cleaned up imports
+
 ### 0.0.15 - 08/24/2015
 * Upgraded dependencies to Hadoop 2.7.1 (HDP 2.3)
 
