@@ -16,6 +16,7 @@ package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
 import com.github.sakserv.minicluster.util.FileUtils;
+import com.github.sakserv.minicluster.util.WindowsLibsUtils;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hive.service.server.HiveServer2;
 import org.slf4j.Logger;
@@ -217,6 +218,10 @@ public class HiveLocalServer2 implements MiniCluster {
 
     @Override
     public void configure() throws Exception {
+
+        // Handle Windows
+        WindowsLibsUtils.setHadoopHome();
+
         hiveConf.setVar(HiveConf.ConfVars.METASTOREURIS,
                 "thrift://" + hiveMetastoreHostname + ":" + hiveMetastorePort);
         hiveConf.setVar(HiveConf.ConfVars.SCRATCHDIR, hiveScratchDir);

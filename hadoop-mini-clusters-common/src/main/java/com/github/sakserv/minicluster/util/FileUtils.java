@@ -20,14 +20,17 @@ public class FileUtils {
         if(files!=null) { //some JVMs return null for empty dirs
             for(File f: files) {
                 if(f.isDirectory()) {
+                    f.setWritable(true);
                     deleteFolder(f.getAbsolutePath());
                 } else {
                     LOG.info("FILEUTILS: Deleting file: {}", f.getAbsolutePath());
+                    f.setWritable(true);
                     f.delete();
                 }
             }
         }
         LOG.info("FILEUTILS: Deleting file: {}", directoryToClean.getAbsolutePath());
+        directoryToClean.setWritable(true);
         directoryToClean.delete();
     }
 

@@ -15,6 +15,7 @@ package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
 import com.github.sakserv.minicluster.util.FileUtils;
+import com.github.sakserv.minicluster.util.WindowsLibsUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HConstants;
 import org.apache.hadoop.hbase.MiniHBaseCluster;
@@ -218,6 +219,9 @@ public class HbaseLocalCluster implements MiniCluster {
         hbaseConfiguration.set(HConstants.REPLICATION_ENABLE_KEY, hbaseWalReplicationEnabled.toString());
         hbaseConfiguration.set("hbase.splitlog.manager.unassigned.timeout", "999999999");
         hbaseConfiguration.set("hbase.splitlog.manager.timeoutmonitor.period", "999999999");
+
+        // Handle Windows
+        WindowsLibsUtils.setHadoopHome();
     }
 
     @Override

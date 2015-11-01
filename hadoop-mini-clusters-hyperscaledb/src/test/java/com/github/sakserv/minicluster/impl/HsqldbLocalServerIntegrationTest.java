@@ -69,6 +69,8 @@ public class HsqldbLocalServerIntegrationTest {
     @Test
     public void testHsqldbLocalServer() throws ClassNotFoundException, SQLException {
 
+        LOG.info("HSQLDB: Running User: {}", System.getProperty("user.name"));
+
         LOG.info("HSQLDB: Loading the JDBC Driver: {}", propertyParser.getProperty(ConfigVars.HSQLDB_JDBC_DRIVER_KEY));
         Class.forName(propertyParser.getProperty(ConfigVars.HSQLDB_JDBC_DRIVER_KEY));
 

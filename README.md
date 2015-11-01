@@ -30,6 +30,12 @@ Tests are included to show how to configure and use each of the mini clusters.
   <img src="https://travis-ci.org/sakserv/hadoop-mini-clusters.svg?branch=master"/>
 </p>
 
+Windows Support:
+----------------
+Support for Windows Developer workstations has been added. Note that only Window 8 and above are supported.
+Most of the project will work on Windows 7 except MapReduce/YARN, due to changes in Windows.
+See: [Access Denied Windows 7](http://stackoverflow.com/questions/25790319/getting-access-denied-error-while-running-hadoop-2-3-mapreduce-jobs-in-windows-7)
+
 
 Using:
 ------

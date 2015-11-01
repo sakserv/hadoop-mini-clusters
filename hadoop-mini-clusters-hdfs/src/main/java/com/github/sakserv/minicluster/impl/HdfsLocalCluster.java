@@ -16,6 +16,7 @@ package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
 import com.github.sakserv.minicluster.util.FileUtils;
+import com.github.sakserv.minicluster.util.WindowsLibsUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.hdfs.MiniDFSCluster;
@@ -193,6 +194,9 @@ public class HdfsLocalCluster implements MiniCluster {
 
         hdfsConfig.setBoolean("dfs.permissions", hdfsEnablePermissions);
         System.setProperty("test.build.data", hdfsTempDir);
+
+        // Handle Windows
+        WindowsLibsUtils.setHadoopHome();
     }
 
     @Override

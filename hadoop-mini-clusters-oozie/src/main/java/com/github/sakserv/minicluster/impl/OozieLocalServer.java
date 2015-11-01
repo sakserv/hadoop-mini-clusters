@@ -3,6 +3,7 @@ package com.github.sakserv.minicluster.impl;
 import com.github.sakserv.minicluster.MiniCluster;
 import com.github.sakserv.minicluster.oozie.util.OozieConfigUtil;
 import com.github.sakserv.minicluster.util.FileUtils;
+import com.github.sakserv.minicluster.util.WindowsLibsUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.oozie.client.OozieClient;
@@ -262,6 +263,7 @@ public class OozieLocalServer implements MiniCluster {
     @Override
     public void stop(boolean cleanUp) throws Exception {
         LOG.info("OOZIE: Stopping local server");
+        LocalOozie.stop();
 
         if (cleanUp) {
             cleanUp();
@@ -276,6 +278,9 @@ public class OozieLocalServer implements MiniCluster {
 
     @Override
     public void configure() throws Exception {
+
+        // Handle Windows
+        WindowsLibsUtils.setHadoopHome();
 
         Configuration configuration = getOozieConf();
 

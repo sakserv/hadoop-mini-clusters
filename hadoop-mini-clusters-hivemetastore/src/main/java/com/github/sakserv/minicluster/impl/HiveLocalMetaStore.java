@@ -16,6 +16,7 @@ package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
 import com.github.sakserv.minicluster.util.FileUtils;
+import com.github.sakserv.minicluster.util.WindowsLibsUtils;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.metastore.HiveMetaStore;
 import org.apache.hadoop.hive.metastore.txn.TxnDbUtil;
@@ -209,6 +210,9 @@ public class HiveLocalMetaStore implements MiniCluster {
                 "jdbc:derby:;databaseName=" + hiveMetastoreDerbyDbDir + ";create=true");
         hiveConf.setVar(HiveConf.ConfVars.METASTOREWAREHOUSE, new File(hiveWarehouseDir).getAbsolutePath());
         hiveConf.setBoolVar(HiveConf.ConfVars.HIVE_IN_TEST, true);
+
+        // Handle Windows
+        WindowsLibsUtils.setHadoopHome();
     }
 
     @Override

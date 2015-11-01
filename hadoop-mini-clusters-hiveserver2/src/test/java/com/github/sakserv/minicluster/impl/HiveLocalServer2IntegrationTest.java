@@ -15,6 +15,7 @@
 package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.minicluster.util.WindowsLibsUtils;
 import com.github.sakserv.propertyparser.PropertyParser;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.junit.AfterClass;
@@ -91,6 +92,9 @@ public class HiveLocalServer2IntegrationTest {
     }
 
     public static HiveConf buildHiveConf() {
+        // Handle Windows
+        WindowsLibsUtils.setHadoopHome();
+
         HiveConf hiveConf = new HiveConf();
         hiveConf.set(HiveConf.ConfVars.HIVE_TXN_MANAGER.varname, "org.apache.hadoop.hive.ql.lockmgr.DbTxnManager");
         hiveConf.set(HiveConf.ConfVars.HIVE_COMPACTOR_INITIATOR_ON.varname, "true");

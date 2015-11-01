@@ -11,5 +11,14 @@
 
     <artifactId>hadoop-mini-clusters-common</artifactId>
 
+    <dependencies>
+        <!-- Hadoop Client -->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-client</artifactId>
+            <version>${hadoop.version}</version>
+        </dependency>
+    </dependencies>
+
 
 </project>

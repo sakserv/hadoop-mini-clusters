@@ -15,7 +15,10 @@ package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
 import com.github.sakserv.minicluster.util.FileUtils;
+import com.github.sakserv.minicluster.util.WindowsLibsUtils;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.mapreduce.MRConfig;
+import org.apache.hadoop.mapreduce.MRJobConfig;
 import org.apache.hadoop.mapreduce.v2.MiniMRYarnCluster;
 import org.apache.hadoop.mapreduce.v2.jobhistory.JHAdminConfig;
 import org.apache.hadoop.yarn.conf.YarnConfiguration;
@@ -240,6 +243,22 @@ public class MRLocalCluster implements MiniCluster {
 
     @Override
     public void configure() throws Exception {
+
+        // Handle Windows
+        WindowsLibsUtils.setHadoopHome();
+
+        if(System.getProperty("os.name").startsWith("Windows")) {
+            // Yarn Application Classpath
+            String yarnApplicationClasspath = configuration.get(YarnConfiguration.YARN_APPLICATION_CLASSPATH) + "," +
+                    WindowsLibsUtils.getHadoopHome();
+            configuration.set(YarnConfiguration.YARN_APPLICATION_CLASSPATH,yarnApplicationClasspath);
+
+            // Mapreduce Application Classpath
+            String mapreduceApplicationClasspath = configuration.get(MRJobConfig.MAPREDUCE_APPLICATION_CLASSPATH) + ","
+                    + WindowsLibsUtils.getHadoopHome();
+            configuration.set(MRJobConfig.MAPREDUCE_APPLICATION_CLASSPATH, mapreduceApplicationClasspath);
+        }
+
         configuration.set(YarnConfiguration.RM_ADDRESS, resourceManagerAddress);
         configuration.set(YarnConfiguration.RM_HOSTNAME, resourceManagerHostname);
         configuration.set(YarnConfiguration.RM_SCHEDULER_ADDRESS, resourceManagerSchedulerAddress);
