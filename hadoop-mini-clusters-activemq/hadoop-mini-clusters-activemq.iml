@@ -14,7 +14,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: org.apache.activemq:activemq-all:5.10.0" level="project" />
-    <orderEntry type="module" module-name="hadoop-mini-clusters-common" />
+    <orderEntry type="library" name="Maven: com.github.sakserv:hadoop-mini-clusters-common:0.1.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.apache.hadoop:hadoop-client:2.7.1.2.3.2.0-2950" level="project" />
     <orderEntry type="library" name="Maven: org.apache.hadoop:hadoop-common:2.7.1.2.3.2.0-2950" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:11.0.2" level="project" />

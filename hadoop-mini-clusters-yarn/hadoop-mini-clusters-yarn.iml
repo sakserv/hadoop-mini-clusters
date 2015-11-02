@@ -16,7 +16,7 @@
     <orderEntry type="library" name="Maven: org.apache.hadoop:hadoop-common:test-jar:tests:2.7.1.2.3.2.0-2950" level="project" />
     <orderEntry type="library" name="Maven: org.apache.hadoop:hadoop-annotations:2.7.1.2.3.2.0-2950" level="project" />
     <orderEntry type="module-library">
-      <library name="Maven: jdk.tools:jdk.tools:1.7">
+      <library name="Maven: jdk.tools:jdk.tools:1.8">
         <CLASSES>
           <root url="jar:///Library/Java/JavaVirtualMachines/jdk1.7.0_60.jdk/Contents/Home/lib/tools.jar!/" />
         </CLASSES>
@@ -123,7 +123,7 @@
     <orderEntry type="library" name="Maven: net.sf.jopt-simple:jopt-simple:4.8" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:4.1.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: commons-logging:commons-logging:1.2" level="project" />
-    <orderEntry type="module" module-name="hadoop-mini-clusters-common" />
+    <orderEntry type="library" name="Maven: com.github.sakserv:hadoop-mini-clusters-common:0.1.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.apache.hadoop:hadoop-client:2.7.1.2.3.2.0-2950" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.12" level="project" />

@@ -16,5 +16,6 @@
     <file url="file://$PROJECT_DIR$/hadoop-mini-clusters-storm" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hadoop-mini-clusters-yarn" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hadoop-mini-clusters-zookeeper" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

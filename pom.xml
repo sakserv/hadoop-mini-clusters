@@ -89,6 +89,15 @@
         <mongo-java-driver.version>2.11.3</mongo-java-driver.version>
         <embedded-mongo.version>1.46.4</embedded-mongo.version>
 
+        <!-- Maven Release Plugin doesn't work correctly with properties defined in profiles, duplicate here -->
+        <hdp.release.version>2.3.2.0</hdp.release.version>
+        <storm.version>0.10.0.2.3.2.0-2950</storm.version>
+        <hive.version>1.2.1.2.3.2.0-2950</hive.version>
+        <hadoop.version>2.7.1.2.3.2.0-2950</hadoop.version>
+        <hbase.version>1.1.2.2.3.2.0-2950</hbase.version>
+        <kafka.version>0.8.2.2.3.2.0-2950</kafka.version>
+        <oozie.version>4.2.0.2.3.2.0-2950</oozie.version>
+
     </properties>
 
     <profiles>
@@ -96,23 +105,6 @@
         <!--
             Build profiles to use different versions of Hadoop
         -->
-
-        <!-- HDP 2.3.2.0 -->
-        <profile>
-            <id>latest</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <hdp.release.version>2.3.2.0</hdp.release.version>
-                <storm.version>0.10.0.2.3.2.0-2950</storm.version>
-                <hive.version>1.2.1.2.3.2.0-2950</hive.version>
-                <hadoop.version>2.7.1.2.3.2.0-2950</hadoop.version>
-                <hbase.version>1.1.2.2.3.2.0-2950</hbase.version>
-                <kafka.version>0.8.2.2.3.2.0-2950</kafka.version>
-                <oozie.version>4.2.0.2.3.2.0-2950</oozie.version>
-            </properties>
-        </profile>
 
         <!-- HDP 2.3.2.0 -->
         <profile>
@@ -226,7 +218,6 @@
                 <version>${maven-release-plugin.version}</version>
                 <configuration>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <releaseProfiles>latest</releaseProfiles>
                 </configuration>
                 <dependencies>
                     <dependency>
