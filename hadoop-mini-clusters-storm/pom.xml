@@ -23,7 +23,7 @@
         <dependency>
             <groupId>com.github.sakserv</groupId>
             <artifactId>hadoop-mini-clusters-zookeeper</artifactId>
-            <version>${project.version}</version>
+            <version>0.1.2-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
 
@@ -31,7 +31,7 @@
         <dependency>
             <groupId>com.github.sakserv</groupId>
             <artifactId>hadoop-mini-clusters-common</artifactId>
-            <version>${project.version}</version>
+            <version>0.1.2-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
