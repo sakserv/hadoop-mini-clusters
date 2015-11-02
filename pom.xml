@@ -3,7 +3,7 @@
 
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters</artifactId>
-    <version>0.1.5-SNAPSHOT</version>
+    <version>0.1.4-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Hadoop Mini Clusters</name>
@@ -68,7 +68,7 @@
         <!-- plugin versions -->
         <maven-surefire-plugin.version>2.19</maven-surefire-plugin.version>
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
-        <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+        <maven-release-plugin.version>2.5.1</maven-release-plugin.version>
         <maven-scm-api.version>1.9.2</maven-scm-api.version>
         <maven-scm-provider-gitexe.version>1.9.2</maven-scm-provider-gitexe.version>
         <maven-source-plugin.version>2.4</maven-source-plugin.version>
@@ -213,7 +213,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
+                <version>3.2</version>
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
@@ -225,6 +225,7 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <version>${maven-release-plugin.version}</version>
                 <configuration>
+                    <goals>deploy</goals>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <releaseProfiles>latest</releaseProfiles>
                 </configuration>
