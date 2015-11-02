@@ -22,8 +22,8 @@
         <connection>scm:git:git://github.com/sakserv/hadoop-mini-clusters.git</connection>
         <developerConnection>scm:git:git@github.com:sakserv/hadoop-mini-clusters.git</developerConnection>
         <url>http://github.com/sakserv/hadoop-mini-clusters</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <developers>
         <developer>

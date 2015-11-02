@@ -1,5 +1,8 @@
 Change Log
 ==========
+### 0.1.1 - 11/02/2015
+* Fix maven build vars as a workaround for the maven release plugin
+
 ### 0.1.0 - 11/01/2015
 * Major changes in this release
 * Moved each mini cluster to a seperate module to reduce deps - fixes #3
