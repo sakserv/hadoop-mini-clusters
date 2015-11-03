@@ -319,10 +319,9 @@
                             <configLocation>checkstyle.xml</configLocation>
                             <headerLocation>LICENSE</headerLocation>
                             <encoding>UTF-8</encoding>
-                            <consoleOutput>true</consoleOutput>
+                            <consoleOutput>false</consoleOutput>
                             <failsOnError>false</failsOnError>
                             <failOnViolation>false</failOnViolation>
-                            <linkXref>false</linkXref>
                         </configuration>
                         <goals>
                             <goal>check</goal>
