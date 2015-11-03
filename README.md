@@ -2,6 +2,15 @@ hadoop-mini-clusters
 ====================
 Collection of Hadoop Mini Clusters
 
+<p align="center">
+  <img src="https://travis-ci.org/sakserv/hadoop-mini-clusters.svg?branch=master"/>
+
+<a href='https://coveralls.io/github/sakserv/hadoop-mini-clusters?branch=master'><img src='https://coveralls.io/repos/sakserv/hadoop-mini-clusters/badge.svg?branch=master&service=github' alt='Coverage Status' /></a>
+
+  <img src="https://maven-badges.herokuapp.com/maven-central/com.github.sakserv/hadoop-mini-clusters/badge.svg"/>
+
+</p>
+
 Modules:
 ------------
 The project structure changed with 0.1.0. Each mini cluster now resides in a module of its own. See the module names below.
@@ -25,16 +34,6 @@ Modules Included:
 Tests:
 ------
 Tests are included to show how to configure and use each of the mini clusters. See the *IntegrationTest classes.
-
-<p align="center">
-  <img src="https://travis-ci.org/sakserv/hadoop-mini-clusters.svg?branch=master"/>
-
-<a href='https://coveralls.io/github/sakserv/hadoop-mini-clusters?branch=master'><img src='https://coveralls.io/repos/sakserv/hadoop-mini-clusters/badge.svg?branch=master&service=github' alt='Coverage Status' /></a>
-
-  <img src="https://maven-badges.herokuapp.com/maven-central/com.github.sakserv/hadoop-mini-clusters/badge.svg"/>
-
-</p>
-
 
 Windows Support:
 ----------------
