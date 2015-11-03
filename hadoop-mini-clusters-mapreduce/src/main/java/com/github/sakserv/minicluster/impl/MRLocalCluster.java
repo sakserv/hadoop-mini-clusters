@@ -246,18 +246,6 @@ public class MRLocalCluster implements MiniCluster {
         // Handle Windows
         WindowsLibsUtils.setHadoopHome();
 
-        if(System.getProperty("os.name").startsWith("Windows")) {
-            // Yarn Application Classpath
-            String yarnApplicationClasspath = configuration.get(YarnConfiguration.YARN_APPLICATION_CLASSPATH) + "," +
-                    WindowsLibsUtils.getHadoopHome();
-            configuration.set(YarnConfiguration.YARN_APPLICATION_CLASSPATH,yarnApplicationClasspath);
-
-            // Mapreduce Application Classpath
-            String mapreduceApplicationClasspath = configuration.get(MRJobConfig.MAPREDUCE_APPLICATION_CLASSPATH) + ","
-                    + WindowsLibsUtils.getHadoopHome();
-            configuration.set(MRJobConfig.MAPREDUCE_APPLICATION_CLASSPATH, mapreduceApplicationClasspath);
-        }
-
         configuration.set(YarnConfiguration.RM_ADDRESS, resourceManagerAddress);
         configuration.set(YarnConfiguration.RM_HOSTNAME, resourceManagerHostname);
         configuration.set(YarnConfiguration.RM_SCHEDULER_ADDRESS, resourceManagerSchedulerAddress);

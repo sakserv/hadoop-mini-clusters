@@ -26,7 +26,7 @@ public class OozieConfigUtil {
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(OozieConfigUtil.class);
 
-    public static void writeXml(Configuration configuration, String outputLocation) throws IOException {
+    public void writeXml(Configuration configuration, String outputLocation) throws IOException {
         new File(new File(outputLocation).getParent()).mkdirs();
         configuration.writeXml(new FileOutputStream(outputLocation));
     }

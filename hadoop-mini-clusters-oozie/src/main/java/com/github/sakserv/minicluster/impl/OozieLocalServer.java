@@ -241,10 +241,11 @@ public class OozieLocalServer implements MiniCluster {
         new File(fullOozieActionDir).mkdirs();
 
         // Create the configs
-        OozieConfigUtil.writeXml(getOozieConf(), fullOozieConfDir + "/oozie-site.xml");
+        OozieConfigUtil oozieConfigUtil = new OozieConfigUtil();
+        oozieConfigUtil.writeXml(getOozieConf(), fullOozieConfDir + "/oozie-site.xml");
 
         // Note: Oozie requires the Hadoop config be stored in a directory "hadoop-conf", handle that here.
-        OozieConfigUtil.writeXml(new Configuration(), fullOozieHadoopConfDir + "/core-site.xml");
+        oozieConfigUtil.writeXml(new Configuration(), fullOozieHadoopConfDir + "/core-site.xml");
 
         //setup users
         UserGroupInformation.createUserForTesting(oozieUsername, new String[]{oozieGroupname});

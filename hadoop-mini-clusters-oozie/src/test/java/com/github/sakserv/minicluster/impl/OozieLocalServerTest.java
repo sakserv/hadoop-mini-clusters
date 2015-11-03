@@ -258,4 +258,56 @@ public class OozieLocalServerTest {
                 .build();
 
     }
+
+    @Test
+    public void testOozieLocalShareLibCacheDir() {
+        assertEquals(propertyParser.getProperty(ConfigVars.OOZIE_LOCAL_SHARE_LIB_CACHE_DIR_KEY),
+                oozieLocalServer.getOozieLocalShareLibCacheDir());
+    }
+
+    @Test
+    public void testMissingOozieLocalShareLibCacheDir() {
+        exception.expect(IllegalArgumentException.class);
+        OozieLocalServer oozieLocalServer = new OozieLocalServer.Builder()
+                .setOozieTestDir(propertyParser.getProperty(ConfigVars.OOZIE_TEST_DIR_KEY))
+                .setOozieHomeDir(propertyParser.getProperty(ConfigVars.OOZIE_HOME_DIR_KEY))
+                .setOozieUsername(System.getProperty("user.name"))
+                .setOozieGroupname(propertyParser.getProperty(ConfigVars.OOZIE_GROUPNAME_KEY))
+                .setOozieYarnResourceManagerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
+                .setOozieHdfsDefaultFs(defaultFs)
+                .setOozieConf(new Configuration())
+                .setOozieHdfsShareLibDir(propertyParser.getProperty(ConfigVars.OOZIE_HDFS_SHARE_LIB_DIR_KEY))
+                .setOozieShareLibCreate(Boolean.parseBoolean(
+                        propertyParser.getProperty(ConfigVars.OOZIE_SHARE_LIB_CREATE_KEY)))
+                .setOoziePurgeLocalShareLibCache(Boolean.parseBoolean(propertyParser.getProperty(
+                        ConfigVars.OOZIE_PURGE_LOCAL_SHARE_LIB_CACHE_KEY)))
+                .build();
+    }
+
+    @Test
+    public void testOoziePurgeLocalShareLibCache() {
+        assertEquals(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.OOZIE_PURGE_LOCAL_SHARE_LIB_CACHE_KEY)),
+                oozieLocalServer.getOoziePurgeLocalShareLibCache());
+    }
+
+    @Test
+    public void testMissingOoziePurgeLocalShareLibCache() {
+        exception.expect(IllegalArgumentException.class);
+        OozieLocalServer oozieLocalServer = new OozieLocalServer.Builder()
+                .setOozieTestDir(propertyParser.getProperty(ConfigVars.OOZIE_TEST_DIR_KEY))
+                .setOozieHomeDir(propertyParser.getProperty(ConfigVars.OOZIE_HOME_DIR_KEY))
+                .setOozieUsername(System.getProperty("user.name"))
+                .setOozieGroupname(propertyParser.getProperty(ConfigVars.OOZIE_GROUPNAME_KEY))
+                .setOozieYarnResourceManagerAddress(propertyParser.getProperty(
+                        ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
+                .setOozieHdfsDefaultFs(defaultFs)
+                .setOozieConf(new Configuration())
+                .setOozieHdfsShareLibDir(propertyParser.getProperty(ConfigVars.OOZIE_HDFS_SHARE_LIB_DIR_KEY))
+                .setOozieShareLibCreate(Boolean.parseBoolean(
+                        propertyParser.getProperty(ConfigVars.OOZIE_SHARE_LIB_CREATE_KEY)))
+                .setOozieLocalShareLibCacheDir(propertyParser.getProperty(
+                        ConfigVars.OOZIE_LOCAL_SHARE_LIB_CACHE_DIR_KEY))
+                .build();
+    }
 }
