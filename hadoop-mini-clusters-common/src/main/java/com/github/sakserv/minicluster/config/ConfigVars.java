@@ -13,6 +13,12 @@
  */
 package com.github.sakserv.minicluster.config;
 
+/**
+ * Provides constants for all of the supported configuration options
+ * for the mini clusters.
+ *
+ * @author Shane Kumpf
+ */
 public class ConfigVars {
 
     // Props file
@@ -134,6 +140,7 @@ public class ConfigVars {
     public static final String OOZIE_SHARE_LIB_CREATE_KEY = "oozie.share.lib.create";
     public static final String OOZIE_LOCAL_SHARE_LIB_CACHE_DIR_KEY = "oozie.local.share.lib.cache.dir";
     public static final String OOZIE_PURGE_LOCAL_SHARE_LIB_CACHE_KEY = "oozie.purge.local.share.lib.cache";
+
 
     public String toString() {
         return "ConfigVars";
