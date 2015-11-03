@@ -27,8 +27,13 @@ Tests:
 Tests are included to show how to configure and use each of the mini clusters. See the *IntegrationTest classes.
 
 <p align="center">
-  <img src="https://travis-ci.org/sakserv/hadoop-mini-clusters.svg?branch=master"/>[![Coverage Status](https://coveralls.io/repos/sakserv/hadoop-mini-clusters/badge.svg?branch=master&service=github)](https://coveralls.io/github/sakserv/hadoop-mini-clusters?branch=master)
+  <img src="https://travis-ci.org/sakserv/hadoop-mini-clusters.svg?branch=master"/>
+
+<a href='https://coveralls.io/github/sakserv/hadoop-mini-clusters?branch=master'><img src='https://coveralls.io/repos/sakserv/hadoop-mini-clusters/badge.svg?branch=master&service=github' alt='Coverage Status' /></a>
+
+
 </p>
+
 
 Windows Support:
 ----------------
