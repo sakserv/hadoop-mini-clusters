@@ -31,6 +31,7 @@ Tests are included to show how to configure and use each of the mini clusters. S
 
 <a href='https://coveralls.io/github/sakserv/hadoop-mini-clusters?branch=master'><img src='https://coveralls.io/repos/sakserv/hadoop-mini-clusters/badge.svg?branch=master&service=github' alt='Coverage Status' /></a>
 
+  <img src="https://maven-badges.herokuapp.com/maven-central/com.github.sakserv/hadoop-mini-clusters/badge.svg"/>
 
 </p>
 
