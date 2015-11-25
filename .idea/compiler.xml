@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <option name="DEFAULT_COMPILER" value="Javac" />
     <resourceExtensions />
     <wildcardResourcePatterns>
       <entry name="!?*.java" />
@@ -12,6 +11,7 @@
       <entry name="!?*.flex" />
       <entry name="!?*.kt" />
       <entry name="!?*.clj" />
+      <entry name="!?*.aj" />
     </wildcardResourcePatterns>
     <annotationProcessing>
       <profile default="true" name="Default" enabled="false">
@@ -19,127 +19,105 @@
       </profile>
       <profile default="false" name="Annotation profile for hadoop-mini-clusters-hdfs" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="hadoop-mini-clusters-hdfs" />
       </profile>
       <profile default="false" name="Annotation profile for hadoop-mini-clusters-common" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="hadoop-mini-clusters-common" />
       </profile>
       <profile default="false" name="Annotation profile for hadoop-mini-clusters-activemq" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="hadoop-mini-clusters-activemq" />
       </profile>
       <profile default="false" name="Annotation profile for hadoop-mini-clusters-yarn" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="hadoop-mini-clusters-yarn" />
-      </profile>
-      <profile default="false" name="Annotation profile for hadoop-mini-clusters-hiveserver2" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="hadoop-mini-clusters-hiveserver2" />
-      </profile>
-      <profile default="false" name="Annotation profile for hadoop-mini-clusters-storm" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="hadoop-mini-clusters-storm" />
-      </profile>
-      <profile default="false" name="Annotation profile for hadoop-mini-clusters-hbase" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="hadoop-mini-clusters-hbase" />
-      </profile>
-      <profile default="false" name="Annotation profile for hadoop-mini-clusters-kafka" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="hadoop-mini-clusters-kafka" />
-      </profile>
-      <profile default="false" name="Annotation profile for hadoop-mini-clusters-zookeeper" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="hadoop-mini-clusters-zookeeper" />
       </profile>
       <profile default="false" name="Annotation profile for hadoop-mini-clusters-mapreduce" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="hadoop-mini-clusters-mapreduce" />
+      </profile>
+      <profile default="false" name="Annotation profile for hadoop-mini-clusters-hbase" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+      </profile>
+      <profile default="false" name="Annotation profile for hadoop-mini-clusters-zookeeper" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+      </profile>
+      <profile default="false" name="Annotation profile for hadoop-mini-clusters-hiveserver2" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
       </profile>
       <profile default="false" name="Annotation profile for hadoop-mini-clusters-hivemetastore" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="hadoop-mini-clusters-hivemetastore" />
+      </profile>
+      <profile default="false" name="Annotation profile for hadoop-mini-clusters-storm" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+      </profile>
+      <profile default="false" name="Annotation profile for hadoop-mini-clusters-kafka" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
       </profile>
       <profile default="false" name="Annotation profile for hadoop-mini-clusters-oozie" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="hadoop-mini-clusters-oozie" />
       </profile>
       <profile default="false" name="Annotation profile for hadoop-mini-clusters-mongodb" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="hadoop-mini-clusters-mongodb" />
       </profile>
-      <profile default="false" name="Annotation profile for hadoop-mini-clusters-hypersql" enabled="true">
+      <profile default="false" name="Annotation profile for hadoop-mini-clusters-hypersqldb" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="hadoop-mini-clusters-hypersql" />
-      </profile>
-      <profile default="false" name="Annotation profile for hadoop-mini-clusters-examples" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
       </profile>
       <profile default="false" name="Annotation profile for hadoop-mini-clusters-hyperscaledb" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="hadoop-mini-clusters-hyperscaledb" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="hadoop-mini-clusters" target="1.7" />
       <module name="hadoop-mini-clusters-activemq" target="1.7" />
       <module name="hadoop-mini-clusters-common" target="1.7" />
-      <module name="hadoop-mini-clusters-examples" target="1.7" />
       <module name="hadoop-mini-clusters-hbase" target="1.7" />
       <module name="hadoop-mini-clusters-hdfs" target="1.7" />
       <module name="hadoop-mini-clusters-hivemetastore" target="1.7" />
       <module name="hadoop-mini-clusters-hiveserver2" target="1.7" />
       <module name="hadoop-mini-clusters-hyperscaledb" target="1.7" />
-      <module name="hadoop-mini-clusters-hypersql" target="1.7" />
+      <module name="hadoop-mini-clusters-hypersqldb" target="1.7" />
       <module name="hadoop-mini-clusters-kafka" target="1.7" />
       <module name="hadoop-mini-clusters-mapreduce" target="1.7" />
       <module name="hadoop-mini-clusters-mongodb" target="1.7" />
