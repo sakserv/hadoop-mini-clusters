@@ -1,5 +1,8 @@
 Change Log
 ==========
+### 0.1.2 - 12/01/2015
+* Add more flexibility to windows libs location via HADOOP_HOME
+
 ### 0.1.1 - 11/02/2015
 * Fix maven build vars as a workaround for the maven release plugin
 
