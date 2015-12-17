@@ -27,7 +27,13 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.net.URLConnection;
 
 import static org.junit.Assert.assertEquals;
 
@@ -53,6 +59,7 @@ public class HdfsLocalClusterIntegrationTest {
     public static void setUp() throws Exception {
         dfsCluster = new HdfsLocalCluster.Builder()
                 .setHdfsNamenodePort(Integer.parseInt(propertyParser.getProperty(ConfigVars.HDFS_NAMENODE_PORT_KEY)))
+                .setHdfsNamenodeHttpPort( Integer.parseInt( propertyParser.getProperty( ConfigVars.HDFS_NAMENODE_HTTP_PORT_KEY ) ) )
                 .setHdfsTempDir(propertyParser.getProperty(ConfigVars.HDFS_TEMP_DIR_KEY))
                 .setHdfsNumDatanodes(Integer.parseInt(propertyParser.getProperty(ConfigVars.HDFS_NUM_DATANODES_KEY)))
                 .setHdfsEnablePermissions(
@@ -86,6 +93,16 @@ public class HdfsLocalClusterIntegrationTest {
         assertEquals(reader.readUTF(), propertyParser.getProperty(ConfigVars.HDFS_TEST_STRING_KEY));
         reader.close();
         hdfsFsHandle.close();
+
+        URL url = new URL(
+                String.format( "http://localhost:%s/webhdfs/v1?op=GETHOMEDIRECTORY&user.name=guest",
+                        propertyParser.getProperty( ConfigVars.HDFS_NAMENODE_HTTP_PORT_KEY ) ) );
+        URLConnection connection = url.openConnection();
+        connection.setRequestProperty( "Accept-Charset", "UTF-8" );
+        BufferedReader response = new BufferedReader( new InputStreamReader( connection.getInputStream() ) );
+        String line = response.readLine();
+        response.close();
+      assertEquals( "{\"Path\":\"/user/guest\"}", line );
 
     }
 }

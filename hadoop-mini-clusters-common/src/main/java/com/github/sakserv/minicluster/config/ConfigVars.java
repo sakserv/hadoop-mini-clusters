@@ -78,6 +78,7 @@ public class ConfigVars {
 
     //HDFS
     public static final String HDFS_NAMENODE_PORT_KEY = "hdfs.namenode.port";
+    public static final String HDFS_NAMENODE_HTTP_PORT_KEY = "hdfs.namenode.http.port";
     public static final String HDFS_TEMP_DIR_KEY = "hdfs.temp.dir";
     public static final String HDFS_NUM_DATANODES_KEY = "hdfs.num.datanodes";
     public static final String HDFS_ENABLE_PERMISSIONS_KEY = "hdfs.enable.permissions";
