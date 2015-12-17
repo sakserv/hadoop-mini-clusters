@@ -32,6 +32,7 @@ public class HdfsLocalCluster implements MiniCluster {
     MiniDFSCluster miniDFSCluster;
     
     private Integer hdfsNamenodePort;
+    private Integer hdfsNamenodeHttpPort;
     private String hdfsTempDir;
     private Integer hdfsNumDatanodes;
     private Boolean hdfsEnablePermissions;
@@ -69,6 +70,7 @@ public class HdfsLocalCluster implements MiniCluster {
 
     private HdfsLocalCluster(Builder builder) {
         this.hdfsNamenodePort = builder.hdfsNamenodePort;
+        this.hdfsNamenodeHttpPort = builder.hdfsNamenodeHttpPort;
         this.hdfsTempDir = builder.hdfsTempDir;
         this.hdfsNumDatanodes = builder.hdfsNumDatanodes;
         this.hdfsEnablePermissions = builder.hdfsEnablePermissions;
@@ -79,6 +81,7 @@ public class HdfsLocalCluster implements MiniCluster {
     
     public static class Builder {
         private Integer hdfsNamenodePort;
+        private Integer hdfsNamenodeHttpPort;
         private String hdfsTempDir;
         private Integer hdfsNumDatanodes;
         private Boolean hdfsEnablePermissions;
@@ -91,7 +94,12 @@ public class HdfsLocalCluster implements MiniCluster {
             this.hdfsNamenodePort = hdfsNameNodePort;
             return this;
         }
-        
+
+        public Builder setHdfsNamenodeHttpPort(Integer hdfsNameNodeHttpPort) {
+            this.hdfsNamenodeHttpPort = hdfsNameNodeHttpPort;
+            return this;
+        }
+
         public Builder setHdfsTempDir(String hdfsTempDir) {
             this.hdfsTempDir = hdfsTempDir;
             return this;
@@ -163,6 +171,7 @@ public class HdfsLocalCluster implements MiniCluster {
         configure();
         miniDFSCluster = new MiniDFSCluster.Builder(hdfsConfig)
                 .nameNodePort(hdfsNamenodePort)
+                .nameNodeHttpPort(hdfsNamenodeHttpPort==null? 0 : hdfsNamenodeHttpPort.intValue() )
                 .numDataNodes(hdfsNumDatanodes)
                 .format(hdfsFormat)
                 .racks(null)
