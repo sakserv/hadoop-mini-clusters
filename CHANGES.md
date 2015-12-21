@@ -1,5 +1,8 @@
 Change Log
 ==========
+### 0.1.3 - 12/21/2015
+* Add support for WebHDFS via setHdfsNamenodeHttpPort
+
 ### 0.1.2 - 12/01/2015
 * Add more flexibility to windows libs location via HADOOP_HOME
 
