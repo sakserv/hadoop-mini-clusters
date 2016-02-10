@@ -23,6 +23,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scala.Option;
 
+import java.lang.reflect.Constructor;
+import java.util.IllegalFormatException;
 import java.util.Properties;
 
 /**
@@ -155,8 +157,30 @@ public class KafkaLocalBroker implements MiniCluster {
         LOG.info("KAFKA: Starting Kafka on port: {}", kafkaPort);
         configure();
 
-        Option<String> threadPrefixName = Option.apply("kafka-mini-cluster");
-        kafkaServer = new KafkaServer(kafkaConfig, new LocalSystemTime(), threadPrefixName);
+        // The Kafka API for KafkaServer has changed multiple times.
+        // Using reflection to call the version specific constructor
+        // with the correct number of arguments.
+
+        // We only expect a single constructor, throw an Exception if there is not exactly 1
+        Class<KafkaServer> kafkaServerClazz = KafkaServer.class;
+        Constructor[] kafkaServerConstructors =  kafkaServerClazz.getConstructors();
+        if(kafkaServerConstructors.length != 1) {
+            throw new Exception("kafka.server.KafkaServer has more than one constructor, expected only 1");
+        }
+
+        // We only expect 2 and 3 argument constructors, throw an Exception if not
+        Constructor kafkaServerConstructor = kafkaServerConstructors[0];
+
+        // Kafka 2.9.2 0.8.2 (HDP 2.3.0 and HDP 2.3.2)
+        if (kafkaServerConstructor.getParameterTypes().length == 2) {
+            kafkaServer = (KafkaServer) kafkaServerConstructor.newInstance(kafkaConfig, new LocalSystemTime());
+
+        // Kafka 2.10 0.9.0 (HDP 2.3.4), pass in the threadPrefixName
+        } else if (kafkaServerConstructor.getParameterTypes().length == 3) {
+            Option<String> threadPrefixName = Option.apply("kafka-mini-cluster");
+            kafkaServer = (KafkaServer) kafkaServerConstructor.newInstance(kafkaConfig, new LocalSystemTime(), threadPrefixName);
+        }
+
         kafkaServer.startup();
     }
 
