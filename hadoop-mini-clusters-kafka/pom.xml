@@ -18,7 +18,7 @@
         <!-- Kafka -->
         <dependency>
             <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka_2.9.2</artifactId>
+            <artifactId>${kafka.artifactid.version}</artifactId>
             <version>${kafka.version}</version>
         </dependency>
 
