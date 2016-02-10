@@ -23,13 +23,13 @@ public class FileUtils {
                     f.setWritable(true);
                     deleteFolder(f.getAbsolutePath());
                 } else {
-                    LOG.info("FILEUTILS: Deleting file: {}", f.getAbsolutePath());
+                    LOG.debug("FILEUTILS: Deleting file: {}", f.getAbsolutePath());
                     f.setWritable(true);
                     f.delete();
                 }
             }
         }
-        LOG.info("FILEUTILS: Deleting file: {}", directoryToClean.getAbsolutePath());
+        LOG.debug("FILEUTILS: Deleting file: {}", directoryToClean.getAbsolutePath());
         directoryToClean.setWritable(true);
         directoryToClean.delete();
     }
