@@ -21,6 +21,7 @@ import kafka.server.KafkaConfig;
 import kafka.server.KafkaServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import scala.Option;
 
 import java.util.Properties;
 
@@ -153,7 +154,9 @@ public class KafkaLocalBroker implements MiniCluster {
     public void start() throws Exception {
         LOG.info("KAFKA: Starting Kafka on port: {}", kafkaPort);
         configure();
-        kafkaServer = new KafkaServer(kafkaConfig, new LocalSystemTime());
+
+        Option<String> threadPrefixName = Option.apply("kafka-mini-cluster");
+        kafkaServer = new KafkaServer(kafkaConfig, new LocalSystemTime(), threadPrefixName);
         kafkaServer.startup();
     }
 

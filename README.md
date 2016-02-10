@@ -50,12 +50,12 @@ Using:
 	<dependency>
 		<groupId>com.github.sakserv</groupId>
 		<artifactId>hadoop-mini-clusters</artifactId>
-		<version>0.1.3</version>
+		<version>0.1.4</version>
 	</dependency>
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-common</artifactId>
-    	<version>0.1.3</version>
+    	<version>0.1.4</version>
     </dependency>
 ```
 
@@ -79,7 +79,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-hdfs</artifactId>
-    	<version>0.1.3</version>
+    	<version>0.1.4</version>
     </dependency>
 ```
 ```Java
@@ -102,7 +102,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-yarn</artifactId>
-    	<version>0.1.3</version>
+    	<version>0.1.4</version>
     </dependency>
 ```
 ```Java
@@ -127,7 +127,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-mapreduce</artifactId>
-    	<version>0.1.3</version>
+    	<version>0.1.4</version>
     </dependency>
 ```
 ```Java
@@ -151,7 +151,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-hbase</artifactId>
-    	<version>0.1.3</version>
+    	<version>0.1.4</version>
     </dependency>
 ```
 ```Java
@@ -175,7 +175,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-zookeeper</artifactId>
-    	<version>0.1.3</version>
+    	<version>0.1.4</version>
     </dependency>
 ```
 ```Java
@@ -192,7 +192,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-hiveserver2</artifactId>
-    	<version>0.1.3</version>
+    	<version>0.1.4</version>
     </dependency>
 ```
 ```Java
@@ -215,7 +215,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-hivemetastore</artifactId>
-    	<version>0.1.3</version>
+    	<version>0.1.4</version>
     </dependency>
 ```
 ```Java
@@ -235,7 +235,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-storm</artifactId>
-    	<version>0.1.3</version>
+    	<version>0.1.4</version>
     </dependency>
 ```
 ```Java
@@ -254,7 +254,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-kafka</artifactId>
-    	<version>0.1.3</version>
+    	<version>0.1.4</version>
     </dependency>
 ```
 ```Java
@@ -274,7 +274,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-oozie</artifactId>
-    	<version>0.1.3</version>
+    	<version>0.1.4</version>
     </dependency>
 ```
 ```Java
@@ -299,7 +299,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-mongodb</artifactId>
-    	<version>0.1.3</version>
+    	<version>0.1.4</version>
     </dependency>
 ```
 ```Java
@@ -315,7 +315,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-activemq</artifactId>
-    	<version>0.1.3</version>
+    	<version>0.1.4</version>
     </dependency>
 ```
 ```Java
@@ -335,7 +335,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-hyperscaledb</artifactId>
-    	<version>0.1.3</version>
+    	<version>0.1.4</version>
     </dependency>
 ```
 ```Java

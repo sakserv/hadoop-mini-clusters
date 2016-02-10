@@ -1,5 +1,8 @@
 Change Log
 ==========
+### 0.1.4 - 02/10/2016
+* Add support for HDP 2.3.4
+
 ### 0.1.3 - 12/21/2015
 * Add support for WebHDFS via setHdfsNamenodeHttpPort
 
