@@ -174,5 +174,4 @@ public class KafkaTestConsumer {
     public long getNumRead() {
         return numRead;
     }
-
 }
