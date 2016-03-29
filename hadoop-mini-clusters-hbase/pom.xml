@@ -55,6 +55,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <shadeTestJar>true</shadeTestJar>
                             <relocations>
                                 <relocation>
                                     <pattern>com.lmax</pattern>
