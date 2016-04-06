@@ -1,6 +1,6 @@
 hadoop-mini-clusters
 ====================
-Collection of Hadoop Mini Clusters
+hadoop-mini-clusters provides an easy way to test Hadoop projects directly in your IDE, without the need for a full blown development cluster or container orchestration. It allows the user to debug with the full power of the IDE. It provides a consistent API around the existing Mini Clusters across the ecosystem, eliminating the tedious task of learning the nuances of each project's approach.
 
 <p align="center">
   <img src="https://travis-ci.org/sakserv/hadoop-mini-clusters.svg?branch=master"/>
@@ -63,7 +63,8 @@ Profile Support:
 ----------------
 Multiple versions of HDP are supported. The current list is:
 
-*   HDP 2.3.4.0 (default)
+*   HDP 2.4.0.0 (default)
+*   HDP 2.3.4.0
 *   HDP 2.3.2.0
 *   HDP 2.3.0.0
 
