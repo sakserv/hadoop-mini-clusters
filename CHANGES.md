@@ -1,5 +1,11 @@
 Change Log
 ==========
+### 0.1.5 - 04/06/2016
+* Add support for HDP 2.4.0
+* Handle the evolving Kafka apis via reflection
+* Fix LMAX disruptor conflict in storm-core + hbase-testing-utils
+* Added script to allow running tests in a docker container
+
 ### 0.1.4 - 02/10/2016
 * Add support for HDP 2.3.4
 
