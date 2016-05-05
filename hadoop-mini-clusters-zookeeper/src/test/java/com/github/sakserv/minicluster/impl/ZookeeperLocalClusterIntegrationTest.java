@@ -49,6 +49,7 @@ public class ZookeeperLocalClusterIntegrationTest {
                 .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
                 .setTempDir(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY))
                 .setZookeeperConnectionString(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY))
+                .setMaxClientCnxns(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_MAX_CLIENT_CNXNS)))
                 .build();
         zookeeperLocalCluster.start();
     }
@@ -60,7 +61,7 @@ public class ZookeeperLocalClusterIntegrationTest {
 
     @Test
     public void testZookeeperCluster() {
-        assertEquals(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY), 
+        assertEquals(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY),
                 zookeeperLocalCluster.getZookeeperConnectionString());
     }
 }
