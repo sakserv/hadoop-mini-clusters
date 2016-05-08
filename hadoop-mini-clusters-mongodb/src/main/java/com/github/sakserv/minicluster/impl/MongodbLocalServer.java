@@ -14,7 +14,11 @@
 
 package com.github.sakserv.minicluster.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.github.sakserv.minicluster.MiniCluster;
+
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
@@ -22,8 +26,6 @@ import de.flapdoodle.embed.mongo.config.IMongodConfig;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.distribution.Version;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class MongodbLocalServer implements MiniCluster {
 

@@ -14,10 +14,11 @@
 
 package com.github.sakserv.minicluster.impl;
 
-import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.minicluster.kafka.consumer.KafkaTestConsumer;
-import com.github.sakserv.minicluster.kafka.producer.KafkaTestProducer;
-import com.github.sakserv.propertyparser.PropertyParser;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -25,10 +26,10 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.minicluster.kafka.consumer.KafkaTestConsumer;
+import com.github.sakserv.minicluster.kafka.producer.KafkaTestProducer;
+import com.github.sakserv.propertyparser.PropertyParser;
 
 public class KafkaLocalBrokerIntegrationTest {
 

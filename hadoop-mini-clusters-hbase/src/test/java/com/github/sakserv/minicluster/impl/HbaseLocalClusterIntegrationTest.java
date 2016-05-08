@@ -14,13 +14,19 @@
 
 package com.github.sakserv.minicluster.impl;
 
-import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.propertyparser.PropertyParser;
+import static org.junit.Assert.assertEquals;
+
+import java.io.IOException;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.TableName;
-import org.apache.hadoop.hbase.client.*;
+import org.apache.hadoop.hbase.client.Get;
+import org.apache.hadoop.hbase.client.HBaseAdmin;
+import org.apache.hadoop.hbase.client.HTable;
+import org.apache.hadoop.hbase.client.Put;
+import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -28,9 +34,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-
-import static org.junit.Assert.assertEquals;
+import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.propertyparser.PropertyParser;
 
 public class HbaseLocalClusterIntegrationTest {
 

@@ -14,12 +14,14 @@
 
 package com.github.sakserv.minicluster.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.github.sakserv.minicluster.MiniCluster;
+
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
 import backtype.storm.generated.StormTopology;
-import com.github.sakserv.minicluster.MiniCluster;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class StormLocalCluster implements MiniCluster {
 

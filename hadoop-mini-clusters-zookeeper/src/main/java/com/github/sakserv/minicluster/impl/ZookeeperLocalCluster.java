@@ -14,14 +14,15 @@
 
 package com.github.sakserv.minicluster.impl;
 
-import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.util.FileUtils;
+import java.io.File;
+
 import org.apache.curator.test.InstanceSpec;
 import org.apache.curator.test.TestingServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
+import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.util.FileUtils;
 
 /**
  * In memory ZK cluster using Curator
@@ -62,6 +63,30 @@ public class ZookeeperLocalCluster implements MiniCluster {
     public String getTempDir() { return tempDir; }
 
     public String getZookeeperConnectionString() { return zookeeperConnectionString; }
+
+    public int getElectionPort() {
+        return electionPort;
+    }
+
+    public int getQuorumPort() {
+        return quorumPort;
+    }
+
+    public boolean getDeleteDataDirectoryOnClose() {
+        return deleteDataDirectoryOnClose;
+    }
+
+    public int getServerId() {
+        return serverId;
+    }
+
+    public int getTickTime() {
+        return tickTime;
+    }
+
+    public int getMaxClientCnxns() {
+        return maxClientCnxns;
+    }
 
     public static class Builder
     {

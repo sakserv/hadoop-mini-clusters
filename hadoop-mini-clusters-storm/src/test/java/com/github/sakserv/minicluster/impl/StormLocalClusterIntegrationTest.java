@@ -14,19 +14,21 @@
 
 package com.github.sakserv.minicluster.impl;
 
-import backtype.storm.Config;
-import backtype.storm.topology.TopologyBuilder;
-import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.minicluster.storm.bolt.PrinterBolt;
-import com.github.sakserv.minicluster.storm.spout.RandomSentenceSpout;
-import com.github.sakserv.propertyparser.PropertyParser;
+import java.io.IOException;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.minicluster.storm.bolt.PrinterBolt;
+import com.github.sakserv.minicluster.storm.spout.RandomSentenceSpout;
+import com.github.sakserv.propertyparser.PropertyParser;
+
+import backtype.storm.Config;
+import backtype.storm.topology.TopologyBuilder;
 
 public class StormLocalClusterIntegrationTest {
 

@@ -13,18 +13,18 @@
  */
 package com.github.sakserv.minicluster.impl;
 
-import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.util.FileUtils;
-import com.github.sakserv.minicluster.util.WindowsLibsUtils;
+import java.io.File;
+
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.mapreduce.MRJobConfig;
 import org.apache.hadoop.mapreduce.v2.MiniMRYarnCluster;
 import org.apache.hadoop.mapreduce.v2.jobhistory.JHAdminConfig;
 import org.apache.hadoop.yarn.conf.YarnConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
+import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.util.FileUtils;
+import com.github.sakserv.minicluster.util.WindowsLibsUtils;
 
 public class MRLocalCluster implements MiniCluster {
 

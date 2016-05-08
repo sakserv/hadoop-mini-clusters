@@ -13,9 +13,12 @@
  */
 package com.github.sakserv.minicluster.impl;
 
-import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.minicluster.mapreduce.Driver;
-import com.github.sakserv.propertyparser.PropertyParser;
+import static org.junit.Assert.assertEquals;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Scanner;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FSDataOutputStream;
@@ -27,11 +30,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Scanner;
-
-import static org.junit.Assert.assertEquals;
+import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.minicluster.mapreduce.Driver;
+import com.github.sakserv.propertyparser.PropertyParser;
 
 public class MRLocalClusterIntegrationTest {
     

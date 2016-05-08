@@ -1,8 +1,13 @@
 package com.github.sakserv.minicluster.impl;
 
-import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.minicluster.oozie.util.OozieShareLibUtil;
-import com.github.sakserv.propertyparser.PropertyParser;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.Properties;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
@@ -16,13 +21,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.util.Properties;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.minicluster.oozie.util.OozieShareLibUtil;
+import com.github.sakserv.propertyparser.PropertyParser;
 
 
 public class OozieLocalServerIntegrationTest {

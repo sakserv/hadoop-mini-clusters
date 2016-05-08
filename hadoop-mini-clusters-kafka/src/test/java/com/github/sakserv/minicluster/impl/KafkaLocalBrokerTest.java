@@ -14,8 +14,12 @@
 
 package com.github.sakserv.minicluster.impl;
 
-import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.propertyparser.PropertyParser;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import java.util.Properties;
+
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -23,11 +27,8 @@ import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.Properties;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.propertyparser.PropertyParser;
 
 public class KafkaLocalBrokerTest {
 

@@ -14,8 +14,12 @@
 
 package com.github.sakserv.minicluster.impl;
 
-import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.propertyparser.PropertyParser;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import java.sql.SQLException;
+
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -25,11 +29,8 @@ import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.propertyparser.PropertyParser;
 
 public class HiveLocalMetaStoreTest {
 

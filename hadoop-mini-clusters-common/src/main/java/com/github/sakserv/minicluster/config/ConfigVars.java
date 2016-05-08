@@ -28,12 +28,12 @@ public class ConfigVars {
     public static final String ZOOKEEPER_PORT_KEY = "zookeeper.port";
     public static final String ZOOKEEPER_HOST_KEY = "zookeeper.host";
     public static final String ZOOKEEPER_TEMP_DIR_KEY = "zookeeper.temp.dir";
-    public static final String ZOOKEEPER_ELECTION_PORT = "zookeeper.election.port";
-    public static final String ZOOKEEPER_QUORUM_PORT = "zookeeper.quorum.port";
-    public static final String ZOOKEEPER_DELETE_DATA_DIRECTORY_ON_CLOSE = "zookeeper.delete.data.directory.on.close";
-    public static final String ZOOKEEPER_SERVER_ID = "zookeeper.server.id";
-    public static final String ZOOKEEPER_TICKTIME = "zookeeper.ticktime";
-    public static final String ZOOKEEPER_MAX_CLIENT_CNXNS = "zookeeper.max.client.cnxns";
+    public static final String ZOOKEEPER_ELECTION_PORT_KEY = "zookeeper.election.port";
+    public static final String ZOOKEEPER_QUORUM_PORT_KEY = "zookeeper.quorum.port";
+    public static final String ZOOKEEPER_DELETE_DATA_DIRECTORY_ON_CLOSE_KEY = "zookeeper.delete.data.directory.on.close";
+    public static final String ZOOKEEPER_SERVER_ID_KEY = "zookeeper.server.id";
+    public static final String ZOOKEEPER_TICKTIME_KEY = "zookeeper.ticktime";
+    public static final String ZOOKEEPER_MAX_CLIENT_CNXNS_KEY = "zookeeper.max.client.cnxns";
     public static final String ZOOKEEPER_CONNECTION_STRING_KEY = "zookeeper.connection.string";
 
     // MongoDB

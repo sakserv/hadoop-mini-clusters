@@ -13,8 +13,11 @@
  */
 package com.github.sakserv.minicluster.oozie.util;
 
-import com.github.sakserv.minicluster.http.HttpUtils;
-import com.github.sakserv.propertyparser.PropertyParser;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.FileUtil;
@@ -22,10 +25,8 @@ import org.apache.hadoop.fs.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.github.sakserv.minicluster.http.HttpUtils;
+import com.github.sakserv.propertyparser.PropertyParser;
 
 public class OozieShareLibUtil {
 

@@ -1,9 +1,9 @@
 package com.github.sakserv.minicluster.yarn.util;
 
-import org.junit.Test;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.junit.Test;
 
 /*
  *  Licensed under the Apache License, Version 2.0 (the "License");

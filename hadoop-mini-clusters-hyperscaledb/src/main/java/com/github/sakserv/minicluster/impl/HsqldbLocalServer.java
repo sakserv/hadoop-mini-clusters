@@ -13,14 +13,15 @@
  */
 package com.github.sakserv.minicluster.impl;
 
-import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.util.FileUtils;
+import java.io.File;
+
 import org.hsqldb.persist.HsqlProperties;
 import org.hsqldb.server.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
+import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.util.FileUtils;
 
 public class HsqldbLocalServer implements MiniCluster {
 

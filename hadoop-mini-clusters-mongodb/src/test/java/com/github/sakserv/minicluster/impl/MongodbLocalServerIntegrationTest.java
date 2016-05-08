@@ -14,20 +14,25 @@
 
 package com.github.sakserv.minicluster.impl;
 
-import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.propertyparser.PropertyParser;
-import com.mongodb.*;
+import static org.junit.Assert.assertEquals;
+
+import java.io.IOException;
+import java.net.UnknownHostException;
+import java.util.Date;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
-import java.util.Date;
-
-import static org.junit.Assert.assertEquals;
+import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.propertyparser.PropertyParser;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.MongoClient;
 
 public class MongodbLocalServerIntegrationTest {
 

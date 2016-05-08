@@ -13,16 +13,7 @@
  */
 package com.github.sakserv.minicluster.impl;
 
-import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.minicluster.yarn.InJvmContainerExecutor;
-import com.github.sakserv.minicluster.yarn.simpleyarnapp.Client;
-import com.github.sakserv.propertyparser.PropertyParser;
-import org.apache.hadoop.conf.Configuration;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +21,17 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static org.junit.Assert.assertEquals;
+import org.apache.hadoop.conf.Configuration;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.minicluster.yarn.InJvmContainerExecutor;
+import com.github.sakserv.minicluster.yarn.simpleyarnapp.Client;
+import com.github.sakserv.propertyparser.PropertyParser;
 
 public class YarnLocalClusterInJvmContainerExecutorTest {
     

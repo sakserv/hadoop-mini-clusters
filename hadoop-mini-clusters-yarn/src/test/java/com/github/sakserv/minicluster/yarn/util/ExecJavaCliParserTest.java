@@ -1,11 +1,11 @@
 package com.github.sakserv.minicluster.yarn.util;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static org.junit.Assert.assertEquals;
 
 /*
  *  Licensed under the Apache License, Version 2.0 (the "License");

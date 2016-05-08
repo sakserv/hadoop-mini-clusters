@@ -14,8 +14,10 @@
 
 package com.github.sakserv.minicluster.impl;
 
-import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.propertyparser.PropertyParser;
+import static org.junit.Assert.assertEquals;
+
+import java.io.IOException;
+
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -23,9 +25,8 @@ import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-
-import static org.junit.Assert.assertEquals;
+import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.propertyparser.PropertyParser;
 
 public class ZookeeperLocalClusterTest {
 
@@ -54,6 +55,12 @@ public class ZookeeperLocalClusterTest {
                 .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
                 .setTempDir(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY))
                 .setZookeeperConnectionString(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY))
+                .setMaxClientCnxns(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_MAX_CLIENT_CNXNS_KEY)))
+                .setElectionPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_ELECTION_PORT_KEY)))
+                .setQuorumPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_QUORUM_PORT_KEY)))
+                .setDeleteDataDirectoryOnClose(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.ZOOKEEPER_DELETE_DATA_DIRECTORY_ON_CLOSE_KEY)))
+                .setServerId(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_SERVER_ID_KEY)))
+                .setTickTime(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TICKTIME_KEY)))
                 .build();
     }
     
@@ -110,5 +117,42 @@ public class ZookeeperLocalClusterTest {
                 .build();
         zookeeperLocalCluster.configure();
     }
+
+    @Test
+    public void testMaxClientCnxns() {
+        assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_MAX_CLIENT_CNXNS_KEY)),
+                zookeeperLocalCluster.getMaxClientCnxns());
+    }
+
+    @Test
+    public void testElectionPort() {
+        assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_ELECTION_PORT_KEY)),
+                zookeeperLocalCluster.getElectionPort());
+    }
+
+    @Test
+    public void testQuorumPort() {
+        assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_QUORUM_PORT_KEY)),
+                zookeeperLocalCluster.getQuorumPort());
+    }
+
+    @Test
+    public void testDeleteDataDirectoryOnClose() {
+        assertEquals(Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.ZOOKEEPER_DELETE_DATA_DIRECTORY_ON_CLOSE_KEY)),
+                zookeeperLocalCluster.getDeleteDataDirectoryOnClose());
+    }
+
+    @Test
+    public void testServerId() {
+        assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_SERVER_ID_KEY)),
+                zookeeperLocalCluster.getServerId());
+    }
+
+    @Test
+    public void testTicktime() {
+        assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TICKTIME_KEY)),
+                zookeeperLocalCluster.getTickTime());
+    }
+
 
 }

@@ -1,9 +1,7 @@
 package com.github.sakserv.minicluster.impl;
 
-import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.oozie.util.OozieConfigUtil;
-import com.github.sakserv.minicluster.util.FileUtils;
-import com.github.sakserv.minicluster.util.WindowsLibsUtils;
+import java.io.File;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.oozie.client.OozieClient;
@@ -16,7 +14,10 @@ import org.apache.oozie.test.XTestCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
+import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.oozie.util.OozieConfigUtil;
+import com.github.sakserv.minicluster.util.FileUtils;
+import com.github.sakserv.minicluster.util.WindowsLibsUtils;
 
 
 /**

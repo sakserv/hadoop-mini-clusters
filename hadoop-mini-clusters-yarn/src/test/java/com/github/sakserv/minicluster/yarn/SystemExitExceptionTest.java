@@ -1,8 +1,8 @@
 package com.github.sakserv.minicluster.yarn;
 
-import org.junit.Test;
-
 import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
 
 /*
  *  Licensed under the Apache License, Version 2.0 (the "License");

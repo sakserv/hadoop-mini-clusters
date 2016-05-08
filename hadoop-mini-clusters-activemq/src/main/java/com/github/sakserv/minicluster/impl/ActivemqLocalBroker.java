@@ -14,16 +14,26 @@
 
 package com.github.sakserv.minicluster.impl;
 
-import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.minicluster.util.FileUtils;
+import java.util.Properties;
+
+import javax.jms.Connection;
+import javax.jms.DeliveryMode;
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageProducer;
+import javax.jms.Session;
+import javax.jms.TextMessage;
+
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.jms.*;
-import java.util.Properties;
+import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.minicluster.util.FileUtils;
 
 public class ActivemqLocalBroker implements MiniCluster {
 

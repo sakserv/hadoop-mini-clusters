@@ -13,16 +13,18 @@
  */
 package com.github.sakserv.minicluster.kafka.producer;
 
-import com.github.sakserv.minicluster.datatime.GenerateRandomDay;
-import kafka.javaapi.producer.Producer;
-import kafka.producer.KeyedMessage;
-import kafka.producer.ProducerConfig;
+import java.util.Properties;
+
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Properties;
+import com.github.sakserv.minicluster.datatime.GenerateRandomDay;
+
+import kafka.javaapi.producer.Producer;
+import kafka.producer.KeyedMessage;
+import kafka.producer.ProducerConfig;
 
 public class KafkaTestProducer {
 

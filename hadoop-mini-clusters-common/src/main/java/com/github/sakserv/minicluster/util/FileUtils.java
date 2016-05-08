@@ -1,8 +1,8 @@
 package com.github.sakserv.minicluster.util;
 
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
+
+import org.slf4j.LoggerFactory;
 
 
 public class FileUtils {

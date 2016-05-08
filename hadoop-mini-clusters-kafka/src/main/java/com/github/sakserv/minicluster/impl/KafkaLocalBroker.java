@@ -14,18 +14,19 @@
 
 package com.github.sakserv.minicluster.impl;
 
+import java.lang.reflect.Constructor;
+import java.util.Properties;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.github.sakserv.minicluster.MiniCluster;
 import com.github.sakserv.minicluster.systemtime.LocalSystemTime;
 import com.github.sakserv.minicluster.util.FileUtils;
+
 import kafka.server.KafkaConfig;
 import kafka.server.KafkaServer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import scala.Option;
-
-import java.lang.reflect.Constructor;
-import java.util.IllegalFormatException;
-import java.util.Properties;
 
 /**
  * In memory Kafka Broker for testing
