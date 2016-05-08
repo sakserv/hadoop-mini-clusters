@@ -16,6 +16,7 @@ package com.github.sakserv.minicluster.impl;
 
 import com.github.sakserv.minicluster.MiniCluster;
 import com.github.sakserv.minicluster.util.FileUtils;
+import org.apache.curator.test.InstanceSpec;
 import org.apache.curator.test.TestingServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,10 +30,16 @@ public class ZookeeperLocalCluster implements MiniCluster {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(ZookeeperLocalCluster.class);
-    
+
     private Integer port;
     private String tempDir;
     private String zookeeperConnectionString;
+    private int electionPort = -1;
+    private int quorumPort = -1;
+    private boolean deleteDataDirectoryOnClose = true;
+    private int serverId = -1;
+    private int tickTime = -1;
+    private int maxClientCnxns = -1;
 
     private TestingServer testingServer;
 
@@ -40,14 +47,20 @@ public class ZookeeperLocalCluster implements MiniCluster {
         this.port = builder.port;
         this.tempDir = builder.tempDir;
         this.zookeeperConnectionString = builder.zookeeperConnectionString;
+        this.electionPort = builder.electionPort;
+        this.quorumPort = builder.quorumPort;
+        this.deleteDataDirectoryOnClose = builder.deleteDataDirectoryOnClose;
+        this.serverId = builder.serverId;
+        this.tickTime = builder.tickTime;
+        this.maxClientCnxns = builder.maxClientCnxns;
     }
 
     public int getPort() {
         return port;
     }
-    
+
     public String getTempDir() { return tempDir; }
-    
+
     public String getZookeeperConnectionString() { return zookeeperConnectionString; }
 
     public static class Builder
@@ -55,6 +68,12 @@ public class ZookeeperLocalCluster implements MiniCluster {
         private Integer port;
         private String tempDir;
         private String zookeeperConnectionString;
+        private int electionPort = -1;
+        private int quorumPort = -1;
+        private boolean deleteDataDirectoryOnClose = true;
+        private int serverId = -1;
+        private int tickTime = -1;
+        private int maxClientCnxns = -1;
 
         public Builder setPort(int port) {
             this.port = port;
@@ -65,12 +84,43 @@ public class ZookeeperLocalCluster implements MiniCluster {
             this.tempDir = tempDir;
             return this;
         }
-        
+
         public Builder setZookeeperConnectionString(String zookeeperConnectionString){
             this.zookeeperConnectionString = zookeeperConnectionString;
             return this;
-            
+
         }
+
+        public Builder setElectionPort(int electionPort){
+            this.electionPort = electionPort;
+            return this;
+        }
+
+        public Builder setQuorumPort(int quorumPort){
+            this.quorumPort = quorumPort;
+            return this;
+        }
+
+        public Builder setDeleteDataDirectoryOnClose(boolean deleteDataDirectoryOnClose){
+            this.deleteDataDirectoryOnClose = deleteDataDirectoryOnClose;
+            return this;
+        }
+
+        public Builder setServerId(int serverId){
+            this.serverId = serverId;
+            return this;
+        }
+
+        public Builder setTickTime(int tickTime){
+            this.tickTime = tickTime;
+            return this;
+        }
+
+        public Builder setMaxClientCnxns(int maxClientCnxns) {
+            this.maxClientCnxns = maxClientCnxns;
+            return this;
+        }
+
 
         public ZookeeperLocalCluster build() {
             ZookeeperLocalCluster zookeeperLocalCluster = new ZookeeperLocalCluster(this);
@@ -97,7 +147,9 @@ public class ZookeeperLocalCluster implements MiniCluster {
     @Override
     public void start() throws Exception {
         LOG.info("ZOOKEEPER: Starting Zookeeper on port: {}",  port);
-        testingServer = new TestingServer(port, new File(tempDir));
+        InstanceSpec spec = new InstanceSpec(new File(tempDir), port, electionPort,
+            quorumPort, deleteDataDirectoryOnClose, serverId, tickTime, maxClientCnxns);
+        testingServer = new TestingServer(spec);
     }
 
     @Override
