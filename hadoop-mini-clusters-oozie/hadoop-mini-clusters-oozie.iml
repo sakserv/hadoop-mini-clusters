@@ -186,8 +186,8 @@
     <orderEntry type="library" name="Maven: org.apache.oozie:oozie-core:4.2.0.2.3.4.0-3485" level="project" />
     <orderEntry type="library" name="Maven: org.apache.oozie:oozie-tools:4.2.0.2.3.4.0-3485" level="project" />
     <orderEntry type="module" module-name="hadoop-mini-clusters-hdfs" scope="TEST" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.hadoop:hadoop-minicluster:2.7.1.2.4.0.0-169" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.hadoop:hadoop-common:test-jar:tests:2.7.1.2.4.0.0-169" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.hadoop:hadoop-minicluster:2.7.1.2.4.2.0-258" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.hadoop:hadoop-common:test-jar:tests:2.7.1.2.4.2.0-258" level="project" />
     <orderEntry type="library" name="Maven: com.sun.jersey:jersey-core:1.9" level="project" />
     <orderEntry type="library" name="Maven: com.sun.jersey:jersey-json:1.9" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jettison:jettison:1.1" level="project" />
@@ -195,27 +195,27 @@
     <orderEntry type="library" name="Maven: com.sun.jersey:jersey-server:1.9" level="project" />
     <orderEntry type="library" name="Maven: net.java.dev.jets3t:jets3t:0.9.0" level="project" />
     <orderEntry type="library" name="Maven: com.jamesmurty.utils:java-xmlbuilder:0.4" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.hadoop:hadoop-hdfs:test-jar:tests:2.7.1.2.4.0.0-169" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.hadoop:hadoop-hdfs:test-jar:tests:2.7.1.2.4.2.0-258" level="project" />
     <orderEntry type="library" name="Maven: commons-daemon:commons-daemon:1.0.13" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.hadoop:hadoop-yarn-server-tests:test-jar:tests:2.7.1.2.4.0.0-169" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.hadoop:hadoop-yarn-server-common:2.7.1.2.4.0.0-169" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.hadoop:hadoop-yarn-registry:2.7.1.2.4.0.0-169" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.hadoop:hadoop-yarn-server-nodemanager:2.7.1.2.4.0.0-169" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.hadoop:hadoop-yarn-server-tests:test-jar:tests:2.7.1.2.4.2.0-258" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.hadoop:hadoop-yarn-server-common:2.7.1.2.4.2.0-258" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.hadoop:hadoop-yarn-registry:2.7.1.2.4.2.0-258" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.hadoop:hadoop-yarn-server-nodemanager:2.7.1.2.4.2.0-258" level="project" />
     <orderEntry type="library" name="Maven: com.google.inject:guice:3.0" level="project" />
     <orderEntry type="library" name="Maven: javax.inject:javax.inject:1" level="project" />
     <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
     <orderEntry type="library" name="Maven: com.sun.jersey.contribs:jersey-guice:1.9" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.hadoop:hadoop-yarn-server-resourcemanager:2.7.1.2.4.0.0-169" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.hadoop:hadoop-yarn-server-applicationhistoryservice:2.7.1.2.4.0.0-169" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.hadoop:hadoop-yarn-server-resourcemanager:2.7.1.2.4.2.0-258" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.hadoop:hadoop-yarn-server-applicationhistoryservice:2.7.1.2.4.2.0-258" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: de.ruedigermoeller:fst:2.24" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.javassist:javassist:3.18.1-GA" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.objenesis:objenesis:2.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.hadoop:hadoop-yarn-server-web-proxy:2.7.1.2.4.0.0-169" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.zookeeper:zookeeper:test-jar:tests:3.4.6.2.4.0.0-169" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.hadoop:hadoop-mapreduce-client-jobclient:test-jar:tests:2.7.1.2.4.0.0-169" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.hadoop:hadoop-yarn-server-web-proxy:2.7.1.2.4.2.0-258" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.zookeeper:zookeeper:test-jar:tests:3.4.6.2.4.2.0-258" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.hadoop:hadoop-mapreduce-client-jobclient:test-jar:tests:2.7.1.2.4.2.0-258" level="project" />
     <orderEntry type="library" name="Maven: com.google.inject.extensions:guice-servlet:3.0" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty:3.6.2.Final" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.hadoop:hadoop-mapreduce-client-hs:2.7.1.2.4.0.0-169" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.hadoop:hadoop-mapreduce-client-hs:2.7.1.2.4.2.0-258" level="project" />
     <orderEntry type="module" module-name="hadoop-mini-clusters-mapreduce" scope="TEST" />
     <orderEntry type="module" module-name="hadoop-mini-clusters-common" />
     <orderEntry type="library" name="Maven: com.github.sakserv:property-parser:0.0.2" level="project" />

@@ -1,5 +1,11 @@
 Change Log
 ==========
+### 0.1.7 - 05/12/2016
+* Add support for HDP 2.4.2
+
+### 0.1.6 - 05/09/2016
+* Add support for Curator InstanceSpec to improve ZK flexibility
+
 ### 0.1.5 - 04/06/2016
 * Add support for HDP 2.4.0
 * Handle the evolving Kafka apis via reflection

@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.minicluster.kafka.consumer.KafkaTestConsumer;
-import com.github.sakserv.minicluster.kafka.producer.KafkaTestProducer;
+import com.github.sakserv.minicluster.kafka.producer.KafkaSimpleTestProducer;
 import com.github.sakserv.propertyparser.PropertyParser;
 
 public class KafkaLocalBrokerIntegrationTest {
@@ -82,14 +82,13 @@ public class KafkaLocalBrokerIntegrationTest {
     public void testKafkaLocalBroker() throws Exception {
 
         // Producer 
-        KafkaTestProducer kafkaTestProducer = new KafkaTestProducer.Builder()
+        KafkaSimpleTestProducer kafkaTestProducer = new KafkaSimpleTestProducer.Builder()
                 .setKafkaHostname(propertyParser.getProperty(ConfigVars.KAFKA_HOSTNAME_KEY))
                 .setKafkaPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.KAFKA_PORT_KEY)))
                 .setTopic(propertyParser.getProperty(ConfigVars.KAFKA_TEST_TOPIC_KEY))
                 .setMessageCount(Integer.parseInt(propertyParser.getProperty(ConfigVars.KAFKA_TEST_MESSAGE_COUNT_KEY)))
                 .build();
         kafkaTestProducer.produceMessages();
-        
 
         // Consumer
         List<String> seeds = new ArrayList<String>();
@@ -101,6 +100,8 @@ public class KafkaLocalBrokerIntegrationTest {
                 0,
                 seeds,
                 kafkaLocalBroker.getKafkaPort());
+
+
         
         // Assert num of messages produced = num of message consumed
         Assert.assertEquals(Long.parseLong(propertyParser.getProperty(ConfigVars.KAFKA_TEST_MESSAGE_COUNT_KEY)),

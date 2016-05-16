@@ -261,6 +261,7 @@ public class MRLocalCluster implements MiniCluster {
 
         if (null != hdfsDefaultFs) {
             configuration.set("fs.defaultFS", hdfsDefaultFs);
+            configuration.set("dfs.replication", "1");
         }
     }
 

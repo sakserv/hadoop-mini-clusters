@@ -17,7 +17,6 @@ package com.github.sakserv.minicluster.impl;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.Date;
 
 import org.junit.AfterClass;
@@ -67,7 +66,7 @@ public class MongodbLocalServerIntegrationTest {
     }
 
     @Test
-    public void testMongodbLocalServer() throws UnknownHostException {
+    public void testMongodbLocalServer() throws Exception {
         MongoClient mongo = new MongoClient(mongodbLocalServer.getIp(), mongodbLocalServer.getPort());
 
         DB db = mongo.getDB(propertyParser.getProperty(ConfigVars.MONGO_DATABASE_NAME_KEY));
