@@ -63,7 +63,8 @@ Profile Support:
 ----------------
 Multiple versions of HDP are supported. The current list is:
 
-*   HDP 2.4.0.0 (default)
+*   HDP 2.4.2.0 (default)
+*   HDP 2.4.0.0
 *   HDP 2.3.4.0
 *   HDP 2.3.2.0
 *   HDP 2.3.0.0
