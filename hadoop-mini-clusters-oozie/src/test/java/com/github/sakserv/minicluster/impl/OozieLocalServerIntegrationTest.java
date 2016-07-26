@@ -13,6 +13,8 @@ import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.security.UserGroupInformation;
+import org.apache.oozie.client.CoordinatorJob;
+import org.apache.oozie.client.Job;
 import org.apache.oozie.client.OozieClient;
 import org.apache.oozie.client.WorkflowJob;
 import org.junit.AfterClass;
@@ -144,6 +146,58 @@ public class OozieLocalServerIntegrationTest {
         LOG.info("OOZIE: Workflow: {}", wf.toString());
         hdfsFs.close();
 
+    }
+
+    @Test
+    public void testSubmitCoordinator() throws Exception {
+
+        LOG.info("OOZIE: Test Submit Coordinator Start");
+
+        FileSystem hdfsFs = hdfsLocalCluster.getHdfsFileSystemHandle();
+        OozieClient oozie = oozieLocalServer.getOozieCoordClient();
+
+        Path appPath = new Path(hdfsFs.getHomeDirectory(), "testApp");
+        hdfsFs.mkdirs(new Path(appPath, "lib"));
+        Path workflow = new Path(appPath, "workflow.xml");
+        Path coordinator = new Path(appPath, "coordinator.xml");
+
+        //write workflow.xml
+        String wfApp =
+                "<workflow-app xmlns='uri:oozie:workflow:0.1' name='test-wf'>" +
+                        "    <start to='end'/>" +
+                        "    <end name='end'/>" +
+                        "</workflow-app>";
+
+        String coordApp =
+                "<coordinator-app timezone='UTC' end='2016-07-26T02:26Z' start='2016-07-26T01:26Z' frequency='${coord:hours(1)}' name='test-coordinator' xmlns='uri:oozie:coordinator:0.4'>" +
+                        "    <action>" +
+                        "        <workflow>" +
+                        "            <app-path>" + workflow.toString() + "</app-path>" +
+                        "        </workflow>" +
+                        "    </action>" +
+                        "</coordinator-app>";
+
+        Writer writer = new OutputStreamWriter(hdfsFs.create(workflow));
+        writer.write(wfApp);
+        writer.close();
+
+        Writer coordWriter = new OutputStreamWriter(hdfsFs.create(coordinator));
+        coordWriter.write(coordApp);
+        coordWriter.close();
+
+        //write job.properties
+        Properties conf = oozie.createConfiguration();
+        conf.setProperty(OozieClient.COORDINATOR_APP_PATH, coordinator.toString());
+        conf.setProperty(OozieClient.USER_NAME, UserGroupInformation.getCurrentUser().getUserName());
+
+        //submit and check
+        final String jobId = oozie.submit(conf);
+        CoordinatorJob coord  = oozie.getCoordJobInfo(jobId);
+        assertNotNull(coord);
+        assertEquals(Job.Status.PREP, coord.getStatus());
+
+        LOG.info("OOZIE: Coordinator: {}", coord.toString());
+        hdfsFs.close();
     }
 
     @Test
