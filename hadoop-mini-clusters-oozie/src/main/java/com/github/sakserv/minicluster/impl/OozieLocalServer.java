@@ -50,6 +50,7 @@ public class OozieLocalServer implements MiniCluster {
     private Boolean ooziePurgeLocalShareLibCache;
 
     private OozieClient oozieClient;
+    private OozieClient oozieCoordClient;
 
     private OozieLocalServer(Builder builder) {
         this.oozieTestDir = builder.oozieTestDir;
@@ -253,7 +254,7 @@ public class OozieLocalServer implements MiniCluster {
 
         LocalOozie.start();
         oozieClient = LocalOozie.getClient();
-
+        oozieCoordClient = LocalOozie.getCoordClient();
     }
 
     @Override
@@ -315,5 +316,9 @@ public class OozieLocalServer implements MiniCluster {
 
     public OozieClient getOozieClient() {
         return oozieClient;
+    }
+
+    public OozieClient getOozieCoordClient() {
+        return oozieCoordClient;
     }
 }
