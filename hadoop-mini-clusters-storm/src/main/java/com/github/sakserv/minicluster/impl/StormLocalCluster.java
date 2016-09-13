@@ -19,9 +19,9 @@ import org.slf4j.LoggerFactory;
 
 import com.github.sakserv.minicluster.MiniCluster;
 
-import backtype.storm.Config;
-import backtype.storm.LocalCluster;
-import backtype.storm.generated.StormTopology;
+import org.apache.storm.Config;
+import org.apache.storm.LocalCluster;
+import org.apache.storm.generated.StormTopology;
 
 public class StormLocalCluster implements MiniCluster {
 

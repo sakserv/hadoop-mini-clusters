@@ -27,8 +27,8 @@ import com.github.sakserv.minicluster.storm.bolt.PrinterBolt;
 import com.github.sakserv.minicluster.storm.spout.RandomSentenceSpout;
 import com.github.sakserv.propertyparser.PropertyParser;
 
-import backtype.storm.Config;
-import backtype.storm.topology.TopologyBuilder;
+import org.apache.storm.Config;
+import org.apache.storm.topology.TopologyBuilder;
 
 public class StormLocalClusterIntegrationTest {
 

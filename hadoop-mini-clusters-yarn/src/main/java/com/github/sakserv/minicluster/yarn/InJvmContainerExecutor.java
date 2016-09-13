@@ -48,6 +48,7 @@ import org.apache.hadoop.yarn.server.nodemanager.containermanager.container.Cont
 import com.github.sakserv.minicluster.yarn.util.EnvironmentUtils;
 import com.github.sakserv.minicluster.yarn.util.ExecJavaCliParser;
 import com.github.sakserv.minicluster.yarn.util.ExecShellCliParser;
+import org.apache.hadoop.yarn.server.nodemanager.executor.ContainerStartContext;
 
 /**
  * !!!!! FOR TESTING WITH MINI CLUSTER ONLY !!!!!
@@ -77,6 +78,49 @@ public class InJvmContainerExecutor extends DefaultContainerExecutor {
         System.setSecurityManager(new SystemExitDisallowingSecurityManager());
     }
 
+  /**
+   * Overrides the parent method while still invoking it. Since
+   * {@link #isContainerActive(ContainerId)} method is also overridden here and
+   * always returns 'false' the super.launchContainer(..) will only go through
+   * the prep routine (e.g., creating temp dirs etc.) while never launching the
+   * actual container via the launch script. This will ensure that all the
+   * expectations of the container to be launched (e.g., symlinks etc.) are
+   * satisfied. The actual launch will be performed by invoking
+   * {@link #doLaunch(Container, Path)} method.
+   */
+  public int launchContainer(ContainerStartContext containerStartContext) throws IOException {
+    Container container = containerStartContext.getContainer();
+    Path containerWorkDir = containerStartContext.getContainerWorkDir();
+    super.launchContainer(containerStartContext);
+    int exitCode = 0;
+    if (container.getLaunchContext().getCommands().toString().contains("bin/java")) {
+      ExecJavaCliParser result = this.createExecCommandParser(containerWorkDir.toString());
+      try {
+        exitCode = this.doLaunch(container, containerWorkDir);
+        if (logger.isInfoEnabled()) {
+          logger.info(("Returned: " + exitCode));
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    } else {
+      String cmd = container.getLaunchContext().getCommands().get(0);
+      if (logger.isInfoEnabled()) {
+        logger.info("Running Command: " + cmd);
+      }
+      ExecShellCliParser execShellCliParser = new ExecShellCliParser(cmd);
+      try {
+        exitCode = execShellCliParser.runCommand();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+      if (logger.isInfoEnabled()) {
+        logger.info(("Returned: " + exitCode));
+      }
+    }
+    return exitCode;
+  }
+
     /**
      * Overrides the parent method while still invoking it. Since
      * {@link #isContainerActive(ContainerId)} method is also overridden here and
@@ -87,14 +131,22 @@ public class InJvmContainerExecutor extends DefaultContainerExecutor {
      * satisfied. The actual launch will be performed by invoking
      * {@link #doLaunch(Container, Path)} method.
      */
-    @Override
     public int launchContainer(Container container,
                                Path nmPrivateContainerScriptPath, Path nmPrivateTokensPath,
                                String userName, String appId, Path containerWorkDir,
                                List<String> localDirs, List<String> logDirs) throws IOException {
+      ContainerStartContext containerStartContext = new ContainerStartContext
+          .Builder().setContainer(container)
+          .setLocalizedResources(container.getLocalizedResources())
+          .setNmPrivateContainerScriptPath(nmPrivateContainerScriptPath)
+          .setNmPrivateTokensPath(nmPrivateTokensPath)
+          .setUser(userName)
+          .setAppId(appId)
+          .setContainerWorkDir(containerWorkDir)
+          .setLocalDirs(localDirs)
+          .setLocalDirs(logDirs).build();
 
-        super.launchContainer(container, nmPrivateContainerScriptPath,
-                nmPrivateTokensPath, userName, appId, containerWorkDir, localDirs, logDirs);
+        super.launchContainer(containerStartContext);
         int exitCode = 0;
         if (container.getLaunchContext().getCommands().toString().contains("bin/java")) {
             ExecJavaCliParser result = this.createExecCommandParser(containerWorkDir.toString());

@@ -32,6 +32,15 @@
             <version>${project.version}</version>
         </dependency>
 
+        <!-- Needed to avoid NoClassDef exceptions due to varying versions of
+         this library in the project -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${httpclient.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 

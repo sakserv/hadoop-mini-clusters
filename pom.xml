@@ -104,16 +104,17 @@
         <mysql-connector-java.version>5.1.34</mysql-connector-java.version>
         <mongo-java-driver.version>2.11.3</mongo-java-driver.version>
         <embedded-mongo.version>1.46.4</embedded-mongo.version>
+        <httpclient.version>4.5.2</httpclient.version>
 
         <!-- Maven Release Plugin doesn't work correctly with properties defined in profiles, duplicate here -->
-        <hdp.release.version>2.4.2.0</hdp.release.version>
-        <storm.version>0.10.0.2.4.2.0-258</storm.version>
-        <hive.version>1.2.1000.2.4.2.0-258</hive.version>
-        <hadoop.version>2.7.1.2.4.2.0-258</hadoop.version>
-        <hbase.version>1.1.2.2.4.2.0-258</hbase.version>
-        <kafka.version>0.9.0.2.4.2.0-258</kafka.version>
+        <hdp.release.version>2.5.0.0</hdp.release.version>
+        <storm.version>1.0.1.2.5.0.0-1245</storm.version>
+        <hive.version>1.2.1000.2.5.0.0-1245</hive.version>
+        <hadoop.version>2.7.3.2.5.0.0-1245</hadoop.version>
+        <hbase.version>1.1.2.2.5.0.0-1245</hbase.version>
+        <kafka.version>0.10.0.2.5.0.0-1245</kafka.version>
         <kafka.artifactid.version>kafka_2.10</kafka.artifactid.version>
-        <oozie.version>4.2.0.2.4.2.0-258</oozie.version>
+        <oozie.version>4.2.0.2.5.0.0-1245</oozie.version>
 
     </properties>
 
@@ -122,6 +123,21 @@
         <!--
             Build profiles to use different versions of Hadoop
         -->
+
+        <!-- HDP 2.5.0.0 -->
+        <profile>
+            <id>2.5.0.0</id>
+            <properties>
+                <hdp.release.version>2.5.0.0</hdp.release.version>
+                <storm.version>1.0.1.2.5.0.0-1245</storm.version>
+                <hive.version>1.2.1000.2.5.0.0-1245</hive.version>
+                <hadoop.version>2.7.3.2.5.0.0-1245</hadoop.version>
+                <hbase.version>1.1.2.2.5.0.0-1245</hbase.version>
+                <kafka.version>0.10.0.2.5.0.0-1245</kafka.version>
+                <kafka.artifactid.version>kafka_2.10</kafka.artifactid.version>
+                <oozie.version>4.2.0.2.5.0.0-1245</oozie.version>
+            </properties>
+        </profile>
 
         <!-- HDP 2.4.2.0 -->
         <profile>

@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 import com.github.sakserv.minicluster.config.ConfigVars;
 import com.github.sakserv.propertyparser.PropertyParser;
 
-import backtype.storm.Config;
+import org.apache.storm.Config;
 
 public class StormLocalClusterTest {
 
@@ -133,7 +133,7 @@ public class StormLocalClusterTest {
     
     @Test
     public void testStormConf() {
-        assertTrue(stormLocalCluster.getStormConf() instanceof backtype.storm.Config);
+        assertTrue(stormLocalCluster.getStormConf() instanceof org.apache.storm.Config);
         
     }
 

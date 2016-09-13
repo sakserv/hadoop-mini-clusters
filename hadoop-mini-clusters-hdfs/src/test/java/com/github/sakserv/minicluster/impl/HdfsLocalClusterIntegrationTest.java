@@ -14,6 +14,8 @@
 
 package com.github.sakserv.minicluster.impl;
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.HttpClients;
 import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedReader;
@@ -101,7 +103,7 @@ public class HdfsLocalClusterIntegrationTest {
         BufferedReader response = new BufferedReader( new InputStreamReader( connection.getInputStream() ) );
         String line = response.readLine();
         response.close();
-      assertEquals( "{\"Path\":\"/user/guest\"}", line );
+        assertEquals( "{\"Path\":\"/user/guest\"}", line );
 
     }
 }

@@ -220,6 +220,7 @@ public class HbaseLocalCluster implements MiniCluster {
         hbaseConfiguration.set(HConstants.REPLICATION_ENABLE_KEY, hbaseWalReplicationEnabled.toString());
         hbaseConfiguration.set("hbase.splitlog.manager.unassigned.timeout", "999999999");
         hbaseConfiguration.set("hbase.splitlog.manager.timeoutmonitor.period", "999999999");
+        hbaseConfiguration.set("hbase.master.logcleaner.plugins", "org.apache.hadoop.hbase.master.cleaner.TimeToLiveLogCleaner");
 
         // Handle Windows
         WindowsLibsUtils.setHadoopHome();

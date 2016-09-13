@@ -184,7 +184,6 @@ public class HiveLocalMetaStore implements MiniCluster {
         t = new Thread(startHiveLocalMetaStore);
         t.setDaemon(true);
         t.start();
-        prepDb();
     }
 
     @Override
@@ -211,6 +210,8 @@ public class HiveLocalMetaStore implements MiniCluster {
                 "jdbc:derby:;databaseName=" + hiveMetastoreDerbyDbDir + ";create=true");
         hiveConf.setVar(HiveConf.ConfVars.METASTOREWAREHOUSE, new File(hiveWarehouseDir).getAbsolutePath());
         hiveConf.setBoolVar(HiveConf.ConfVars.HIVE_IN_TEST, true);
+        hiveConf.set("datanucleus.schema.autoCreateTables", "true");
+        hiveConf.set("hive.metastore.schema.verification", "false");
 
         // Handle Windows
         WindowsLibsUtils.setHadoopHome();
@@ -221,11 +222,5 @@ public class HiveLocalMetaStore implements MiniCluster {
         FileUtils.deleteFolder(hiveMetastoreDerbyDbDir);
         FileUtils.deleteFolder(hiveWarehouseDir);
         FileUtils.deleteFolder(new File("derby.log").getAbsolutePath());
-    }
-
-    public void prepDb() throws Exception {
-        LOG.info("HIVE METASTORE: Prepping the database");
-        TxnDbUtil.setConfValues(hiveConf);
-        TxnDbUtil.prepDb();
     }
 }
