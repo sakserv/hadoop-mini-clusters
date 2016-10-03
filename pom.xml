@@ -276,6 +276,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
                 <configuration>
+                    <!-- Detailed logs in reportsDirectory/testName-output.txt instead of stdout -->
+                    <redirectTestOutputToFile>true</redirectTestOutputToFile>
                     <forkCount>1</forkCount>
                     <reuseForks>false</reuseForks>
                     <argLine>-Xms4g -Xmx4g -XX:MaxPermSize=1024M -Dhdp.release.version=${hdp.release.version}</argLine>

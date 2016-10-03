@@ -13,24 +13,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: org.apache.hbase:hbase-client:1.1.2.2.5.0.0-1245" level="project" />
     <orderEntry type="library" name="Maven: org.apache.hbase:hbase-annotations:1.1.2.2.5.0.0-1245" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.hbase:hbase-common:1.1.2.2.5.0.0-1245" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.hbase:hbase-protocol:1.1.2.2.5.0.0-1245" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.hbase:hbase-testing-util:1.1.2.2.5.0.0-1245" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.hbase:hbase-common:test-jar:tests:1.1.2.2.5.0.0-1245" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.hbase:hbase-annotations:test-jar:tests:1.1.2.2.5.0.0-1245" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.hbase:hbase-server:1.1.2.2.5.0.0-1245" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.hbase:hbase-procedure:1.1.2.2.5.0.0-1245" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.hbase:hbase-prefix-tree:1.1.2.2.5.0.0-1245" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.hadoop:hadoop-distcp:2.7.3.2.5.0.0-1245" level="project" />
-    <orderEntry type="library" name="Maven: org.jamon:jamon-runtime:2.4.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.hbase:hbase-server:test-jar:tests:1.1.2.2.5.0.0-1245" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.hbase:hbase-hadoop-compat:1.1.2.2.5.0.0-1245" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.hbase:hbase-hadoop-compat:test-jar:tests:1.1.2.2.5.0.0-1245" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.hbase:hbase-hadoop2-compat:1.1.2.2.5.0.0-1245" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.hbase:hbase-hadoop2-compat:test-jar:tests:1.1.2.2.5.0.0-1245" level="project" />
-    <orderEntry type="library" name="Maven: com.codahale.metrics:metrics-core:3.0.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.hbase:hbase-client:1.1.2.2.5.0.0-1245" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.hbase:hbase-annotations:1.1.2.2.5.0.0-1245" level="project" />
     <orderEntry type="module-library">
       <library name="Maven: jdk.tools:jdk.tools:1.7">
         <CLASSES>
