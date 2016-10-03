@@ -11,6 +11,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: com.codahale.metrics:metrics-core:3.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.hadoop:hadoop-client:2.7.3.2.5.0.0-1245" level="project" />
     <orderEntry type="library" name="Maven: org.apache.hadoop:hadoop-common:2.7.3.2.5.0.0-1245" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:11.0.2" level="project" />
