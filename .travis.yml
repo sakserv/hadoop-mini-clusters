@@ -6,5 +6,4 @@ cache:
 
 script: travis_wait 60 mvn -B clean test
 
-after_success:
-  - mvn clean cobertura:cobertura coveralls:report
+after_success: travis_wait 60 mvn -B clean cobertura:cobertura coveralls:report
