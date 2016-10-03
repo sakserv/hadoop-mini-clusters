@@ -1,5 +1,10 @@
 Change Log
 ==========
+### 0.1.8 - 10/03/2016
+* Add support for HDP 2.5.0
+* Eliminate fat jar for hbase (Thanks @isendel)
+* Coordinator support for oozie (Thanks @RomanKovalik)
+
 ### 0.1.7 - 05/12/2016
 * Add support for HDP 2.4.2
 
