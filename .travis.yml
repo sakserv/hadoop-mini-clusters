@@ -4,7 +4,7 @@ cache:
   directories:
   - $HOME/.m2
 
-install: travis_wait 60 mvn -B install
+script: travis_wait 60 mvn -B clean test
 
 after_success:
   - mvn clean cobertura:cobertura coveralls:report
