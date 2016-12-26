@@ -15,8 +15,11 @@
 package com.github.sakserv.minicluster.impl;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.Properties;
 
+import kafka.metrics.KafkaMetricsReporter;
+import org.apache.avro.generic.GenericData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +30,8 @@ import com.github.sakserv.minicluster.util.FileUtils;
 import kafka.server.KafkaConfig;
 import kafka.server.KafkaServer;
 import scala.Option;
+import scala.Some;
+import scala.collection.immutable.Seq;
 
 /**
  * In memory Kafka Broker for testing
@@ -169,7 +174,7 @@ public class KafkaLocalBroker implements MiniCluster {
             throw new Exception("kafka.server.KafkaServer has more than one constructor, expected only 1");
         }
 
-        // We only expect 2 and 3 argument constructors, throw an Exception if not
+        // We only expect 2, 3 and 4 argument constructors, throw an Exception if not
         Constructor kafkaServerConstructor = kafkaServerConstructors[0];
 
         // Kafka 2.9.2 0.8.2 (HDP 2.3.0 and HDP 2.3.2)
@@ -180,6 +185,13 @@ public class KafkaLocalBroker implements MiniCluster {
         } else if (kafkaServerConstructor.getParameterTypes().length == 3) {
             Option<String> threadPrefixName = Option.apply("kafka-mini-cluster");
             kafkaServer = (KafkaServer) kafkaServerConstructor.newInstance(kafkaConfig, new LocalSystemTime(), threadPrefixName);
+
+        // Kafka 2.10.1
+        } else if (kafkaServerConstructor.getParameterTypes().length == 4) {
+            //val config: KafkaConfig, time: Time = Time.SYSTEM, threadNamePrefix: Option[String] = None, kafkaMetricsReporters: Seq[KafkaMetricsReporter] = List()
+            Option<String> threadPrefixName = Option.apply("kafka-mini-cluster");
+            Object kafkaMetricsReporters = scala.collection.immutable.List.empty();
+            kafkaServer = (KafkaServer) kafkaServerConstructor.newInstance(kafkaConfig, new LocalSystemTime(), threadPrefixName, kafkaMetricsReporters);
         }
 
         kafkaServer.startup();
