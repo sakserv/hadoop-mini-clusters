@@ -109,22 +109,22 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="hadoop-mini-clusters" target="1.7" />
-      <module name="hadoop-mini-clusters-activemq" target="1.7" />
-      <module name="hadoop-mini-clusters-common" target="1.7" />
-      <module name="hadoop-mini-clusters-hbase" target="1.7" />
-      <module name="hadoop-mini-clusters-hdfs" target="1.7" />
-      <module name="hadoop-mini-clusters-hivemetastore" target="1.7" />
-      <module name="hadoop-mini-clusters-hiveserver2" target="1.7" />
-      <module name="hadoop-mini-clusters-hyperscaledb" target="1.7" />
+      <module name="hadoop-mini-clusters" target="1.8" />
+      <module name="hadoop-mini-clusters-activemq" target="1.8" />
+      <module name="hadoop-mini-clusters-common" target="1.8" />
+      <module name="hadoop-mini-clusters-hbase" target="1.8" />
+      <module name="hadoop-mini-clusters-hdfs" target="1.8" />
+      <module name="hadoop-mini-clusters-hivemetastore" target="1.8" />
+      <module name="hadoop-mini-clusters-hiveserver2" target="1.8" />
+      <module name="hadoop-mini-clusters-hyperscaledb" target="1.8" />
       <module name="hadoop-mini-clusters-hypersqldb" target="1.7" />
-      <module name="hadoop-mini-clusters-kafka" target="1.7" />
-      <module name="hadoop-mini-clusters-mapreduce" target="1.7" />
-      <module name="hadoop-mini-clusters-mongodb" target="1.7" />
-      <module name="hadoop-mini-clusters-oozie" target="1.7" />
-      <module name="hadoop-mini-clusters-storm" target="1.7" />
-      <module name="hadoop-mini-clusters-yarn" target="1.7" />
-      <module name="hadoop-mini-clusters-zookeeper" target="1.7" />
+      <module name="hadoop-mini-clusters-kafka" target="1.8" />
+      <module name="hadoop-mini-clusters-mapreduce" target="1.8" />
+      <module name="hadoop-mini-clusters-mongodb" target="1.8" />
+      <module name="hadoop-mini-clusters-oozie" target="1.8" />
+      <module name="hadoop-mini-clusters-storm" target="1.8" />
+      <module name="hadoop-mini-clusters-yarn" target="1.8" />
+      <module name="hadoop-mini-clusters-zookeeper" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

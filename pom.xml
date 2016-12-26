@@ -107,14 +107,14 @@
         <httpclient.version>4.5.2</httpclient.version>
 
         <!-- Maven Release Plugin doesn't work correctly with properties defined in profiles, duplicate here -->
-        <hdp.release.version>2.5.0.0</hdp.release.version>
-        <storm.version>1.0.1.2.5.0.0-1245</storm.version>
-        <hive.version>1.2.1000.2.5.0.0-1245</hive.version>
-        <hadoop.version>2.7.3.2.5.0.0-1245</hadoop.version>
-        <hbase.version>1.1.2.2.5.0.0-1245</hbase.version>
-        <kafka.version>0.10.0.2.5.0.0-1245</kafka.version>
+        <hdp.release.version>2.5.3.0</hdp.release.version>
+        <storm.version>1.0.1.2.5.3.0-37</storm.version>
+        <hive.version>1.2.1000.2.5.3.0-37</hive.version>
+        <hadoop.version>2.7.3.2.5.3.0-37</hadoop.version>
+        <hbase.version>1.1.2.2.5.3.0-37</hbase.version>
+        <kafka.version>0.10.0.2.5.3.0-37</kafka.version>
         <kafka.artifactid.version>kafka_2.10</kafka.artifactid.version>
-        <oozie.version>4.2.0.2.5.0.0-1245</oozie.version>
+        <oozie.version>4.2.0.2.5.3.0-37</oozie.version>
 
     </properties>
 
@@ -123,6 +123,21 @@
         <!--
             Build profiles to use different versions of Hadoop
         -->
+
+        <!-- HDP 2.5.3.0 -->
+        <profile>
+            <id>2.5.3.0</id>
+            <properties>
+                <hdp.release.version>2.5.3.0</hdp.release.version>
+                <storm.version>1.0.1.2.5.3.0-37</storm.version>
+                <hive.version>1.2.1000.2.5.3.0-37</hive.version>
+                <hadoop.version>2.7.3.2.5.3.0-37</hadoop.version>
+                <hbase.version>1.1.2.2.5.3.0-37</hbase.version>
+                <kafka.version>0.10.0.2.5.3.0-37</kafka.version>
+                <kafka.artifactid.version>kafka_2.10</kafka.artifactid.version>
+                <oozie.version>4.2.0.2.5.3.0-37</oozie.version>
+            </properties>
+        </profile>
 
         <!-- HDP 2.5.0.0 -->
         <profile>
@@ -280,7 +295,7 @@
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
                     <forkCount>1</forkCount>
                     <reuseForks>false</reuseForks>
-                    <argLine>-Xms4g -Xmx4g -XX:MaxPermSize=1024M -Dhdp.release.version=${hdp.release.version}</argLine>
+                    <argLine>-Xms4g -Xmx4g -Dhdp.release.version=${hdp.release.version}</argLine>
                 </configuration>
             </plugin>
 
@@ -289,8 +304,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
             

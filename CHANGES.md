@@ -1,5 +1,9 @@
 Change Log
 ==========
+### 0.1.9 - 12/26/2016
+* Add support for HDP 2.5.3
+* Add Kafka 2.10.1 (Thanks @timvw)
+
 ### 0.1.8 - 10/03/2016
 * Add support for HDP 2.5.0
 * Eliminate fat jar for hbase (Thanks @isendel)
