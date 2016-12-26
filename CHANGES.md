@@ -1,6 +1,7 @@
 Change Log
 ==========
 ### 0.1.9 - 12/26/2016
+* Make JDK 8 the default
 * Add support for HDP 2.5.3
 * Add Kafka 2.10.1 (Thanks @timvw)
 
