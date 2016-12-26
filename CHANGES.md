@@ -4,6 +4,7 @@ Change Log
 * Make JDK 8 the default
 * Add support for HDP 2.5.3
 * Add Kafka 2.10.1 (Thanks @timvw)
+* Fix LocalOozie logging for issue #21
 
 ### 0.1.8 - 10/03/2016
 * Add support for HDP 2.5.0
