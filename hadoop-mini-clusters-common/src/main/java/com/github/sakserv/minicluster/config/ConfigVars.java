@@ -148,6 +148,12 @@ public class ConfigVars {
     public static final String OOZIE_LOCAL_SHARE_LIB_CACHE_DIR_KEY = "oozie.local.share.lib.cache.dir";
     public static final String OOZIE_PURGE_LOCAL_SHARE_LIB_CACHE_KEY = "oozie.purge.local.share.lib.cache";
 
+    //Knox
+    public static final String KNOX_HOST_KEY = "knox.host";
+    public static final String KNOX_PORT_KEY = "knox.port";
+    public static final String KNOX_PATH_KEY = "knox.path";
+    public static final String KNOX_CLUSTER_KEY = "knox.cluster";
+    public static final String KNOX_HOME_DIR_KEY = "knox.home.dir";
 
     public String toString() {
         return "ConfigVars";

@@ -70,6 +70,7 @@
         <module>hadoop-mini-clusters-oozie</module>
         <module>hadoop-mini-clusters-mongodb</module>
         <module>hadoop-mini-clusters-hyperscaledb</module>
+        <module>hadoop-mini-clusters-knox</module>
     </modules>
 
     <properties>
@@ -115,6 +116,7 @@
         <kafka.version>0.10.0.2.5.3.0-37</kafka.version>
         <kafka.artifactid.version>kafka_2.10</kafka.artifactid.version>
         <oozie.version>4.2.0.2.5.3.0-37</oozie.version>
+        <knox.version>0.9.0.2.5.3.0-37</knox.version>
 
     </properties>
 
@@ -136,6 +138,7 @@
                 <kafka.version>0.10.0.2.5.3.0-37</kafka.version>
                 <kafka.artifactid.version>kafka_2.10</kafka.artifactid.version>
                 <oozie.version>4.2.0.2.5.3.0-37</oozie.version>
+                <knox.version>0.9.0.2.5.3.0-37</knox.version>
             </properties>
         </profile>
 
@@ -151,6 +154,7 @@
                 <kafka.version>0.10.0.2.5.0.0-1245</kafka.version>
                 <kafka.artifactid.version>kafka_2.10</kafka.artifactid.version>
                 <oozie.version>4.2.0.2.5.0.0-1245</oozie.version>
+                <knox.version>0.9.0.2.5.0.0-1245</knox.version>
             </properties>
         </profile>
 
@@ -166,6 +170,7 @@
                 <kafka.version>0.9.0.2.4.2.0-258</kafka.version>
                 <kafka.artifactid.version>kafka_2.10</kafka.artifactid.version>
                 <oozie.version>4.2.0.2.4.2.0-258</oozie.version>
+                <knox.version>0.6.0.2.4.2.0-258</knox.version>
             </properties>
         </profile>
 
@@ -181,6 +186,7 @@
                 <kafka.version>0.9.0.2.4.0.0-169</kafka.version>
                 <kafka.artifactid.version>kafka_2.10</kafka.artifactid.version>
                 <oozie.version>4.2.0.2.4.0.0-169</oozie.version>
+                <knox.version>0.6.0.2.4.0.0-169</knox.version>
             </properties>
         </profile>
 
@@ -196,6 +202,7 @@
                 <kafka.version>0.9.0.2.3.4.0-3485</kafka.version>
                 <kafka.artifactid.version>kafka_2.10</kafka.artifactid.version>
                 <oozie.version>4.2.0.2.3.4.0-3485</oozie.version>
+                <knox.version>0.6.0.2.3.4.0-3485</knox.version>
             </properties>
         </profile>
 
@@ -211,6 +218,7 @@
                 <kafka.version>0.8.2.2.3.2.0-2950</kafka.version>
                 <kafka.artifactid.version>kafka_2.9.2</kafka.artifactid.version>
                 <oozie.version>4.2.0.2.3.2.0-2950</oozie.version>
+                <knox.version>0.6.0.2.3.2.0-2950</knox.version>
             </properties>
         </profile>
 
@@ -226,6 +234,7 @@
                 <kafka.version>0.8.2.2.3.0.0-2557</kafka.version>
                 <kafka.artifactid.version>kafka_2.9.2</kafka.artifactid.version>
                 <oozie.version>4.2.0.2.3.0.0-2557</oozie.version>
+                <knox.version>0.6.0.2.3.0.0-2557</knox.version>
             </properties>
         </profile>
 
