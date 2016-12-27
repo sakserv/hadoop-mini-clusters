@@ -59,7 +59,7 @@ public class KnoxLocalClusterTest {
                 .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.KNOX_PORT_KEY)))
                 .setPath(propertyParser.getProperty(ConfigVars.KNOX_PATH_KEY))
                 .setHomeDir(propertyParser.getProperty(ConfigVars.KNOX_HOME_DIR_KEY))
-                .setCluster(propertyParser.getProperty(ConfigVars.KNOX_CLUSTER))
+                .setCluster(propertyParser.getProperty(ConfigVars.KNOX_CLUSTER_KEY))
                 .setTopology(XMLDoc.newDocument(true)
                         .addRoot("topology")
                         .addTag("service")
@@ -113,7 +113,7 @@ public class KnoxLocalClusterTest {
 
     @Test
     public void testKnoxCluster() {
-        assertEquals(propertyParser.getProperty(ConfigVars.KNOX_CLUSTER),
+        assertEquals(propertyParser.getProperty(ConfigVars.KNOX_CLUSTER_KEY),
                 knoxLocalCluster.getCluster());
     }
 
@@ -121,7 +121,7 @@ public class KnoxLocalClusterTest {
     public void testMissingKnoxCluster() {
         exception.expect(IllegalArgumentException.class);
         knoxLocalCluster = new KnoxLocalCluster.Builder()
-                .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.KNOX_CLUSTER)))
+                .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.KNOX_CLUSTER_KEY)))
                 .build();
     }
 }

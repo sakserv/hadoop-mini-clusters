@@ -86,7 +86,7 @@ public class KnoxLocalClusterIntegrationTest {
                 .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.KNOX_PORT_KEY)))
                 .setPath(propertyParser.getProperty(ConfigVars.KNOX_PATH_KEY))
                 .setHomeDir(propertyParser.getProperty(ConfigVars.KNOX_HOME_DIR_KEY))
-                .setCluster(propertyParser.getProperty(ConfigVars.KNOX_CLUSTER))
+                .setCluster(propertyParser.getProperty(ConfigVars.KNOX_CLUSTER_KEY))
                 .setTopology(XMLDoc.newDocument(true)
                         .addRoot("topology")
                             .addTag("gateway")
