@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>hadoop-mini-clusters</artifactId>
+        <groupId>com.github.sakserv</groupId>
+        <version>0.1.9-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>hadoop-mini-clusters-knox</artifactId>
+
+    <dependencies>
+
+        <!-- Knox Server -->
+        <dependency>
+            <groupId>org.apache.knox</groupId>
+            <artifactId>gateway-server</artifactId>
+            <version>${knox.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.knox</groupId>
+            <artifactId>gateway-provider-rewrite</artifactId>
+            <version>${knox.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.knox</groupId>
+            <artifactId>gateway-provider-rewrite-step-secure-query</artifactId>
+            <version>${knox.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.knox</groupId>
+            <artifactId>gateway-provider-rewrite-step-encrypt-uri</artifactId>
+            <version>${knox.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.knox</groupId>
+            <artifactId>gateway-provider-rewrite-func-hostmap-static</artifactId>
+            <version>${knox.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.knox</groupId>
+            <artifactId>gateway-provider-rewrite-func-service-registry</artifactId>
+            <version>${knox.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.knox</groupId>
+            <artifactId>gateway-service-definitions</artifactId>
+            <version>${knox.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.knox</groupId>
+            <artifactId>gateway-test</artifactId>
+            <version>${knox.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mycila.xmltool</groupId>
+            <artifactId>xmltool</artifactId>
+            <version>3.3</version>
+        </dependency>
+
+        <!-- Hadoop Mini Clusters Common -->
+        <dependency>
+            <groupId>com.github.sakserv</groupId>
+            <artifactId>hadoop-mini-clusters-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Needed to avoid NoClassDef exceptions due to varying versions of
+         this library in the project -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${httpclient.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Hadoop Mini Clusters HDFS -->
+        <dependency>
+            <groupId>com.github.sakserv</groupId>
+            <artifactId>hadoop-mini-clusters-hdfs</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Knox -->
+        <dependency>
+            <groupId>org.apache.knox</groupId>
+            <artifactId>gateway-shell</artifactId>
+            <version>${knox.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.knox</groupId>
+            <artifactId>gateway-provider-security-authc-anon</artifactId>
+            <version>${knox.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.knox</groupId>
+            <artifactId>gateway-provider-identity-assertion-pseudo</artifactId>
+            <version>${knox.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.knox</groupId>
+            <artifactId>gateway-service-webhdfs</artifactId>
+            <version>${knox.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+</project>
