@@ -266,10 +266,10 @@ public class HbaseRestLocalCluster implements MiniCluster {
         Integer hbaseRestThreadMin = (this.hbaseRestThreadMin == null) ? 2 : this.hbaseRestThreadMin;
 
         UserProvider userProvider = UserProvider.instantiate(conf);
-        Pair<FilterHolder, Class<? extends ServletContainer>> pair = RESTServer.loginServerPrincipal(userProvider, conf);
+        Pair<FilterHolder, Class<? extends ServletContainer>> pair = loginServerPrincipal(userProvider, conf);
         FilterHolder authFilter = pair.getFirst();
         Class<? extends ServletContainer> containerClass = pair.getSecond();
-        RESTServlet servlet = RESTServlet.getInstance(conf, userProvider);
+        RESTServlet.getInstance(conf, userProvider);
 
         // set up the Jersey servlet container for Jetty
         ServletHolder sh = new ServletHolder(containerClass);
@@ -319,13 +319,6 @@ public class HbaseRestLocalCluster implements MiniCluster {
             context.addFilter(authFilter, "/*", 1);
         }
 
-        // Load filters from configuration.
-//        String[] filterClasses = servlet.getConfiguration().getStrings(RESTServer.FILTER_CLASSES, ArrayUtils.EMPTY_STRING_ARRAY);
-//        for (String filter : filterClasses) {
-//            filter = filter.trim();
-//            context.addFilter(Class.forName(filter), "/*", 0);
-//        }
-        RESTServer.addCSRFFilter(context, conf);
         HttpServerUtil.constrainHttpMethods(context);
 
         // Put up info server.
@@ -359,5 +352,10 @@ public class HbaseRestLocalCluster implements MiniCluster {
     @Override
     public void cleanUp() throws Exception {
         //NOTHING TO DO
+    }
+
+    Pair<FilterHolder, Class<? extends ServletContainer>> loginServerPrincipal(UserProvider userProvider, Configuration conf) throws Exception {
+        Class<? extends ServletContainer> containerClass = ServletContainer.class;
+        return new Pair<>(null, containerClass);
     }
 }
