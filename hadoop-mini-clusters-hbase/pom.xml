@@ -11,6 +11,13 @@
 
     <dependencies>
 
+        <!-- Hbase Rest Server -->
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-rest</artifactId>
+            <version>${hbase.version}</version>
+        </dependency>
+
         <!-- Hbase Client -->
         <dependency>
             <groupId>org.apache.hbase</groupId>

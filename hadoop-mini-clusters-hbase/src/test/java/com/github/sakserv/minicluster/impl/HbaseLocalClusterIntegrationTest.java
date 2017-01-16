@@ -15,8 +15,13 @@
 package com.github.sakserv.minicluster.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
@@ -79,6 +84,17 @@ public class HbaseLocalClusterIntegrationTest {
                 .setHbaseWalReplicationEnabled(
                         Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HBASE_WAL_REPLICATION_ENABLED_KEY)))
                 .setHbaseConfiguration(new Configuration())
+                .activeRestGateway()
+                    .setHbaseRestHost(propertyParser.getProperty(ConfigVars.HBASE_REST_HOST_KEY))
+                    .setHbaseRestPort(
+                            Integer.valueOf(propertyParser.getProperty(ConfigVars.HBASE_REST_PORT_KEY)))
+                    .setHbaseRestReadOnly(
+                            Boolean.valueOf(propertyParser.getProperty(ConfigVars.HBASE_REST_READONLY_KEY)))
+                    .setHbaseRestThreadMax(
+                            Integer.valueOf(propertyParser.getProperty(ConfigVars.HBASE_REST_THREADMAX_KEY)))
+                    .setHbaseRestThreadMin(
+                            Integer.valueOf(propertyParser.getProperty(ConfigVars.HBASE_REST_THREADMIN_KEY)))
+                    .build()
                 .build();
         hbaseLocalCluster.start();
 
@@ -99,6 +115,9 @@ public class HbaseLocalClusterIntegrationTest {
         Integer numRowsToPut = Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_TEST_NUM_ROWS_TO_PUT_KEY));
         Configuration configuration = hbaseLocalCluster.getHbaseConfiguration();
 
+        LOG.info("HBASE: Deleting table {}", tableName);
+        deleteHbaseTable(tableName, configuration);
+
         LOG.info("HBASE: Creating table {} with column family {}", tableName, colFamName);
         createHbaseTable(tableName, colFamName, configuration);
 
@@ -115,6 +134,60 @@ public class HbaseLocalClusterIntegrationTest {
 
     }
 
+    @Test
+    public void testHbaseRestLocalCluster() throws Exception {
+        URL url = new URL(
+                String.format("http://localhost:%s/status/cluster/",
+                        propertyParser.getProperty(ConfigVars.HBASE_REST_PORT_KEY)));
+        URLConnection connection = url.openConnection();
+        connection.setRequestProperty("Accept-Charset", "UTF-8");
+        try (BufferedReader response = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            String line = response.readLine();
+            assertTrue(line.contains("2 live servers, 0 dead servers"));
+        }
+
+    }
+
+    @Test
+    public void testHbaseRestLocalClusterWithSchemaRequest() throws Exception {
+        String tableName = propertyParser.getProperty(ConfigVars.HBASE_TEST_TABLE_NAME_KEY);
+        String colFamName = propertyParser.getProperty(ConfigVars.HBASE_TEST_COL_FAMILY_NAME_KEY);
+        String colQualiferName = propertyParser.getProperty(ConfigVars.HBASE_TEST_COL_QUALIFIER_NAME_KEY);
+        Integer numRowsToPut = Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_TEST_NUM_ROWS_TO_PUT_KEY));
+        Configuration configuration = hbaseLocalCluster.getHbaseConfiguration();
+
+        LOG.info("HBASE: Deleting table {}", tableName);
+        deleteHbaseTable(tableName, configuration);
+
+        LOG.info("HBASE: Creating table {} with column family {}", tableName, colFamName);
+        createHbaseTable(tableName, colFamName, configuration);
+
+        LOG.info("HBASE: Populate the table with {} rows.", numRowsToPut);
+        for (int i = 0; i < numRowsToPut; i++) {
+            putRow(tableName, colFamName, String.valueOf(i), colQualiferName, "row_" + i, configuration);
+        }
+
+        URL url = new URL(String.format("http://localhost:%s/",
+                propertyParser.getProperty(ConfigVars.HBASE_REST_PORT_KEY)));
+        URLConnection connection = url.openConnection();
+        connection.setRequestProperty("Accept-Charset", "UTF-8");
+        try (BufferedReader response = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            String line = response.readLine();
+            assertTrue(line.contains(tableName));
+        }
+
+        url = new URL(String.format("http://localhost:%s/%s/schema",
+                propertyParser.getProperty(ConfigVars.HBASE_REST_PORT_KEY),
+                tableName));
+        connection = url.openConnection();
+        connection.setRequestProperty("Accept-Charset", "UTF-8");
+        try (BufferedReader response = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            String line = response.readLine();
+            assertTrue(line.contains("{ NAME=> 'hbase_test_table', IS_META => 'false', COLUMNS => [ { NAME => 'cf1', BLOOMFILTER => 'ROW'"));
+        }
+
+    }
+
     private static void createHbaseTable(String tableName, String colFamily,
                                          Configuration configuration) throws Exception {
 
@@ -124,6 +197,15 @@ public class HbaseLocalClusterIntegrationTest {
 
         hTableDescriptor.addFamily(hColumnDescriptor);
         admin.createTable(hTableDescriptor);
+    }
+
+    private static void deleteHbaseTable(String tableName, Configuration configuration) throws Exception {
+
+        final HBaseAdmin admin = new HBaseAdmin(configuration);
+        if (admin.tableExists(tableName)) {
+            admin.disableTable(tableName);
+            admin.deleteTable(tableName);
+        }
     }
 
     private static void putRow(String tableName, String colFamName, String rowKey, String colQualifier, String value,

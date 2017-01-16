@@ -132,6 +132,14 @@ public class ConfigVars {
     public static final String HBASE_ZNODE_PARENT_KEY = "hbase.znode.parent";
     public static final String HBASE_WAL_REPLICATION_ENABLED_KEY = "hbase.wal.replication.enabled";
 
+    // HBase Rest
+    public static final String HBASE_REST_PORT_KEY = "hbase.rest.port";
+    public static final String HBASE_REST_READONLY_KEY="hbase.rest.readonly";
+    public static final String HBASE_REST_INFO_PORT_KEY="hbase.rest.info.port";
+    public static final String HBASE_REST_HOST_KEY="hbase.rest.host";
+    public static final String HBASE_REST_THREADMAX_KEY="hbase.rest.threads.max";
+    public static final String HBASE_REST_THREADMIN_KEY="hbase.rest.threads.min";
+
     // HBase Test
     public static final String HBASE_TEST_TABLE_NAME_KEY = "hbase.test.table.name";
     public static final String HBASE_TEST_COL_FAMILY_NAME_KEY = "hbase.test.col.family.name";

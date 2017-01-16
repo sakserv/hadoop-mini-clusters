@@ -84,6 +84,20 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Hadoop Mini Clusters HBase -->
+        <dependency>
+            <groupId>com.github.sakserv</groupId>
+            <artifactId>hadoop-mini-clusters-hbase</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.sakserv</groupId>
+            <artifactId>hadoop-mini-clusters-zookeeper</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Knox -->
         <dependency>
             <groupId>org.apache.knox</groupId>
@@ -106,6 +120,12 @@
         <dependency>
             <groupId>org.apache.knox</groupId>
             <artifactId>gateway-service-webhdfs</artifactId>
+            <version>${knox.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.knox</groupId>
+            <artifactId>gateway-service-hbase</artifactId>
             <version>${knox.version}</version>
             <scope>test</scope>
         </dependency>

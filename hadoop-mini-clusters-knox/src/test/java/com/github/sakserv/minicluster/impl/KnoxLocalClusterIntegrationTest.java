@@ -21,6 +21,13 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.hbase.HColumnDescriptor;
+import org.apache.hadoop.hbase.HTableDescriptor;
+import org.apache.hadoop.hbase.TableName;
+import org.apache.hadoop.hbase.client.HBaseAdmin;
+import org.apache.hadoop.hbase.client.HTable;
+import org.apache.hadoop.hbase.client.Put;
+import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -40,6 +47,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Vincent Devillers
@@ -61,11 +69,48 @@ public class KnoxLocalClusterIntegrationTest {
         }
     }
 
+    private static HbaseLocalCluster hbaseLocalCluster;
+    private static ZookeeperLocalCluster zookeeperLocalCluster;
     private static HdfsLocalCluster dfsCluster;
     private static KnoxLocalCluster knoxCluster;
 
     @BeforeClass
     public static void setUp() throws Exception {
+        // We need Zookeeper/HBase/HBaseRest for Knox
+        zookeeperLocalCluster = new ZookeeperLocalCluster.Builder()
+                .setPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
+                .setTempDir(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TEMP_DIR_KEY))
+                .setZookeeperConnectionString(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY))
+                .build();
+        zookeeperLocalCluster.start();
+
+        hbaseLocalCluster = new HbaseLocalCluster.Builder()
+                .setHbaseMasterPort(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_MASTER_PORT_KEY)))
+                .setHbaseMasterInfoPort(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_MASTER_INFO_PORT_KEY)))
+                .setNumRegionServers(
+                        Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_NUM_REGION_SERVERS_KEY)))
+                .setHbaseRootDir(propertyParser.getProperty(ConfigVars.HBASE_ROOT_DIR_KEY))
+                .setZookeeperPort(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)))
+                .setZookeeperConnectionString(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY))
+                .setZookeeperZnodeParent(propertyParser.getProperty(ConfigVars.HBASE_ZNODE_PARENT_KEY))
+                .setHbaseWalReplicationEnabled(
+                        Boolean.parseBoolean(propertyParser.getProperty(ConfigVars.HBASE_WAL_REPLICATION_ENABLED_KEY)))
+                .setHbaseConfiguration(new Configuration())
+                .activeRestGateway()
+                    .setHbaseRestHost(propertyParser.getProperty(ConfigVars.HBASE_REST_HOST_KEY))
+                    .setHbaseRestPort(
+                            Integer.valueOf(propertyParser.getProperty(ConfigVars.HBASE_REST_PORT_KEY)))
+                    .setHbaseRestReadOnly(
+                            Boolean.valueOf(propertyParser.getProperty(ConfigVars.HBASE_REST_READONLY_KEY)))
+                    .setHbaseRestThreadMax(
+                            Integer.valueOf(propertyParser.getProperty(ConfigVars.HBASE_REST_THREADMAX_KEY)))
+                    .setHbaseRestThreadMin(
+                            Integer.valueOf(propertyParser.getProperty(ConfigVars.HBASE_REST_THREADMIN_KEY)))
+                    .build()
+                .build();
+        hbaseLocalCluster.start();
 
         // We need HDFS/WEBHDFS for Knox
         dfsCluster = new HdfsLocalCluster.Builder()
@@ -105,6 +150,10 @@ public class KnoxLocalClusterIntegrationTest {
                             .addTag("service")
                                 .addTag("role").addText("WEBHDFS")
                                 .addTag("url").addText("http://localhost:" + propertyParser.getProperty(ConfigVars.HDFS_NAMENODE_HTTP_PORT_KEY) + "/webhdfs")
+                                .gotoParent()
+                            .addTag("service")
+                                .addTag("role").addText("WEBHBASE")
+                                .addTag("url").addText("http://localhost:" + propertyParser.getProperty(ConfigVars.HBASE_REST_PORT_KEY))
                         .gotoRoot().toString())
                 .build();
 
@@ -113,7 +162,70 @@ public class KnoxLocalClusterIntegrationTest {
 
     @AfterClass
     public static void tearDown() throws Exception {
+        hbaseLocalCluster.stop();
+        zookeeperLocalCluster.stop();
+        dfsCluster.stop();
         knoxCluster.stop();
+    }
+
+    @Test
+    public void testKnoxWithWebhbase() throws Exception {
+
+        String tableName = propertyParser.getProperty(ConfigVars.HBASE_TEST_TABLE_NAME_KEY);
+        String colFamName = propertyParser.getProperty(ConfigVars.HBASE_TEST_COL_FAMILY_NAME_KEY);
+        String colQualiferName = propertyParser.getProperty(ConfigVars.HBASE_TEST_COL_QUALIFIER_NAME_KEY);
+        Integer numRowsToPut = Integer.parseInt(propertyParser.getProperty(ConfigVars.HBASE_TEST_NUM_ROWS_TO_PUT_KEY));
+        Configuration configuration = hbaseLocalCluster.getHbaseConfiguration();
+
+        LOG.info("HBASE: Creating table {} with column family {}", tableName, colFamName);
+        createHbaseTable(tableName, colFamName, configuration);
+
+        LOG.info("HBASE: Populate the table with {} rows.", numRowsToPut);
+        for (int i=0; i<numRowsToPut; i++) {
+            putRow(tableName, colFamName, String.valueOf(i), colQualiferName, "row_" + i, configuration);
+        }
+
+        URL url = new URL(String.format("http://localhost:%s/",
+                propertyParser.getProperty(ConfigVars.HBASE_REST_PORT_KEY)));
+        URLConnection connection = url.openConnection();
+        connection.setRequestProperty("Accept-Charset", "UTF-8");
+        try (BufferedReader response = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            String line = response.readLine();
+            assertTrue(line.contains(tableName));
+        }
+
+        url = new URL(String.format("http://localhost:%s/%s/schema",
+                propertyParser.getProperty(ConfigVars.HBASE_REST_PORT_KEY),
+                tableName));
+        connection = url.openConnection();
+        connection.setRequestProperty("Accept-Charset", "UTF-8");
+        try (BufferedReader response = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            String line = response.readLine();
+            assertTrue(line.contains("{ NAME=> 'hbase_test_table', IS_META => 'false', COLUMNS => [ { NAME => 'cf1', BLOOMFILTER => 'ROW'"));
+        }
+
+        // Knox clients need self trusted certificates in tests
+        defaultBlindTrust();
+
+        // Read the hbase throught Knox
+        url = new URL(String.format("https://localhost:%s/gateway/mycluster/hbase",
+                propertyParser.getProperty(ConfigVars.KNOX_PORT_KEY)));
+        connection = url.openConnection();
+        connection.setRequestProperty("Accept-Charset", "UTF-8");
+        try (BufferedReader response = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            String line = response.readLine();
+            assertTrue(line.contains(tableName));
+        }
+
+        url = new URL(String.format("https://localhost:%s/gateway/mycluster/hbase/%s/schema",
+                propertyParser.getProperty(ConfigVars.KNOX_PORT_KEY),
+                tableName));
+        connection = url.openConnection();
+        connection.setRequestProperty("Accept-Charset", "UTF-8");
+        try (BufferedReader response = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            String line = response.readLine();
+            assertTrue(line.contains("{ NAME=> 'hbase_test_table', IS_META => 'false', COLUMNS => [ { NAME => 'cf1', BLOOMFILTER => 'ROW'"));
+        }
     }
 
     @Test
@@ -225,5 +337,26 @@ public class KnoxLocalClusterIntegrationTest {
             }
         };
         HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+    }
+
+    private static void createHbaseTable(String tableName, String colFamily,
+                                         Configuration configuration) throws Exception {
+
+        final HBaseAdmin admin = new HBaseAdmin(configuration);
+        HTableDescriptor hTableDescriptor = new HTableDescriptor(TableName.valueOf(tableName));
+        HColumnDescriptor hColumnDescriptor = new HColumnDescriptor(colFamily);
+
+        hTableDescriptor.addFamily(hColumnDescriptor);
+        admin.createTable(hTableDescriptor);
+    }
+
+    private static void putRow(String tableName, String colFamName, String rowKey, String colQualifier, String value,
+                               Configuration configuration) throws Exception {
+        HTable table = new HTable(configuration, tableName);
+        Put put = new Put(Bytes.toBytes(rowKey));
+        put.add(Bytes.toBytes(colFamName), Bytes.toBytes(colQualifier), Bytes.toBytes(value));
+        table.put(put);
+        table.flushCommits();
+        table.close();
     }
 }
