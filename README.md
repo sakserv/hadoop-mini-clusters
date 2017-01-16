@@ -50,12 +50,12 @@ Using:
 	<dependency>
 		<groupId>com.github.sakserv</groupId>
 		<artifactId>hadoop-mini-clusters</artifactId>
-		<version>0.1.9</version>
+		<version>0.1.10</version>
 	</dependency>
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-common</artifactId>
-    	<version>0.1.9</version>
+    	<version>0.1.10</version>
     </dependency>
 ```
 
@@ -86,7 +86,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-hdfs</artifactId>
-    	<version>0.1.9</version>
+    	<version>0.1.10</version>
     </dependency>
 ```
 ```Java
@@ -109,7 +109,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-yarn</artifactId>
-    	<version>0.1.9</version>
+    	<version>0.1.10</version>
     </dependency>
 ```
 ```Java
@@ -134,7 +134,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-mapreduce</artifactId>
-    	<version>0.1.9</version>
+    	<version>0.1.10</version>
     </dependency>
 ```
 ```Java
@@ -158,7 +158,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-hbase</artifactId>
-    	<version>0.1.9</version>
+    	<version>0.1.10</version>
     </dependency>
 ```
 ```Java
@@ -172,6 +172,13 @@ Examples:
             .setZookeeperZnodeParent("/hbase-unsecure")
             .setHbaseWalReplicationEnabled(false)
             .setHbaseConfiguration(new Configuration())
+            .activeRestGateway()
+                .setHbaseRestHost("localhost")
+                .setHbaseRestPort(28000)
+                .setHbaseRestReadOnly(false)
+                .setHbaseRestThreadMax(100)
+                .setHbaseRestThreadMin(2)
+                .build()
             .build();
             
         hbaseLocalCluster.start();
@@ -182,7 +189,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-zookeeper</artifactId>
-    	<version>0.1.9</version>
+    	<version>0.1.10</version>
     </dependency>
 ```
 ```Java
@@ -205,7 +212,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-hiveserver2</artifactId>
-    	<version>0.1.9</version>
+    	<version>0.1.10</version>
     </dependency>
 ```
 ```Java
@@ -228,7 +235,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-hivemetastore</artifactId>
-    	<version>0.1.9</version>
+    	<version>0.1.10</version>
     </dependency>
 ```
 ```Java
@@ -248,7 +255,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-storm</artifactId>
-    	<version>0.1.9</version>
+    	<version>0.1.10</version>
     </dependency>
 ```
 ```Java
@@ -267,7 +274,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-kafka</artifactId>
-    	<version>0.1.9</version>
+    	<version>0.1.10</version>
     </dependency>
 ```
 ```Java
@@ -287,7 +294,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-oozie</artifactId>
-    	<version>0.1.9</version>
+    	<version>0.1.10</version>
     </dependency>
 ```
 ```Java
@@ -312,7 +319,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-mongodb</artifactId>
-    	<version>0.1.9</version>
+    	<version>0.1.10</version>
     </dependency>
 ```
 ```Java
@@ -328,7 +335,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-activemq</artifactId>
-    	<version>0.1.9</version>
+    	<version>0.1.10</version>
     </dependency>
 ```
 ```Java
@@ -348,7 +355,7 @@ Examples:
 	<dependency>
     	<groupId>com.github.sakserv</groupId>
     	<artifactId>hadoop-mini-clusters-hyperscaledb</artifactId>
-    	<version>0.1.9</version>
+    	<version>0.1.10</version>
     </dependency>
 ```
 ```Java
@@ -363,6 +370,43 @@ Examples:
             .build();
         hsqldbLocalServer.start();
 ```
+
+* Knox
+```XML
+        <dependency>
+        <groupId>com.github.sakserv</groupId>
+        <artifactId>hadoop-mini-clusters-knox</artifactId>
+        <version>0.1.10</version>
+    </dependency>
+```
+```Java
+        KnoxLocalCluster knoxCluster = new KnoxLocalCluster.Builder()
+                .setPort(8888)
+                .setPath("gateway")
+                .setHomeDir("embedded_knox")
+                .setCluster("mycluster")
+                .setTopology(XMLDoc.newDocument(true)
+                        .addRoot("topology")
+                            .addTag("gateway")
+                                .addTag("provider")
+                                    .addTag("role").addText("authentication")
+                                    .addTag("enabled").addText("false")
+                                    .gotoParent()
+                                .addTag("provider")
+                                    .addTag("role").addText("identity-assertion")
+                                    .addTag("enabled").addText("false")
+                                    .gotoParent().gotoParent()
+                            .addTag("service")
+                                .addTag("role").addText("NAMENODE")
+                                .addTag("url").addText("hdfs://localhost:8020")
+                                .gotoParent()
+                            .addTag("service")
+                                .addTag("role").addText("WEBHDFS")
+                                .addTag("url").addText("http://localhost:50070/webhdfs")
+                        .gotoRoot().toString())
+                .build();
+```
+
 
 Modifying Properties
 --------------------

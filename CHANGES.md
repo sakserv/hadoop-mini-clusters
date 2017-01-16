@@ -1,5 +1,9 @@
 Change Log
 ==========
+### 0.1.10 - 1/16/2017
+* HBase REST support (Thanks @jetoile)
+* Knox support (Thanks Treydone)
+
 ### 0.1.9 - 12/26/2016
 * Make JDK 8 the default
 * Add support for HDP 2.5.3
