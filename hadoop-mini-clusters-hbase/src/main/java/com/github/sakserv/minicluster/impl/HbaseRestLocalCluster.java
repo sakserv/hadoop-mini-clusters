@@ -40,55 +40,20 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-public class HbaseRestLocalCluster implements MiniCluster {
+class HbaseRestLocalCluster implements MiniCluster {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(HbaseRestLocalCluster.class);
 
     private Server server;
 
-    private Integer hbaseMasterPort;
-    private Integer hbaseMasterInfoPort;
-    private Integer numRegionServers;
-    private String hbaseRootDir;
-    private Integer zookeeperPort;
-    private String zookeeperConnectionString;
-    private String zookeeperZnodeParent;
-    private Integer hbaseRestPort;
+    Integer hbaseRestPort;
     private Integer hbaseRestInfoPort;
     private String hbaseRestHost;
     private Boolean hbaseRestReadOnly;
     private Integer hbaseRestThreadMin;
     private Integer hbaseRestThreadMax;
-
-
-    public Integer getHbaseMasterPort() {
-        return hbaseMasterPort;
-    }
-
-    public Integer getHbaseMasterInfoPort() {
-        return hbaseMasterInfoPort;
-    }
-
-    public Integer getNumRegionServers() {
-        return numRegionServers;
-    }
-
-    public String getHbaseRootDir() {
-        return hbaseRootDir;
-    }
-
-    public Integer getZookeeperPort() {
-        return zookeeperPort;
-    }
-
-    public String getZookeeperConnectionString() {
-        return zookeeperConnectionString;
-    }
-
-    public String getZookeeperZnodeParent() {
-        return zookeeperZnodeParent;
-    }
+    private HbaseLocalCluster.Builder builder;
 
     public Integer getHbaseRestPort() {
         return hbaseRestPort;
@@ -114,132 +79,71 @@ public class HbaseRestLocalCluster implements MiniCluster {
         return hbaseRestThreadMax;
     }
 
-    private HbaseRestLocalCluster(Builder builder) {
-        this.hbaseMasterPort = builder.hbaseMasterPort;
-        this.hbaseMasterInfoPort = builder.hbaseMasterInfoPort;
-        this.numRegionServers = builder.numRegionServers;
-        this.hbaseRootDir = builder.hbaseRootDir;
-        this.zookeeperPort = builder.zookeeperPort;
-        this.zookeeperConnectionString = builder.zookeeperConnectionString;
-        this.zookeeperZnodeParent = builder.zookeeperZnodeParent;
+    public HbaseLocalCluster.Builder getBuilder() {
+        return builder;
+    }
+
+    private HbaseRestLocalCluster(RestBuilder builder) {
         this.hbaseRestPort = builder.hbaseRestPort;
         this.hbaseRestInfoPort = builder.hbaseRestInfoPort;
         this.hbaseRestHost = builder.hbaseRestHost;
         this.hbaseRestReadOnly = builder.hbaseRestReadOnly;
         this.hbaseRestThreadMin = builder.hbaseRestThreadMin;
         this.hbaseRestThreadMax = builder.hbaseRestThreadMax;
-
+        this.builder = builder.builder;
     }
 
-    public static class Builder {
-        private Integer hbaseMasterPort;
-        private Integer hbaseMasterInfoPort;
-        private Integer numRegionServers;
-        private String hbaseRootDir;
-        private Integer zookeeperPort;
-        private String zookeeperConnectionString;
-        private String zookeeperZnodeParent;
+    static class RestBuilder {
         private Integer hbaseRestPort;
         private Integer hbaseRestInfoPort;
         private String hbaseRestHost;
         private Boolean hbaseRestReadOnly;
         private Integer hbaseRestThreadMin;
         private Integer hbaseRestThreadMax;
+        private HbaseLocalCluster.Builder builder;
 
-        public Builder setHbaseMasterPort(Integer hbaseMasterPort) {
-            this.hbaseMasterPort = hbaseMasterPort;
-            return this;
+        public RestBuilder(HbaseLocalCluster.Builder builder) {
+            this.builder = builder;
         }
 
-        public Builder setHbaseMasterInfoPort(Integer hbaseMasterInfoPort) {
-            this.hbaseMasterInfoPort = hbaseMasterInfoPort;
-            return this;
-        }
-
-        public Builder setNumRegionServers(Integer numRegionServers) {
-            this.numRegionServers = numRegionServers;
-            return this;
-        }
-
-        public Builder setHbaseRootDir(String hbaseRootDir) {
-            this.hbaseRootDir = hbaseRootDir;
-            return this;
-        }
-
-        public Builder setZookeeperPort(Integer zookeeperPort) {
-            this.zookeeperPort = zookeeperPort;
-            return this;
-        }
-
-        public Builder setZookeeperConnectionString(String zookeeperConnectionString) {
-            this.zookeeperConnectionString = zookeeperConnectionString;
-            return this;
-        }
-
-        public Builder setZookeeperZnodeParent(String zookeeperZnodeParent) {
-            this.zookeeperZnodeParent = zookeeperZnodeParent;
-            return this;
-        }
-
-        public Builder setHbaseRestPort(Integer hbaseRestPort) {
+        public RestBuilder setHbaseRestPort(Integer hbaseRestPort) {
             this.hbaseRestPort = hbaseRestPort;
             return this;
         }
 
-        public Builder setHbaseRestInfoPort(Integer hbaseRestInfoPort) {
+        public RestBuilder setHbaseRestInfoPort(Integer hbaseRestInfoPort) {
             this.hbaseRestInfoPort = hbaseRestInfoPort;
             return this;
         }
 
-        public Builder setHbaseRestHost(String hbaseRestHost) {
+        public RestBuilder setHbaseRestHost(String hbaseRestHost) {
             this.hbaseRestHost = hbaseRestHost;
             return this;
         }
 
-        public Builder setHbaseRestReadOnly(Boolean hbaseRestReadOnly) {
+        public RestBuilder setHbaseRestReadOnly(Boolean hbaseRestReadOnly) {
             this.hbaseRestReadOnly = hbaseRestReadOnly;
             return this;
         }
 
-        public Builder setHbaseRestThreadMin(Integer hbaseRestThreadMin) {
+        public RestBuilder setHbaseRestThreadMin(Integer hbaseRestThreadMin) {
             this.hbaseRestThreadMin = hbaseRestThreadMin;
             return this;
         }
 
-        public Builder setHbaseRestThreadMax(Integer hbaseRestThreadMax) {
+        public RestBuilder setHbaseRestThreadMax(Integer hbaseRestThreadMax) {
             this.hbaseRestThreadMax = hbaseRestThreadMax;
             return this;
         }
 
-        public HbaseRestLocalCluster build() {
+        public HbaseLocalCluster.Builder build() {
             HbaseRestLocalCluster hbaseRestLocalCluster = new HbaseRestLocalCluster(this);
             validateObject(hbaseRestLocalCluster);
-            return hbaseRestLocalCluster;
+            builder.setHbaseRestLocalCluster(hbaseRestLocalCluster);
+            return builder;
         }
 
         public void validateObject(HbaseRestLocalCluster hbaseRestLocalCluster) {
-            if (hbaseRestLocalCluster.hbaseMasterPort == null) {
-                throw new IllegalArgumentException("ERROR: Missing required config: HBase Master Port");
-            }
-            if (hbaseRestLocalCluster.hbaseMasterInfoPort == null) {
-                throw new IllegalArgumentException("ERROR: Missing required config: HBase Master Info Port");
-            }
-            if (hbaseRestLocalCluster.numRegionServers == null) {
-                throw new IllegalArgumentException("ERROR: Missing required config: HBase Number of Region Servers");
-            }
-            if (hbaseRestLocalCluster.hbaseRootDir == null) {
-                throw new IllegalArgumentException("ERROR: Missing required config: HBase Root Dir");
-            }
-            if (hbaseRestLocalCluster.zookeeperPort == null) {
-                throw new IllegalArgumentException("ERROR: Missing required config: Zookeeper Port");
-            }
-            if (hbaseRestLocalCluster.zookeeperConnectionString == null) {
-                throw new IllegalArgumentException("ERROR: Missing required config: Zookeeper Connection String");
-            }
-            if (hbaseRestLocalCluster.zookeeperZnodeParent == null) {
-                throw new IllegalArgumentException("ERROR: Missing required config: Zookeeper Znode Parent");
-            }
-
             if (hbaseRestLocalCluster.hbaseRestPort == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: HBase Rest Port");
             }
@@ -249,13 +153,7 @@ public class HbaseRestLocalCluster implements MiniCluster {
     @Override
     public void start() throws Exception {
         VersionInfo.logVersion();
-        Configuration conf = HBaseConfiguration.create();
-        conf.set(HConstants.MASTER_PORT, hbaseMasterPort.toString());
-        conf.set(HConstants.MASTER_INFO_PORT, hbaseMasterInfoPort.toString());
-        conf.set(HConstants.HBASE_DIR, hbaseRootDir);
-        conf.set(HConstants.ZOOKEEPER_CLIENT_PORT, zookeeperPort.toString());
-        conf.set(HConstants.ZOOKEEPER_QUORUM, zookeeperConnectionString);
-        conf.set(HConstants.ZOOKEEPER_ZNODE_PARENT, zookeeperZnodeParent);
+        Configuration conf = builder.getHbaseConfiguration();
 
         conf.set("hbase.rest.port", hbaseRestPort.toString());
         conf.set("hbase.rest.readonly", (hbaseRestReadOnly == null) ? "true" : hbaseRestReadOnly.toString());

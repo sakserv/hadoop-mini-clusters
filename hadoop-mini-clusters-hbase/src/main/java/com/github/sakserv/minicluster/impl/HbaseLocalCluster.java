@@ -13,15 +13,14 @@
  */
 package com.github.sakserv.minicluster.impl;
 
+import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.util.FileUtils;
+import com.github.sakserv.minicluster.util.WindowsLibsUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HConstants;
 import org.apache.hadoop.hbase.MiniHBaseCluster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.util.FileUtils;
-import com.github.sakserv.minicluster.util.WindowsLibsUtils;
 
 public class HbaseLocalCluster implements MiniCluster {
 
@@ -39,6 +38,8 @@ public class HbaseLocalCluster implements MiniCluster {
     private String zookeeperZnodeParent;
     private Boolean hbaseWalReplicationEnabled;
     private Configuration hbaseConfiguration;
+    private Boolean restActivated = false;
+    private HbaseRestLocalCluster hbaseRestLocalCluster;
 
     public Integer getHbaseMasterPort() {
         return hbaseMasterPort;
@@ -76,6 +77,14 @@ public class HbaseLocalCluster implements MiniCluster {
         return hbaseConfiguration;
     }
 
+    public Boolean isRestActivated() {
+        return restActivated;
+    }
+
+    public HbaseRestLocalCluster getHbaseRestLocalCluster() {
+        return hbaseRestLocalCluster;
+    }
+
     private HbaseLocalCluster(Builder builder) {
         this.hbaseMasterPort = builder.hbaseMasterPort;
         this.hbaseMasterInfoPort = builder.hbaseMasterInfoPort;
@@ -86,6 +95,9 @@ public class HbaseLocalCluster implements MiniCluster {
         this.zookeeperZnodeParent = builder.zookeeperZnodeParent;
         this.hbaseWalReplicationEnabled = builder.hbaseWalReplicationEnabled;
         this.hbaseConfiguration = builder.hbaseConfiguration;
+        this.restActivated = builder.restActivated;
+        this.hbaseRestLocalCluster = builder.hbaseRestLocalCluster;
+
     }
 
     public static class Builder {
@@ -98,6 +110,8 @@ public class HbaseLocalCluster implements MiniCluster {
         private String zookeeperZnodeParent;
         private Boolean hbaseWalReplicationEnabled;
         private Configuration hbaseConfiguration;
+        private Boolean restActivated = false;
+        private HbaseRestLocalCluster hbaseRestLocalCluster;
 
         public Builder setHbaseMasterPort(Integer hbaseMasterPort) {
             this.hbaseMasterPort = hbaseMasterPort;
@@ -144,6 +158,19 @@ public class HbaseLocalCluster implements MiniCluster {
             return this;
         }
 
+        Configuration getHbaseConfiguration() {
+            return hbaseConfiguration;
+        }
+
+        void setHbaseRestLocalCluster(HbaseRestLocalCluster hbaseRestLocalCluster) {
+            this.hbaseRestLocalCluster = hbaseRestLocalCluster;
+        }
+
+        public HbaseRestLocalCluster.RestBuilder activeRestGateway() {
+            this.restActivated = true;
+            return new HbaseRestLocalCluster.RestBuilder(this);
+        }
+
         public HbaseLocalCluster build() {
             HbaseLocalCluster hbaseLocalCluster = new HbaseLocalCluster(this);
             validateObject(hbaseLocalCluster);
@@ -151,35 +178,34 @@ public class HbaseLocalCluster implements MiniCluster {
         }
 
         public void validateObject(HbaseLocalCluster hbaseLocalCluster) {
-            if(hbaseLocalCluster.hbaseMasterPort == null) {
+            if (hbaseLocalCluster.hbaseMasterPort == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: HBase Master Port");
             }
-            if(hbaseLocalCluster.hbaseMasterInfoPort == null) {
+            if (hbaseLocalCluster.hbaseMasterInfoPort == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: HBase Master Info Port");
             }
-            if(hbaseLocalCluster.numRegionServers == null) {
+            if (hbaseLocalCluster.numRegionServers == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: HBase Number of Region Servers");
             }
-            if(hbaseLocalCluster.hbaseRootDir == null) {
+            if (hbaseLocalCluster.hbaseRootDir == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: HBase Root Dir");
             }
-            if(hbaseLocalCluster.zookeeperPort == null) {
+            if (hbaseLocalCluster.zookeeperPort == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: Zookeeper Port");
             }
-            if(hbaseLocalCluster.zookeeperConnectionString == null) {
+            if (hbaseLocalCluster.zookeeperConnectionString == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: Zookeeper Connection String");
             }
-            if(hbaseLocalCluster.zookeeperZnodeParent == null) {
+            if (hbaseLocalCluster.zookeeperZnodeParent == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: Zookeeper Znode Parent");
             }
-            if(hbaseLocalCluster.hbaseWalReplicationEnabled == null) {
+            if (hbaseLocalCluster.hbaseWalReplicationEnabled == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: HBase WAL Replication Enabled");
             }
-            if(hbaseLocalCluster.hbaseConfiguration == null) {
+            if (hbaseLocalCluster.hbaseConfiguration == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: HBase Configuration");
             }
         }
-
     }
 
     @Override
@@ -189,6 +215,9 @@ public class HbaseLocalCluster implements MiniCluster {
         miniHBaseCluster = new MiniHBaseCluster(hbaseConfiguration, numRegionServers);
         miniHBaseCluster.startMaster();
         miniHBaseCluster.startRegionServer();
+        if (isRestActivated()) {
+            getHbaseRestLocalCluster().start();
+        }
     }
 
     @Override
@@ -200,11 +229,16 @@ public class HbaseLocalCluster implements MiniCluster {
     public void stop(boolean cleanUp) throws Exception {
         LOG.info("HBASE: Stopping MiniHBaseCluster");
 
+        if (isRestActivated()) {
+            getHbaseRestLocalCluster().cleanUp();
+            getHbaseRestLocalCluster().stop();
+        }
+
         miniHBaseCluster.flushcache();
         miniHBaseCluster.close();
         miniHBaseCluster.shutdown();
         miniHBaseCluster.waitUntilShutDown();
-        if(cleanUp) {
+        if (cleanUp) {
             cleanUp();
         }
     }
