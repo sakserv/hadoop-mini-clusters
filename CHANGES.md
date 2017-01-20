@@ -1,5 +1,8 @@
 Change Log
 ==========
+### 0.1.11 - 1/20/2017
+* Make RestBuilder public (Thanks @jetoile)
+
 ### 0.1.10 - 1/16/2017
 * HBase REST support (Thanks @jetoile)
 * Knox support (Thanks Treydone)
