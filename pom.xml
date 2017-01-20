@@ -3,7 +3,7 @@
 
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters</artifactId>
-    <version>0.1.11-SNAPSHOT</version>
+    <version>0.1.11</version>
     <packaging>pom</packaging>
 
     <name>Hadoop Mini Clusters</name>
@@ -22,7 +22,7 @@
         <connection>scm:git:git://github.com/sakserv/hadoop-mini-clusters.git</connection>
         <developerConnection>scm:git:git@github.com:sakserv/hadoop-mini-clusters.git</developerConnection>
         <url>http://github.com/sakserv/hadoop-mini-clusters</url>
-        <tag>HEAD</tag>
+        <tag>hadoop-mini-clusters-0.1.11</tag>
     </scm>
 
     <developers>
