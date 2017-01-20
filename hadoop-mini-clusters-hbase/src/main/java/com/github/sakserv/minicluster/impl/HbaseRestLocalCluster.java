@@ -93,7 +93,7 @@ class HbaseRestLocalCluster implements MiniCluster {
         this.builder = builder.builder;
     }
 
-    static class RestBuilder {
+    public static class RestBuilder {
         private Integer hbaseRestPort;
         private Integer hbaseRestInfoPort;
         private String hbaseRestHost;
