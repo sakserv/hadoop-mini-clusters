@@ -2,10 +2,13 @@ package com.github.sakserv.minicluster.util;
 
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
-
+import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 
 public final class FileUtils {
 
@@ -13,35 +16,30 @@ public final class FileUtils {
     private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(FileUtils.class);
 
     public static void deleteFolder(String directory) {
-        File directoryToClean = null;
-        try {
-            directoryToClean = new File(new URI(directory).getPath());
-        } catch (URISyntaxException e) {
-            LOG.error("Directory is invalid for URI conversion: " + directory, e);
-        }
+      try {
+        Path directoryPath = Paths.get(directory).toAbsolutePath();
+        LOG.info("FILEUTILS: Deleting contents of directory: {}",
+            directoryPath.toAbsolutePath().toString());
+        Files.walkFileTree(directoryPath, new SimpleFileVisitor<Path>() {
+          @Override
+          public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+              throws IOException {
+            Files.delete(file);
+            LOG.info("Removing file: {}", file.toAbsolutePath().toString());
+            return FileVisitResult.CONTINUE;
+          }
 
-        if (directoryToClean == null) {
-          LOG.error("Directory to cleanup is null, skipping...");
-        } else {
-            LOG.info("FILEUTILS: Deleting contents of directory: {}", directoryToClean.getAbsolutePath());
-
-            File[] files = directoryToClean.listFiles();
-            if (files != null) { //some JVMs return null for empty dirs
-                for (File f : files) {
-                    if (f.isDirectory()) {
-                        f.setWritable(true);
-                        deleteFolder(f.getAbsolutePath());
-                    } else {
-                        LOG.debug("FILEUTILS: Deleting file: {}", f.getAbsolutePath());
-                        f.setWritable(true);
-                        f.delete();
-                    }
-                }
-            }
-            LOG.debug("FILEUTILS: Deleting file: {}", directoryToClean.getAbsolutePath());
-            directoryToClean.setWritable(true);
-            directoryToClean.delete();
-        }
+          @Override
+          public FileVisitResult postVisitDirectory(Path dir, IOException exc)
+              throws IOException {
+            Files.delete(dir);
+            LOG.info("Removing directory: {}", dir.toAbsolutePath().toString());
+            return FileVisitResult.CONTINUE;
+          }
+        });
+      } catch (IOException e) {
+        LOG.error("FILEUTILS: Unable to remove {}", directory);
+      }
     }
 
     @Override
