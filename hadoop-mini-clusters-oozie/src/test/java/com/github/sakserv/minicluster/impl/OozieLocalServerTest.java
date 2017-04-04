@@ -1,10 +1,7 @@
 package com.github.sakserv.minicluster.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
-
+import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.propertyparser.PropertyParser;
 import org.apache.hadoop.conf.Configuration;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -14,8 +11,10 @@ import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.propertyparser.PropertyParser;
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class OozieLocalServerTest {
 
@@ -64,7 +63,7 @@ public class OozieLocalServerTest {
                         ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
                 .setOozieHdfsDefaultFs(defaultFs)
                 .setOozieConf(new Configuration())
-                .setOozieHdfsShareLibDir(propertyParser.getProperty(ConfigVars.OOZIE_HDFS_SHARE_LIB_DIR_KEY))
+                .setOozieShareLibDir(propertyParser.getProperty(ConfigVars.OOZIE_SHARE_LIB_DIR_KEY))
                 .setOozieShareLibCreate(Boolean.parseBoolean(
                         propertyParser.getProperty(ConfigVars.OOZIE_SHARE_LIB_CREATE_KEY)))
                 .setOozieLocalShareLibCacheDir(propertyParser.getProperty(
@@ -214,9 +213,9 @@ public class OozieLocalServerTest {
     }
 
     @Test
-    public void testOozieHdfsShareLibDir() {
-        assertEquals(propertyParser.getProperty(ConfigVars.OOZIE_HDFS_SHARE_LIB_DIR_KEY),
-                oozieLocalServer.getOozieHdfsShareLibDir());
+    public void testOozieShareLibDir() {
+        assertEquals(propertyParser.getProperty(ConfigVars.OOZIE_SHARE_LIB_DIR_KEY),
+                oozieLocalServer.getOozieShareLibDir());
     }
 
     @Test
@@ -255,7 +254,7 @@ public class OozieLocalServerTest {
                         ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
                 .setOozieHdfsDefaultFs(defaultFs)
                 .setOozieConf(new Configuration())
-                .setOozieHdfsShareLibDir(propertyParser.getProperty(ConfigVars.OOZIE_HDFS_SHARE_LIB_DIR_KEY))
+                .setOozieShareLibDir(propertyParser.getProperty(ConfigVars.OOZIE_SHARE_LIB_DIR_KEY))
                 .build();
 
     }
@@ -278,7 +277,7 @@ public class OozieLocalServerTest {
                         ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
                 .setOozieHdfsDefaultFs(defaultFs)
                 .setOozieConf(new Configuration())
-                .setOozieHdfsShareLibDir(propertyParser.getProperty(ConfigVars.OOZIE_HDFS_SHARE_LIB_DIR_KEY))
+                .setOozieShareLibDir(propertyParser.getProperty(ConfigVars.OOZIE_SHARE_LIB_DIR_KEY))
                 .setOozieShareLibCreate(Boolean.parseBoolean(
                         propertyParser.getProperty(ConfigVars.OOZIE_SHARE_LIB_CREATE_KEY)))
                 .setOoziePurgeLocalShareLibCache(Boolean.parseBoolean(propertyParser.getProperty(
@@ -304,7 +303,7 @@ public class OozieLocalServerTest {
                         ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
                 .setOozieHdfsDefaultFs(defaultFs)
                 .setOozieConf(new Configuration())
-                .setOozieHdfsShareLibDir(propertyParser.getProperty(ConfigVars.OOZIE_HDFS_SHARE_LIB_DIR_KEY))
+                .setOozieShareLibDir(propertyParser.getProperty(ConfigVars.OOZIE_SHARE_LIB_DIR_KEY))
                 .setOozieShareLibCreate(Boolean.parseBoolean(
                         propertyParser.getProperty(ConfigVars.OOZIE_SHARE_LIB_CREATE_KEY)))
                 .setOozieLocalShareLibCacheDir(propertyParser.getProperty(

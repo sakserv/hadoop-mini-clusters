@@ -151,7 +151,7 @@ public class ConfigVars {
     public static final String OOZIE_HOME_DIR_KEY = "oozie.home.dir";
     public static final String OOZIE_USERNAME_KEY = "oozie.username";
     public static final String OOZIE_GROUPNAME_KEY = "oozie.groupname";
-    public static final String OOZIE_HDFS_SHARE_LIB_DIR_KEY = "oozie.hdfs.share.lib.dir";
+    public static final String OOZIE_SHARE_LIB_DIR_KEY = "oozie.share.lib.dir";
     public static final String OOZIE_SHARE_LIB_CREATE_KEY = "oozie.share.lib.create";
     public static final String OOZIE_LOCAL_SHARE_LIB_CACHE_DIR_KEY = "oozie.local.share.lib.cache.dir";
     public static final String OOZIE_PURGE_LOCAL_SHARE_LIB_CACHE_KEY = "oozie.purge.local.share.lib.cache";

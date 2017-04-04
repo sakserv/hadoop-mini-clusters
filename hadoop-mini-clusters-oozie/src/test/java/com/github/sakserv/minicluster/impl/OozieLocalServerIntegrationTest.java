@@ -3,9 +3,11 @@ package com.github.sakserv.minicluster.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.net.URI;
 import java.util.Properties;
 
 import org.apache.hadoop.conf.Configuration;
@@ -92,7 +94,7 @@ public class OozieLocalServerIntegrationTest {
                         ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
                 .setOozieHdfsDefaultFs(hdfsLocalCluster.getHdfsConfig().get("fs.defaultFS"))
                 .setOozieConf(hdfsLocalCluster.getHdfsConfig())
-                .setOozieHdfsShareLibDir(propertyParser.getProperty(ConfigVars.OOZIE_HDFS_SHARE_LIB_DIR_KEY))
+                .setOozieShareLibDir(propertyParser.getProperty(ConfigVars.OOZIE_SHARE_LIB_DIR_KEY))
                 .setOozieShareLibCreate(Boolean.parseBoolean(
                         propertyParser.getProperty(ConfigVars.OOZIE_SHARE_LIB_CREATE_KEY)))
                 .setOozieLocalShareLibCacheDir(propertyParser.getProperty(
@@ -101,6 +103,12 @@ public class OozieLocalServerIntegrationTest {
                         ConfigVars.OOZIE_PURGE_LOCAL_SHARE_LIB_CACHE_KEY)))
                 .build();
         oozieLocalServer.start();
+
+
+        OozieShareLibUtil oozieShareLibUtil = new OozieShareLibUtil(oozieLocalServer.getOozieShareLibDir(),
+            oozieLocalServer.getOozieShareLibCreate(), oozieLocalServer.getOozieLocalShareLibCacheDir(),
+            oozieLocalServer.getOoziePurgeLocalShareLibCache());
+        oozieShareLibUtil.createShareLib();
     }
 
     @AfterClass
@@ -205,16 +213,10 @@ public class OozieLocalServerIntegrationTest {
 
         LOG.info("OOZIE: Test Oozie Share Lib Start");
 
-        FileSystem hdfsFs = hdfsLocalCluster.getHdfsFileSystemHandle();
-        OozieShareLibUtil oozieShareLibUtil = new OozieShareLibUtil(oozieLocalServer.getOozieHdfsShareLibDir(),
-                oozieLocalServer.getOozieShareLibCreate(), oozieLocalServer.getOozieLocalShareLibCacheDir(),
-                oozieLocalServer.getOoziePurgeLocalShareLibCache(), hdfsFs);
-        oozieShareLibUtil.createShareLib();
-
         // Validate the share lib dir was created and contains a single directory
-        FileStatus[] fileStatuses = hdfsFs.listStatus(new Path(oozieLocalServer.getOozieHdfsShareLibDir()));
-        assertEquals(1, fileStatuses.length);
-        hdfsFs.close();
+        String shareLibDir = oozieLocalServer.getOozieShareLibDir();
+        File[] dirList = new File(new URI(shareLibDir).getPath()).listFiles();
+        assertEquals(1, dirList.length);
 
     }
 }

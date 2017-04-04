@@ -1,7 +1,9 @@
 package com.github.sakserv.minicluster.impl;
 
-import java.io.File;
-
+import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.oozie.util.OozieConfigUtil;
+import com.github.sakserv.minicluster.util.FileUtils;
+import com.github.sakserv.minicluster.util.WindowsLibsUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.oozie.client.OozieClient;
@@ -14,10 +16,7 @@ import org.apache.oozie.test.XTestCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.oozie.util.OozieConfigUtil;
-import com.github.sakserv.minicluster.util.FileUtils;
-import com.github.sakserv.minicluster.util.WindowsLibsUtils;
+import java.io.File;
 
 
 /**
@@ -44,7 +43,7 @@ public class OozieLocalServer implements MiniCluster {
     private String oozieYarnResourceManagerAddress;
     private String oozieHdfsDefaultFs;
     private Configuration oozieConf;
-    private String oozieHdfsShareLibDir;
+    private String oozieShareLibDir;
     private Boolean oozieShareLibCreate;
     private String oozieLocalShareLibCacheDir;
     private Boolean ooziePurgeLocalShareLibCache;
@@ -60,7 +59,7 @@ public class OozieLocalServer implements MiniCluster {
         this.oozieYarnResourceManagerAddress = builder.oozieYarnResourceManagerAddress;
         this.oozieHdfsDefaultFs = builder.oozieHdfsDefaultFs;
         this.oozieConf = builder.oozieConf;
-        this.oozieHdfsShareLibDir = builder.oozieHdfsShareLibDir;
+        this.oozieShareLibDir = builder.oozieShareLibDir;
         this.oozieShareLibCreate = builder.oozieShareLibCreate;
         this.oozieLocalShareLibCacheDir = builder.oozieLocalShareLibCacheDir;
         this.ooziePurgeLocalShareLibCache = builder.ooziePurgeLocalShareLibCache;
@@ -94,8 +93,8 @@ public class OozieLocalServer implements MiniCluster {
         return oozieConf;
     }
 
-    public String getOozieHdfsShareLibDir() {
-        return oozieHdfsShareLibDir;
+    public String getOozieShareLibDir() {
+        return oozieShareLibDir;
     }
 
     public Boolean getOozieShareLibCreate() {
@@ -118,7 +117,7 @@ public class OozieLocalServer implements MiniCluster {
         private String oozieYarnResourceManagerAddress;
         private String oozieHdfsDefaultFs;
         private Configuration oozieConf;
-        private String oozieHdfsShareLibDir;
+        private String oozieShareLibDir;
         private Boolean oozieShareLibCreate;
         private String oozieLocalShareLibCacheDir;
         private Boolean ooziePurgeLocalShareLibCache;
@@ -158,8 +157,8 @@ public class OozieLocalServer implements MiniCluster {
             return this;
         }
 
-        public Builder setOozieHdfsShareLibDir(String oozieHdfsShareLibDir) {
-            this.oozieHdfsShareLibDir = oozieHdfsShareLibDir;
+        public Builder setOozieShareLibDir(String oozieShareLibDir) {
+            this.oozieShareLibDir = oozieShareLibDir;
             return this;
         }
 
@@ -214,8 +213,8 @@ public class OozieLocalServer implements MiniCluster {
                 throw new IllegalArgumentException("ERROR: Missing required config: Oozie Configuration");
             }
 
-            if (oozieLocalServer.getOozieHdfsShareLibDir() == null) {
-                throw new IllegalArgumentException("ERROR: Missing required config: Oozie Hdfs Share Lib Dir");
+            if (oozieLocalServer.getOozieShareLibDir() == null) {
+                throw new IllegalArgumentException("ERROR: Missing required config: Oozie Share Lib Dir");
             }
 
             if (oozieLocalServer.getOozieShareLibCreate() == null) {
@@ -276,6 +275,7 @@ public class OozieLocalServer implements MiniCluster {
     @Override
     public void cleanUp() throws Exception {
         FileUtils.deleteFolder(oozieTestDir);
+        FileUtils.deleteFolder(oozieShareLibDir);
         FileUtils.deleteFolder(new File("derby.log").getAbsolutePath());
     }
 
@@ -304,8 +304,11 @@ public class OozieLocalServer implements MiniCluster {
         System.setProperty(HadoopAccessorService.SUPPORTED_FILESYSTEMS, "*");
 
         if (oozieShareLibCreate) {
+            if (!oozieShareLibDir.startsWith("/")) {
+                oozieShareLibDir = new File(oozieShareLibDir).getAbsolutePath();
+            }
             configuration.set("oozie.service.WorkflowAppService.system.libpath",
-                    oozieHdfsDefaultFs + oozieHdfsShareLibDir);
+                    oozieShareLibDir);
             configuration.set("use.system.libpath.for.mapreduce.and.pig.jobs", "true");
         }
 
