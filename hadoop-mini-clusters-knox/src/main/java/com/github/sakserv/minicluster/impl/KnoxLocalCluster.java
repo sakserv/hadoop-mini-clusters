@@ -256,6 +256,7 @@ public class KnoxLocalCluster implements MiniCluster {
     @Override
     public void cleanUp() throws Exception {
         FileUtils.deleteFolder(gatewayDir.getAbsolutePath());
+        FileUtils.deleteFolder(new File(homeDir).getAbsolutePath());
     }
 
 
