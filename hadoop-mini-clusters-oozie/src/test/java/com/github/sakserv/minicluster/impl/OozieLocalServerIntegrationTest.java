@@ -35,6 +35,11 @@ public class OozieLocalServerIntegrationTest {
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(OozieLocalServerIntegrationTest.class);
 
+    // Test path
+    private static final String TEST_INPUT_DIR = "/tmp/test_input_dir";
+    private static final String TEST_INPUT_FILE = "test_input.txt";
+    private static final String TEST_OUTPUT_DIR = "/tmp/test_output_dir";
+
     // Setup the property parser
     private static PropertyParser propertyParser;
     private static OozieLocalServer oozieLocalServer;
@@ -130,10 +135,54 @@ public class OozieLocalServerIntegrationTest {
         hdfsFs.mkdirs(new Path(appPath, "lib"));
         Path workflow = new Path(appPath, "workflow.xml");
 
-        //write workflow.xml
-        String wfApp = "<workflow-app xmlns='uri:oozie:workflow:0.1' name='test-wf'>" +
-                "    <start to='end'/>" +
-                "    <end name='end'/>" +
+        // Setup input directory and file
+        hdfsFs.mkdirs(new Path(TEST_INPUT_DIR));
+        hdfsFs.copyFromLocalFile(
+                new Path(getClass().getClassLoader().getResource(TEST_INPUT_FILE).toURI()), new Path(TEST_INPUT_DIR));
+
+        String wfApp = "<workflow-app name=\"sugar-option-decision\" xmlns=\"uri:oozie:workflow:0.5\">\n" +
+                "  <global>\n" +
+                "    <job-tracker>${jobTracker}</job-tracker>\n" +
+                "    <name-node>${nameNode}</name-node>\n" +
+                "    <configuration>\n" +
+                "      <property>\n" +
+                "        <name>mapreduce.output.fileoutputformat.outputdir</name>\n" +
+                "        <value>" + TEST_OUTPUT_DIR + "</value>\n" +
+                "      </property>\n" +
+                "      <property>\n" +
+                "        <name>mapreduce.input.fileinputformat.inputdir</name>\n" +
+                "        <value>" + TEST_INPUT_DIR + "</value>\n" +
+                "      </property>\n" +
+                "    </configuration>\n" +
+                "  </global>\n" +
+                "  <start to=\"first\"/>\n" +
+                "  <action name=\"first\">\n" +
+                "    <map-reduce> </map-reduce>\n" +
+                "    <ok to=\"decision-second-option\"/>\n" +
+                "    <error to=\"kill\"/>\n" +
+                "  </action>\n" +
+                "  <decision name=\"decision-second-option\">\n" +
+                "    <switch>\n" +
+                "      <case to=\"option\">${doOption}</case>\n" +
+                "      <default to=\"second\"/>\n" +
+                "    </switch>\n" +
+                "  </decision>\n" +
+                "  <action name=\"option\">\n" +
+                "    <map-reduce> </map-reduce>\n" +
+                "    <ok to=\"second\"/>\n" +
+                "    <error to=\"kill\"/>\n" +
+                "  </action>\n" +
+                "  <action name=\"second\">\n" +
+                "    <map-reduce> </map-reduce>\n" +
+                "    <ok to=\"end\"/>\n" +
+                "    <error to=\"kill\"/>\n" +
+                "  </action>\n" +
+                "  <kill name=\"kill\">\n" +
+                "    <message>\n" +
+                "      Failed to workflow, error message[${wf: errorMessage (wf: lastErrorNode ())}]\n" +
+                "    </message>\n" +
+                "  </kill>\n" +
+                "  <end name=\"end\"/>\n" +
                 "</workflow-app>";
 
         Writer writer = new OutputStreamWriter(hdfsFs.create(workflow));
@@ -144,12 +193,26 @@ public class OozieLocalServerIntegrationTest {
         Properties conf = oozie.createConfiguration();
         conf.setProperty(OozieClient.APP_PATH, workflow.toString());
         conf.setProperty(OozieClient.USER_NAME, UserGroupInformation.getCurrentUser().getUserName());
+        conf.setProperty("nameNode", "hdfs://localhost:" + hdfsLocalCluster.getHdfsNamenodePort());
+        conf.setProperty("jobTracker", mrLocalCluster.getResourceManagerAddress());
+        conf.setProperty("doOption", "true");
 
         //submit and check
         final String jobId = oozie.submit(conf);
         WorkflowJob wf = oozie.getJobInfo(jobId);
         assertNotNull(wf);
         assertEquals(WorkflowJob.Status.PREP, wf.getStatus());
+
+/*        while(true){
+            Thread.sleep(1000);
+            wf = oozie.getJobInfo(jobId);
+            if (wf.getStatus() == WorkflowJob.Status.FAILED || wf.getStatus() == WorkflowJob.Status.KILLED || wf.getStatus() == WorkflowJob.Status.PREP || wf.getStatus() == WorkflowJob.Status.SUCCEEDED){
+                break;
+            }
+        }
+
+        wf = oozie.getJobInfo(jobId);
+        assertEquals(WorkflowJob.Status.SUCCEEDED, wf.getStatus());*/
 
         LOG.info("OOZIE: Workflow: {}", wf.toString());
         hdfsFs.close();
