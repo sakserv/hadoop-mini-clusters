@@ -40,12 +40,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-class HbaseRestLocalCluster implements MiniCluster {
+public class HbaseRestLocalCluster implements MiniCluster {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(HbaseRestLocalCluster.class);
 
     private Server server;
+    private InfoServer infoServer;
 
     Integer hbaseRestPort;
     private Integer hbaseRestInfoPort;
@@ -224,7 +225,7 @@ class HbaseRestLocalCluster implements MiniCluster {
         if (port >= 0) {
             conf.setLong("startcode", System.currentTimeMillis());
             String a = hbaseRestHost;
-            InfoServer infoServer = new InfoServer("rest", a, port, false, conf);
+            infoServer = new InfoServer("rest", a, port, false, conf);
             infoServer.setAttribute("hbase.conf", conf);
             infoServer.start();
         }
@@ -234,6 +235,7 @@ class HbaseRestLocalCluster implements MiniCluster {
 
     @Override
     public void stop() throws Exception {
+        infoServer.stop();
         server.stop();
     }
 
