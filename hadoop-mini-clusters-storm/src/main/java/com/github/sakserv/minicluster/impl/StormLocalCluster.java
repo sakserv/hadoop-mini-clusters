@@ -14,6 +14,9 @@
 
 package com.github.sakserv.minicluster.impl;
 
+import org.apache.storm.ILocalCluster;
+import org.apache.storm.Testing;
+import org.apache.storm.generated.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +24,11 @@ import com.github.sakserv.minicluster.MiniCluster;
 
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;
-import org.apache.storm.generated.StormTopology;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class StormLocalCluster implements MiniCluster {
 
@@ -33,7 +40,7 @@ public class StormLocalCluster implements MiniCluster {
     private Boolean enableDebug;
     private Integer numWorkers;
     private Config stormConf;
-    private LocalCluster localCluster;
+    private ILocalCluster localCluster;
     
     private StormLocalCluster(Builder builder) {
         this.zookeeperHost = builder.zookeeperHost;
@@ -124,7 +131,7 @@ public class StormLocalCluster implements MiniCluster {
     public void start() throws Exception {
         LOG.info("STORM: Starting StormLocalCluster");
         configure();
-        localCluster = new LocalCluster(zookeeperHost, zookeeperPort);
+        localCluster = Testing.getLocalCluster(stormConf);
     }
 
     @Override
@@ -145,18 +152,35 @@ public class StormLocalCluster implements MiniCluster {
     public void configure() throws Exception {
         stormConf.setDebug(enableDebug);
         stormConf.setNumWorkers(numWorkers);
+        stormConf.put("nimbus-daemon", true);
+        List<String> stormNimbusSeeds = new ArrayList<>();
+        stormNimbusSeeds.add("localhost");
+        stormConf.put(Config.NIMBUS_SEEDS, stormNimbusSeeds);
+        stormConf.put(Config.NIMBUS_THRIFT_PORT, 6627);
+        stormConf.put(Config.STORM_THRIFT_TRANSPORT_PLUGIN, "org.apache.storm.security.auth.SimpleTransportPlugin");
+        stormConf.put(Config.STORM_NIMBUS_RETRY_INTERVAL_CEILING, 60000);
+        stormConf.put(Config.STORM_NIMBUS_RETRY_TIMES, 5);
+        stormConf.put(Config.STORM_NIMBUS_RETRY_INTERVAL, 2000);
+        stormConf.put(Config.NIMBUS_THRIFT_MAX_BUFFER_SIZE, 1048576);
+        stormConf.put(Config.STORM_ZOOKEEPER_SERVERS, Arrays.asList(getZookeeperHost()));
+        stormConf.put(Config.STORM_ZOOKEEPER_PORT, getZookeeperPort());
     }
 
     @Override
     public void cleanUp() throws Exception {
     }
 
-    public void submitTopology(String topologyName, Config conf, StormTopology topology) {
+    public void submitTopology(String topologyName, Config conf, StormTopology topology)
+            throws AlreadyAliveException, InvalidTopologyException {
         localCluster.submitTopology(topologyName, conf, topology);
     }
 
     public void stop(String topologyName) throws Exception {
-        localCluster.killTopology(topologyName);
+        try {
+            localCluster.killTopology(topologyName);
+        } catch (NotAliveException e) {
+            LOG.debug("Topology not running: " + topologyName);
+        }
         stop();
     }
 

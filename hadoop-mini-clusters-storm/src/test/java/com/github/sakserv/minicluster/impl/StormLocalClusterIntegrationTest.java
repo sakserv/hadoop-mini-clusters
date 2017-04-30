@@ -16,6 +16,7 @@ package com.github.sakserv.minicluster.impl;
 
 import java.io.IOException;
 
+import org.apache.storm.utils.NimbusClient;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -29,6 +30,8 @@ import com.github.sakserv.propertyparser.PropertyParser;
 
 import org.apache.storm.Config;
 import org.apache.storm.topology.TopologyBuilder;
+
+import static org.junit.Assert.assertTrue;
 
 public class StormLocalClusterIntegrationTest {
 
@@ -75,7 +78,7 @@ public class StormLocalClusterIntegrationTest {
     }
 
     @Test
-    public void testStormCluster() {
+    public void testStormCluster() throws Exception {
         TopologyBuilder builder = new TopologyBuilder();
         builder.setSpout("randomsentencespout", new RandomSentenceSpout(), 1);
         builder.setBolt("print", new PrinterBolt(), 1).shuffleGrouping("randomsentencespout");
@@ -87,6 +90,13 @@ public class StormLocalClusterIntegrationTest {
         } catch (InterruptedException e) {
             LOG.info("SUCCESSFULLY COMPLETED");
         }
+    }
+
+    @Test
+    public void testStormNimbusClient() throws Exception {
+        Config conf = stormLocalCluster.getStormConf();
+        NimbusClient nimbusClient = NimbusClient.getConfiguredClient(conf);
+        assertTrue(nimbusClient.getClient().getNimbusConf().length() > 0);
     }
 
 }
