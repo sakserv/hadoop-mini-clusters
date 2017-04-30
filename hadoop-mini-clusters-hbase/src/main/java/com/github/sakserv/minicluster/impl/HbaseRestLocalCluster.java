@@ -235,7 +235,9 @@ public class HbaseRestLocalCluster implements MiniCluster {
 
     @Override
     public void stop() throws Exception {
-        infoServer.stop();
+        if (infoServer != null) {
+            infoServer.stop();
+        }
         server.stop();
     }
 
