@@ -11,20 +11,24 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.github.sakserv.minicluster.oozie.util;
-
-import com.github.sakserv.minicluster.http.HttpUtils;
-import com.github.sakserv.propertyparser.PropertyParser;
-import org.apache.commons.io.FileUtils;
-import org.apache.hadoop.fs.FileUtil;
-import org.apache.hadoop.fs.Path;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package com.github.sakserv.minicluster.oozie.sharelib.util;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import com.github.sakserv.minicluster.oozie.sharelib.Framework;
+import org.apache.commons.io.FileUtils;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.FileUtil;
+import org.apache.hadoop.fs.Path;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.github.sakserv.minicluster.http.HttpUtils;
+import com.github.sakserv.propertyparser.PropertyParser;
 
 public class OozieShareLibUtil {
 
@@ -48,18 +52,23 @@ public class OozieShareLibUtil {
     private static final String SHARE_LIB_LOCAL_TEMP_PREFIX = "oozie_share_lib_tmp";
 
     // Instance variables
-    String oozieShareLibDir;
+    String oozieHdfsShareLibDir;
     Boolean oozieShareLibCreate;
     String shareLibCacheDir;
     Boolean purgeLocalShareLibCache;
+    FileSystem hdfsFileSystem;
+    List<Framework> oozieShareLibFrameworks;
 
     // Constructor
-    public OozieShareLibUtil(String oozieShareLibDir, Boolean oozieShareLibCreate, String shareLibCacheDir,
-                             Boolean purgeLocalShareLibCache) {
-        this.oozieShareLibDir = oozieShareLibDir;
+    public OozieShareLibUtil(String oozieHdfsShareLibDir, Boolean oozieShareLibCreate, String shareLibCacheDir,
+                             Boolean purgeLocalShareLibCache, FileSystem hdfsFileSystem,
+                             List<Framework> oozieShareLibFrameworks) {
+        this.oozieHdfsShareLibDir = oozieHdfsShareLibDir;
         this.oozieShareLibCreate = oozieShareLibCreate;
         this.shareLibCacheDir = shareLibCacheDir;
         this.purgeLocalShareLibCache = purgeLocalShareLibCache;
+        this.hdfsFileSystem = hdfsFileSystem;
+        this.oozieShareLibFrameworks = oozieShareLibFrameworks;
     }
 
     // Main driver that downloads, extracts, and deploys the oozie sharelib
@@ -84,15 +93,11 @@ public class OozieShareLibUtil {
                 String oozieShareLibExtractTempDir = extractOozieShareLibTarFileToTempDir(
                         new File(fullOozieShareLibTarFilePath));
 
-                // Copy the sharelib into the local temp directory
-                String strippedOozieShareLibDir = oozieShareLibDir;
-                if (oozieShareLibDir.startsWith("file://")) {
-                    strippedOozieShareLibDir = oozieShareLibDir.replaceAll("file://", "");
-                }
-                File destPath = new File(strippedOozieShareLibDir + Path.SEPARATOR +
-                        SHARE_LIB_PREFIX + getTimestampDirectory() + Path.SEPARATOR + "oozie");
+                // Copy the sharelib into HDFS
+                Path destPath = new Path(oozieHdfsShareLibDir + Path.SEPARATOR + "oozie" + Path.SEPARATOR +
+                        SHARE_LIB_PREFIX + getTimestampDirectory());
                 LOG.info("OOZIE: Writing share lib contents to: {}", destPath);
-                FileUtils.copyDirectory(new File(oozieShareLibExtractTempDir + Path.SEPARATOR + "share"), destPath);
+                hdfsFileSystem.copyFromLocalFile(false, new Path(new File(oozieShareLibExtractTempDir).toURI()), destPath);
 
                 if (purgeLocalShareLibCache) {
                     FileUtils.deleteDirectory(new File(shareLibCacheDir));
@@ -165,6 +170,18 @@ public class OozieShareLibUtil {
 
         FileUtil.unTar(fullOozieShareLibTarFilePath, tempDir);
 
+        // Remove spark to try to get the CP down.
+        if (oozieShareLibFrameworks != null || !oozieShareLibFrameworks.isEmpty()) {
+            for (Framework framework : Framework.values()) {
+                if (!oozieShareLibFrameworks.contains(framework)) {
+                    LOG.info("OOZIE: Excluding framework " + framework.getValue() + " from shared lib.");
+                    File removeShareLibDir = new File(tempDir.getAbsolutePath() + "/share/lib/" + framework.getValue());
+                    if (removeShareLibDir.isDirectory()) {
+                        FileUtils.deleteDirectory(removeShareLibDir);
+                    }
+                }
+            }
+        }
         return tempDir.getAbsolutePath();
     }
 

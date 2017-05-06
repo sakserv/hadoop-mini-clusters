@@ -3,13 +3,14 @@ package com.github.sakserv.minicluster.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.net.URI;
 import java.util.Properties;
 
+import com.github.sakserv.minicluster.oozie.sharelib.Framework;
+import com.github.sakserv.minicluster.oozie.sharelib.util.OozieShareLibUtil;
+import com.google.common.collect.Lists;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
@@ -26,7 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.minicluster.oozie.util.OozieShareLibUtil;
 import com.github.sakserv.propertyparser.PropertyParser;
 
 
@@ -98,22 +98,23 @@ public class OozieLocalServerIntegrationTest {
                 .setOozieYarnResourceManagerAddress(propertyParser.getProperty(
                         ConfigVars.YARN_RESOURCE_MANAGER_ADDRESS_KEY))
                 .setOozieHdfsDefaultFs(hdfsLocalCluster.getHdfsConfig().get("fs.defaultFS"))
-                .setOozieConf(hdfsLocalCluster.getHdfsConfig())
-                .setOozieShareLibDir(propertyParser.getProperty(ConfigVars.OOZIE_SHARE_LIB_DIR_KEY))
+                .setOozieConf(mrLocalCluster.getConfig())
+                .setOozieHdfsShareLibDir(propertyParser.getProperty(ConfigVars.OOZIE_HDFS_SHARE_LIB_DIR_KEY))
                 .setOozieShareLibCreate(Boolean.parseBoolean(
                         propertyParser.getProperty(ConfigVars.OOZIE_SHARE_LIB_CREATE_KEY)))
                 .setOozieLocalShareLibCacheDir(propertyParser.getProperty(
                         ConfigVars.OOZIE_LOCAL_SHARE_LIB_CACHE_DIR_KEY))
                 .setOoziePurgeLocalShareLibCache(Boolean.parseBoolean(propertyParser.getProperty(
                         ConfigVars.OOZIE_PURGE_LOCAL_SHARE_LIB_CACHE_KEY)))
+                .setOozieShareLibFrameworks(Lists.newArrayList(Framework.MAPREDUCE_STREAMING, Framework.OOZIE))
                 .build();
-        oozieLocalServer.start();
 
-
-        OozieShareLibUtil oozieShareLibUtil = new OozieShareLibUtil(oozieLocalServer.getOozieShareLibDir(),
-            oozieLocalServer.getOozieShareLibCreate(), oozieLocalServer.getOozieLocalShareLibCacheDir(),
-            oozieLocalServer.getOoziePurgeLocalShareLibCache());
+        OozieShareLibUtil oozieShareLibUtil = new OozieShareLibUtil(oozieLocalServer.getOozieHdfsShareLibDir(),
+                oozieLocalServer.getOozieShareLibCreate(), oozieLocalServer.getOozieLocalShareLibCacheDir(),
+                oozieLocalServer.getOoziePurgeLocalShareLibCache(), hdfsLocalCluster.getHdfsFileSystemHandle(),
+                oozieLocalServer.getOozieShareLibFrameworks());
         oozieShareLibUtil.createShareLib();
+        oozieLocalServer.start();
     }
 
     @AfterClass
@@ -140,6 +141,7 @@ public class OozieLocalServerIntegrationTest {
         hdfsFs.copyFromLocalFile(
                 new Path(getClass().getClassLoader().getResource(TEST_INPUT_FILE).toURI()), new Path(TEST_INPUT_DIR));
 
+        //write workflow.xml
         String wfApp = "<workflow-app name=\"sugar-option-decision\" xmlns=\"uri:oozie:workflow:0.5\">\n" +
                 "  <global>\n" +
                 "    <job-tracker>${jobTracker}</job-tracker>\n" +
@@ -157,7 +159,7 @@ public class OozieLocalServerIntegrationTest {
                 "  </global>\n" +
                 "  <start to=\"first\"/>\n" +
                 "  <action name=\"first\">\n" +
-                "    <map-reduce> </map-reduce>\n" +
+                "    <map-reduce> <prepare><delete path=\"" + TEST_OUTPUT_DIR + "\"/></prepare></map-reduce>\n" +
                 "    <ok to=\"decision-second-option\"/>\n" +
                 "    <error to=\"kill\"/>\n" +
                 "  </action>\n" +
@@ -168,12 +170,12 @@ public class OozieLocalServerIntegrationTest {
                 "    </switch>\n" +
                 "  </decision>\n" +
                 "  <action name=\"option\">\n" +
-                "    <map-reduce> </map-reduce>\n" +
+                "    <map-reduce> <prepare><delete path=\"" + TEST_OUTPUT_DIR + "\"/></prepare></map-reduce>\n" +
                 "    <ok to=\"second\"/>\n" +
                 "    <error to=\"kill\"/>\n" +
                 "  </action>\n" +
                 "  <action name=\"second\">\n" +
-                "    <map-reduce> </map-reduce>\n" +
+                "    <map-reduce> <prepare><delete path=\"" + TEST_OUTPUT_DIR + "\"/></prepare></map-reduce>\n" +
                 "    <ok to=\"end\"/>\n" +
                 "    <error to=\"kill\"/>\n" +
                 "  </action>\n" +
@@ -198,21 +200,22 @@ public class OozieLocalServerIntegrationTest {
         conf.setProperty("doOption", "true");
 
         //submit and check
-        final String jobId = oozie.submit(conf);
+        final String jobId = oozie.run(conf);
         WorkflowJob wf = oozie.getJobInfo(jobId);
         assertNotNull(wf);
-        assertEquals(WorkflowJob.Status.PREP, wf.getStatus());
+        assertEquals(WorkflowJob.Status.RUNNING, wf.getStatus());
 
-/*        while(true){
+
+        while(true){
             Thread.sleep(1000);
             wf = oozie.getJobInfo(jobId);
-            if (wf.getStatus() == WorkflowJob.Status.FAILED || wf.getStatus() == WorkflowJob.Status.KILLED || wf.getStatus() == WorkflowJob.Status.PREP || wf.getStatus() == WorkflowJob.Status.SUCCEEDED){
+            if(wf.getStatus() == WorkflowJob.Status.FAILED || wf.getStatus() == WorkflowJob.Status.KILLED || wf.getStatus() == WorkflowJob.Status.PREP || wf.getStatus() == WorkflowJob.Status.SUCCEEDED){
                 break;
             }
         }
 
         wf = oozie.getJobInfo(jobId);
-        assertEquals(WorkflowJob.Status.SUCCEEDED, wf.getStatus());*/
+        assertEquals(WorkflowJob.Status.SUCCEEDED, wf.getStatus());
 
         LOG.info("OOZIE: Workflow: {}", wf.toString());
         hdfsFs.close();
@@ -273,13 +276,18 @@ public class OozieLocalServerIntegrationTest {
 
     @Test
     public void testOozieShareLib() throws Exception {
-
         LOG.info("OOZIE: Test Oozie Share Lib Start");
 
-        // Validate the share lib dir was created and contains a single directory
-        String shareLibDir = oozieLocalServer.getOozieShareLibDir();
-        File[] dirList = new File(new URI(shareLibDir).getPath()).listFiles();
-        assertEquals(1, dirList.length);
+        FileSystem hdfsFs = hdfsLocalCluster.getHdfsFileSystemHandle();
+        OozieShareLibUtil oozieShareLibUtil = new OozieShareLibUtil(oozieLocalServer.getOozieHdfsShareLibDir(),
+                oozieLocalServer.getOozieShareLibCreate(), oozieLocalServer.getOozieLocalShareLibCacheDir(),
+                oozieLocalServer.getOoziePurgeLocalShareLibCache(), hdfsFs,
+                oozieLocalServer.getOozieShareLibFrameworks());
+        oozieShareLibUtil.createShareLib();
 
+        // Validate the share lib dir was created and contains a single directory
+        FileStatus[] fileStatuses = hdfsFs.listStatus(new Path(oozieLocalServer.getOozieHdfsShareLibDir()));
+        assertEquals(1, fileStatuses.length);
+        hdfsFs.close();
     }
 }

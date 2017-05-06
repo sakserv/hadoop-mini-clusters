@@ -310,6 +310,9 @@ Examples:
                 .setOozieShareLibCreate(Boolean.TRUE)
                 .setOozieLocalShareLibCacheDir("share_lib_cache")
                 .setOoziePurgeLocalShareLibCache(Boolean.FALSE)
+                .setOozieShareLibFrameworks(
+                        Lists.newArrayList(
+                                Framework.MAPREDUCE_STREAMING, Framework.OOZIE))
                 .build();
         oozieLocalServer.start();
 ```
