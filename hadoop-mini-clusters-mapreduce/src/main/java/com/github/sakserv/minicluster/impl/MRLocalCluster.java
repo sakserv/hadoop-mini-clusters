@@ -253,6 +253,7 @@ public class MRLocalCluster implements MiniCluster {
         configuration.set(YarnConfiguration.RM_WEBAPP_ADDRESS, resourceManagerWebappAddress);
         configuration.set(JHAdminConfig.MR_HISTORY_ADDRESS, jobHistoryAddress);
         configuration.set(YarnConfiguration.YARN_MINICLUSTER_FIXED_PORTS, "true");
+        configuration.set(JHAdminConfig.MR_HISTORY_MINICLUSTER_FIXED_PORTS, "true");
         if (getUseInJvmContainerExecutor()) {
             configuration.set(YarnConfiguration.NM_CONTAINER_EXECUTOR, inJvmContainerExecutorClass);
             configuration.set("fs.hdfs.impl", org.apache.hadoop.hdfs.DistributedFileSystem.class.getName());
