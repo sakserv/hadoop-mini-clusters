@@ -71,7 +71,7 @@ Note that backwards compatibility is not guarenteed.
 Examples:
 ---------
 
-*  HDFS Example
+### HDFS Example
 ```XML
 <dependency>
     <groupId>com.github.sakserv</groupId>
@@ -94,7 +94,7 @@ HdfsLocalCluster hdfsLocalCluster = new HdfsLocalCluster.Builder()
 hdfsLocalCluster.start();
 ```
 
-* YARN Example
+### YARN Example
 ```XML
 <dependency>
     <groupId>com.github.sakserv</groupId>
@@ -119,7 +119,7 @@ YarnLocalCluster yarnLocalCluster = new YarnLocalCluster.Builder()
 yarnLocalCluster.start();
 ```
 
-* MapReduce Example
+### MapReduce Example
 ```XML
 <dependency>
     <groupId>com.github.sakserv</groupId>
@@ -143,7 +143,7 @@ MRLocalCluster mrLocalCluster = new MRLocalCluster.Builder()
 mrLocalCluster.start();
 ```
 
-* HBase Example
+### HBase Example
 ```XML
 <dependency>
     <groupId>com.github.sakserv</groupId>
@@ -174,7 +174,7 @@ HbaseLocalCluster hbaseLocalCluster = new HbaseLocalCluster.Builder()
 hbaseLocalCluster.start();
 ```
 
-*  Zookeeper Example
+### Zookeeper Example
 ```XML
 <dependency>
     <groupId>com.github.sakserv</groupId>
@@ -198,7 +198,7 @@ ZookeeperLocalCluster zookeeperLocalCluster = new ZookeeperLocalCluster.Builder(
 zookeeperLocalCluster.start();
 ```
 
-*  HiveServer2 Example
+### HiveServer2 Example
 ```XML
 <dependency>
     <groupId>com.github.sakserv</groupId>
@@ -222,7 +222,7 @@ HiveLocalServer2 hiveLocalServer2 = new HiveLocalServer2.Builder()
 hiveLocalServer2.start();
 ```
 
-*  HiveMetastore Example
+### HiveMetastore Example
 ```XML
 <dependency>
     <groupId>com.github.sakserv</groupId>
@@ -243,7 +243,7 @@ HiveLocalMetaStore hiveLocalMetaStore = new HiveLocalMetaStore.Builder()
 hiveLocalMetaStore.start();
 ```
 
-*  Storm Example
+### Storm Example
 ```XML
 <dependency>
     <groupId>com.github.sakserv</groupId>
@@ -263,7 +263,7 @@ StormLocalCluster stormLocalCluster = new StormLocalCluster.Builder()
 stormLocalCluster.start();
 ```
 
-*  Kafka Example
+### Kafka Example
 ```XML
 <dependency>
     <groupId>com.github.sakserv</groupId>
@@ -284,7 +284,7 @@ KafkaLocalBroker kafkaLocalBroker = new KafkaLocalBroker.Builder()
 kafkaLocalBroker.start();
 ```
 
-*  Oozie Example
+### Oozie Example
 ```XML
 <dependency>
     <groupId>com.github.sakserv</groupId>
@@ -312,7 +312,7 @@ OozieLocalServer oozieLocalServer = new OozieLocalServer.Builder()
 oozieLocalServer.start();
 ```
 
-*  MongoDB Example
+### MongoDB Example
 ```XML
 <dependency>
     <groupId>com.github.sakserv</groupId>
@@ -329,7 +329,7 @@ MongodbLocalServer mongodbLocalServer = new MongodbLocalServer.Builder()
 mongodbLocalServer.start();
 ```
 
-*  ActiveMQ Example
+### ActiveMQ Example
 ```XML
 <dependency>
     <groupId>com.github.sakserv</groupId>
@@ -350,7 +350,7 @@ ActivemqLocalBroker amq = new ActivemqLocalBroker.Builder()
 amq.start();
 ```
 
-*  HyperSQL DB
+### HyperSQL DB
 ```XML
 <dependency>
     <groupId>com.github.sakserv</groupId>
@@ -372,7 +372,7 @@ hsqldbLocalServer = new HsqldbLocalServer.Builder()
 hsqldbLocalServer.start();
 ```
 
-* Knox
+### Knox
 ```XML
 <dependency>
     <groupId>com.github.sakserv</groupId>
