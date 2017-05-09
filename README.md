@@ -3,7 +3,7 @@ hadoop-mini-clusters
 hadoop-mini-clusters provides an easy way to test Hadoop projects directly in your IDE, without the need for a full blown development cluster or container orchestration. It allows the user to debug with the full power of the IDE. It provides a consistent API around the existing Mini Clusters across the ecosystem, eliminating the tedious task of learning the nuances of each project's approach.
 
 <p align="center">
-  <img src="https://travis-ci.org/sakserv/hadoop-mini-clusters.svg?branch=master"/>  |  <a href='https://coveralls.io/github/sakserv/hadoop-mini-clusters?branch=master'><img src='https://coveralls.io/repos/sakserv/hadoop-mini-clusters/badge.svg?branch=master&service=github' alt='Coverage Status' /></a>  |  <img src="https://maven-badges.herokuapp.com/maven-central/com.github.sakserv/hadoop-mini-clusters/badge.svg"/>
+  <img src="https://travis-ci.org/sakserv/hadoop-mini-clusters.svg?branch=master"/>     <a href='https://coveralls.io/github/sakserv/hadoop-mini-clusters?branch=master'><img src='https://coveralls.io/repos/sakserv/hadoop-mini-clusters/badge.svg?branch=master&service=github' alt='Coverage Status' /></a>     <img src="https://maven-badges.herokuapp.com/maven-central/com.github.sakserv/hadoop-mini-clusters/badge.svg"/>
 </p>
 
 Modules:
