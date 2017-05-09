@@ -350,7 +350,7 @@ ActivemqLocalBroker amq = new ActivemqLocalBroker.Builder()
 amq.start();
 ```
 
-### HyperSQL DB
+### HyperSQL DB Example
 ```XML
 <dependency>
     <groupId>com.github.sakserv</groupId>
@@ -372,7 +372,7 @@ hsqldbLocalServer = new HsqldbLocalServer.Builder()
 hsqldbLocalServer.start();
 ```
 
-### Knox
+### Knox Example
 ```XML
 <dependency>
     <groupId>com.github.sakserv</groupId>
