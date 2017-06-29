@@ -10,3 +10,7 @@ cache:
 script: travis_wait 60 mvn -B clean test
 
 after_success: travis_wait 60 mvn -B clean cobertura:cobertura coveralls:report
+
+sudo: required
+dist: trusty
+group: edge
