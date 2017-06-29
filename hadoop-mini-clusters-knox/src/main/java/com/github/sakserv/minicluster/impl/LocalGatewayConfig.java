@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.apache.hadoop.gateway.config.impl.GatewayConfigImpl.*;
+
 /**
  * @author Vincent Devillers
  */
@@ -378,5 +380,102 @@ public class LocalGatewayConfig extends Configuration implements GatewayConfig {
         PeriodFormatter f = (new PeriodFormatterBuilder()).appendMinutes().appendSuffix("m", " min").appendSeconds().appendSuffix("s", " sec").appendMillis().toFormatter();
         Period p = Period.parse(s, f);
         return p.toStandardDuration().getMillis();
+    }
+
+    @Override
+    public List<String> getMimeTypesToCompress() {
+        List<String> mimeTypes = null;
+        String value = get(MIME_TYPES_TO_COMPRESS, DEFAULT_MIME_TYPES_TO_COMPRESS);
+        if (value != null && !value.isEmpty()) {
+            mimeTypes = Arrays.asList(value.trim().split("\\s*,\\s*"));
+        }
+        return mimeTypes;
+    }
+
+  @Override
+  public boolean isCookieScopingToPathEnabled() {
+    return false;
+  }
+
+  @Override
+    public boolean isWebsocketEnabled() {
+        final String result = get( WEBSOCKET_FEATURE_ENABLED, Boolean.toString(DEFAULT_WEBSOCKET_FEATURE_ENABLED));
+        return Boolean.parseBoolean(result);
+    }
+
+    @Override
+    public int getWebsocketMaxTextMessageSize() {
+        return getInt( WEBSOCKET_MAX_TEXT_MESSAGE_SIZE, DEFAULT_WEBSOCKET_MAX_TEXT_MESSAGE_SIZE);
+    }
+
+    @Override
+    public int getWebsocketMaxBinaryMessageSize() {
+        return getInt( WEBSOCKET_MAX_BINARY_MESSAGE_SIZE, DEFAULT_WEBSOCKET_MAX_BINARY_MESSAGE_SIZE);
+    }
+
+    @Override
+    public int getWebsocketMaxTextMessageBufferSize() {
+        return getInt( WEBSOCKET_MAX_TEXT_MESSAGE_BUFFER_SIZE, DEFAULT_WEBSOCKET_MAX_TEXT_MESSAGE_BUFFER_SIZE);
+    }
+
+    @Override
+    public int getWebsocketMaxBinaryMessageBufferSize() {
+        return getInt( WEBSOCKET_MAX_BINARY_MESSAGE_BUFFER_SIZE, DEFAULT_WEBSOCKET_MAX_BINARY_MESSAGE_BUFFER_SIZE);
+    }
+
+    @Override
+    public int getWebsocketInputBufferSize() {
+        return getInt( WEBSOCKET_INPUT_BUFFER_SIZE, DEFAULT_WEBSOCKET_INPUT_BUFFER_SIZE);
+    }
+
+    @Override
+    public int getWebsocketAsyncWriteTimeout() {
+        return getInt( WEBSOCKET_ASYNC_WRITE_TIMEOUT, DEFAULT_WEBSOCKET_ASYNC_WRITE_TIMEOUT);
+    }
+
+    @Override
+    public int getWebsocketIdleTimeout() {
+        return getInt( WEBSOCKET_IDLE_TIMEOUT, DEFAULT_WEBSOCKET_IDLE_TIMEOUT);
+    }
+
+    @Override
+    public boolean isMetricsEnabled() {
+        String metricsEnabled = get( METRICS_ENABLED, "true" );
+        return "true".equals(metricsEnabled);
+    }
+
+    @Override
+    public boolean isJmxMetricsReportingEnabled() {
+        String enabled = get( JMX_METRICS_REPORTING_ENABLED, "true" );
+        return "true".equals(enabled);
+    }
+
+    @Override
+    public boolean isGraphiteMetricsReportingEnabled() {
+        String enabled = get( GRAPHITE_METRICS_REPORTING_ENABLED, "false" );
+        return "true".equals(enabled);
+    }
+
+    @Override
+    public String getGraphiteHost() {
+        String host = get( GRAPHITE_METRICS_REPORTING_HOST, "localhost" );
+        return host;
+    }
+
+    @Override
+    public int getGraphitePort() {
+        int i = getInt( GRAPHITE_METRICS_REPORTING_PORT, 32772 );
+        return i;
+    }
+
+    @Override
+    public int getGraphiteReportingFrequency() {
+        int i = getInt( GRAPHITE_METRICS_REPORTING_FREQUENCY, 1 );
+        return i;
+    }
+
+    @Override
+    public long getGatewayIdleTimeout() {
+        return getLong(GATEWAY_IDLE_TIMEOUT, 300000l);
     }
 }

@@ -36,4 +36,9 @@ public class LocalSystemTime implements Time {
         }
     }
 
+    @Override
+    public long hiResClockMs() {
+        return System.currentTimeMillis();
+    }
+
 }

@@ -14,6 +14,7 @@
 
 package com.github.sakserv.minicluster.impl;
 
+import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.storm.ILocalCluster;
 import org.apache.storm.Testing;
 import org.apache.storm.generated.*;
@@ -168,6 +169,7 @@ public class StormLocalCluster implements MiniCluster {
 
     @Override
     public void cleanUp() throws Exception {
+      FileUtils.deleteFolder("logs");
     }
 
     public void submitTopology(String topologyName, Config conf, StormTopology topology)
