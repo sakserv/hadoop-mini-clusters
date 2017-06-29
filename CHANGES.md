@@ -1,5 +1,15 @@
 Change Log
 ==========
+### 0.1.12 - 6/29/2017
+* Fix YARN RM address and hostname for issue #27
+* Remove Intellij assets
+* Fix directory clean up; add cleanup for Knox and Storm
+* Oozie share lib fixes for "real" workflows
+* HBase InfoServer is properly shutdown
+* Allow NimbusClient to work with StormLocalCluster
+* Fixed ports for MapReduce Job History Server
+* Add support for HDP 2.6.0 and 2.6.1
+
 ### 0.1.11 - 1/20/2017
 * Make RestBuilder public (Thanks @jetoile)
 
