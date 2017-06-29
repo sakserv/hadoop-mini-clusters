@@ -392,7 +392,12 @@ public class LocalGatewayConfig extends Configuration implements GatewayConfig {
         return mimeTypes;
     }
 
-    @Override
+  @Override
+  public boolean isCookieScopingToPathEnabled() {
+    return false;
+  }
+
+  @Override
     public boolean isWebsocketEnabled() {
         final String result = get( WEBSOCKET_FEATURE_ENABLED, Boolean.toString(DEFAULT_WEBSOCKET_FEATURE_ENABLED));
         return Boolean.parseBoolean(result);
