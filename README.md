@@ -33,7 +33,7 @@ Tests are included to show how to configure and use each of the mini clusters. S
 
 Knox:
 -----
-Knox tests have been disabled in 2.6+ due to a dependency conflict. See issue #35 for more. PRs welcome.
+Knox tests have been disabled in 2.6+ due to a dependency conflict. See issue #35 for more. PRs welcome with a fix.
 
 Using:
 ------
