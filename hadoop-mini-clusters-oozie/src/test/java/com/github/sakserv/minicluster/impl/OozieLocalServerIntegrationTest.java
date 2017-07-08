@@ -10,6 +10,7 @@ import java.util.Properties;
 
 import com.github.sakserv.minicluster.oozie.sharelib.Framework;
 import com.github.sakserv.minicluster.oozie.sharelib.util.OozieShareLibUtil;
+import com.github.sakserv.minicluster.util.FileUtils;
 import com.google.common.collect.Lists;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
@@ -22,6 +23,7 @@ import org.apache.oozie.client.OozieClient;
 import org.apache.oozie.client.WorkflowJob;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -285,6 +287,52 @@ public class OozieLocalServerIntegrationTest {
                 oozieLocalServer.getOozieShareLibFrameworks());
         oozieShareLibUtil.createShareLib();
 
+        // Validate the share lib dir was created and contains a single directory
+        FileStatus[] fileStatuses = hdfsFs.listStatus(new Path(oozieLocalServer.getOozieHdfsShareLibDir()));
+        assertEquals(1, fileStatuses.length);
+        hdfsFs.close();
+    }
+    
+    @Test
+    @Ignore
+    public void testOozieShareLibWithPublicHttpProxy() throws Exception {
+    	/*
+    	 * Putting the test to ignore because HTTP PROXY is public and
+    	 * can break the test occasionally
+    	 */
+    	
+        LOG.info("OOZIE: Test Oozie Share Lib via Proxy Start");
+        
+        // Deleting oozie local share lib cache to test the download again.
+        FileUtils.deleteFolder(oozieLocalServer.getOozieLocalShareLibCacheDir());
+        
+        System.setProperty("hdp.release.version","2.6.1.0");
+        
+        /*
+         * To test - pick any valid socks/http proxy from 
+         * https://www.socks-proxy.net/ & https://www.us-proxy.org/
+         * 
+         * Please note the proxies change very often hence if test fails it
+         * is probably because proxy is not available anymore.
+         */
+        
+        /*
+         * Various combinations supported for proxy.
+         * GNOME users usually have ALL_PROXY set.
+         * and MAC/Windows users have HTTP_PROXY set.
+         */
+        System.setProperty("HTTP_PROXY","http://104.207.145.113:3128");
+        //System.setProperty("HTTP_PROXY","192.129.226.168:9001");
+        //System.setProperty("ALL_PROXY","sock5://97.94.67.173:56541");
+        //System.setProperty("HTTP_PROXY","sock5://207.98.253.161:10200");
+        
+        FileSystem hdfsFs = hdfsLocalCluster.getHdfsFileSystemHandle();
+        OozieShareLibUtil oozieShareLibUtil = new OozieShareLibUtil(oozieLocalServer.getOozieHdfsShareLibDir(),
+                oozieLocalServer.getOozieShareLibCreate(), oozieLocalServer.getOozieLocalShareLibCacheDir(),
+                oozieLocalServer.getOoziePurgeLocalShareLibCache(), hdfsFs,
+                oozieLocalServer.getOozieShareLibFrameworks());
+        oozieShareLibUtil.createShareLib();
+        
         // Validate the share lib dir was created and contains a single directory
         FileStatus[] fileStatuses = hdfsFs.listStatus(new Path(oozieLocalServer.getOozieHdfsShareLibDir()));
         assertEquals(1, fileStatuses.length);
