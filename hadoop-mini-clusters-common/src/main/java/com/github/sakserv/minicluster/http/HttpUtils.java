@@ -82,8 +82,10 @@ public class HttpUtils {
         bufferedInputStream.close();
     }
     
-	private static Proxy returnProxyIfEnabled() {
+	public static Proxy returnProxyIfEnabled() {
 		LOG.debug("returnProxyIfEnabled() start!!");
+		String proxyStarturl="http://";
+		
 		String proxyURLString = System.getProperty(PROXY_PROPERTY_NAME) != null ? System.getProperty(PROXY_PROPERTY_NAME)
 				: System.getProperty(PROXY_PROPERTY_NAME.toLowerCase());
 		String allproxyURLString = System.getProperty(ALL_PROXY_PROPERTY_NAME) != null
@@ -95,7 +97,7 @@ public class HttpUtils {
 		
 		try {
 			//If Proxy URL starts with HTTP then use HTTP PROXY settings
-			if (finalProxyString != null && finalProxyString.toLowerCase().startsWith("http")) {
+			if (finalProxyString != null && finalProxyString.toLowerCase().startsWith(proxyStarturl)) {
 				// Basic method to validate proxy URL is correct or not.
 				proxyURL = returnParsedURL(finalProxyString);
 				LOG.debug("protocol of proxy used is: " + proxyURL.getProtocol());
@@ -104,13 +106,13 @@ public class HttpUtils {
 			else if (finalProxyString != null && !finalProxyString.contains("://")
 					&& finalProxyString.split(":").length == 2) {
 				LOG.debug("protocol of proxy used is: http default");
-				proxyURL = returnParsedURL("http://".concat(finalProxyString));
+				proxyURL = returnParsedURL(proxyStarturl.concat(finalProxyString));
 				return proxyURL !=null ? new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyURL.getHost(), proxyURL.getPort())) : null;
 			} //If Proxy URL starts with SOCKS4 or SOCKS5 protocol then go for SOCKS settings
 			else if (finalProxyString != null && finalProxyString.toLowerCase().startsWith("sock")
 					&& finalProxyString.split("://").length == 2) {
 				LOG.debug("protocol of proxy used is: Socks");
-				proxyURL = returnParsedURL("http://".concat(finalProxyString.split("://")[1]));
+				proxyURL = returnParsedURL(proxyStarturl.concat(finalProxyString.split("://")[1]));
 				return proxyURL !=null ? new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(proxyURL.getHost(), proxyURL.getPort())) : null;
 			}
 		} catch (MalformedURLException | URISyntaxException mUE) {
