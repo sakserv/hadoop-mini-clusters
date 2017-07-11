@@ -337,9 +337,6 @@
                     <forkCount>1</forkCount>
                     <reuseForks>false</reuseForks>
                     <argLine>-Xms4g -Xmx4g -Dhdp.release.version=${hdp.release.version}</argLine>
-                    <excludes>
-                        <exclude>**/KnoxLocalClusterIntegrationTest.java</exclude>
-                    </excludes>
                 </configuration>
             </plugin>
 
