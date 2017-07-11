@@ -31,10 +31,6 @@ Tests:
 ------
 Tests are included to show how to configure and use each of the mini clusters. See the *IntegrationTest classes.
 
-Knox:
------
-Knox tests have been disabled in 2.6+ due to a dependency conflict. See issue #35 for more. PRs welcome with a fix.
-
 Using:
 ------
 *  Maven Central - latest release
@@ -43,13 +39,13 @@ Using:
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters</artifactId>
-    <version>0.1.12</version>
+    <version>0.1.13</version>
 </dependency>
 
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-common</artifactId>
-    <version>0.1.12</version>
+    <version>0.1.13</version>
 </dependency>
 ```
 
@@ -82,7 +78,7 @@ Examples:
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-hdfs</artifactId>
-    <version>0.1.12</version>
+    <version>0.1.13</version>
 </dependency>
 ```
 ```Java
@@ -105,7 +101,7 @@ hdfsLocalCluster.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-yarn</artifactId>
-    <version>0.1.12</version>
+    <version>0.1.13</version>
 </dependency>
 ```
 ```Java
@@ -130,7 +126,7 @@ yarnLocalCluster.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-mapreduce</artifactId>
-    <version>0.1.12</version>
+    <version>0.1.13</version>
 </dependency>
 ```
 ```Java
@@ -154,7 +150,7 @@ mrLocalCluster.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-hbase</artifactId>
-    <version>0.1.12</version>
+    <version>0.1.13</version>
 </dependency>
 ```
 ```Java
@@ -185,7 +181,7 @@ hbaseLocalCluster.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-zookeeper</artifactId>
-    <version>0.1.12</version>
+    <version>0.1.13</version>
 </dependency>
 ```
 ```Java
@@ -209,7 +205,7 @@ zookeeperLocalCluster.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-hiveserver2</artifactId>
-    <version>0.1.12</version>
+    <version>0.1.13</version>
 </dependency>
 ```
 ```Java
@@ -233,7 +229,7 @@ hiveLocalServer2.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-hivemetastore</artifactId>
-    <version>0.1.12</version>
+    <version>0.1.13</version>
 </dependency>
 ```
 ```Java
@@ -254,7 +250,7 @@ hiveLocalMetaStore.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-storm</artifactId>
-    <version>0.1.12</version>
+    <version>0.1.13</version>
 </dependency>
 ```
 ```Java
@@ -274,7 +270,7 @@ stormLocalCluster.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-kafka</artifactId>
-    <version>0.1.12</version>
+    <version>0.1.13</version>
 </dependency>
 ```
 ```Java
@@ -295,7 +291,7 @@ kafkaLocalBroker.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-oozie</artifactId>
-    <version>0.1.12</version>
+    <version>0.1.13</version>
 </dependency>
 ```
 ```Java
@@ -323,7 +319,7 @@ oozieLocalServer.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-mongodb</artifactId>
-    <version>0.1.12</version>
+    <version>0.1.13</version>
 </dependency>
 ```
 ```Java
@@ -340,7 +336,7 @@ mongodbLocalServer.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-activemq</artifactId>
-    <version>0.1.12</version>
+    <version>0.1.13</version>
 </dependency>
 ```
 ```Java
@@ -361,7 +357,7 @@ amq.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-hyperscaledb</artifactId>
-    <version>0.1.12</version>
+    <version>0.1.13</version>
 </dependency>
 ```
 ```Java
@@ -383,7 +379,7 @@ hsqldbLocalServer.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-knox</artifactId>
-    <version>0.1.12</version>
+    <version>0.1.13</version>
 </dependency>
 ```
 ```Java

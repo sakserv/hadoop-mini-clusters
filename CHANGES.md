@@ -1,5 +1,9 @@
 Change Log
 ==========
+### 0.1.13 - 7/11/2017
+* Add proxy support for sharelib downloads (Thanks @rajesh-kumar)
+* Work around for Knox dependency conflicts (Thanks @jetoile) 
+
 ### 0.1.12 - 6/29/2017
 * Fix YARN RM address and hostname for issue #27
 * Remove Intellij assets
