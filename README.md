@@ -311,6 +311,15 @@ OozieLocalServer oozieLocalServer = new OozieLocalServer.Builder()
         Lists.newArrayList(Framework.MAPREDUCE_STREAMING, Framework.OOZIE))
     .build();
 
+OozieShareLibUtil oozieShareLibUtil = new OozieShareLibUtil(
+    oozieLocalServer.getOozieHdfsShareLibDir(),
+    oozieLocalServer.getOozieShareLibCreate(), 
+    oozieLocalServer.getOozieLocalShareLibCacheDir(),
+    oozieLocalServer.getOoziePurgeLocalShareLibCache(), 
+    hdfsLocalCluster.getHdfsFileSystemHandle(),
+    oozieLocalServer.getOozieShareLibFrameworks());
+oozieShareLibUtil.createShareLib();
+
 oozieLocalServer.start();
 ```
 
