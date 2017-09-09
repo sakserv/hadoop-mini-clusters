@@ -1,8 +1,10 @@
 package com.github.sakserv.minicluster.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.gateway.GatewayMessages;
 import org.apache.hadoop.gateway.config.GatewayConfig;
+import org.apache.hadoop.gateway.config.impl.GatewayConfigImpl;
 import org.apache.hadoop.gateway.i18n.messages.MessagesFactory;
 import org.joda.time.Period;
 import org.joda.time.format.PeriodFormatter;
@@ -11,62 +13,25 @@ import org.joda.time.format.PeriodFormatterBuilder;
 import java.io.File;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.apache.hadoop.gateway.config.impl.GatewayConfigImpl.*;
 
-/**
- * @author Vincent Devillers
- */
 public class LocalGatewayConfig extends Configuration implements GatewayConfig {
-    private static final String GATEWAY_DEFAULT_TOPOLOGY_NAME_PARAM = "default.app.topology.name";
     private static final String GATEWAY_DEFAULT_TOPOLOGY_NAME = null;
-    private static GatewayMessages log = (GatewayMessages) MessagesFactory.get(GatewayMessages.class);
-    private static final String GATEWAY_CONFIG_DIR_PREFIX = "conf";
     private static final String GATEWAY_CONFIG_FILE_PREFIX = "gateway";
-    private static final String DEFAULT_STACKS_SERVICES_DIR = "services";
-    private static final String DEFAULT_APPLICATIONS_DIR = "applications";
-    public static final String[] GATEWAY_CONFIG_FILENAMES = new String[]{"conf/gateway-default.xml", "conf/gateway-site.xml"};
     public static final String HTTP_HOST = "gateway.host";
     public static final String HTTP_PORT = "gateway.port";
     public static final String HTTP_PATH = "gateway.path";
-    public static final String DEPLOYMENT_DIR = "gateway.deployment.dir";
-    public static final String SECURITY_DIR = "gateway.security.dir";
-    public static final String DATA_DIR = "gateway.data.dir";
-    public static final String STACKS_SERVICES_DIR = "gateway.services.dir";
-    public static final String GLOBAL_RULES_SERVICES = "gateway.global.rules.services";
-    public static final String APPLICATIONS_DIR = "gateway.applications.dir";
-    public static final String HADOOP_CONF_DIR = "gateway.hadoop.conf.dir";
-    public static final String FRONTEND_URL = "gateway.frontend.url";
-    private static final String TRUST_ALL_CERTS = "gateway.trust.all.certs";
-    private static final String CLIENT_AUTH_NEEDED = "gateway.client.auth.needed";
-    private static final String TRUSTSTORE_PATH = "gateway.truststore.path";
-    private static final String TRUSTSTORE_TYPE = "gateway.truststore.type";
-    private static final String KEYSTORE_TYPE = "gateway.keystore.type";
-    private static final String XFORWARDED_ENABLED = "gateway.xforwarded.enabled";
-    private static final String EPHEMERAL_DH_KEY_SIZE = "gateway.jdk.tls.ephemeralDHKeySize";
-    private static final String HTTP_CLIENT_MAX_CONNECTION = "gateway.httpclient.maxConnections";
-    private static final String HTTP_CLIENT_CONNECTION_TIMEOUT = "gateway.httpclient.connectionTimeout";
-    private static final String HTTP_CLIENT_SOCKET_TIMEOUT = "gateway.httpclient.socketTimeout";
-    private static final String THREAD_POOL_MAX = "gateway.threadpool.max";
-    public static final String HTTP_SERVER_REQUEST_BUFFER = "gateway.httpserver.requestBuffer";
-    public static final String HTTP_SERVER_REQUEST_HEADER_BUFFER = "gateway.httpserver.requestHeaderBuffer";
-    public static final String HTTP_SERVER_RESPONSE_BUFFER = "gateway.httpserver.responseBuffer";
-    public static final String HTTP_SERVER_RESPONSE_HEADER_BUFFER = "gateway.httpserver.responseHeaderBuffer";
-    public static final String DEPLOYMENTS_BACKUP_VERSION_LIMIT = "gateway.deployment.backup.versionLimit";
-    public static final String DEPLOYMENTS_BACKUP_AGE_LIMIT = "gateway.deployment.backup.ageLimit";
-    private static final String SSL_ENABLED = "ssl.enabled";
-    private static final String SSL_EXCLUDE_PROTOCOLS = "ssl.exclude.protocols";
-    private static final String SSL_INCLUDE_CIPHERS = "ssl.include.ciphers";
-    private static final String SSL_EXCLUDE_CIPHERS = "ssl.exclude.ciphers";
-    public static final String DEFAULT_HTTP_PORT = "8888";
-    public static final String DEFAULT_HTTP_PATH = "gateway";
-    public static final String DEFAULT_DEPLOYMENT_DIR = "deployments";
-    public static final String DEFAULT_SECURITY_DIR = "security";
-    public static final String DEFAULT_DATA_DIR = "data";
     private static List<String> DEFAULT_GLOBAL_RULES_SERVICES;
+    private static final String CRYPTO_ALGORITHM = GATEWAY_CONFIG_FILE_PREFIX + ".crypto.algorithm";
+    private static final String CRYPTO_PBE_ALGORITHM = GATEWAY_CONFIG_FILE_PREFIX + ".crypto.pbe.algorithm";
+    private static final String CRYPTO_TRANSFORMATION = GATEWAY_CONFIG_FILE_PREFIX + ".crypto.transformation";
+    private static final String CRYPTO_SALTSIZE = GATEWAY_CONFIG_FILE_PREFIX + ".crypto.salt.size";
+    private static final String CRYPTO_ITERATION_COUNT = GATEWAY_CONFIG_FILE_PREFIX + ".crypto.iteration.count";
+    private static final String CRYPTO_KEY_LENGTH = GATEWAY_CONFIG_FILE_PREFIX + ".crypto.key.length";
+    public static final String SERVER_HEADER_ENABLED = GATEWAY_CONFIG_FILE_PREFIX + ".server.header.enabled";
 
     public LocalGatewayConfig() {
         super(false);
@@ -478,4 +443,70 @@ public class LocalGatewayConfig extends Configuration implements GatewayConfig {
     public long getGatewayIdleTimeout() {
         return getLong(GATEWAY_IDLE_TIMEOUT, 300000l);
     }
+
+    @Override
+    public boolean isGatewayPortMappingEnabled() {
+        String enabled = get( GATEWAY_PORT_MAPPING_ENABLED, "false" );
+        return "true".equals(enabled);
+    }
+
+    @Override
+    public String getAlgorithm() {
+        return getVar(CRYPTO_ALGORITHM, null);
+    }
+
+    @Override
+    public String getPBEAlgorithm() {
+        return getVar(CRYPTO_PBE_ALGORITHM, null);
+    }
+
+    @Override
+    public String getTransformation() {
+        return getVar(CRYPTO_TRANSFORMATION, null);
+    }
+
+    @Override
+    public String getSaltSize() {
+        return getVar(CRYPTO_SALTSIZE, null);
+    }
+
+    @Override
+    public String getIterationCount() {
+        return getVar(CRYPTO_ITERATION_COUNT, null);
+    }
+
+    @Override
+    public String getKeyLength() {
+        return getVar(CRYPTO_KEY_LENGTH, null);
+    }
+
+    @Override
+    public boolean isGatewayServerHeaderEnabled() {
+        return Boolean.parseBoolean(getVar(SERVER_HEADER_ENABLED, "true"));
+    }
+
+    /**
+     * Map of Topology names and their ports.
+     *
+     * @return
+     */
+    @Override
+    public Map<String, Integer> getGatewayPortMappings() {
+
+        final Map<String, Integer> result = new ConcurrentHashMap<String, Integer>();
+        final Map<String, String> properties = getValByRegex(GATEWAY_PORT_MAPPING_REGEX);
+
+        // Convert port no. from string to int
+        for(final Map.Entry<String, String> e : properties.entrySet()) {
+            // ignore the GATEWAY_PORT_MAPPING_ENABLED property
+            if(!e.getKey().equalsIgnoreCase(GATEWAY_PORT_MAPPING_ENABLED)) {
+                // extract the topology name and use it as a key
+                result.put(StringUtils.substringAfter(e.getKey(), GATEWAY_PORT_MAPPING_PREFIX), Integer.parseInt(e.getValue()) );
+            }
+
+        }
+
+        return Collections.unmodifiableMap(result);
+    }
+
 }

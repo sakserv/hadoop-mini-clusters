@@ -108,15 +108,15 @@
         <httpclient.version>4.5.2</httpclient.version>
 
         <!-- Maven Release Plugin doesn't work correctly with properties defined in profiles, duplicate here -->
-        <hdp.release.version>2.6.1.0</hdp.release.version>
-        <storm.version>1.1.0.2.6.1.0-129</storm.version>
-        <hive.version>1.2.1000.2.6.1.0-129</hive.version>
-        <hadoop.version>2.7.3.2.6.1.0-129</hadoop.version>
-        <hbase.version>1.1.2.2.6.1.0-129</hbase.version>
-        <kafka.version>0.10.1.2.6.1.0-129</kafka.version>
+        <hdp.release.version>2.6.2.0</hdp.release.version>
+        <storm.version>1.1.0.2.6.2.0-205</storm.version>
+        <hive.version>1.2.1000.2.6.2.0-205</hive.version>
+        <hadoop.version>2.7.3.2.6.2.0-205</hadoop.version>
+        <hbase.version>1.1.2.2.6.2.0-205</hbase.version>
+        <kafka.version>0.10.1.2.6.2.0-205</kafka.version>
         <kafka.artifactid.version>kafka_2.10</kafka.artifactid.version>
-        <oozie.version>4.2.0.2.6.1.0-129</oozie.version>
-        <knox.version>0.12.0.2.6.1.0-129</knox.version>
+        <oozie.version>4.2.0.2.6.2.0-205</oozie.version>
+        <knox.version>0.12.0.2.6.2.0-205</knox.version>
 
     </properties>
 
@@ -125,6 +125,22 @@
         <!--
             Build profiles to use different versions of Hadoop
         -->
+
+        <!-- HDP 2.6.2.0 -->
+        <profile>
+            <id>2.6.2.0</id>
+            <properties>
+                <hdp.release.version>2.6.2.0</hdp.release.version>
+                <storm.version>1.1.0.2.6.2.0-205</storm.version>
+                <hive.version>1.2.1000.2.6.2.0-205</hive.version>
+                <hadoop.version>2.7.3.2.6.2.0-205</hadoop.version>
+                <hbase.version>1.1.2.2.6.2.0-205</hbase.version>
+                <kafka.version>0.10.1.2.6.2.0-205</kafka.version>
+                <kafka.artifactid.version>kafka_2.10</kafka.artifactid.version>
+                <oozie.version>4.2.0.2.6.2.0-205</oozie.version>
+                <knox.version>0.12.0.2.6.2.0-205</knox.version>
+            </properties>
+        </profile>
 
         <!-- HDP 2.6.1.0 -->
         <profile>
