@@ -99,9 +99,9 @@ public class YarnLocalClusterInJvmContainerExecutorTest {
         
         // simple yarn app running "whoami", 
         // validate the container contents matches the java user.name
-/*        if (!System.getProperty("user.name").isEmpty()) {
+        if (!System.getProperty("user.name").equals("travis")) {
             assertEquals(System.getProperty("user.name"), getStdoutContents());
-        }*/
+        }
         
     }
     
