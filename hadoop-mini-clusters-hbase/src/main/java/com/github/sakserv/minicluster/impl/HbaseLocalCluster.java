@@ -245,6 +245,13 @@ public class HbaseLocalCluster implements MiniCluster {
 
     @Override
     public void configure() throws Exception {
+        configure(hbaseConfiguration);
+
+        // Handle Windows
+        WindowsLibsUtils.setHadoopHome();
+    }
+
+    public void configure(Configuration hbaseConfiguration) throws Exception {
         hbaseConfiguration.set(HConstants.MASTER_PORT, hbaseMasterPort.toString());
         hbaseConfiguration.set(HConstants.MASTER_INFO_PORT, hbaseMasterInfoPort.toString());
         hbaseConfiguration.set(HConstants.HBASE_DIR, hbaseRootDir);
@@ -255,15 +262,10 @@ public class HbaseLocalCluster implements MiniCluster {
         hbaseConfiguration.set("hbase.splitlog.manager.unassigned.timeout", "999999999");
         hbaseConfiguration.set("hbase.splitlog.manager.timeoutmonitor.period", "999999999");
         hbaseConfiguration.set("hbase.master.logcleaner.plugins", "org.apache.hadoop.hbase.master.cleaner.TimeToLiveLogCleaner");
-
-        // Handle Windows
-        WindowsLibsUtils.setHadoopHome();
     }
 
     @Override
     public void cleanUp() throws Exception {
         FileUtils.deleteFolder(hbaseRootDir);
     }
-
-
 }

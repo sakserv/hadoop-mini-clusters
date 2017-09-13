@@ -134,11 +134,11 @@ public class ConfigVars {
 
     // HBase Rest
     public static final String HBASE_REST_PORT_KEY = "hbase.rest.port";
-    public static final String HBASE_REST_READONLY_KEY="hbase.rest.readonly";
-    public static final String HBASE_REST_INFO_PORT_KEY="hbase.rest.info.port";
-    public static final String HBASE_REST_HOST_KEY="hbase.rest.host";
-    public static final String HBASE_REST_THREADMAX_KEY="hbase.rest.threads.max";
-    public static final String HBASE_REST_THREADMIN_KEY="hbase.rest.threads.min";
+    public static final String HBASE_REST_READONLY_KEY = "hbase.rest.readonly";
+    public static final String HBASE_REST_INFO_PORT_KEY = "hbase.rest.info.port";
+    public static final String HBASE_REST_HOST_KEY = "hbase.rest.host";
+    public static final String HBASE_REST_THREADMAX_KEY = "hbase.rest.threads.max";
+    public static final String HBASE_REST_THREADMIN_KEY = "hbase.rest.threads.min";
 
     // HBase Test
     public static final String HBASE_TEST_TABLE_NAME_KEY = "hbase.test.table.name";
@@ -162,6 +162,21 @@ public class ConfigVars {
     public static final String KNOX_PATH_KEY = "knox.path";
     public static final String KNOX_CLUSTER_KEY = "knox.cluster";
     public static final String KNOX_HOME_DIR_KEY = "knox.home.dir";
+
+    // Kdc
+    public static final String KDC_HOST_KEY = "kdc.host";
+    public static final String KDC_PORT_KEY = "kdc.port";
+    public static final String KDC_BASEDIR_KEY = "kdc.basedir";
+    public static final String KDC_ORG_DOMAIN_KEY = "kdc.org.domain";
+    public static final String KDC_ORG_NAME_KEY = "kdc.org.name";
+    public static final String KDC_PRINCIPALS_KEY = "kdc.principals";
+    public static final String KDC_KEYTAB_FILENAME_KEY = "kdc.keytabfilename";
+    public static final String KDC_KRBINSTANCE_KEY = "kdc.krbinstance";
+    public static final String KDC_INSTANCE_KEY = "kdc.instance";
+    public static final String KDC_TRANSPORT = "kdc.transport";
+    public static final String KDC_MAX_TICKET_LIFETIME_KEY = "kdc.max.ticket.lifetime";
+    public static final String KDC_MAX_RENEWABLE_LIFETIME = "kdc.max.renewable.lifetime";
+    public static final String KDC_DEBUG = "kdc.debug";
 
     public String toString() {
         return "ConfigVars";

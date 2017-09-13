@@ -26,6 +26,7 @@ Modules Included:
 *   hadoop-mini-clusters-activemq - Thanks Vladimir Zlatkin!
 *   hadoop-mini-clusters-hyperscaledb - For testing various databases
 *   hadoop-mini-clusters-knox - Local Knox Gateway
+*   hadoop-mini-clusters-kdc - Local Key Distribution Center (KDC)
 
 Tests:
 ------
@@ -39,13 +40,13 @@ Using:
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters</artifactId>
-    <version>0.1.13</version>
+    <version>0.1.14-SNAPSHOT</version>
 </dependency>
 
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-common</artifactId>
-    <version>0.1.13</version>
+    <version>0.1.14-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -423,6 +424,33 @@ KnoxLocalCluster knoxCluster = new KnoxLocalCluster.Builder()
 knoxCluster.start();
 ```
 
+### KDC Example
+```XML
+<dependency>
+    <groupId>com.github.sakserv</groupId>
+    <artifactId>hadoop-mini-clusters-kdc</artifactId>
+    <version>0.1.14-SNAPSHOT</version>
+</dependency>
+```
+```Java
+KdcLocalCluster kdcLocalCluster = new KdcLocalCluster.Builder()
+        .setPort(34340)
+        .setHost("127.0.0.1")
+        .setBaseDir("embedded_kdc")
+        .setOrgDomain("ORG")
+        .setOrgName("ACME")
+        .setPrincipals("hdfs,hbase,yarn,oozie,oozie_user,zookeeper,storm,mapreduce,HTTP".split(","))
+        .setKrbInstance("127.0.0.1")
+        .setInstance("DefaultKrbServer")
+        .setTransport("TCP")
+        .setMaxTicketLifetime(86400000)
+        .setMaxRenewableLifetime(604800000)
+        .setDebug(false)
+        .build();
+kdcLocalCluster.start();
+```
+
+Find how to integrate KDC with HDFS, Zookeeper or HBase in the tests under hadoop-mini-clusters-kdc/src/test/java/com/github/sakserv/minicluster/impl
 
 Modifying Properties
 --------------------

@@ -14,15 +14,14 @@
 
 package com.github.sakserv.minicluster.impl;
 
+import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.util.FileUtils;
+import com.github.sakserv.minicluster.util.WindowsLibsUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.hdfs.MiniDFSCluster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.util.FileUtils;
-import com.github.sakserv.minicluster.util.WindowsLibsUtils;
 
 
 public class HdfsLocalCluster implements MiniCluster {
@@ -31,7 +30,7 @@ public class HdfsLocalCluster implements MiniCluster {
     private static final Logger LOG = LoggerFactory.getLogger(HdfsLocalCluster.class);
 
     MiniDFSCluster miniDFSCluster;
-    
+
     private Integer hdfsNamenodePort;
     private Integer hdfsNamenodeHttpPort;
     private String hdfsTempDir;
@@ -79,7 +78,7 @@ public class HdfsLocalCluster implements MiniCluster {
         this.hdfsEnableRunningUserAsProxyUser = builder.hdfsEnableRunningUserAsProxyUser;
         this.hdfsConfig = builder.hdfsConfig;
     }
-    
+
     public static class Builder {
         private Integer hdfsNamenodePort;
         private Integer hdfsNamenodeHttpPort;
@@ -90,7 +89,7 @@ public class HdfsLocalCluster implements MiniCluster {
         private Boolean hdfsEnableRunningUserAsProxyUser;
         private Configuration hdfsConfig;
 
-        
+
         public Builder setHdfsNamenodePort(Integer hdfsNameNodePort) {
             this.hdfsNamenodePort = hdfsNameNodePort;
             return this;
@@ -105,12 +104,12 @@ public class HdfsLocalCluster implements MiniCluster {
             this.hdfsTempDir = hdfsTempDir;
             return this;
         }
-        
+
         public Builder setHdfsNumDatanodes(Integer hdfsNumDatanodes) {
             this.hdfsNumDatanodes = hdfsNumDatanodes;
             return this;
         }
-        
+
         public Builder setHdfsEnablePermissions(Boolean hdfsEnablePermissions) {
             this.hdfsEnablePermissions = hdfsEnablePermissions;
             return this;
@@ -125,23 +124,23 @@ public class HdfsLocalCluster implements MiniCluster {
             this.hdfsEnableRunningUserAsProxyUser = hdfsEnableRunningUserAsProxyUser;
             return this;
         }
-        
+
         public Builder setHdfsConfig(Configuration hdfsConfig) {
             this.hdfsConfig = hdfsConfig;
             return this;
         }
-        
+
         public HdfsLocalCluster build() {
             HdfsLocalCluster hdfsLocalCluster = new HdfsLocalCluster(this);
             validateObject(hdfsLocalCluster);
             return hdfsLocalCluster;
         }
-        
+
         public void validateObject(HdfsLocalCluster hdfsLocalCluster) {
             if(hdfsLocalCluster.hdfsNamenodePort == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: HDFS Namenode Port");
             }
-            
+
             if(hdfsLocalCluster.hdfsTempDir == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: HDFS Temp Dir");
             }
@@ -161,7 +160,7 @@ public class HdfsLocalCluster implements MiniCluster {
             if(hdfsLocalCluster.hdfsConfig == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: HDFS Config");
             }
-            
+
         }
     }
 
@@ -192,7 +191,7 @@ public class HdfsLocalCluster implements MiniCluster {
         if(cleanUp) {
             cleanUp();
         }
-        
+
     }
 
     @Override
@@ -215,8 +214,6 @@ public class HdfsLocalCluster implements MiniCluster {
     }
 
     public FileSystem getHdfsFileSystemHandle() throws Exception {
-        FileSystem hdfsFileSystemHandle = null;
-        hdfsFileSystemHandle = miniDFSCluster.getFileSystem();
-        return hdfsFileSystemHandle;
+        return miniDFSCluster.getFileSystem();
     }
 }

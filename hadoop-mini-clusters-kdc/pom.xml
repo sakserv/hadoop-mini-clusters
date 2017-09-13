@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>hadoop-mini-clusters</artifactId>
+        <groupId>com.github.sakserv</groupId>
+        <version>0.1.14-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>hadoop-mini-clusters-kdc</artifactId>
+
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-minikdc</artifactId>
+            <version>${hadoop.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.directory.jdbm</groupId>
+                    <artifactId>apacheds-jdbm1</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>${hadoop.version}</version>
+            <classifier>tests</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.directory.server</groupId>
+            <artifactId>apacheds-jdbm</artifactId>
+            <version>2.0.0-M5</version>
+        </dependency>
+
+        <!-- Hadoop Mini Clusters Common -->
+        <dependency>
+            <groupId>com.github.sakserv</groupId>
+            <artifactId>hadoop-mini-clusters-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Hadoop Mini Clusters HDFS -->
+        <dependency>
+            <groupId>com.github.sakserv</groupId>
+            <artifactId>hadoop-mini-clusters-hdfs</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Hadoop Mini Clusters HBase -->
+        <dependency>
+            <groupId>com.github.sakserv</groupId>
+            <artifactId>hadoop-mini-clusters-hbase</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.sakserv</groupId>
+            <artifactId>hadoop-mini-clusters-zookeeper</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+</project>
