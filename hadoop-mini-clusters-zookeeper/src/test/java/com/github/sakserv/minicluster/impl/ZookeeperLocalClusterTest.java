@@ -14,10 +14,8 @@
 
 package com.github.sakserv.minicluster.impl;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.IOException;
-
+import com.github.sakserv.minicluster.config.ConfigVars;
+import com.github.sakserv.propertyparser.PropertyParser;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,8 +23,9 @@ import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.propertyparser.PropertyParser;
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
 
 public class ZookeeperLocalClusterTest {
 
@@ -35,11 +34,12 @@ public class ZookeeperLocalClusterTest {
 
     // Setup the property parser
     private static PropertyParser propertyParser;
+
     static {
         try {
             propertyParser = new PropertyParser(ConfigVars.DEFAULT_PROPS_FILE);
             propertyParser.parsePropsFile();
-        } catch(IOException e) {
+        } catch (IOException e) {
             LOG.error("Unable to load property file: {}", propertyParser.getProperty(ConfigVars.DEFAULT_PROPS_FILE));
         }
     }
@@ -63,7 +63,7 @@ public class ZookeeperLocalClusterTest {
                 .setTickTime(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_TICKTIME_KEY)))
                 .build();
     }
-    
+
     @Test
     public void testPort() {
         assertEquals(Integer.parseInt(propertyParser.getProperty(ConfigVars.ZOOKEEPER_PORT_KEY)),
@@ -95,7 +95,7 @@ public class ZookeeperLocalClusterTest {
 
     @Test
     public void testZookeeperConnectionString() {
-        assertEquals(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY), 
+        assertEquals(propertyParser.getProperty(ConfigVars.ZOOKEEPER_CONNECTION_STRING_KEY),
                 zookeeperLocalCluster.getZookeeperConnectionString());
     }
 

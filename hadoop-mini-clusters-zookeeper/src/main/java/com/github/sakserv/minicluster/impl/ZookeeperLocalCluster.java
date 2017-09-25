@@ -14,15 +14,16 @@
 
 package com.github.sakserv.minicluster.impl;
 
-import java.io.File;
-
+import com.github.sakserv.minicluster.MiniCluster;
+import com.github.sakserv.minicluster.util.FileUtils;
 import org.apache.curator.test.InstanceSpec;
 import org.apache.curator.test.TestingServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.util.FileUtils;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * In memory ZK cluster using Curator
@@ -32,15 +33,16 @@ public class ZookeeperLocalCluster implements MiniCluster {
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(ZookeeperLocalCluster.class);
 
-    private Integer port;
-    private String tempDir;
-    private String zookeeperConnectionString;
-    private int electionPort = -1;
-    private int quorumPort = -1;
-    private boolean deleteDataDirectoryOnClose = true;
-    private int serverId = -1;
-    private int tickTime = -1;
-    private int maxClientCnxns = -1;
+    private final Integer port;
+    private final String tempDir;
+    private final String zookeeperConnectionString;
+    private final int electionPort;
+    private final int quorumPort;
+    private final boolean deleteDataDirectoryOnClose;
+    private final int serverId;
+    private final int tickTime;
+    private final int maxClientCnxns;
+    private final Map<String, Object> customProperties;
 
     private TestingServer testingServer;
 
@@ -54,15 +56,20 @@ public class ZookeeperLocalCluster implements MiniCluster {
         this.serverId = builder.serverId;
         this.tickTime = builder.tickTime;
         this.maxClientCnxns = builder.maxClientCnxns;
+        this.customProperties = builder.customProperties;
     }
 
     public int getPort() {
         return port;
     }
 
-    public String getTempDir() { return tempDir; }
+    public String getTempDir() {
+        return tempDir;
+    }
 
-    public String getZookeeperConnectionString() { return zookeeperConnectionString; }
+    public String getZookeeperConnectionString() {
+        return zookeeperConnectionString;
+    }
 
     public int getElectionPort() {
         return electionPort;
@@ -88,8 +95,7 @@ public class ZookeeperLocalCluster implements MiniCluster {
         return maxClientCnxns;
     }
 
-    public static class Builder
-    {
+    public static class Builder {
         private Integer port;
         private String tempDir;
         private String zookeeperConnectionString;
@@ -99,6 +105,7 @@ public class ZookeeperLocalCluster implements MiniCluster {
         private int serverId = -1;
         private int tickTime = -1;
         private int maxClientCnxns = -1;
+        private Map<String, Object> customProperties = new HashMap<>();
 
         public Builder setPort(int port) {
             this.port = port;
@@ -110,33 +117,33 @@ public class ZookeeperLocalCluster implements MiniCluster {
             return this;
         }
 
-        public Builder setZookeeperConnectionString(String zookeeperConnectionString){
+        public Builder setZookeeperConnectionString(String zookeeperConnectionString) {
             this.zookeeperConnectionString = zookeeperConnectionString;
             return this;
 
         }
 
-        public Builder setElectionPort(int electionPort){
+        public Builder setElectionPort(int electionPort) {
             this.electionPort = electionPort;
             return this;
         }
 
-        public Builder setQuorumPort(int quorumPort){
+        public Builder setQuorumPort(int quorumPort) {
             this.quorumPort = quorumPort;
             return this;
         }
 
-        public Builder setDeleteDataDirectoryOnClose(boolean deleteDataDirectoryOnClose){
+        public Builder setDeleteDataDirectoryOnClose(boolean deleteDataDirectoryOnClose) {
             this.deleteDataDirectoryOnClose = deleteDataDirectoryOnClose;
             return this;
         }
 
-        public Builder setServerId(int serverId){
+        public Builder setServerId(int serverId) {
             this.serverId = serverId;
             return this;
         }
 
-        public Builder setTickTime(int tickTime){
+        public Builder setTickTime(int tickTime) {
             this.tickTime = tickTime;
             return this;
         }
@@ -146,6 +153,10 @@ public class ZookeeperLocalCluster implements MiniCluster {
             return this;
         }
 
+        public Builder setCustomProperties(Map<String, Object> customProperties) {
+            this.customProperties = customProperties;
+            return this;
+        }
 
         public ZookeeperLocalCluster build() {
             ZookeeperLocalCluster zookeeperLocalCluster = new ZookeeperLocalCluster(this);
@@ -154,15 +165,15 @@ public class ZookeeperLocalCluster implements MiniCluster {
         }
 
         private void validateObject(ZookeeperLocalCluster zookeeperLocalCluster) {
-            if(zookeeperLocalCluster.port == null) {
+            if (zookeeperLocalCluster.port == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: Zookeeper Port");
             }
 
-            if(zookeeperLocalCluster.tempDir == null) {
+            if (zookeeperLocalCluster.tempDir == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: Zookeeper Temp Dir");
             }
 
-            if(zookeeperLocalCluster.zookeeperConnectionString == null) {
+            if (zookeeperLocalCluster.zookeeperConnectionString == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: Zookeeper Connection String");
             }
         }
@@ -171,10 +182,10 @@ public class ZookeeperLocalCluster implements MiniCluster {
 
     @Override
     public void start() throws Exception {
-        LOG.info("ZOOKEEPER: Starting Zookeeper on port: {}",  port);
+        LOG.info("ZOOKEEPER: Starting Zookeeper on port: {}", port);
         InstanceSpec spec = new InstanceSpec(new File(tempDir), port, electionPort,
-            quorumPort, deleteDataDirectoryOnClose, serverId, tickTime, maxClientCnxns);
-        testingServer = new TestingServer(spec);
+                quorumPort, deleteDataDirectoryOnClose, serverId, tickTime, maxClientCnxns, customProperties);
+        testingServer = new TestingServer(spec, true);
     }
 
     @Override
@@ -194,11 +205,11 @@ public class ZookeeperLocalCluster implements MiniCluster {
 
     // Curator does not leverage a configuration object
     @Override
-    public void configure() throws Exception {}
+    public void configure() throws Exception {
+    }
 
     @Override
     public void cleanUp() throws Exception {
         FileUtils.deleteFolder(tempDir);
     }
-
 }
