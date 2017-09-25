@@ -32,6 +32,12 @@
             <organization>Hortonworks</organization>
             <organizationUrl>http://www.hortonworks.com/</organizationUrl>
         </developer>
+        <developer>
+            <name>Vincent Devillers</name>
+            <email>vincent.devillers@layer4.fr</email>
+            <organization>Layer4</organization>
+            <organizationUrl>https://layer4.fr</organizationUrl>
+        </developer>
     </developers>
 
     <repositories>
