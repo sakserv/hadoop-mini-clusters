@@ -1,5 +1,10 @@
 Change Log
 ==========
+### 0.1.14 - 9/25/2017
+* Add mini kdc (Thanks @treydone)
+* Improve oozie documentation
+* Add support for HDP 2.6.2.0
+
 ### 0.1.13 - 7/11/2017
 * Add proxy support for sharelib downloads (Thanks @rajesh-kumar)
 * Work around for Knox dependency conflicts (Thanks @jetoile) 
