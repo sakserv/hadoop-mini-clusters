@@ -28,10 +28,12 @@ public class WindowsLibsUtils {
 
     public static String getHadoopHome() {
 
-        LOG.info("HADOOP_HOME: " + System.getProperty("HADOOP_HOME"));
-
         if(System.getProperty("HADOOP_HOME") != null) {
+            LOG.info("HADOOP_HOME: " + System.getProperty("HADOOP_HOME"));
             return System.getProperty("HADOOP_HOME");
+        } else if (System.getenv("HADOOP_HOME") != null) { //takes the hadoop home from system environment variable
+            LOG.info("HADOOP_HOME: " + System.getenv("HADOOP_HOME"));
+            return System.getenv("HADOOP_HOME");
         } else {
 
             File windowsLibDir = new File("." + Path.SEPARATOR + "windows_libs" +
