@@ -32,7 +32,11 @@ public class WindowsLibsUtils {
 
         if(System.getProperty("HADOOP_HOME") != null) {
             return System.getProperty("HADOOP_HOME");
-        } else {
+        }
+        else if(System.getenv("HADOOP_HOME") != null){
+            return System.getenv("HADOOP_HOME");
+        }
+        else {
 
             File windowsLibDir = new File("." + Path.SEPARATOR + "windows_libs" +
                     Path.SEPARATOR + System.getProperty("hdp.release.version"));
