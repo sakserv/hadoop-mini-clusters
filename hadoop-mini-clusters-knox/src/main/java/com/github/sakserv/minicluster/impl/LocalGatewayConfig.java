@@ -32,6 +32,7 @@ public class LocalGatewayConfig extends Configuration implements GatewayConfig {
     private static final String CRYPTO_ITERATION_COUNT = GATEWAY_CONFIG_FILE_PREFIX + ".crypto.iteration.count";
     private static final String CRYPTO_KEY_LENGTH = GATEWAY_CONFIG_FILE_PREFIX + ".crypto.key.length";
     public static final String SERVER_HEADER_ENABLED = GATEWAY_CONFIG_FILE_PREFIX + ".server.header.enabled";
+    public static final String CLIENT_AUTH_WANTED = GATEWAY_CONFIG_FILE_PREFIX + ".client.auth.wanted";
 
     public LocalGatewayConfig() {
         super(false);
@@ -483,6 +484,11 @@ public class LocalGatewayConfig extends Configuration implements GatewayConfig {
     @Override
     public boolean isGatewayServerHeaderEnabled() {
         return Boolean.parseBoolean(getVar(SERVER_HEADER_ENABLED, "true"));
+    }
+
+    @Override
+    public boolean isClientAuthWanted() {
+        return Boolean.parseBoolean(getVar(CLIENT_AUTH_WANTED, "false"));
     }
 
     /**

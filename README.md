@@ -40,13 +40,13 @@ Using:
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters</artifactId>
-    <version>0.1.14</version>
+    <version>0.1.15</version>
 </dependency>
 
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-common</artifactId>
-    <version>0.1.14</version>
+    <version>0.1.15</version>
 </dependency>
 ```
 
@@ -54,7 +54,8 @@ Profile Support:
 ----------------
 Multiple versions of HDP are available. The current list is:
 
-*   HDP 2.6.2.0 (default)
+*   HDP 2.6.3.0 (default) 
+*   HDP 2.6.2.0
 *   HDP 2.6.1.0
 *   HDP 2.6.0.3
 *   HDP 2.5.3.0
@@ -80,7 +81,7 @@ Examples:
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-hdfs</artifactId>
-    <version>0.1.14</version>
+    <version>0.1.15</version>
 </dependency>
 ```
 ```Java
@@ -103,7 +104,7 @@ hdfsLocalCluster.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-yarn</artifactId>
-    <version>0.1.14</version>
+    <version>0.1.15</version>
 </dependency>
 ```
 ```Java
@@ -128,7 +129,7 @@ yarnLocalCluster.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-mapreduce</artifactId>
-    <version>0.1.14</version>
+    <version>0.1.15</version>
 </dependency>
 ```
 ```Java
@@ -152,7 +153,7 @@ mrLocalCluster.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-hbase</artifactId>
-    <version>0.1.14</version>
+    <version>0.1.15</version>
 </dependency>
 ```
 ```Java
@@ -183,7 +184,7 @@ hbaseLocalCluster.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-zookeeper</artifactId>
-    <version>0.1.14</version>
+    <version>0.1.15</version>
 </dependency>
 ```
 ```Java
@@ -207,7 +208,7 @@ zookeeperLocalCluster.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-hiveserver2</artifactId>
-    <version>0.1.14</version>
+    <version>0.1.15</version>
 </dependency>
 ```
 ```Java
@@ -231,7 +232,7 @@ hiveLocalServer2.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-hivemetastore</artifactId>
-    <version>0.1.14</version>
+    <version>0.1.15</version>
 </dependency>
 ```
 ```Java
@@ -252,7 +253,7 @@ hiveLocalMetaStore.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-storm</artifactId>
-    <version>0.1.14</version>
+    <version>0.1.15</version>
 </dependency>
 ```
 ```Java
@@ -272,7 +273,7 @@ stormLocalCluster.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-kafka</artifactId>
-    <version>0.1.14</version>
+    <version>0.1.15</version>
 </dependency>
 ```
 ```Java
@@ -293,7 +294,7 @@ kafkaLocalBroker.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-oozie</artifactId>
-    <version>0.1.14</version>
+    <version>0.1.15</version>
 </dependency>
 ```
 ```Java
@@ -330,7 +331,7 @@ oozieLocalServer.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-mongodb</artifactId>
-    <version>0.1.14</version>
+    <version>0.1.15</version>
 </dependency>
 ```
 ```Java
@@ -347,7 +348,7 @@ mongodbLocalServer.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-activemq</artifactId>
-    <version>0.1.14</version>
+    <version>0.1.15</version>
 </dependency>
 ```
 ```Java
@@ -368,7 +369,7 @@ amq.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-hyperscaledb</artifactId>
-    <version>0.1.14</version>
+    <version>0.1.15</version>
 </dependency>
 ```
 ```Java
@@ -390,7 +391,7 @@ hsqldbLocalServer.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-knox</artifactId>
-    <version>0.1.14</version>
+    <version>0.1.15</version>
 </dependency>
 ```
 ```Java
@@ -429,7 +430,7 @@ knoxCluster.start();
 <dependency>
     <groupId>com.github.sakserv</groupId>
     <artifactId>hadoop-mini-clusters-kdc</artifactId>
-    <version>0.1.14</version>
+    <version>0.1.15</version>
 </dependency>
 ```
 ```Java
