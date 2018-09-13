@@ -1,4 +1,4 @@
-package com.github.sakserv.minicluster.impl;
+package com.github.explicite.minicluster.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.conf.Configuration;

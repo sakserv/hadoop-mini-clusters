@@ -12,12 +12,12 @@
  *  limitations under the License.
  */
 
-package com.github.sakserv.minicluster.impl;
+package com.github.explicite.minicluster.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.sakserv.minicluster.MiniCluster;
+import com.github.explicite.minicluster.MiniCluster;
 
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;

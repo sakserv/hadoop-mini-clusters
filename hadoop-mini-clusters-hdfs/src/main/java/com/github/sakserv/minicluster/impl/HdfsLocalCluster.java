@@ -12,11 +12,11 @@
  *  limitations under the License.
  */
 
-package com.github.sakserv.minicluster.impl;
+package com.github.explicite.minicluster.impl;
 
-import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.util.FileUtils;
-import com.github.sakserv.minicluster.util.WindowsLibsUtils;
+import com.github.explicite.minicluster.MiniCluster;
+import com.github.explicite.minicluster.util.FileUtils;
+import com.github.explicite.minicluster.util.WindowsLibsUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.hdfs.MiniDFSCluster;

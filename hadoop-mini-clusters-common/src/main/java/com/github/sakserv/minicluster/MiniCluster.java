@@ -12,7 +12,7 @@
  *  limitations under the License.
  */
 
-package com.github.sakserv.minicluster;
+package com.github.explicite.minicluster;
 
 public interface MiniCluster {
 

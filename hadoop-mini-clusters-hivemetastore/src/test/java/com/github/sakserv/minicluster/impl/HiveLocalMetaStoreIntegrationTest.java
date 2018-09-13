@@ -12,7 +12,7 @@
  *  limitations under the License.
  */
 
-package com.github.sakserv.minicluster.impl;
+package com.github.explicite.minicluster.impl;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertThat;
@@ -42,10 +42,10 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.minicluster.util.FileUtils;
-import com.github.sakserv.minicluster.util.WindowsLibsUtils;
-import com.github.sakserv.propertyparser.PropertyParser;
+import com.github.explicite.minicluster.config.ConfigVars;
+import com.github.explicite.minicluster.util.FileUtils;
+import com.github.explicite.minicluster.util.WindowsLibsUtils;
+import com.github.explicite.propertyparser.PropertyParser;
 
 public class HiveLocalMetaStoreIntegrationTest {
 

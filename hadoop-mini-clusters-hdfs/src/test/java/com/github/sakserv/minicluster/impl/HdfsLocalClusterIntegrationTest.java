@@ -12,7 +12,7 @@
  *  limitations under the License.
  */
 
-package com.github.sakserv.minicluster.impl;
+package com.github.explicite.minicluster.impl;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -35,8 +35,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.propertyparser.PropertyParser;
+import com.github.explicite.minicluster.config.ConfigVars;
+import com.github.explicite.propertyparser.PropertyParser;
 
 public class HdfsLocalClusterIntegrationTest {
 

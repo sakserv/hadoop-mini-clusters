@@ -12,7 +12,7 @@
  *  limitations under the License.
  */
 
-package com.github.sakserv.minicluster.impl;
+package com.github.explicite.minicluster.impl;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -23,9 +23,9 @@ import org.apache.avro.generic.GenericData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.systemtime.LocalSystemTime;
-import com.github.sakserv.minicluster.util.FileUtils;
+import com.github.explicite.minicluster.MiniCluster;
+import com.github.explicite.minicluster.systemtime.LocalSystemTime;
+import com.github.explicite.minicluster.util.FileUtils;
 
 import kafka.server.KafkaConfig;
 import kafka.server.KafkaServer;

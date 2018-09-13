@@ -1,4 +1,4 @@
-package com.github.sakserv.minicluster.yarn.util;
+package com.github.explicite.minicluster.yarn.util;
 
 import java.util.HashMap;
 import java.util.Map;

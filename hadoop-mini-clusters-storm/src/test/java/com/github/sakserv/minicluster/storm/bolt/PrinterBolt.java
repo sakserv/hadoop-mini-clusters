@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.github.sakserv.minicluster.storm.bolt;
+package com.github.explicite.minicluster.storm.bolt;
 
 import org.apache.storm.topology.BasicOutputCollector;
 import org.apache.storm.topology.OutputFieldsDeclarer;

@@ -18,4 +18,4 @@
  * @since 0.1.0
  * @author Shane Kumpf
  */
-package com.github.sakserv.minicluster.config;
+package com.github.explicite.minicluster.config;

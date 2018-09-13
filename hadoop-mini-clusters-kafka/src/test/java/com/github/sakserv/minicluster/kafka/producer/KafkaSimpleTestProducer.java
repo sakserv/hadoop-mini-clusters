@@ -11,7 +11,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.github.sakserv.minicluster.kafka.producer;
+package com.github.explicite.minicluster.kafka.producer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +24,7 @@ import org.codehaus.jettison.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.sakserv.minicluster.datatime.GenerateRandomDay;
+import com.github.explicite.minicluster.datatime.GenerateRandomDay;
 
 public class KafkaSimpleTestProducer {
 

@@ -11,7 +11,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.github.sakserv.minicluster.yarn;
+package com.github.explicite.minicluster.yarn;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -45,9 +45,9 @@ import org.apache.hadoop.yarn.server.nodemanager.DefaultContainerExecutor;
 import org.apache.hadoop.yarn.server.nodemanager.containermanager.container.Container;
 import org.apache.hadoop.yarn.server.nodemanager.containermanager.container.ContainerDiagnosticsUpdateEvent;
 
-import com.github.sakserv.minicluster.yarn.util.EnvironmentUtils;
-import com.github.sakserv.minicluster.yarn.util.ExecJavaCliParser;
-import com.github.sakserv.minicluster.yarn.util.ExecShellCliParser;
+import com.github.explicite.minicluster.yarn.util.EnvironmentUtils;
+import com.github.explicite.minicluster.yarn.util.ExecJavaCliParser;
+import com.github.explicite.minicluster.yarn.util.ExecShellCliParser;
 import org.apache.hadoop.yarn.server.nodemanager.executor.ContainerStartContext;
 
 /**

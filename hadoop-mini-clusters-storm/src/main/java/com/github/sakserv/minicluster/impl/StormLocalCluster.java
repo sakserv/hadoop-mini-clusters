@@ -12,16 +12,16 @@
  *  limitations under the License.
  */
 
-package com.github.sakserv.minicluster.impl;
+package com.github.explicite.minicluster.impl;
 
-import com.github.sakserv.minicluster.util.FileUtils;
+import com.github.explicite.minicluster.util.FileUtils;
 import org.apache.storm.ILocalCluster;
 import org.apache.storm.Testing;
 import org.apache.storm.generated.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.sakserv.minicluster.MiniCluster;
+import com.github.explicite.minicluster.MiniCluster;
 
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;

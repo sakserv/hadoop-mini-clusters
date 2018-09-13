@@ -12,7 +12,7 @@
  *  limitations under the License.
  */
 
-package com.github.sakserv.minicluster.impl;
+package com.github.explicite.minicluster.impl;
 
 import java.util.Properties;
 
@@ -31,9 +31,9 @@ import org.apache.activemq.broker.BrokerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.minicluster.util.FileUtils;
+import com.github.explicite.minicluster.MiniCluster;
+import com.github.explicite.minicluster.config.ConfigVars;
+import com.github.explicite.minicluster.util.FileUtils;
 
 public class ActivemqLocalBroker implements MiniCluster {
 

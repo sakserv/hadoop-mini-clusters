@@ -3,7 +3,7 @@ hadoop-mini-clusters
 hadoop-mini-clusters provides an easy way to test Hadoop projects directly in your IDE, without the need for a full blown development cluster or container orchestration. It allows the user to debug with the full power of the IDE. It provides a consistent API around the existing Mini Clusters across the ecosystem, eliminating the tedious task of learning the nuances of each project's approach.
 
 <p align="center">
-  <img src="https://travis-ci.org/sakserv/hadoop-mini-clusters.svg?branch=master"/>     <a href='https://coveralls.io/github/sakserv/hadoop-mini-clusters?branch=master'><img src='https://coveralls.io/repos/sakserv/hadoop-mini-clusters/badge.svg?branch=master&service=github' alt='Coverage Status' /></a>     <img src="https://maven-badges.herokuapp.com/maven-central/com.github.sakserv/hadoop-mini-clusters/badge.svg"/>
+  <img src="https://travis-ci.org/explicite/hadoop-mini-clusters.svg?branch=master"/>     <a href='https://coveralls.io/github/explicite/hadoop-mini-clusters?branch=master'><img src='https://coveralls.io/repos/explicite/hadoop-mini-clusters/badge.svg?branch=master&service=github' alt='Coverage Status' /></a>     <img src="https://maven-badges.herokuapp.com/maven-central/com.github.explicite/hadoop-mini-clusters/badge.svg"/>
 </p>
 
 Modules:
@@ -38,13 +38,13 @@ Using:
 
 ```XML
 <dependency>
-    <groupId>com.github.sakserv</groupId>
+    <groupId>com.github.explicite</groupId>
     <artifactId>hadoop-mini-clusters</artifactId>
     <version>0.1.15</version>
 </dependency>
 
 <dependency>
-    <groupId>com.github.sakserv</groupId>
+    <groupId>com.github.explicite</groupId>
     <artifactId>hadoop-mini-clusters-common</artifactId>
     <version>0.1.15</version>
 </dependency>
@@ -79,7 +79,7 @@ Examples:
 ### HDFS Example
 ```XML
 <dependency>
-    <groupId>com.github.sakserv</groupId>
+    <groupId>com.github.explicite</groupId>
     <artifactId>hadoop-mini-clusters-hdfs</artifactId>
     <version>0.1.15</version>
 </dependency>
@@ -102,7 +102,7 @@ hdfsLocalCluster.start();
 ### YARN Example
 ```XML
 <dependency>
-    <groupId>com.github.sakserv</groupId>
+    <groupId>com.github.explicite</groupId>
     <artifactId>hadoop-mini-clusters-yarn</artifactId>
     <version>0.1.15</version>
 </dependency>
@@ -127,7 +127,7 @@ yarnLocalCluster.start();
 ### MapReduce Example
 ```XML
 <dependency>
-    <groupId>com.github.sakserv</groupId>
+    <groupId>com.github.explicite</groupId>
     <artifactId>hadoop-mini-clusters-mapreduce</artifactId>
     <version>0.1.15</version>
 </dependency>
@@ -151,7 +151,7 @@ mrLocalCluster.start();
 ### HBase Example
 ```XML
 <dependency>
-    <groupId>com.github.sakserv</groupId>
+    <groupId>com.github.explicite</groupId>
     <artifactId>hadoop-mini-clusters-hbase</artifactId>
     <version>0.1.15</version>
 </dependency>
@@ -182,7 +182,7 @@ hbaseLocalCluster.start();
 ### Zookeeper Example
 ```XML
 <dependency>
-    <groupId>com.github.sakserv</groupId>
+    <groupId>com.github.explicite</groupId>
     <artifactId>hadoop-mini-clusters-zookeeper</artifactId>
     <version>0.1.15</version>
 </dependency>
@@ -206,7 +206,7 @@ zookeeperLocalCluster.start();
 ### HiveServer2 Example
 ```XML
 <dependency>
-    <groupId>com.github.sakserv</groupId>
+    <groupId>com.github.explicite</groupId>
     <artifactId>hadoop-mini-clusters-hiveserver2</artifactId>
     <version>0.1.15</version>
 </dependency>
@@ -230,7 +230,7 @@ hiveLocalServer2.start();
 ### HiveMetastore Example
 ```XML
 <dependency>
-    <groupId>com.github.sakserv</groupId>
+    <groupId>com.github.explicite</groupId>
     <artifactId>hadoop-mini-clusters-hivemetastore</artifactId>
     <version>0.1.15</version>
 </dependency>
@@ -251,7 +251,7 @@ hiveLocalMetaStore.start();
 ### Storm Example
 ```XML
 <dependency>
-    <groupId>com.github.sakserv</groupId>
+    <groupId>com.github.explicite</groupId>
     <artifactId>hadoop-mini-clusters-storm</artifactId>
     <version>0.1.15</version>
 </dependency>
@@ -271,7 +271,7 @@ stormLocalCluster.start();
 ### Kafka Example
 ```XML
 <dependency>
-    <groupId>com.github.sakserv</groupId>
+    <groupId>com.github.explicite</groupId>
     <artifactId>hadoop-mini-clusters-kafka</artifactId>
     <version>0.1.15</version>
 </dependency>
@@ -292,7 +292,7 @@ kafkaLocalBroker.start();
 ### Oozie Example
 ```XML
 <dependency>
-    <groupId>com.github.sakserv</groupId>
+    <groupId>com.github.explicite</groupId>
     <artifactId>hadoop-mini-clusters-oozie</artifactId>
     <version>0.1.15</version>
 </dependency>
@@ -329,7 +329,7 @@ oozieLocalServer.start();
 ### MongoDB Example
 ```XML
 <dependency>
-    <groupId>com.github.sakserv</groupId>
+    <groupId>com.github.explicite</groupId>
     <artifactId>hadoop-mini-clusters-mongodb</artifactId>
     <version>0.1.15</version>
 </dependency>
@@ -346,7 +346,7 @@ mongodbLocalServer.start();
 ### ActiveMQ Example
 ```XML
 <dependency>
-    <groupId>com.github.sakserv</groupId>
+    <groupId>com.github.explicite</groupId>
     <artifactId>hadoop-mini-clusters-activemq</artifactId>
     <version>0.1.15</version>
 </dependency>
@@ -367,7 +367,7 @@ amq.start();
 ### HyperSQL DB Example
 ```XML
 <dependency>
-    <groupId>com.github.sakserv</groupId>
+    <groupId>com.github.explicite</groupId>
     <artifactId>hadoop-mini-clusters-hyperscaledb</artifactId>
     <version>0.1.15</version>
 </dependency>
@@ -389,7 +389,7 @@ hsqldbLocalServer.start();
 ### Knox Example
 ```XML
 <dependency>
-    <groupId>com.github.sakserv</groupId>
+    <groupId>com.github.explicite</groupId>
     <artifactId>hadoop-mini-clusters-knox</artifactId>
     <version>0.1.15</version>
 </dependency>
@@ -428,7 +428,7 @@ knoxCluster.start();
 ### KDC Example
 ```XML
 <dependency>
-    <groupId>com.github.sakserv</groupId>
+    <groupId>com.github.explicite</groupId>
     <artifactId>hadoop-mini-clusters-kdc</artifactId>
     <version>0.1.15</version>
 </dependency>
@@ -451,7 +451,7 @@ KdcLocalCluster kdcLocalCluster = new KdcLocalCluster.Builder()
 kdcLocalCluster.start();
 ```
 
-Find how to integrate KDC with HDFS, Zookeeper or HBase in the tests under hadoop-mini-clusters-kdc/src/test/java/com/github/sakserv/minicluster/impl
+Find how to integrate KDC with HDFS, Zookeeper or HBase in the tests under hadoop-mini-clusters-kdc/src/test/java/com/github/explicite/minicluster/impl
 
 Modifying Properties
 --------------------

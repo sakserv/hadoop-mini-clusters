@@ -11,7 +11,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.github.sakserv.minicluster.config;
+package com.github.explicite.minicluster.config;
 
 /**
  * Provides constants for all of the supported configuration options

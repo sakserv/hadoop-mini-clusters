@@ -12,7 +12,7 @@
  *  limitations under the License.
  */
 
-package com.github.sakserv.minicluster.datatime;
+package com.github.explicite.minicluster.datatime;
 
 import java.util.GregorianCalendar;
 

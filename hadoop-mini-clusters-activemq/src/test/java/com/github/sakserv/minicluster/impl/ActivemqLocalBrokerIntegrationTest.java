@@ -1,4 +1,4 @@
-package com.github.sakserv.minicluster.impl;
+package com.github.explicite.minicluster.impl;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,8 +12,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.propertyparser.PropertyParser;
+import com.github.explicite.minicluster.config.ConfigVars;
+import com.github.explicite.propertyparser.PropertyParser;
 
 public class ActivemqLocalBrokerIntegrationTest {
 

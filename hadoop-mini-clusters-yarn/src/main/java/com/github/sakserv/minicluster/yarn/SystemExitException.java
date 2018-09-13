@@ -11,7 +11,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.github.sakserv.minicluster.yarn;
+package com.github.explicite.minicluster.yarn;
 
 /**
  * @author Oleg Zhurakousky

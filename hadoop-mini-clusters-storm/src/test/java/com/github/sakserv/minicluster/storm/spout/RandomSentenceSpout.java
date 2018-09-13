@@ -12,7 +12,7 @@
  *  limitations under the License.
  */
 
-package com.github.sakserv.minicluster.storm.spout;
+package com.github.explicite.minicluster.storm.spout;
 
 import java.util.Map;
 import java.util.Random;

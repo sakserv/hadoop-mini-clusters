@@ -1,4 +1,4 @@
-package com.github.sakserv.minicluster.yarn.util;
+package com.github.explicite.minicluster.yarn.util;
 
 import static org.junit.Assert.assertEquals;
 

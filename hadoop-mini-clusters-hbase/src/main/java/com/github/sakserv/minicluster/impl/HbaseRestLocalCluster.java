@@ -11,9 +11,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.github.sakserv.minicluster.impl;
+package com.github.explicite.minicluster.impl;
 
-import com.github.sakserv.minicluster.MiniCluster;
+import com.github.explicite.minicluster.MiniCluster;
 import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 import org.apache.hadoop.conf.Configuration;

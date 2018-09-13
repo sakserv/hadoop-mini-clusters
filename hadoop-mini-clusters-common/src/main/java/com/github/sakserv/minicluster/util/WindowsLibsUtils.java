@@ -1,4 +1,4 @@
-package com.github.sakserv.minicluster.util;
+package com.github.explicite.minicluster.util;
 
 import java.io.File;
 

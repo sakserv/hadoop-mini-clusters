@@ -11,7 +11,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.github.sakserv.minicluster.oozie.sharelib.util;
+package com.github.explicite.minicluster.oozie.sharelib.util;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import com.github.sakserv.minicluster.oozie.sharelib.Framework;
+import com.github.explicite.minicluster.oozie.sharelib.Framework;
 import org.apache.commons.io.FileUtils;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.FileUtil;
@@ -27,8 +27,8 @@ import org.apache.hadoop.fs.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.sakserv.minicluster.http.HttpUtils;
-import com.github.sakserv.propertyparser.PropertyParser;
+import com.github.explicite.minicluster.http.HttpUtils;
+import com.github.explicite.propertyparser.PropertyParser;
 
 public class OozieShareLibUtil {
 

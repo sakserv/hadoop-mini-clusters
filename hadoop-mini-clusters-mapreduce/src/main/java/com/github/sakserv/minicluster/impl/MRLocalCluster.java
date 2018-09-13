@@ -11,7 +11,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.github.sakserv.minicluster.impl;
+package com.github.explicite.minicluster.impl;
 
 import java.io.File;
 
@@ -22,9 +22,9 @@ import org.apache.hadoop.yarn.conf.YarnConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.util.FileUtils;
-import com.github.sakserv.minicluster.util.WindowsLibsUtils;
+import com.github.explicite.minicluster.MiniCluster;
+import com.github.explicite.minicluster.util.FileUtils;
+import com.github.explicite.minicluster.util.WindowsLibsUtils;
 
 public class MRLocalCluster implements MiniCluster {
 
@@ -32,7 +32,7 @@ public class MRLocalCluster implements MiniCluster {
     private static final Logger LOG = LoggerFactory.getLogger(MRLocalCluster.class);
 
     private String testName = getClass().getName();
-    private String inJvmContainerExecutorClass = "com.github.sakserv.minicluster.yarn.InJvmContainerExecutor";
+    private String inJvmContainerExecutorClass = "com.github.explicite.minicluster.yarn.InJvmContainerExecutor";
     private Integer numNodeManagers;
     private String jobHistoryAddress;
     private String resourceManagerAddress;

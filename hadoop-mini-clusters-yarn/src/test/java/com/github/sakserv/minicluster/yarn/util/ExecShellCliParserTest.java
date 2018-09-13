@@ -1,4 +1,4 @@
-package com.github.sakserv.minicluster.yarn.util;
+package com.github.explicite.minicluster.yarn.util;
 
 import static org.junit.Assert.assertEquals;
 
@@ -27,8 +27,8 @@ public class ExecShellCliParserTest {
     private static final Logger LOG = LoggerFactory.getLogger(ExecShellCliParserTest.class);
 
     private static final String command = "whoami";
-    private static final String stdoutFile = "./target/com.github.sakserv.minicluster.impl.YarnLocalCluster/com.github.sakserv.minicluster.impl.YarnLocalCluster-logDir-nm-0_0/application_1431983196063_0001/container_1431983196063_0001_01_000002/stdout";
-    private static final String stderrFile = "./target/com.github.sakserv.minicluster.impl.YarnLocalCluster/com.github.sakserv.minicluster.impl.YarnLocalCluster-logDir-nm-0_0/application_1431983196063_0001/container_1431983196063_0001_01_000002/stderr";
+    private static final String stdoutFile = "./target/com.github.explicite.minicluster.impl.YarnLocalCluster/com.github.explicite.minicluster.impl.YarnLocalCluster-logDir-nm-0_0/application_1431983196063_0001/container_1431983196063_0001_01_000002/stdout";
+    private static final String stderrFile = "./target/com.github.explicite.minicluster.impl.YarnLocalCluster/com.github.explicite.minicluster.impl.YarnLocalCluster-logDir-nm-0_0/application_1431983196063_0001/container_1431983196063_0001_01_000002/stderr";
     private static final String cliString = command + " 1>" + stdoutFile + " 2>" + stderrFile;
 
     private static ExecShellCliParser execShellCliParser;

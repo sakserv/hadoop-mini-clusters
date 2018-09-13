@@ -12,7 +12,7 @@
  *  limitations under the License.
  */
 
-package com.github.sakserv.minicluster.impl;
+package com.github.explicite.minicluster.impl;
 
 import java.io.IOException;
 
@@ -23,10 +23,10 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.minicluster.storm.bolt.PrinterBolt;
-import com.github.sakserv.minicluster.storm.spout.RandomSentenceSpout;
-import com.github.sakserv.propertyparser.PropertyParser;
+import com.github.explicite.minicluster.config.ConfigVars;
+import com.github.explicite.minicluster.storm.bolt.PrinterBolt;
+import com.github.explicite.minicluster.storm.spout.RandomSentenceSpout;
+import com.github.explicite.propertyparser.PropertyParser;
 
 import org.apache.storm.Config;
 import org.apache.storm.topology.TopologyBuilder;

@@ -1,14 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.sakserv</groupId>
+    <groupId>com.github.explicite</groupId>
     <artifactId>hadoop-mini-clusters</artifactId>
     <version>0.1.15-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Hadoop Mini Clusters</name>
     <description>Hadoop Mini Clusters for local and unit testing.</description>
-    <url>https://github.com/sakserv/hadoop-mini-clusters</url>
+    <url>https://github.com/explicite/hadoop-mini-clusters</url>
 
     <licenses>
         <license>
@@ -19,28 +19,21 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git://github.com/sakserv/hadoop-mini-clusters.git</connection>
-        <developerConnection>scm:git:git@github.com:sakserv/hadoop-mini-clusters.git</developerConnection>
-        <url>http://github.com/sakserv/hadoop-mini-clusters</url>
+        <connection>scm:git:git://github.com/explicite/hadoop-mini-clusters.git</connection>
+        <developerConnection>scm:git:git@github.com:explicite/hadoop-mini-clusters.git</developerConnection>
+        <url>http://github.com/explicite/hadoop-mini-clusters</url>
         <tag>HEAD</tag>
     </scm>
 
     <developers>
         <developer>
-            <name>Shane Kumpf</name>
-            <email>sakserv@sakserv.org</email>
-            <organization>Hortonworks</organization>
-            <organizationUrl>http://www.hortonworks.com/</organizationUrl>
+            <name>Jan Paw</name>
+            <email>jpaw@virtuslab.com</email>
+            <organization>Virtuslab</organization>
+            <organizationUrl>https://virtuslab.com/</organizationUrl>
         </developer>
     </developers>
 
-    <repositories>
-        <repository>
-            <id>public.repo.hortonworks.com</id>
-            <name>Public Hortonworks Maven Repo</name>
-            <url>http://repo.hortonworks.com/content/groups/public/</url>
-        </repository>
-    </repositories>
 
     <distributionManagement>
         <snapshotRepository>
@@ -350,7 +343,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.sakserv</groupId>
+            <groupId>com.github.explicite</groupId>
             <artifactId>property-parser</artifactId>
             <version>${property-parser.version}</version>
             <scope>test</scope>

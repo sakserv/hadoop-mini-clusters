@@ -1,4 +1,4 @@
-package com.github.sakserv.minicluster.mapreduce;
+package com.github.explicite.minicluster.mapreduce;
 
 import java.io.IOException;
 import java.util.StringTokenizer;

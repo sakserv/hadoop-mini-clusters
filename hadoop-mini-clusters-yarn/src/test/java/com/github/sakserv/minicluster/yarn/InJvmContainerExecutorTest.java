@@ -1,4 +1,4 @@
-package com.github.sakserv.minicluster.yarn;
+package com.github.explicite.minicluster.yarn;
 
 import org.junit.Test;
 

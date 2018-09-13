@@ -11,7 +11,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.github.sakserv.minicluster.yarn.util;
+package com.github.explicite.minicluster.yarn.util;
 
 import java.io.BufferedReader;
 import java.io.File;

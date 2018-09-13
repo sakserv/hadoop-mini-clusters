@@ -12,7 +12,7 @@
  *  limitations under the License.
  */
 
-package com.github.sakserv.minicluster.impl;
+package com.github.explicite.minicluster.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,10 +26,10 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.sakserv.minicluster.config.ConfigVars;
-import com.github.sakserv.minicluster.kafka.consumer.KafkaTestConsumer;
-import com.github.sakserv.minicluster.kafka.producer.KafkaSimpleTestProducer;
-import com.github.sakserv.propertyparser.PropertyParser;
+import com.github.explicite.minicluster.config.ConfigVars;
+import com.github.explicite.minicluster.kafka.consumer.KafkaTestConsumer;
+import com.github.explicite.minicluster.kafka.producer.KafkaSimpleTestProducer;
+import com.github.explicite.propertyparser.PropertyParser;
 
 public class KafkaLocalBrokerIntegrationTest {
 

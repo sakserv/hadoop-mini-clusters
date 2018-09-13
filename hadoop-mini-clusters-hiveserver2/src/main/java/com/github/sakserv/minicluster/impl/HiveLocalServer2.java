@@ -12,7 +12,7 @@
  *  limitations under the License.
  */
 
-package com.github.sakserv.minicluster.impl;
+package com.github.explicite.minicluster.impl;
 
 import java.io.File;
 
@@ -21,9 +21,9 @@ import org.apache.hive.service.server.HiveServer2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.sakserv.minicluster.MiniCluster;
-import com.github.sakserv.minicluster.util.FileUtils;
-import com.github.sakserv.minicluster.util.WindowsLibsUtils;
+import com.github.explicite.minicluster.MiniCluster;
+import com.github.explicite.minicluster.util.FileUtils;
+import com.github.explicite.minicluster.util.WindowsLibsUtils;
 
 public class HiveLocalServer2 implements MiniCluster {
 
