@@ -32,6 +32,12 @@
             <organization>Virtuslab</organization>
             <organizationUrl>https://virtuslab.com/</organizationUrl>
         </developer>
+        <developer>
+            <name>Shane Kumpf</name>
+            <email>sakserv@sakserv.org</email>
+            <organization>Hortonworks</organization>
+            <organizationUrl>http://www.hortonworks.com/</organizationUrl>
+        </developer>
     </developers>
 
 
@@ -47,6 +53,25 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
+
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>hortonworks-release</id>
+            <name>Hortonworks Repository</name>
+            <url>http://repo.hortonworks.com/content/repositories/releases/</url>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>spring-release</id>
+            <name>Spring Repository</name>
+            <url>http://repo.spring.io/plugins-release/</url>
+        </repository>
+    </repositories>
 
     <modules>
         <module>hadoop-mini-clusters-hdfs</module>
