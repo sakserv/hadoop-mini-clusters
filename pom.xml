@@ -1,14 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.sakserv</groupId>
+    <groupId>com.github.explicite</groupId>
     <artifactId>hadoop-mini-clusters</artifactId>
     <version>0.1.15-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Hadoop Mini Clusters</name>
     <description>Hadoop Mini Clusters for local and unit testing.</description>
-    <url>https://github.com/sakserv/hadoop-mini-clusters</url>
+    <url>https://github.com/explicite/hadoop-mini-clusters</url>
 
     <licenses>
         <license>
@@ -19,13 +19,19 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git://github.com/sakserv/hadoop-mini-clusters.git</connection>
-        <developerConnection>scm:git:git@github.com:sakserv/hadoop-mini-clusters.git</developerConnection>
-        <url>http://github.com/sakserv/hadoop-mini-clusters</url>
+        <connection>scm:git:git://github.com/explicite/hadoop-mini-clusters.git</connection>
+        <developerConnection>scm:git:git@github.com:explicite/hadoop-mini-clusters.git</developerConnection>
+        <url>http://github.com/explicite/hadoop-mini-clusters</url>
         <tag>HEAD</tag>
     </scm>
 
     <developers>
+        <developer>
+            <name>Jan Paw</name>
+            <email>jpaw@virtuslab.com</email>
+            <organization>Virtuslab</organization>
+            <organizationUrl>https://virtuslab.com/</organizationUrl>
+        </developer>
         <developer>
             <name>Shane Kumpf</name>
             <email>sakserv@sakserv.org</email>
@@ -34,13 +40,6 @@
         </developer>
     </developers>
 
-    <repositories>
-        <repository>
-            <id>public.repo.hortonworks.com</id>
-            <name>Public Hortonworks Maven Repo</name>
-            <url>http://repo.hortonworks.com/content/groups/public/</url>
-        </repository>
-    </repositories>
 
     <distributionManagement>
         <snapshotRepository>
@@ -54,6 +53,25 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
+
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>hortonworks-release</id>
+            <name>Hortonworks Repository</name>
+            <url>http://repo.hortonworks.com/content/repositories/releases/</url>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>spring-release</id>
+            <name>Spring Repository</name>
+            <url>http://repo.spring.io/plugins-release/</url>
+        </repository>
+    </repositories>
 
     <modules>
         <module>hadoop-mini-clusters-hdfs</module>
@@ -109,15 +127,15 @@
         <httpclient.version>4.5.2</httpclient.version>
 
         <!-- Maven Release Plugin doesn't work correctly with properties defined in profiles, duplicate here -->
-        <hdp.release.version>2.6.2.0</hdp.release.version>
-        <storm.version>1.1.0.2.6.2.0-205</storm.version>
-        <hive.version>1.2.1000.2.6.2.0-205</hive.version>
-        <hadoop.version>2.7.3.2.6.2.0-205</hadoop.version>
-        <hbase.version>1.1.2.2.6.2.0-205</hbase.version>
-        <kafka.version>0.10.1.2.6.2.0-205</kafka.version>
+        <hdp.release.version>2.6.3.0</hdp.release.version>
+        <storm.version>1.1.0.2.6.3.0-235</storm.version>
+        <hive.version>1.2.1000.2.6.3.0-235</hive.version>
+        <hadoop.version>2.7.3.2.6.3.0-235</hadoop.version>
+        <hbase.version>1.1.2.2.6.3.0-235</hbase.version>
+        <kafka.version>0.10.1.2.6.3.0-235</kafka.version>
         <kafka.artifactid.version>kafka_2.10</kafka.artifactid.version>
-        <oozie.version>4.2.0.2.6.2.0-205</oozie.version>
-        <knox.version>0.12.0.2.6.2.0-205</knox.version>
+        <oozie.version>4.2.0.2.6.3.0-235</oozie.version>
+        <knox.version>0.12.0.2.6.3.0-235</knox.version>
 
     </properties>
 
@@ -126,6 +144,22 @@
         <!--
             Build profiles to use different versions of Hadoop
         -->
+
+        <!-- HDP 2.6.3.0 -->
+        <profile>
+            <id>2.6.3.0</id>
+            <properties>
+                <hdp.release.version>2.6.3.0</hdp.release.version>
+                <storm.version>1.1.0.2.6.3.0-235</storm.version>
+                <hive.version>1.2.1000.2.6.3.0-235</hive.version>
+                <hadoop.version>2.7.3.2.6.3.0-235</hadoop.version>
+                <hbase.version>1.1.2.2.6.3.0-235</hbase.version>
+                <kafka.version>0.10.1.2.6.3.0-235</kafka.version>
+                <kafka.artifactid.version>kafka_2.10</kafka.artifactid.version>
+                <oozie.version>4.2.0.2.6.3.0-235</oozie.version>
+                <knox.version>0.12.0.2.6.3.0-235</knox.version>
+            </properties>
+        </profile>
 
         <!-- HDP 2.6.2.0 -->
         <profile>
