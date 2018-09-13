@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 import com.github.explicite.minicluster.config.ConfigVars;
 import com.github.explicite.minicluster.storm.bolt.PrinterBolt;
 import com.github.explicite.minicluster.storm.spout.RandomSentenceSpout;
-import com.github.explicite.propertyparser.PropertyParser;
+import com.github.sakserv.propertyparser.PropertyParser;
 
 import org.apache.storm.Config;
 import org.apache.storm.topology.TopologyBuilder;

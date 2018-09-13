@@ -15,7 +15,7 @@
 package com.github.explicite.minicluster.impl;
 
 import com.github.explicite.minicluster.config.ConfigVars;
-import com.github.explicite.propertyparser.PropertyParser;
+import com.github.sakserv.propertyparser.PropertyParser;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FSDataOutputStream;

@@ -343,7 +343,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.explicite</groupId>
+            <groupId>com.github.sakserv</groupId>
             <artifactId>property-parser</artifactId>
             <version>${property-parser.version}</version>
             <scope>test</scope>

@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 import com.github.explicite.minicluster.config.ConfigVars;
 import com.github.explicite.minicluster.yarn.InJvmContainerExecutor;
 import com.github.explicite.minicluster.yarn.simpleyarnapp.Client;
-import com.github.explicite.propertyparser.PropertyParser;
+import com.github.sakserv.propertyparser.PropertyParser;
 
 public class YarnLocalClusterInJvmContainerExecutorTest {
     

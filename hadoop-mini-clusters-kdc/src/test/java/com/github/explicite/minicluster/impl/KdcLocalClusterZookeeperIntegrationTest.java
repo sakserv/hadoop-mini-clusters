@@ -17,7 +17,7 @@ package com.github.explicite.minicluster.impl;
 import com.github.explicite.minicluster.auth.Jaas;
 import com.github.explicite.minicluster.config.ConfigVars;
 import com.github.explicite.minicluster.util.FileUtils;
-import com.github.explicite.propertyparser.PropertyParser;
+import com.github.sakserv.propertyparser.PropertyParser;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;

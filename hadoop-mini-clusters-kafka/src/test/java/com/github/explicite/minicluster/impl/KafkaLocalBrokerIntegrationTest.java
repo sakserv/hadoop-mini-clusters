@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 import com.github.explicite.minicluster.config.ConfigVars;
 import com.github.explicite.minicluster.kafka.consumer.KafkaTestConsumer;
 import com.github.explicite.minicluster.kafka.producer.KafkaSimpleTestProducer;
-import com.github.explicite.propertyparser.PropertyParser;
+import com.github.sakserv.propertyparser.PropertyParser;
 
 public class KafkaLocalBrokerIntegrationTest {
 
