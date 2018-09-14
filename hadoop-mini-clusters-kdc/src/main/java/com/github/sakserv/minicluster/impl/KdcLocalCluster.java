@@ -19,6 +19,7 @@ import com.github.sakserv.minicluster.MiniCluster;
 import com.github.sakserv.minicluster.util.FileUtils;
 import com.github.sakserv.minicluster.util.WindowsLibsUtils;
 import com.google.common.base.Throwables;
+import com.google.common.io.Files;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.CommonConfigurationKeysPublic;
@@ -33,8 +34,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.util.*;
 
 import static org.apache.hadoop.fs.CommonConfigurationKeys.IPC_CLIENT_CONNECT_MAX_RETRIES_ON_SASL_KEY;
@@ -364,7 +367,19 @@ public class KdcLocalCluster implements MiniCluster {
         baseConf.setBoolean(CommonConfigurationKeysPublic.HADOOP_SECURITY_AUTHORIZATION, true);
         //baseConf.set(CommonConfigurationKeys.HADOOP_RPC_PROTECTION, "authentication");
 
-        String sslConfigDir = KeyStoreTestUtil.getClasspathDir(this.getClass());
+        Class klass = this.getClass();
+        String file = klass.getName();
+        file = file.replace('.', '/') + ".class";
+        URL url = Thread.currentThread().getContextClassLoader().getResource(file);
+        String sslConfigDir;
+        if (url.getProtocol().equals("jar")) {
+          File tempDir = Files.createTempDir();
+          sslConfigDir = tempDir.getAbsolutePath();
+          tempDir.deleteOnExit();
+        } else {
+          sslConfigDir = url.toURI().getPath();
+          sslConfigDir = sslConfigDir.substring(0, sslConfigDir.length() - file.length() - 1);
+        }
         KeyStoreTestUtil.setupSSLConfig(baseDir, sslConfigDir, baseConf, false);
 
         // User
