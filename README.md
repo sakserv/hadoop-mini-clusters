@@ -54,7 +54,8 @@ Profile Support:
 ----------------
 Multiple versions of HDP are available. The current list is:
 
-*   HDP 2.6.2.0 (default)
+*   HDP 2.6.3.0 (default)
+*   HDP 2.6.2.0
 *   HDP 2.6.1.0
 *   HDP 2.6.0.3
 *   HDP 2.5.3.0

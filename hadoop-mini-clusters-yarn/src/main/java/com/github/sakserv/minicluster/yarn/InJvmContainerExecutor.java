@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URI;
@@ -360,12 +362,18 @@ public class InJvmContainerExecutor extends DefaultContainerExecutor {
             writer = new BufferedWriter(new FileWriter(inJvmlaunchScript));
 
             String line;
-            while ((line = reader.readLine()) != null) {
-                if (!line.startsWith("exec")) {
-                    writer.write(line);
-                    writer.write("\n");
+              while ((line = reader.readLine()) != null) {
+                if (line.startsWith("exec")) {
+                  execLine = line;
+                } else if (line.startsWith("cp \"launch_container.sh\"")) {
+                  String[] lineParts = line.split(" ");
+                  writer.write(lineParts[0]);
+                  writer.write(" \"" + containerWorkDir + "/launch_container.sh\" ");
+                  writer.write(lineParts[2]);
+                  writer.write("\n");
                 } else {
-                    execLine = line;
+                  writer.write(line);
+                  writer.write("\n");
                 }
             }
         }
