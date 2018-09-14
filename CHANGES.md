@@ -1,5 +1,11 @@
 Change Log
 ==========
+### 0.1.15 - 9/14/2018
+* Add support for HDP 2.6.3.0
+* Fix kdc NPE
+* Fix HADOOP_HOME on Windows
+* Fix missing libx on Windows
+
 ### 0.1.14 - 9/25/2017
 * Add mini kdc (Thanks @treydone)
 * Improve oozie documentation
