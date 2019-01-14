@@ -14,6 +14,7 @@
 
 package com.github.sakserv.minicluster.datatime;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class GenerateRandomDay {
@@ -24,17 +25,17 @@ public class GenerateRandomDay {
 
         int year = randBetween(2013, 2014);
 
-        gc.set(gc.YEAR, year);
+        gc.set(Calendar.YEAR, year);
 
-        int dayOfYear = randBetween(1, gc.getActualMaximum(gc.DAY_OF_YEAR));
+        int dayOfYear = randBetween(1, gc.getActualMaximum(Calendar.DAY_OF_YEAR));
 
-        gc.set(gc.DAY_OF_YEAR, dayOfYear);
+        gc.set(Calendar.DAY_OF_YEAR, dayOfYear);
 
-        return String.format("%04d-%02d-%02d", gc.get(gc.YEAR), gc.get(gc.MONTH), gc.get(gc.DAY_OF_MONTH));
+        return String.format("%04d-%02d-%02d", gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DAY_OF_MONTH));
 
     }
 
-    public static int randBetween(int start, int end) {
+    private static int randBetween(int start, int end) {
         return start + (int)Math.round(Math.random() * (end - start));
     }
 }

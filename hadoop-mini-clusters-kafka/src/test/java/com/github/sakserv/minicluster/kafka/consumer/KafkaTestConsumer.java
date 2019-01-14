@@ -14,6 +14,7 @@
 package com.github.sakserv.minicluster.kafka.consumer;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +38,7 @@ public class KafkaTestConsumer {
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(KafkaTestConsumer.class);
 
-    long numRead = 0;
+    private long numRead = 0;
     private List<String> m_replicaBrokers = new ArrayList<String>();
 
     public void consumeMessages(long a_maxReads, String a_topic, int a_partition, List<String> a_seedBrokers, int a_port) throws Exception {
@@ -98,7 +99,7 @@ public class KafkaTestConsumer {
 
                 byte[] bytes = new byte[payload.limit()];
                 payload.get(bytes);
-                LOG.info("Consumed: {}: {}", String.valueOf(messageAndOffset.offset()), new String(bytes, "UTF-8"));
+                LOG.info("Consumed: {}: {}", String.valueOf(messageAndOffset.offset()), new String(bytes, StandardCharsets.UTF_8));
                 numRead++;
                 a_maxReads--;
             }
@@ -106,7 +107,7 @@ public class KafkaTestConsumer {
             if (numRead == 0) {
                 try {
                     Thread.sleep(1000);
-                } catch (InterruptedException ie) {
+                } catch (InterruptedException ignored) {
                 }
             }
         }
@@ -132,7 +133,7 @@ public class KafkaTestConsumer {
             if (goToSleep) {
                 try {
                     Thread.sleep(1000);
-                } catch (InterruptedException ie) {
+                } catch (InterruptedException ignored) {
                 }
             }
         }

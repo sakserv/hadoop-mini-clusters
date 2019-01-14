@@ -15,11 +15,8 @@
 package com.github.sakserv.minicluster.impl;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 import java.util.Properties;
 
-import kafka.metrics.KafkaMetricsReporter;
-import org.apache.avro.generic.GenericData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,8 +27,6 @@ import com.github.sakserv.minicluster.util.FileUtils;
 import kafka.server.KafkaConfig;
 import kafka.server.KafkaServer;
 import scala.Option;
-import scala.Some;
-import scala.collection.immutable.Seq;
 
 /**
  * In memory Kafka Broker for testing
@@ -52,27 +47,27 @@ public class KafkaLocalBroker implements MiniCluster {
     private String kafkaTempDir;
     private String zookeeperConnectionString;
 
-    public String getKafkaHostname() {
+    String getKafkaHostname() {
         return kafkaHostname;
     }
 
-    public Integer getKafkaPort() {
+    Integer getKafkaPort() {
         return kafkaPort;
     }
 
-    public Integer getKafkaBrokerId() {
+    Integer getKafkaBrokerId() {
         return kafkaBrokerId;
     }
 
-    public Properties getKafkaProperties() {
+    Properties getKafkaProperties() {
         return kafkaProperties;
     }
 
-    public String getKafkaTempDir() {
+    String getKafkaTempDir() {
         return kafkaTempDir;
     }
 
-    public String getZookeeperConnectionString() {
+    String getZookeeperConnectionString() {
         return zookeeperConnectionString;
     }
     
@@ -95,43 +90,43 @@ public class KafkaLocalBroker implements MiniCluster {
         private String kafkaTempDir;
         private String zookeeperConnectionString;
         
-        public Builder setKafkaHostname(String kafkaHostname) {
+        Builder setKafkaHostname(String kafkaHostname) {
             this.kafkaHostname = kafkaHostname;
             return this;
         }
         
-        public Builder setKafkaPort(Integer kafkaPort) {
+        Builder setKafkaPort(Integer kafkaPort) {
             this.kafkaPort = kafkaPort;
             return this;
         }
         
-        public Builder setKafkaBrokerId(Integer kafkaBrokerId){
+        Builder setKafkaBrokerId(Integer kafkaBrokerId){
             this.kafkaBrokerId = kafkaBrokerId;
             return this;
         }
         
-        public Builder setKafkaProperties(Properties kafkaProperties) {
+        Builder setKafkaProperties(Properties kafkaProperties) {
             this.kafkaProperties = kafkaProperties;
             return this;
         }
         
-        public Builder setKafkaTempDir(String kafkaTempDir) {
+        Builder setKafkaTempDir(String kafkaTempDir) {
             this.kafkaTempDir = kafkaTempDir;
             return this;
         }
         
-        public Builder setZookeeperConnectionString(String zookeeperConnectionString) {
+        Builder setZookeeperConnectionString(String zookeeperConnectionString) {
             this.zookeeperConnectionString = zookeeperConnectionString;
             return this;
         }
         
-        public KafkaLocalBroker build() {
+        KafkaLocalBroker build() {
             KafkaLocalBroker kafkaLocalBroker = new KafkaLocalBroker(this);
             validateObject(kafkaLocalBroker);
             return kafkaLocalBroker;
         }
         
-        public void validateObject(KafkaLocalBroker kafkaLocalBroker) {
+        void validateObject(KafkaLocalBroker kafkaLocalBroker) {
             if(kafkaLocalBroker.kafkaHostname == null) {
                 throw new IllegalArgumentException("ERROR: Missing required config: Kafka Hostname");
             }
@@ -198,12 +193,12 @@ public class KafkaLocalBroker implements MiniCluster {
     }
 
     @Override
-    public void stop() throws Exception {
+    public void stop() {
         stop(true);
     }
 
     @Override
-    public void stop(boolean cleanUp) throws Exception {
+    public void stop(boolean cleanUp)  {
         LOG.info("KAFKA: Stopping Kafka on port: {}", kafkaPort);
         kafkaServer.shutdown();
 
@@ -213,7 +208,7 @@ public class KafkaLocalBroker implements MiniCluster {
     }
 
     @Override
-    public void configure() throws Exception {
+    public void configure() {
         kafkaProperties.put("advertised.host.name", kafkaHostname);
         kafkaProperties.put("port", kafkaPort+"");
         kafkaProperties.put("broker.id", kafkaBrokerId+"");
@@ -224,7 +219,7 @@ public class KafkaLocalBroker implements MiniCluster {
     }
 
     @Override
-    public void cleanUp() throws Exception {
+    public void cleanUp() {
         FileUtils.deleteFolder(kafkaTempDir);
     }
 

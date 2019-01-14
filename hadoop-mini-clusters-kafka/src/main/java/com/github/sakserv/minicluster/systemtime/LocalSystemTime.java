@@ -13,7 +13,7 @@
  */
 package com.github.sakserv.minicluster.systemtime;
 
-import kafka.utils.Time;
+import org.apache.kafka.common.utils.Time;
 
 public class LocalSystemTime implements Time {
 

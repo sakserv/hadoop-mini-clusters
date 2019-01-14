@@ -43,19 +43,19 @@ public class KafkaSimpleTestProducer {
         this.messageCount = builder.messageCount;
     }
 
-    public String getKafkaHostname() {
+    private String getKafkaHostname() {
         return kafkaHostname;
     }
 
-    public Integer getKafkaPort() {
+    private Integer getKafkaPort() {
         return kafkaPort;
     }
 
-    public String getTopic() {
+    private String getTopic() {
         return topic;
     }
 
-    public Integer getMessageCount() {
+    private Integer getMessageCount() {
         return messageCount;
     }
 
