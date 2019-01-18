@@ -15,11 +15,11 @@
 package com.github.sakserv.minicluster.impl;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 import java.util.Properties;
 
 import kafka.metrics.KafkaMetricsReporter;
-import org.apache.avro.generic.GenericData;
+import kafka.metrics.KafkaMetricsReporter$;
+import kafka.utils.VerifiableProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,8 +30,7 @@ import com.github.sakserv.minicluster.util.FileUtils;
 import kafka.server.KafkaConfig;
 import kafka.server.KafkaServer;
 import scala.Option;
-import scala.Some;
-import scala.collection.immutable.Seq;
+import scala.collection.Seq;
 
 /**
  * In memory Kafka Broker for testing
@@ -190,8 +189,9 @@ public class KafkaLocalBroker implements MiniCluster {
         } else if (kafkaServerConstructor.getParameterTypes().length == 4) {
             //val config: KafkaConfig, time: Time = Time.SYSTEM, threadNamePrefix: Option[String] = None, kafkaMetricsReporters: Seq[KafkaMetricsReporter] = List()
             Option<String> threadPrefixName = Option.apply("kafka-mini-cluster");
-            Object kafkaMetricsReporters = scala.collection.immutable.List.empty();
-            kafkaServer = (KafkaServer) kafkaServerConstructor.newInstance(kafkaConfig, new LocalSystemTime(), threadPrefixName, kafkaMetricsReporters);
+            //scala.collection.immutable.List<Object> kafkaMetricsReporters = scala.collection.immutable.List.empty();
+            Seq<KafkaMetricsReporter> reporters = KafkaMetricsReporter$.MODULE$.startReporters(new VerifiableProperties(new Properties()));
+            kafkaServer = (KafkaServer) kafkaServerConstructor.newInstance(kafkaConfig, new LocalSystemTime(), threadPrefixName, reporters);
         }
 
         kafkaServer.startup();
