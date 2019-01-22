@@ -1,7 +1,7 @@
 Change Log
 ==========
 ### 0.1.16 - 1/18/2019
-* Add support for HDP 2.6.3.0
+* Add support for HDP 2.6.5.0
 
 ### 0.1.15 - 9/14/2018
 * Add support for HDP 2.6.3.0
